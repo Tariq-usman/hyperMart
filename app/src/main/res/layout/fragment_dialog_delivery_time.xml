@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_custom_layout"
+    android:layout_width="wrap_content"
+    android:layout_margin="20dp"
+    android:layout_gravity="center"
+    android:background="@color/colorPrimary"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/header_item_details" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please let us your preferred delivery time"
+            android:textColor="@color/textColorLikeBG"
+            android:gravity="center"
+            android:textSize="@dimen/button_text_size"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="15dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textColor="@color/textColorLikeBG"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="11/11/19"
+                android:gravity="center"
+                android:background="@drawable/bg_email_pass"
+                android:textColorHint="@color/textColor"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="5dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:textColor="@color/textColorLikeBG"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="5:30 pm"
+                android:gravity="center"
+                android:background="@drawable/bg_email_pass"
+                android:textColorHint="@color/textColor"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/confirm_btn_delivery_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="50dp"
+            android:background="@drawable/bg_submit_btn"
+            android:gravity="center"
+            android:text="Confirm"
+            android:textColor="@color/textColor" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

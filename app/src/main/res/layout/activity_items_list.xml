@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ItemsListActivity">
+    <include
+        layout="@layout/header_item_details"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/available_items"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Available"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginRight=".5dp"
+            android:textColor="@color/textColor"
+            android:background="@drawable/bg_selected"/>
+        <TextView
+            android:id="@+id/not_available_items"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Not Available"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginLeft=".5dp"
+            android:textColor="@color/textColor"
+            android:background="@drawable/bg_unselected"/>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="These items will be placed in the order list"
+        android:textColor="@color/textColorLikeBG"
+        android:textSize="@dimen/button_text_size"
+        android:gravity="center"
+        android:layout_marginVertical="10dp"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/container_items_list"/>
+
+        <TextView
+            android:id="@+id/confirm_btn_items_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/bg_submit_btn"
+            android:gravity="center"
+            android:text="Confirm"
+            android:textColor="@color/textColor" />
+    </FrameLayout>
+
+
+</LinearLayout>

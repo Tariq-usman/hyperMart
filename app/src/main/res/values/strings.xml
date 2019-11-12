@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Men Wain</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="description">Description is the pattern of narrative development that aims to make vivid a place,
+        object, character, or group. Description is one of four rhetorical modes (also known as modes of discourse),
+        along with exposition, argumentation, and narration.</string>
+    <string name="specification">Description is the pattern of narrative development that aims to make vivid a place,
+        object, character, or group. Description is one of four rhetorical modes (also known as modes of discourse),
+        along with exposition, argumentation, and narration.</string>
+    <string name="reviews">Description is the pattern of narrative development that aims to make vivid a place,
+        object, character, or group. Description is one of four rhetorical modes.
+
+    Description is the pattern of narrative development that aims to make vivid a place,
+        object, character, or group. Description is one of four rhetorical modes.
+
+    Description is the pattern of narrative development that aims to make vivid a place,
+        object, character, or group. Description is one of four rhetorical modes.</string>
+
+</resources>

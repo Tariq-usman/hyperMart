@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_item_details" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_unselected"
+        android:orientation="vertical"
+        android:paddingVertical="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Store By:"
+                android:textColor="@color/textColorLikeBG"
+                android:textSize="@dimen/content_text_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_store_btn_colored"
+                    android:gravity="center"
+                    android:text="Price"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/small_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_stores_btn_white"
+                    android:gravity="center"
+                    android:text="Availability"
+                    android:textColor="@color/textColorLikeBG"
+                    android:textSize="@dimen/small_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_stores_btn_white"
+                    android:gravity="center"
+                    android:text="Distance"
+                    android:textColor="@color/textColorLikeBG"
+                    android:textSize="@dimen/small_text_size" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Purchase Method:"
+                android:textColor="@color/textColorLikeBG"
+                android:textSize="@dimen/content_text_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_store_btn_colored"
+                    android:gravity="center"
+                    android:text="Online"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/small_text_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@drawable/bg_stores_btn_white"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:text="Cash on delivery"
+                    android:textColor="@color/textColorLikeBG"
+                    android:textSize="@dimen/small_text_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@drawable/bg_stores_btn_white"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:text="Pick-up in store"
+                    android:textColor="@color/textColorLikeBG"
+                    android:textSize="@dimen/small_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_stores_btn_white"
+                    android:gravity="center"
+                    android:text="In store"
+                    android:textColor="@color/textColorLikeBG"
+                    android:textSize="@dimen/small_text_size" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_available_item_store"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:overScrollMode="never"
+        tools:listitem="@layout/row_available_item_store" />
+
+
+</LinearLayout>

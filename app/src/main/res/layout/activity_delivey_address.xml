@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DeliveryAddressActivity">
+    <include
+        layout="@layout/header_item_details"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please select your delivery address"
+        android:textSize="@dimen/button_text_size"
+        android:textColor="@color/textColorLikeBG"
+        android:gravity="center"
+        android:layout_marginTop="40dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_delivery_address"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            tools:listitem="@layout/row_items_delivery_address"
+            android:layout_marginBottom="50dp"/>
+
+        <TextView
+            android:id="@+id/confirm_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/bg_submit_btn"
+            android:gravity="center"
+            android:text="Confirm"
+            android:textColor="@color/textColor" />
+    </FrameLayout>
+
+</LinearLayout>
