@@ -5,33 +5,42 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_my_order"
+            android:title="@string/menu_my_order" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_my_lists"
+            android:title="@string/menu_my_lists" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_delivery_addresses"
+            android:title="@string/menu_delivery_addresses" />
         <item
-            android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_tools" />
+            android:id="@+id/nav_payment_methods"
+            android:title="@string/menu_payment_methods" />
+        <item
+            android:id="@+id/nav_history"
+            android:title="@string/menu_history" />
+        <item
+            android:id="@+id/nav_favourite"
+            android:title="@string/menu_favourite" />
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/menu_settings" />
+        <item
+            android:id="@+id/nav_help"
+            android:title="@string/menu_help"/>
+        <item
+            android:id="@+id/nav_about"
+            android:title="@string/menu_about" />
+        <item
+            android:id="@+id/nav_rate_app"
+            android:title="@string/menu_rate_app" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_send" />
+                android:id="@+id/nav_logout"
+                android:title="@string/menu_logout" />
         </menu>
     </item>
 

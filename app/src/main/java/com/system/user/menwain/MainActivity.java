@@ -1,12 +1,19 @@
 package com.system.user.menwain;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -15,7 +22,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.system.user.menwain.fragments.AllListsFragment;
 import com.system.user.menwain.fragments.CartFragment;
+import com.system.user.menwain.fragments.FavouriteFragment;
 import com.system.user.menwain.fragments.HomeFragment;
+import com.system.user.menwain.fragments.OrdersFragment;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -26,10 +35,12 @@ import android.view.Menu;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     public AppBarConfiguration mAppBarConfiguration;
-    ImageView mCart,mListing,mHome;
+    ImageView mCart, mListing, mHome, mFavourite, mHistory;
+    DrawerLayout drawer;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,40 +48,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
+//         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setSupportActionBar(toolbar);
 
         mHome = findViewById(R.id.home_view);
         mCart = findViewById(R.id.cart);
         mListing = findViewById(R.id.listing_view);
+        mFavourite = findViewById(R.id.favourite);
+        mHistory = findViewById(R.id.history);
 
         mHome.setOnClickListener(this);
         mListing.setOnClickListener(this);
         mCart.setOnClickListener(this);
+        mFavourite.setOnClickListener(this);
+        mHistory.setOnClickListener(this);
 
-       /* FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                drawer.openDrawer(GravityCompat.START);
             }
         });
-*/
-       DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
+            //navigationView.setCheckedItem(R.id.nav_beginning);
+        }
+       /* NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        NavigationUI.setupWithNavController(navigationView, navController);*/
     }
 
     @Override
@@ -90,24 +111,88 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         int id = view.getId();
-
-        if (id==R.id.cart){
+        if (id == R.id.home_view) {
+            mHome.setImageResource(R.drawable.ic_homeselected);
+            mListing.setImageResource(R.drawable.ic_listing);
+            mCart.setImageResource(R.drawable.ic_cart);
+            mHistory.setImageResource(R.drawable.ic_history);
+            mFavourite.setImageResource(R.drawable.ic_wishlist);
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
+        } else if (id == R.id.cart) {
             mCart.setImageResource(R.drawable.ic_cartblue);
             mListing.setImageResource(R.drawable.ic_listing);
+            mHistory.setImageResource(R.drawable.ic_history);
             mHome.setImageResource(R.drawable.ic_homewwhite);
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new CartFragment()).commit();
-        }else if (id == R.id.listing_view){
-            mListing.setImageResource(R.drawable.ic_listingblue);
-            mCart.setImageResource(R.drawable.ic_cart);
-            mHome.setImageResource(R.drawable.ic_homewwhite);
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new AllListsFragment()).commit();
-
-        }else if (id == R.id.home_view){
+            mFavourite.setImageResource(R.drawable.ic_wishlist);
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
+        } else if (id == R.id.history) {
+            mHistory.setImageResource(R.drawable.ic_historyblue);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);
-            mHome.setImageResource(R.drawable.ic_homeselected);
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new HomeFragment()).commit();
+            mHome.setImageResource(R.drawable.ic_homewwhite);
+            mFavourite.setImageResource(R.drawable.ic_wishlist);
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
+        } else if (id == R.id.listing_view) {
+            mListing.setImageResource(R.drawable.ic_listingblue);
+            mCart.setImageResource(R.drawable.ic_cart);
+            mHistory.setImageResource(R.drawable.ic_history);
+            mHome.setImageResource(R.drawable.ic_homewwhite);
+            mFavourite.setImageResource(R.drawable.ic_wishlist);
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
 
+        } else if (id == R.id.favourite) {
+            mFavourite.setImageResource(R.drawable.ic_wishlistblue);
+            mListing.setImageResource(R.drawable.ic_listing);
+            mCart.setImageResource(R.drawable.ic_cart);
+            mHome.setImageResource(R.drawable.ic_homewwhite);
+            mHistory.setImageResource(R.drawable.ic_history);
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new FavouriteFragment()).commit();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.nav_my_lists:
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
+                break;
+            case R.id.nav_my_order:
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
+                break;
+            case R.id.nav_delivery_addresses:
+                startActivity(new Intent(getApplicationContext(),AddressesActivity.class));
+                break;
+            case R.id.nav_history:
+                startActivity(new Intent(getApplicationContext(),OrderHistoryActivity.class));
+                break;
+            case R.id.nav_favourite:
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new FavouriteFragment()).commit();
+                break;
+            case R.id.nav_rate_app:
+                startActivity(new Intent(getApplicationContext(),RateUsActivity.class));
+                break;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("Home");
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if (fragment != null && fragment.isVisible()) {
+            finish();
+        }  else {
+            setFragment(new HomeFragment(), "Home");
+        }
+    }
+
+    public void setFragment(Fragment fragment, String tag) {
+        FragmentTransaction trn = getSupportFragmentManager().beginTransaction();
+        trn.addToBackStack(null);
+        trn.replace(R.id.nav_host_fragment, fragment, tag);
+        trn.commit();
     }
 }

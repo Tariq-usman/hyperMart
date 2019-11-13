@@ -6,6 +6,8 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <dimen name="large_text_size">24sp</dimen>
+    <dimen name="twenty_dp">20sp</dimen>
     <dimen name="heading_text_size">18sp</dimen>
     <dimen name="button_text_size">15sp</dimen>
     <dimen name="content_text_size">12sp</dimen>

@@ -35,4 +35,6 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 
     implementation 'com.github.bluejamesbond:textjustify-android:2.1.6'
+    //Navigation
+    implementation 'nl.psdcompany:duo-navigation-drawer:3.0.0'
 }

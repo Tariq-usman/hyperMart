@@ -14,10 +14,22 @@
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:background="@drawable/side_nav_bar"
+        android:textAlignment="center"
         android:fitsSystemWindows="true"
+        app:itemTextColor="@color/textColor"
+        app:itemBackground="@drawable/navigation_menu_line"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
-
+        app:menu="@menu/activity_main_drawer" >
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Logout"
+    android:layout_gravity="center_horizontal|bottom"
+    android:layout_marginBottom="20dp"
+    android:textSize="@dimen/heading_text_size"
+    android:textColor="@color/textColor"/>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

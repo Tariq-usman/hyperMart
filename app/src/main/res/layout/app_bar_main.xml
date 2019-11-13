@@ -102,6 +102,7 @@
         </RelativeLayout>
 
         <ImageView
+            android:id="@+id/history"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"
@@ -115,6 +116,7 @@
             android:src="@drawable/ic_listing" />
 
         <ImageView
+            android:id="@+id/favourite"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"

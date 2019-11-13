@@ -11,17 +11,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="10dp"
         android:orientation="vertical">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:layout_height="130dp"
+            app:cardElevation="5dp"
             app:cardCornerRadius="15dp">
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
+                    android:id="@+id/product_image_view"
                     android:layout_width="match_parent"
                     android:layout_gravity="center"
                     android:layout_height="match_parent"

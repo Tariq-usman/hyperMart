@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.system.user.menwain.ItemsListActivity;
+import com.system.user.menwain.ListDetailsActivity;
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;
@@ -38,7 +40,8 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Intent intent =new  Intent(context, ItemsListActivity.class);
+               /* Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+                Intent intent =new  Intent(context, ListDetailsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);*/
             }
