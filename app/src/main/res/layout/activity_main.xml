@@ -22,14 +22,24 @@
         app:itemTextColor="@color/textColor"
         app:itemBackground="@drawable/navigation_menu_line"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" >
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Logout"
-    android:layout_gravity="center_horizontal|bottom"
-    android:layout_marginBottom="20dp"
-    android:textSize="@dimen/heading_text_size"
-    android:textColor="@color/textColor"/>
+        app:menu="@menu/activity_main_drawer"
+        >
+<!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:layout_gravity="center_horizontal|bottom"
+                android:textSize="@dimen/heading_text_size"
+                android:textColor="@color/textColor"/>
+
+        </LinearLayout>
+-->
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -1,14 +1,18 @@
 package com.system.user.menwain.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAddressesAdapter.DeliveryAddressViewHolder> {
@@ -29,20 +33,44 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DeliveryAddressViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final DeliveryAddressViewHolder holder, int position) {
+        if (address.length == position){
+            holder.mMainAddress.setText("Add New");
+            holder.mAddress.setVisibility(View.INVISIBLE);
+            holder.mAddNewBtn.setVisibility(View.VISIBLE);
+            holder.mEditBtn.setVisibility(View.INVISIBLE);
+            return;
+        }
         holder.mMainAddress.setText(address[position]);
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.mAddressesView.setBackgroundColor(Color.parseColor("#004040"));
+                holder.mMainAddress.setTextColor(Color.parseColor("#FFFFFF"));
+                holder.mAddress.setTextColor(Color.parseColor("#FFFFFF"));
+                holder.mEditBtn.setImageResource(R.drawable.ic_editwhite);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return address.length;
+        return address.length+1;
     }
 
     public static class DeliveryAddressViewHolder extends RecyclerView.ViewHolder{
-        TextView mMainAddress;
+        TextView mMainAddress,mAddress;
+        ImageView mAddNewBtn,mEditBtn;
+        CardView mCardView;
+        LinearLayout mAddressesView;
         public DeliveryAddressViewHolder(@NonNull View itemView) {
             super(itemView);
+            mAddNewBtn = itemView.findViewById(R.id.add_new_address);
             mMainAddress = itemView.findViewById(R.id.main_address_view);
+            mAddress = itemView.findViewById(R.id.address_view);
+            mEditBtn = itemView.findViewById(R.id.edit_address);
+            mCardView = itemView.findViewById(R.id.addresses_card_view);
+            mAddressesView = itemView.findViewById(R.id.addresses_layout);
         }
     }
 }

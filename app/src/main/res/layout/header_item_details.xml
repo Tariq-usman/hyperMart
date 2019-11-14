@@ -14,8 +14,8 @@
         android:background="@color/textColorLikeBG">
         <ImageView
             android:id="@+id/close_back_view"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/ic_cross"/>
         <TextView
             android:id="@+id/title_view"

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,6 +19,7 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
     ListDetailsAdapter listDetailsAdapter;
     FloatingActionButton floatingActionButton;
     TextView mConfirmBtn;
+    ImageView mBackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +28,11 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
 
         floatingActionButton = findViewById(R.id.action_btn_list_details);
         mConfirmBtn = findViewById(R.id.confirm_btn_list_details);
+        mBackBtn = findViewById(R.id.close_back_view);
 
         floatingActionButton.setOnClickListener(this);
         mConfirmBtn.setOnClickListener(this);
+        mBackBtn.setOnClickListener(this);
 
         recyclerViewListDetails = findViewById(R.id.recycler_view_list_details);
         recyclerViewListDetails.setHasFixedSize(true);
@@ -43,6 +47,8 @@ public class ListDetailsActivity extends AppCompatActivity implements View.OnCli
         int id = view.getId();
         if (id == R.id.confirm_btn_list_details){
          finish();
+        }else if (id == R.id.close_back_view){
+            finish();
         }
 
     }

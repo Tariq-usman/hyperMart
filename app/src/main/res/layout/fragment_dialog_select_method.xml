@@ -19,6 +19,7 @@
 
         <RadioGroup
             android:layout_width="match_parent"
+            android:layout_marginVertical="20dp"
             android:layout_height="wrap_content">
 
             <RadioButton
@@ -49,7 +50,7 @@
             android:id="@+id/confirm_dialog_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginHorizontal="50dp"
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"

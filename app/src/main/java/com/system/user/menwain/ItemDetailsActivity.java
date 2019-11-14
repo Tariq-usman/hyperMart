@@ -24,7 +24,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     SelectedItemsFilterAdapter selectedItemsFilterAdapter;
     TextView mDescription, mSpecification, mReviews;
     TextView mTextView, mAddToCart;
-    ImageView mCart;
+    ImageView mCart,mClose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +38,14 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         mTextView = findViewById(R.id.text_view);
         mAddToCart = findViewById(R.id.add_to_cart);
         mCart = findViewById(R.id.cart);
+        mClose = findViewById(R.id.close_back_view);
 
         mDescription.setOnClickListener(this);
         mSpecification.setOnClickListener(this);
         mReviews.setOnClickListener(this);
         mAddToCart.setOnClickListener(this);
+        mClose.setOnClickListener(this);
+
 
         recyclerViewRelateItems = findViewById(R.id.recycler_view_related_items_item_details);
         recyclerViewRelateItems.setHasFixedSize(true);
@@ -50,48 +53,30 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 2, GridLayoutManager.VERTICAL, false));
         selectedItemsFilterAdapter = new SelectedItemsFilterAdapter(productsName);
         recyclerViewRelateItems.setAdapter(selectedItemsFilterAdapter);
-
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-
         if (id == R.id.description_btn) {
             getSupportFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemDescriptionFragment()).commit();
-
-            //mTextView.setText(R.string.description);
             mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_selected));
             mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
             mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
-
-            /*mDescriptionTextView.setVisibility(View.VISIBLE);
-            mSpecificationTextView.setVisibility(View.INVISIBLE);
-            mReviewsTextView.setVisibility(View.INVISIBLE);*/
         } else if (id == R.id.specificatin_btn) {
             getSupportFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemSpecificationFragment()).commit();
-            // mTextView.setText(R.string.specification);
             mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
             mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_selected));
             mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
-
-          /*  mDescriptionTextView.setVisibility(View.INVISIBLE);
-            mSpecificationTextView.setVisibility(View.VISIBLE);
-            mReviewsTextView.setVisibility(View.INVISIBLE);*/
-
         } else if (id == R.id.reviews_btn) {
             getSupportFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemReviewsFragment()).commit();
-
-            //mTextView.setText(R.string.reviews);
             mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
             mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
             mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_selected));
-
-            /*mDescriptionTextView.setVisibility(View.INVISIBLE);
-            mSpecificationTextView.setVisibility(View.INVISIBLE);
-            mReviewsTextView.setVisibility(View.VISIBLE);*/
         }else if (id == R.id.add_to_cart){
-            Toast.makeText(this, "Add to cart", Toast.LENGTH_SHORT).show();
+
+        }else if (id == R.id.close_back_view){
+            finish();
         }
     }
 }

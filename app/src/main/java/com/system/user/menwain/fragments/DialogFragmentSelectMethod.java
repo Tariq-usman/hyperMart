@@ -29,19 +29,32 @@ public class DialogFragmentSelectMethod extends DialogFragment implements View.O
         mCloseBtn = view.findViewById(R.id.close_back_view);
 
         mTitleView.setText("Select method");
+        mConfirm.setOnClickListener(this);
+        mCloseBtn.setOnClickListener(this);
 
-        mConfirm.setOnClickListener(new View.OnClickListener() {
+        /*mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragmentDeliveryTime dialogFragmentDeliveryTime = new DialogFragmentDeliveryTime();
                 dialogFragmentDeliveryTime.show(getFragmentManager(),"Delivery Time");
+                dismiss();
             }
-        });
+        });*/
         return view;
     }
 
     @Override
     public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.confirm_dialog_one:
+                DialogFragmentDeliveryTime dialogFragmentDeliveryTime = new DialogFragmentDeliveryTime();
+                dialogFragmentDeliveryTime.show(getFragmentManager(),"Delivery Time");
+                dismiss();
+                break;
+            case R.id.close_back_view:
+                dismiss();
+                break;
+        }
 
     }
 }

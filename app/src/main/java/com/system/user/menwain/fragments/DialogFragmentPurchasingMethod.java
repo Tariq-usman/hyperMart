@@ -30,7 +30,7 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
         mCloseBtn = view.findViewById(R.id.close_back_view);
 
         mTitleView.setText("In Store Purchase");
-
+        mCloseBtn.setOnClickListener(this);
         mConfirm.setOnClickListener(this);
         return view;
     }
@@ -41,6 +41,11 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
         int id = view.getId();
         if (id == R.id.confirm_btn_purchasing_method){
             startActivity(new Intent(getContext(), PaymentActivity.class));
+            dismiss();
+        }else if (id == R.id.close_back_view){
+            DialogFragmentDeliveryTime dialogFragmentDeliveryTime = new DialogFragmentDeliveryTime();
+            dialogFragmentDeliveryTime.show(getFragmentManager(),"Delivery time");
+            dismiss();
         }
 
     }

@@ -16,7 +16,7 @@ public class DeliveryAddressActivity extends AppCompatActivity implements View.O
 
     TextView mTitleView, mConfirmBtn;
     ImageView mBackView;
-    private String [] address = {"Home","Office","Home"};
+    private String [] address = {"Home","Office"};
     RecyclerView recyclerViewAddress;
     DelivieryAddressesAdapter delivieryAddressesAdapter;
     @Override
@@ -31,6 +31,7 @@ public class DeliveryAddressActivity extends AppCompatActivity implements View.O
         mBackView.setImageResource(R.drawable.ic_backwhite);
         mTitleView.setText("Deliver to");
         mConfirmBtn.setOnClickListener(this);
+        mBackView.setOnClickListener(this);
 
         recyclerViewAddress = findViewById(R.id.recycler_view_delivery_address);
         recyclerViewAddress.setHasFixedSize(true);
@@ -47,6 +48,8 @@ public class DeliveryAddressActivity extends AppCompatActivity implements View.O
 
         if (id==R.id.confirm_btn){
             startActivity(new Intent(getApplicationContext(),ItemsAvailabilityStoresActivity.class));
+        }else if (id == R.id.close_back_view){
+            finish();
         }
 
     }

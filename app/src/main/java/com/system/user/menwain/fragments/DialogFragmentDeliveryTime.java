@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class DialogFragmentDeliveryTime extends DialogFragment {
+public class DialogFragmentDeliveryTime extends DialogFragment implements View.OnClickListener {
     TextView mConfirm,mTitleView;
     ImageView mCloseBtn;
     @Nullable
@@ -29,14 +29,33 @@ public class DialogFragmentDeliveryTime extends DialogFragment {
         mCloseBtn = view.findViewById(R.id.close_back_view);
 
         mTitleView.setText("Delivery time");
+        mConfirm.setOnClickListener(this);
+        mCloseBtn.setOnClickListener(this);
 
-        mConfirm.setOnClickListener(new View.OnClickListener() {
+        /*mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
                 dialogFragmentPurchasingMethod.show(getFragmentManager(),"Purchasing Method");
+                dismiss();
             }
-        });
+        });*/
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.confirm_btn_delivery_time:
+                DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
+                dialogFragmentPurchasingMethod.show(getFragmentManager(),"Purchasing Method");
+                dismiss();
+                break;
+            case R.id.close_back_view:
+                DialogFragmentSelectMethod dialogFragmentSelectMethod = new DialogFragmentSelectMethod();
+                dialogFragmentSelectMethod.show(getFragmentManager(),"Method Fragment");
+                dismiss();
+                break;
+        }
     }
 }

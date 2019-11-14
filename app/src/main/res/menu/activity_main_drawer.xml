@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+       <!-- <item android:id="@+id/nav_try"
+            app:actionLayout="@layout/just_try"
+            android:title=""
+            app:showAsAction="ifRoom|collapseActionView"/>-->
         <item
             android:id="@+id/nav_my_order"
             android:title="@string/menu_my_order" />
@@ -35,13 +40,17 @@
             android:id="@+id/nav_rate_app"
             android:title="@string/menu_rate_app" />
     </group>
-
-    <item android:title="">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Log out" />
+    </group>
+    <!--<item android:title="">
         <menu>
             <item
                 android:id="@+id/nav_logout"
                 android:title="@string/menu_logout" />
         </menu>
-    </item>
+    </item>-->
 
 </menu>

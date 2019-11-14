@@ -29,6 +29,7 @@ public class ItemsListActivity extends AppCompatActivity implements View.OnClick
         mAvailable.setOnClickListener(this);
         mNotAvailable.setOnClickListener(this);
         mConfirmBtn.setOnClickListener(this);
+        mBackBtn.setOnClickListener(this);
 
         mBackBtn.setImageResource(R.drawable.ic_backwhite);
         mTitle.setText("Items List");
@@ -46,15 +47,10 @@ public class ItemsListActivity extends AppCompatActivity implements View.OnClick
             mAvailable.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
             getSupportFragmentManager().beginTransaction().replace(R.id.container_items_list,new NotAvailableItemsFragment()).commit();
         }else if (id == R.id.confirm_btn_items_list){
-
-            /*FragmentManager fm = getSupportFragmentManager();
-
-            SelectMethodDialogFragment alertDialog = new SelectMethodDialogFragment();
-
-            alertDialog.show(fm, "fragment_alert");
-*/
             DialogFragmentSelectMethod dialogFragmentSelectMethod = new DialogFragmentSelectMethod();
             dialogFragmentSelectMethod.show(getSupportFragmentManager(),"Select Method");
+        }else if (id == R.id.close_back_view){
+            finish();
         }
     }
 }

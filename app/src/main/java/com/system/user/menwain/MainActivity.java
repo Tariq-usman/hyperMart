@@ -6,6 +6,9 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.text.Layout;
+import android.text.SpannableString;
+import android.text.style.AlignmentSpan;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
+
 
         toolbar = findViewById(R.id.toolbar);
 //         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -65,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCart.setOnClickListener(this);
         mFavourite.setOnClickListener(this);
         mHistory.setOnClickListener(this);
+
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
+        mHome.setImageResource(R.drawable.ic_homeselected);
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -150,32 +157,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_my_lists:
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
+                mListing.setImageResource(R.drawable.ic_listingblue);
+                mHome.setImageResource(R.drawable.ic_homewwhite);
                 break;
             case R.id.nav_my_order:
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
+                mHistory.setImageResource(R.drawable.ic_historyblue);
                 break;
             case R.id.nav_delivery_addresses:
-                startActivity(new Intent(getApplicationContext(),AddressesActivity.class));
+                startActivity(new Intent(getApplicationContext(), AddressesActivity.class));
                 break;
             case R.id.nav_history:
-                startActivity(new Intent(getApplicationContext(),OrderHistoryActivity.class));
+                startActivity(new Intent(getApplicationContext(), OrderHistoryActivity.class));
                 break;
             case R.id.nav_favourite:
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new FavouriteFragment()).commit();
                 break;
             case R.id.nav_rate_app:
-                startActivity(new Intent(getApplicationContext(),RateUsActivity.class));
+                startActivity(new Intent(getApplicationContext(), RateUsActivity.class));
                 break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onBackPressed() {
@@ -184,8 +196,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             drawer.closeDrawer(GravityCompat.START);
         } else if (fragment != null && fragment.isVisible()) {
             finish();
-        }  else {
+        } else {
             setFragment(new HomeFragment(), "Home");
+            mHome.setImageResource(R.drawable.ic_homeselected);
+            mCart.setImageResource(R.drawable.ic_cart);
+            mHistory.setImageResource(R.drawable.ic_history);
+            mListing.setImageResource(R.drawable.ic_listing);
+            mFavourite.setImageResource(R.drawable.ic_wishlist);
         }
     }
 

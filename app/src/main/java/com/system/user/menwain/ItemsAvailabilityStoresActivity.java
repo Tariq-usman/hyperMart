@@ -41,5 +41,12 @@ public class ItemsAvailabilityStoresActivity extends AppCompatActivity {
 
         itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(marts,getApplicationContext());
         recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
+
+        mBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

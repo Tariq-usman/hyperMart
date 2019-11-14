@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/addresses_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp"
@@ -13,9 +14,10 @@
         app:cardElevation="5dp">
 
         <LinearLayout
+            android:id="@+id/addresses_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_height="match_parent"
+            android:padding="20dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -34,17 +36,35 @@
                     android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/edit_address"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:visibility="visible"
                     android:src="@drawable/ic_edit" />
             </LinearLayout>
-            <TextView
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Description is the pattern of narrative development that aims to make vivid a place"
-                android:justificationMode="inter_word"
-                android:textSize="@dimen/button_text_size"
-                android:textColor="@color/textColorLikeBG"/>
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/address_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:text="Description is the pattern of narrative development that aims to make vivid a place"
+                    android:justificationMode="inter_word"
+                    android:textSize="@dimen/button_text_size"
+                    android:textColor="@color/textColorLikeBG"/>
+                <ImageView
+                    android:id="@+id/add_new_address"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_plusbtn"
+                    android:visibility="invisible"
+                    android:clickable="false"
+                    android:layout_gravity="center_horizontal|center_vertical"/>
+
+            </FrameLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

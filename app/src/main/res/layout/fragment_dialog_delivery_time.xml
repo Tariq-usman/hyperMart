@@ -11,14 +11,16 @@
     app:cardCornerRadius="20dp">
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <include layout="@layout/header_item_details" />
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="20dp"
             android:text="Please let us your preferred delivery time"
             android:textColor="@color/textColorLikeBG"
             android:gravity="center"
