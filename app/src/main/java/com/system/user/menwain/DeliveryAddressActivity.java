@@ -48,6 +48,7 @@ public class DeliveryAddressActivity extends AppCompatActivity implements View.O
 
         if (id==R.id.confirm_btn){
             startActivity(new Intent(getApplicationContext(),ItemsAvailabilityStoresActivity.class));
+            finish();
         }else if (id == R.id.close_back_view){
             finish();
         }

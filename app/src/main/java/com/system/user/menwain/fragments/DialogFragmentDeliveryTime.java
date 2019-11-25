@@ -52,8 +52,8 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                 dismiss();
                 break;
             case R.id.close_back_view:
-                DialogFragmentSelectMethod dialogFragmentSelectMethod = new DialogFragmentSelectMethod();
-                dialogFragmentSelectMethod.show(getFragmentManager(),"Method Fragment");
+                DialogFragmentPayOnline dialogFragmentPayOnline = new DialogFragmentPayOnline();
+                dialogFragmentPayOnline.show(getFragmentManager(),"Method Fragment");
                 dismiss();
                 break;
         }

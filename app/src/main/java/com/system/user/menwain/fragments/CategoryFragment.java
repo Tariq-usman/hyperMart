@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryFragment extends Fragment {
-    private String [] productsName={"Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese"};
-
+    private String [] productsName={"Cooking oil","Chicken","Meat","Butter","Eggs","Chocolate","Frouts","Carrot","Mango","Vegetables"};
+    private int [] items = {R.drawable.coocking_oil,R.drawable.chikken,R.drawable.meat,R.drawable.butter,R.drawable.eggs,R.drawable.choclate,R.drawable.frouts,
+            R.drawable.carrot,R.drawable.mango,R.drawable.vagitables};
     RecyclerView recyclerViewProductCategory;
     CategoryAdapter categoryAdapter;
 
@@ -29,7 +30,7 @@ public class CategoryFragment extends Fragment {
         recyclerViewProductCategory.setHasFixedSize(true);
         recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(),3,
                 GridLayoutManager.VERTICAL,false));
-        categoryAdapter=new CategoryAdapter(productsName);
+        categoryAdapter=new CategoryAdapter(productsName,items);
         recyclerViewProductCategory.setAdapter(categoryAdapter);
 
         return view;

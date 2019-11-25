@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
@@ -13,9 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SelectedItemsFilterAdapter extends RecyclerView.Adapter<SelectedItemsFilterAdapter.SelectedItemsFilterViewHolder> {
     private String[] productsName;
+    private String [] storeName;
+    int [] items;
+    Context context;
 
-    public SelectedItemsFilterAdapter(String[] productsName) {
+    public SelectedItemsFilterAdapter(Context applicationContext, String[] storeName, int[] items, String[] productsName) {
         this.productsName = productsName;
+        this.storeName = storeName;
+        this.context = applicationContext;
+        this.items = items;
     }
 
     @NonNull
@@ -29,6 +36,8 @@ public class SelectedItemsFilterAdapter extends RecyclerView.Adapter<SelectedIte
     @Override
     public void onBindViewHolder(@NonNull SelectedItemsFilterViewHolder holder, int position) {
         holder.mProductNameView.setText(productsName[position]);
+        holder.mStoreName.setText(storeName[position]);
+        holder.mProductView.setImageResource(items[position]);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,11 +61,14 @@ public class SelectedItemsFilterAdapter extends RecyclerView.Adapter<SelectedIte
     }
 
     public static class SelectedItemsFilterViewHolder extends RecyclerView.ViewHolder {
-        TextView mProductNameView;
+        private TextView mProductNameView, mStoreName;
+        private ImageView mProductView;
 
         public SelectedItemsFilterViewHolder(@NonNull View itemView) {
             super(itemView);
             mProductNameView = itemView.findViewById(R.id.filter_product_name_view);
+            mStoreName = itemView.findViewById(R.id.filter_product_store_name);
+            mProductView = itemView.findViewById(R.id.filter_product_image_view);
         }
     }
 }

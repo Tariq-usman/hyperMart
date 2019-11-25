@@ -13,12 +13,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapter.SelectedItemViewHolder> {
     private String [] productsName;
 Context context;
-    public SelectedItemAdapter(String[] productsName) {
+private int [] items;
+    public SelectedItemAdapter(Context context, String[] productsName, int[] items) {
         this.productsName = productsName;
+        this.items = items;
+        this.context = context;
     }
 
     @NonNull
@@ -32,6 +36,7 @@ Context context;
     @Override
     public void onBindViewHolder(@NonNull SelectedItemViewHolder holder, int position) {
         holder.mProductNameView.setText(productsName[position]);
+        holder.mProduct.setImageResource(items[position]);
        /* holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,8 +58,10 @@ Context context;
 
     public static class SelectedItemViewHolder extends RecyclerView.ViewHolder{
         TextView mProductNameView;
+        CircleImageView mProduct;
         public SelectedItemViewHolder(@NonNull View itemView) {
             super(itemView);
+            mProduct = itemView.findViewById(R.id.selected_product_view);
             mProductNameView=itemView.findViewById(R.id.product_name_view);
         }
     }

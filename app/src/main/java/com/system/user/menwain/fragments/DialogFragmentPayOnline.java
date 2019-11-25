@@ -15,13 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class DialogFragmentSelectMethod extends DialogFragment implements View.OnClickListener {
+public class DialogFragmentPayOnline extends DialogFragment implements View.OnClickListener {
     TextView mConfirm,mTitleView;
     ImageView mCloseBtn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dialog_select_method,container,false);
+        View view = inflater.inflate(R.layout.fragment_dialog_pay_online,container,false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         mConfirm = view.findViewById(R.id.confirm_dialog_one);
@@ -47,8 +47,8 @@ public class DialogFragmentSelectMethod extends DialogFragment implements View.O
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.confirm_dialog_one:
-                DialogFragmentDeliveryTime dialogFragmentDeliveryTime = new DialogFragmentDeliveryTime();
-                dialogFragmentDeliveryTime.show(getFragmentManager(),"Delivery Time");
+               /* DialogFragmentDeliveryTime dialogFragmentDeliveryTime = new DialogFragmentDeliveryTime();
+                dialogFragmentDeliveryTime.show(getFragmentManager(),"Delivery Time");*/
                 dismiss();
                 break;
             case R.id.close_back_view:

@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.fragments.AvailableItemsFragment;
-import com.system.user.menwain.fragments.DialogFragmentSelectMethod;
+import com.system.user.menwain.fragments.DialogFragmentDeliveryTime;
 import com.system.user.menwain.fragments.NotAvailableItemsFragment;
 
 public class ItemsListActivity extends AppCompatActivity implements View.OnClickListener {
@@ -47,8 +47,8 @@ public class ItemsListActivity extends AppCompatActivity implements View.OnClick
             mAvailable.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
             getSupportFragmentManager().beginTransaction().replace(R.id.container_items_list,new NotAvailableItemsFragment()).commit();
         }else if (id == R.id.confirm_btn_items_list){
-            DialogFragmentSelectMethod dialogFragmentSelectMethod = new DialogFragmentSelectMethod();
-            dialogFragmentSelectMethod.show(getSupportFragmentManager(),"Select Method");
+            DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
+            deliveryTime.show(getSupportFragmentManager(),"Select Method");
         }else if (id == R.id.close_back_view){
             finish();
         }

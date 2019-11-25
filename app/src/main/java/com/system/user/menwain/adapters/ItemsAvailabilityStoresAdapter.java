@@ -1,5 +1,6 @@
 package com.system.user.menwain.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.system.user.menwain.ItemsListActivity;
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemsAvailabilityStoresAdapter  extends RecyclerView.Adapter<ItemsAvailabilityStoresAdapter.ItemViewHolder> {
@@ -40,6 +42,8 @@ Context context;
                 Intent intent =new  Intent(context,ItemsListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+               // ((Activity)context).finish();
+
             }
         });
     }

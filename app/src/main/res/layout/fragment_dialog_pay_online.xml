@@ -20,6 +20,7 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="20dp"
             android:layout_height="wrap_content">
 
             <RadioButton
@@ -28,17 +29,6 @@
                 android:text="Pay online, Home delivery"
                 android:textColor="@color/textColorLikeBG" />
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pay online, Pick from store"
-                android:textColor="@color/textColorLikeBG" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="In Store purchase"
-                android:textColor="@color/textColorLikeBG" />
 
             <RadioButton
                 android:layout_width="wrap_content"

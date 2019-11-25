@@ -36,12 +36,16 @@
                 android:textColor="@color/textColorLikeBG" />
 
             <EditText
+                android:id="@+id/et_phone_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="phone"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/bg_email_pass"
                 android:hint="phone no"
                 android:gravity="center"
+                android:text="03453456789"
+                android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor" />
 
             <TextView
@@ -52,12 +56,18 @@
                 android:textColor="@color/textColorLikeBG" />
 
             <EditText
+                android:id="@+id/et_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_email_pass"
                 android:hint="Enter Password"
                 android:gravity="center"
-                android:textColorHint="@color/textColor" />
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:text="123ert56"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor"
+                />
 
         </LinearLayout>
 

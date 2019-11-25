@@ -16,14 +16,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private String [] productsName;
+    private int [] items;
 Context context;
-    public CategoryAdapter(String[] productsName) {
+    public CategoryAdapter(String[] productsName, int[] items) {
         this.productsName = productsName;
+        this.items = items;
     }
 
     @NonNull
@@ -37,6 +40,7 @@ Context context;
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         holder.mProductNameView.setText(productsName[position]);
+        holder.mProductsView.setImageResource(items[position]);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,9 +62,11 @@ Context context;
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder{
         TextView mProductNameView;
+        CircleImageView mProductsView;
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             mProductNameView=itemView.findViewById(R.id.product_name_view);
+            mProductsView = itemView.findViewById(R.id.category_products_view);
         }
     }
 }

@@ -42,63 +42,33 @@
         android:id="@+id/recycler_view_selected_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:layout_marginHorizontal="10dp"
-        android:orientation="horizontal" />
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:overScrollMode="never" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@drawable/bg_unselected"
-        android:orientation="horizontal"
         android:padding="10dp">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_filter" />
-
-        <TextView
-            android:layout_width="0dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_selected_items_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/items_bg_selected"
-            android:gravity="center"
-            android:text="Poultry Counter"
-            android:textColor="@color/textColor"
-            android:textSize="12sp" />
+            android:orientation="horizontal"
+            tools:listitem="@layout/row_items_selected_items_names" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/items_bg_unselected"
-            android:gravity="center"
-            android:text="Poultry Counter"
-            android:textColor="@color/blackTextColor"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/items_bg_unselected"
-            android:gravity="center"
-            android:text="Poultry Counter"
-            android:textColor="@color/blackTextColor"
-            android:textSize="12sp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_filter_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="10dp"
-        android:paddingBottom="20dp"/>
+        android:gravity="center"
+        android:overScrollMode="never"
+        android:paddingBottom="20dp" />
 
 </LinearLayout>

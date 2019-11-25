@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setSupportActionBar(toolbar);
 
+
         mHome = findViewById(R.id.home_view);
         mCart = findViewById(R.id.cart);
         mListing = findViewById(R.id.listing_view);
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
         mHome.setImageResource(R.drawable.ic_homeselected);
+        getSupportActionBar().setTitle("Home");
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -94,11 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
-            //navigationView.setCheckedItem(R.id.nav_beginning);
         }
-       /* NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);*/
     }
 
     @Override
@@ -119,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.home_view) {
+            getSupportActionBar().setTitle("Home");
             mHome.setImageResource(R.drawable.ic_homeselected);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);
@@ -126,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
         } else if (id == R.id.cart) {
+            getSupportActionBar().setTitle("Cart");
             mCart.setImageResource(R.drawable.ic_cartblue);
             mListing.setImageResource(R.drawable.ic_listing);
             mHistory.setImageResource(R.drawable.ic_history);
@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
         } else if (id == R.id.history) {
+            getSupportActionBar().setTitle("History");
             mHistory.setImageResource(R.drawable.ic_historyblue);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);
@@ -140,14 +141,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
         } else if (id == R.id.listing_view) {
+            getSupportActionBar().setTitle("Listing");
             mListing.setImageResource(R.drawable.ic_listingblue);
             mCart.setImageResource(R.drawable.ic_cart);
             mHistory.setImageResource(R.drawable.ic_history);
             mHome.setImageResource(R.drawable.ic_homewwhite);
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
-
         } else if (id == R.id.favourite) {
+            getSupportActionBar().setTitle("Favourite");
             mFavourite.setImageResource(R.drawable.ic_wishlistblue);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);
@@ -195,6 +197,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (fragment != null && fragment.isVisible()) {
+            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+            homeIntent.addCategory(Intent.CATEGORY_HOME);
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             finish();
         } else {
             setFragment(new HomeFragment(), "Home");

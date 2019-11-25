@@ -47,6 +47,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
 
         if (id == R.id.proceed_btn){
             startActivity(new Intent(getContext(), DeliveryAddressActivity.class));
+
         }
     }
 }

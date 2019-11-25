@@ -19,36 +19,6 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-<!--
-            <RelativeLayout
-                android:layout_width="50dp"
-                android:layout_height="50dp">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_homewwhite"/>
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_alignParentRight="true"
-                    android:background="#FA0303"/>
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:textSize="8sp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginRight="6dp"
-                    android:textColor="#fff"
-                    android:text="23"
-
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
--->
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

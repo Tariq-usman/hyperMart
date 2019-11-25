@@ -18,8 +18,11 @@ import com.system.user.menwain.fragments.ItemSpecificationFragment;
 
 public class ItemDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String[] productsName = {"Produce", "Meat & Poultry", "Milk & Cheese", "Produce", "Meat & Poultry", "Milk & Cheese", "Produce", "Meat & Poultry", "Milk & Cheese"};
-
+    private String [] storesName={"Madina c carry","Metro c carry","Makro c carry","Pak c carry","Alrasheed c carry","ARY c carry",
+            "Meezan c carry","Lahore c carry","ARY c carry","Meezan c carry"};
+    private String [] productsName={"Cooking oil","Chicken","Meat","Butter","Eggs","Chocolate","Frouts","Carrot","Mango","Vegetables"};
+    private int [] items = {R.drawable.coocking_oil,R.drawable.chikken,R.drawable.meat,R.drawable.butter,R.drawable.eggs,R.drawable.choclate,R.drawable.frouts,
+            R.drawable.carrot,R.drawable.mango,R.drawable.vagitables};
     RecyclerView recyclerViewRelateItems;
     SelectedItemsFilterAdapter selectedItemsFilterAdapter;
     TextView mDescription, mSpecification, mReviews;
@@ -51,7 +54,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         recyclerViewRelateItems.setHasFixedSize(true);
         recyclerViewRelateItems.setLayoutManager(new GridLayoutManager(getApplicationContext(),
                 2, GridLayoutManager.VERTICAL, false));
-        selectedItemsFilterAdapter = new SelectedItemsFilterAdapter(productsName);
+        selectedItemsFilterAdapter = new SelectedItemsFilterAdapter(getApplicationContext(),productsName,items,storesName);
         recyclerViewRelateItems.setAdapter(selectedItemsFilterAdapter);
     }
 
