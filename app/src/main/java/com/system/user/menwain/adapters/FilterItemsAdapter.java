@@ -2,23 +2,35 @@ package com.system.user.menwain.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Debug;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.amitshekhar.DebugDB;
 import com.system.user.menwain.ItemDetailsActivity;
 import com.system.user.menwain.R;
+import com.system.user.menwain.entity.Cart;
+import com.system.user.menwain.model.UpdateCartQuantity;
+import com.system.user.menwain.viewmodel.CartViewModel;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.PrimaryKey;
 
 public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.FilterItemViewHolder> {
     private String[] productsName;
     Context context;
     private int[] items;
     private String [] storesName;
+    private CartViewModel cartViewModel;
 
     public FilterItemsAdapter(String[] productsName, Context context, int[] items, String[] storesName) {
         this.productsName = productsName;
@@ -76,6 +88,34 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
 
             }
         });
+
+        holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int productId = 12;
+                String productName = holder.mProductNameView.getText().toString();
+                String storeName = holder.mStoreName.getText().toString();
+                String price = holder.mPriceFilterItem.getText().toString();
+                String quantity =holder.mItemCounter.getText().toString();
+                String strTotalPrice = price.substring(1,price.length());
+                float totalPrice = Float.parseFloat(strTotalPrice);
+                float fQuantity = Float.parseFloat(quantity);
+
+                int intQuantity = Integer.parseInt(quantity);
+
+                float unitPrice = totalPrice*fQuantity;
+
+                cartViewModel = ViewModelProviders.of((FragmentActivity)context).get(CartViewModel.class);
+
+                Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantity);
+                //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
+                cartViewModel.insertCart(cart);
+                //cartViewModel.insertAllCart(cart, updateCartQuantity);
+                Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, ""+ DebugDB.getAddressLog(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -84,8 +124,9 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
     }
 
     public static class FilterItemViewHolder extends RecyclerView.ViewHolder {
-        TextView mProductNameView, mStoreName, mItemCounter;
-        ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
+        private TextView mProductNameView, mStoreName, mItemCounter,mPriceFilterItem;
+        private CardView mAddToCart;
+        private ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
         int count = 0;
         public FilterItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,6 +136,8 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
             mDecreaseItems = itemView.findViewById(R.id.decrees_item);
             mStoreName = itemView.findViewById(R.id.filter_store_name);
             mItemCounter = itemView.findViewById(R.id.items_counter);
+            mAddToCart = itemView.findViewById(R.id.add_to_cart_filter_wrapper);
+            mPriceFilterItem = itemView.findViewById(R.id.price_view_filter_item);
 
         }
     }

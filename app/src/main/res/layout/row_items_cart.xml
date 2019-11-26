@@ -42,6 +42,7 @@
                 android:textColor="@color/blackTextColor" />
 
             <TextView
+                android:id="@+id/cart_product_store_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="By MeatOne"
@@ -62,6 +63,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/cart_product_price_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="2dp"
@@ -85,17 +87,20 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/cart_decrease"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_minus" />
 
                     <TextView
+                        android:id="@+id/cart_product_quantity_view"
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="2" />
 
                     <ImageView
+                        android:id="@+id/cart_increase"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_plusbtn" />
@@ -107,6 +112,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/img_delete_cart_item"
             android:layout_width="25dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
