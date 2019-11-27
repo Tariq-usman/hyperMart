@@ -1,33 +1,32 @@
-package com.system.user.menwain;
+package com.system.user.menwain.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.text.Layout;
-import android.text.SpannableString;
-import android.text.style.AlignmentSpan;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.AllListsFragment;
 import com.system.user.menwain.fragments.CartFragment;
 import com.system.user.menwain.fragments.FavouriteFragment;
 import com.system.user.menwain.fragments.HomeFragment;
 import com.system.user.menwain.fragments.OrdersFragment;
+import com.system.user.menwain.viewmodel.CartViewModel;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -37,6 +36,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView mCart, mListing, mHome, mFavourite, mHistory;
     DrawerLayout drawer;
     Toolbar toolbar;
+    private CartViewModel cartViewModel;
+    private TextView totalCartQuantity,mActionBarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = findViewById(R.id.toolbar);
 //         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.actionbar);
 
 
         mHome = findViewById(R.id.home_view);
@@ -63,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mListing = findViewById(R.id.listing_view);
         mFavourite = findViewById(R.id.favourite);
         mHistory = findViewById(R.id.history);
+        totalCartQuantity = findViewById(R.id.total_cart_quantity);
+        mActionBarTitle = findViewById(R.id.toolbar_title);
 
         mHome.setOnClickListener(this);
         mListing.setOnClickListener(this);
@@ -70,10 +76,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFavourite.setOnClickListener(this);
         mHistory.setOnClickListener(this);
 
+        cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+
+        cartViewModel.getTotalItemQuantity().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+
+                if (integer != null)
+                {
+                    totalCartQuantity.setText(integer+"");
+                }
+                else {
+                    totalCartQuantity.setText(0+"");
+                }
+
+            }
+        });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
         mHome.setImageResource(R.drawable.ic_homeselected);
-        getSupportActionBar().setTitle("Home");
+        //getSupportActionBar().setTitle("Home");
+        mActionBarTitle.setText("Home");
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -100,13 +123,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
@@ -117,7 +133,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.home_view) {
-            getSupportActionBar().setTitle("Home");
+            mActionBarTitle.setText("Home");
+            //getSupportActionBar().setTitle("Home");
             mHome.setImageResource(R.drawable.ic_homeselected);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);
@@ -125,7 +142,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
         } else if (id == R.id.cart) {
-            getSupportActionBar().setTitle("Cart");
+            mActionBarTitle.setText("Cart");
+            //getSupportActionBar().setTitle("Cart");
             mCart.setImageResource(R.drawable.ic_cartblue);
             mListing.setImageResource(R.drawable.ic_listing);
             mHistory.setImageResource(R.drawable.ic_history);
@@ -133,7 +151,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
         } else if (id == R.id.history) {
-            getSupportActionBar().setTitle("History");
+            mActionBarTitle.setText("History");
+            //getSupportActionBar().setTitle("History");
             mHistory.setImageResource(R.drawable.ic_historyblue);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);
@@ -141,7 +160,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
         } else if (id == R.id.listing_view) {
-            getSupportActionBar().setTitle("Listing");
+            mActionBarTitle.setText("Listing");
+            //getSupportActionBar().setTitle("Listing");
             mListing.setImageResource(R.drawable.ic_listingblue);
             mCart.setImageResource(R.drawable.ic_cart);
             mHistory.setImageResource(R.drawable.ic_history);
@@ -149,7 +169,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
         } else if (id == R.id.favourite) {
-            getSupportActionBar().setTitle("Favourite");
+            mActionBarTitle.setText("Favourite");
+            //getSupportActionBar().setTitle("Favourite");
             mFavourite.setImageResource(R.drawable.ic_wishlistblue);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);

@@ -1,4 +1,4 @@
-package com.system.user.menwain;
+package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.system.user.menwain.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 

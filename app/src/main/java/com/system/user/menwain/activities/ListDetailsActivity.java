@@ -1,4 +1,4 @@
-package com.system.user.menwain;
+package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.ListDetailsAdapter;
 
 public class ListDetailsActivity extends AppCompatActivity implements View.OnClickListener {

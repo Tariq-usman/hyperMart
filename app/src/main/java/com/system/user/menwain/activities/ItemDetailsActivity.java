@@ -1,4 +1,4 @@
-package com.system.user.menwain;
+package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.SelectedItemsFilterAdapter;
 import com.system.user.menwain.fragments.CartFragment;
 import com.system.user.menwain.fragments.ItemDescriptionFragment;

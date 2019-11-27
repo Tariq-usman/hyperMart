@@ -1,10 +1,11 @@
-package com.system.user.menwain;
+package com.system.user.menwain.activities;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.fragments.DialogFragmentPayInstore;
 import com.system.user.menwain.fragments.DialogFragmentPayOnline;

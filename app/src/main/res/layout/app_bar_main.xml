@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -19,6 +19,15 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginRight="70dp"
+                android:text="Home"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/heading_text_size" />
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -39,35 +48,41 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:src="@drawable/ic_homewwhite" />
+
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
             <ImageView
                 android:id="@+id/cart"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_cart"/>
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:paddingLeft="30dp"
-                    android:layout_height="wrap_content">
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:src="@drawable/ic_wishlist"/>
-                    <TextView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:textSize="8sp"
-                        android:textColor="@color/textColorLikeBG"
-                        android:text="23"
-                        android:gravity="center"/>
+                android:src="@drawable/ic_cart" />
 
-                </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:paddingLeft="30dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_wishlist" />
+
+                <TextView
+                    android:id="@+id/total_cart_quantity"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:gravity="center"
+                    android:text="23"
+                    android:textColor="@color/textColorLikeBG"
+                    android:textSize="8sp" />
+
+            </FrameLayout>
 
         </RelativeLayout>
 

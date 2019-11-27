@@ -1,15 +1,11 @@
 package com.system.user.menwain.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.system.user.menwain.ItemsListActivity;
-import com.system.user.menwain.ListDetailsActivity;
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;

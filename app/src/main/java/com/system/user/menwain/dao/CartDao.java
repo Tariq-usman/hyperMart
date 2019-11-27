@@ -27,8 +27,8 @@ public interface CartDao {
     @Update
     void update(Cart cart);
 
-    @Query("update Cart set quantity =:c_quantity where id =:c_id")
-    public void updateCartQuantity(Integer c_id, Integer c_quantity);
+    @Query("update Cart set quantity =:c_quantity, per_unit_price =:c_per_unit_price where id =:c_id")
+    public void updateCartQuantity(Integer c_id, Integer c_quantity, float c_per_unit_price);
 
     @Query("Update Cart set quantity = quantity + :quantity WHERE id =:id")
     void updateCartQuantityByPid(Integer id, Integer quantity);
@@ -41,4 +41,7 @@ public interface CartDao {
 
     @Query("select sum(per_unit_price) from cart")
     LiveData<Float> getTotalCartPrice();
+
+    @Query("select sum(quantity) from cart")
+    LiveData<Integer> getTotalItemQuantity();
 }

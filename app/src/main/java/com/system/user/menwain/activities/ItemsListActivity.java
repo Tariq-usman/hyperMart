@@ -1,4 +1,4 @@
-package com.system.user.menwain;
+package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.AvailableItemsFragment;
 import com.system.user.menwain.fragments.DialogFragmentDeliveryTime;
 import com.system.user.menwain.fragments.NotAvailableItemsFragment;

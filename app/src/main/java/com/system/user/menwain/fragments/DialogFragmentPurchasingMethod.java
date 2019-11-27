@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.system.user.menwain.PaymentActivity;
+import com.system.user.menwain.activities.PaymentActivity;
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;

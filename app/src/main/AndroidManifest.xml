@@ -9,25 +9,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OrderHistoryActivity"></activity>
-        <activity android:name=".AddressesActivity" />
-        <activity android:name=".RateUsActivity" />
-        <activity android:name=".ItemReviewActivity" />
-        <activity android:name=".OrderDetailsActivity" />
-        <activity android:name=".ListDetailsActivity" />
-        <activity android:name=".PaymentActivity" />
-        <activity android:name=".ItemsListActivity" />
-        <activity android:name=".DeliveryAddressActivity" />
-        <activity android:name=".ItemDetailsActivity" />
+        <activity android:name=".activities.OrderHistoryActivity"></activity>
+        <activity android:name=".activities.AddressesActivity" />
+        <activity android:name=".activities.RateUsActivity" />
+        <activity android:name=".activities.ItemReviewActivity" />
+        <activity android:name=".activities.OrderDetailsActivity" />
+        <activity android:name=".activities.ListDetailsActivity" />
+        <activity android:name=".activities.PaymentActivity" />
+        <activity android:name=".activities.ItemsListActivity" />
+        <activity android:name=".activities.DeliveryAddressActivity" />
+        <activity android:name=".activities.ItemDetailsActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".ForgetPasswordActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".ItemsAvailabilityStoresActivity" />
-        <activity android:name=".SplashScreen">
+        <activity android:name=".activities.SignUpActivity" />
+        <activity android:name=".activities.ForgetPasswordActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.ItemsAvailabilityStoresActivity" />
+        <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

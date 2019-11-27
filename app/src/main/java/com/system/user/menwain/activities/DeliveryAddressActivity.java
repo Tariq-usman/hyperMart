@@ -1,4 +1,4 @@
-package com.system.user.menwain;
+package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.DelivieryAddressesAdapter;
 
 public class DeliveryAddressActivity extends AppCompatActivity implements View.OnClickListener {

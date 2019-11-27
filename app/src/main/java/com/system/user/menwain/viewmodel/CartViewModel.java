@@ -58,4 +58,9 @@ public class CartViewModel extends AndroidViewModel
         return cartRep.getTotalCartPrice();
     }
 
+    public LiveData<Integer> getTotalItemQuantity()
+    {
+        return cartRep.getTotalItemQuantity();
+    }
+
 }

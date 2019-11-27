@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.system.user.menwain.ListDetailsActivity;
+import com.system.user.menwain.activities.ListDetailsActivity;
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;

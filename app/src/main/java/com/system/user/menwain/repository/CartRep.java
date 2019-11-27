@@ -49,6 +49,11 @@ public class CartRep {
         return cartDao.getTotalCartPrice();
     }
 
+    public LiveData<Integer> getTotalItemQuantity()
+    {
+        return cartDao.getTotalItemQuantity();
+    }
+
     public void deleteAllRecords() {
         new DeleteAllRecordsAsyncTask(cartDao).execute();
     }
@@ -124,7 +129,10 @@ public class CartRep {
 
         @Override
         protected Void doInBackground(UpdateCartQuantity... updateCartQuantities) {
-            cartDao.updateCartQuantity(updateCartQuantities[0].getC_id(), updateCartQuantities[0].getC_quantity());
+            cartDao.updateCartQuantity(
+                    updateCartQuantities[0].getC_id(),
+                    updateCartQuantities[0].getC_quantity(),
+                    updateCartQuantities[0].getPer_unit_price());
             return null;
         }
     }

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.system.user.menwain.DeliveryAddressActivity;
+import com.system.user.menwain.activities.DeliveryAddressActivity;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.CartItemsAdapter;
 import com.system.user.menwain.entity.Cart;
@@ -52,6 +52,9 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 if (aFloat != null)
                 {
                     tvTotalCartAmount.setText(aFloat+"");
+                }
+                else {
+                    tvTotalCartAmount.setText(00.0+"");
                 }
 
             }
