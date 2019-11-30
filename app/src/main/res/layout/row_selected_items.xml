@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="115dp"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
@@ -8,23 +9,34 @@
     <LinearLayout
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_gravity="center"
         android:layout_marginHorizontal="10dp"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/selected_product_view"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/category" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:background="@color/colorPrimary"
+            app:cardCornerRadius="41dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/selected_product_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:padding="3dp"
+                android:layout_gravity="center"
+                android:src="@drawable/category" />
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/product_name_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Produce"
             android:textColor="@color/blackTextColor"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 

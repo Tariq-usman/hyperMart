@@ -27,6 +27,15 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
+    implementation 'io.paperdb:paperdb:2.5'
+
+    // barcode reader library
+    implementation 'info.androidhive:barcode-reader:1.1.5'
+
+    // google vision library
+    implementation 'com.google.android.gms:play-services-vision:15.0.2'
+
+    implementation 'com.zeugmasolutions.localehelper:locale-helper-android:1.0.2'
 // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 // alternatively - just ViewModel

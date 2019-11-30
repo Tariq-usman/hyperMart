@@ -1,6 +1,7 @@
 package com.system.user.menwain.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapte
     private String [] productsName;
 Context context;
 private int [] items;
+public int lastPosition = -1;
     public SelectedItemAdapter(Context context, String[] productsName, int[] items) {
         this.productsName = productsName;
         this.items = items;
@@ -37,18 +39,13 @@ private int [] items;
     public void onBindViewHolder(@NonNull SelectedItemViewHolder holder, int position) {
         holder.mProductNameView.setText(productsName[position]);
         holder.mProduct.setImageResource(items[position]);
-       /* holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                             FragmentManager fragmentManager =   ((AppCompatActivity)context).getSupportFragmentManager();
-                             fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
-//                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-//                Fragment myFragment = new ItemsFragment();
-//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, myFragment).addToBackStack(null).commit();
 
+        /*if (lastPosition == position){
+            holder.mProduct.setBackgroundResource(R.color.colorPrimary);
+        }else {
+            holder.mProduct.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }*/
 
-            }
-        });*/
     }
 
     @Override
@@ -56,13 +53,20 @@ private int [] items;
         return productsName.length;
     }
 
-    public static class SelectedItemViewHolder extends RecyclerView.ViewHolder{
+    public  class SelectedItemViewHolder extends RecyclerView.ViewHolder{
         TextView mProductNameView;
         CircleImageView mProduct;
         public SelectedItemViewHolder(@NonNull View itemView) {
             super(itemView);
             mProduct = itemView.findViewById(R.id.selected_product_view);
             mProductNameView=itemView.findViewById(R.id.product_name_view);
+           /* mProduct.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    lastPosition = getAdapterPosition();
+                    notifyDataSetChanged();
+                }
+            });*/
         }
     }
 }

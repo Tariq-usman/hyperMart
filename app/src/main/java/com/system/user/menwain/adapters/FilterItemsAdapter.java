@@ -1,7 +1,9 @@
 package com.system.user.menwain.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import com.amitshekhar.DebugDB;
 import com.system.user.menwain.activities.ItemDetailsActivity;
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.entity.Cart;
 import com.system.user.menwain.viewmodel.CartViewModel;
 
@@ -25,14 +28,17 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
     private String[] productsName;
     Context context;
     private int[] items;
-    private String [] storesName;
+    private String[] storesName;
     private CartViewModel cartViewModel;
+
 
     public FilterItemsAdapter(String[] productsName, Context context, int[] items, String[] storesName) {
         this.productsName = productsName;
         this.context = context;
         this.items = items;
         this.storesName = storesName;
+
+
     }
 
     @NonNull
@@ -53,17 +59,17 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
             @Override
             public void onClick(View view) {
                 count[0] = count[0] + 1;
-                holder.mItemCounter.setText(""+count[0]);
+                holder.mItemCounter.setText("" + count[0]);
             }
         });
         holder.mDecreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String num =holder.mItemCounter.getText().toString();
+                String num = holder.mItemCounter.getText().toString();
                 if (Integer.valueOf(num) > 1) {
                     count[0] = count[0] - 1;
                     holder.mItemCounter.setText("" + count[0]);
-                }else if (holder.mItemCounter.getText().toString().length()==0){
+                } else if (holder.mItemCounter.getText().toString().length() == 0) {
                     holder.mItemCounter.setText(0);
                 }
             }
@@ -89,26 +95,27 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
             @Override
             public void onClick(View view) {
 
-                int productId = 12;
-                String productName = holder.mProductNameView.getText().toString();
-                String storeName = holder.mStoreName.getText().toString();
-                String price = holder.mPriceFilterItem.getText().toString();
-                String quantity =holder.mItemCounter.getText().toString();
-                String strTotalPrice = price.substring(1,price.length());
-                float totalPrice = Float.parseFloat(strTotalPrice);
 
-                int intQuantity = Integer.parseInt(quantity);
+                    int productId = 12;
+                    String productName = holder.mProductNameView.getText().toString();
+                    String storeName = holder.mStoreName.getText().toString();
+                    String price = holder.mPriceFilterItem.getText().toString();
+                    String quantity = holder.mItemCounter.getText().toString();
+                    String strTotalPrice = price.substring(1, price.length());
+                    float totalPrice = Float.parseFloat(strTotalPrice);
 
-                float unitPrice = totalPrice*intQuantity;
+                    int intQuantity = Integer.parseInt(quantity);
 
-                cartViewModel = ViewModelProviders.of((FragmentActivity)context).get(CartViewModel.class);
+                    float unitPrice = totalPrice * intQuantity;
 
-                Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantity);
-                //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
-                cartViewModel.insertCart(cart);
-                //cartViewModel.insertAllCart(cart, updateCartQuantity);
-                Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
-                Toast.makeText(context, ""+ DebugDB.getAddressLog(), Toast.LENGTH_SHORT).show();
+                    cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
+
+                    Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantity);
+                    //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
+                    cartViewModel.insertCart(cart);
+                    //cartViewModel.insertAllCart(cart, updateCartQuantity);
+                    Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(context, "" + DebugDB.getAddressLog(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -119,10 +126,11 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
     }
 
     public static class FilterItemViewHolder extends RecyclerView.ViewHolder {
-        private TextView mProductNameView, mStoreName, mItemCounter,mPriceFilterItem;
+        private TextView mProductNameView, mStoreName, mItemCounter, mPriceFilterItem;
         private CardView mAddToCart;
         private ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
         int count = 0;
+
         public FilterItemViewHolder(@NonNull View itemView) {
             super(itemView);
             mFilteProduct = itemView.findViewById(R.id.view_filter_product);

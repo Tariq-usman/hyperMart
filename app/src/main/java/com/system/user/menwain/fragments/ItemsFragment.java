@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.system.user.menwain.CenterZoomLayoutManager;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.FilterItemsAdapter;
 import com.system.user.menwain.adapters.SelectedItemAdapter;
@@ -38,8 +39,11 @@ public class ItemsFragment extends Fragment{
 
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_selected_items);
         recyclerViewProductCategory.setHasFixedSize(true);
-        recyclerViewProductCategory.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false));
+        CenterZoomLayoutManager layoutManager =
+                new CenterZoomLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewProductCategory.setLayoutManager(layoutManager);
+        /*recyclerViewProductCategory.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));*/
         selectedItemAdapter=new SelectedItemAdapter(getContext(),productsName,items);
         recyclerViewProductCategory.setAdapter(selectedItemAdapter);
 

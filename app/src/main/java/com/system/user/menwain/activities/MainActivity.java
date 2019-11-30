@@ -1,6 +1,10 @@
 package com.system.user.menwain.activities;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import android.view.MenuItem;
@@ -9,6 +13,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -38,6 +43,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     public AppBarConfiguration mAppBarConfiguration;
@@ -45,12 +52,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DrawerLayout drawer;
     Toolbar toolbar;
     private CartViewModel cartViewModel;
-    private TextView totalCartQuantity,mActionBarTitle;
-
+    private TextView totalCartQuantity, mActionBarTitle;
+    String langauge;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor,editor1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferences = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+        langauge = preferences.getString("my_lang", "");
+
+        if (langauge.isEmpty()) {
+            showSelectLangaugeDialog();
+        }
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -82,12 +97,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onChanged(Integer integer) {
 
-                if (integer != null)
-                {
-                    totalCartQuantity.setText(integer+"");
-                }
-                else {
-                    totalCartQuantity.setText(0+"");
+                if (integer != null) {
+                    totalCartQuantity.setText(integer + "");
+                } else {
+                    totalCartQuantity.setText(0 + "");
                 }
 
             }
@@ -121,6 +134,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
         }
     }
+
+    private void showSelectLangaugeDialog() {
+        final String[] langaugesList = {"English", "عربى"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Language");
+        builder.setSingleChoiceItems(langaugesList, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+               switch (i){
+                   case 0:
+                        editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
+                       editor.putString("my_lang", String.valueOf(i));
+                       editor.apply();
+                       break;
+                   case 1:
+                        editor1 = getSharedPreferences("settings", MODE_PRIVATE).edit();
+                       editor1.putString("my_lang", String.valueOf(i));
+                       editor1.apply();
+
+               }
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -204,6 +246,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.nav_rate_app:
                 startActivity(new Intent(getApplicationContext(), RateUsActivity.class));
+                break;
+            case R.id.nav_logout:
+                SharedPreferences preferences = getSharedPreferences("login", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("phone_no","");
+                editor.apply();
                 break;
         }
 

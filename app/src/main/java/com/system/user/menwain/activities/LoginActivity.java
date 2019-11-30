@@ -3,6 +3,7 @@ package com.system.user.menwain.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView mLogingBtn, mForgetPass, mCreateAccount;
     EditText mPhoneNo, mPassword;
 
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } else if (mPassword.getText().toString().trim().length() < 6) {
                 mPassword.setError("Password is too week..");
             } else {
+                String phn_no = mPhoneNo.getText().toString().trim();
+                editor = getSharedPreferences("login",MODE_PRIVATE).edit();
+                editor.putString("phone_no",phn_no);
+                editor.apply();
+
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             }

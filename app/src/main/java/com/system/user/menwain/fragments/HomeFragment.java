@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 public class HomeFragment  extends Fragment implements View.OnClickListener {
     TextView mProductsCategory,mProductsStores;
+    private ImageView mBarCodeScanner;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -22,6 +24,13 @@ public class HomeFragment  extends Fragment implements View.OnClickListener {
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.products_container,new CategoryFragment()).commit();
 
+        mBarCodeScanner = view.findViewById(R.id.bar_code_code_scanner);
+        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         mProductsCategory=view.findViewById(R.id.products_category);
         mProductsStores = view.findViewById(R.id.products_stores);
 

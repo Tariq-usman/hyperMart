@@ -1,6 +1,9 @@
 package com.system.user.menwain.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 
 import com.system.user.menwain.activities.DeliveryAddressActivity;
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.CartItemsAdapter;
 import com.system.user.menwain.entity.Cart;
 import com.system.user.menwain.viewmodel.CartViewModel;
@@ -24,20 +28,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CartFragment extends Fragment implements View.OnClickListener {
-    private String [] productsName={"Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese"};
+    private String[] productsName = {"Produce", "Meat & Poultry", "Milk & Cheese", "Produce", "Meat & Poultry", "Milk & Cheese", "Produce", "Meat & Poultry", "Milk & Cheese"};
 
     private CartViewModel cartViewModel;
     RecyclerView recyclerViewCartItems;
     CartItemsAdapter cartItemsAdapter;
     TextView mProceedBtn, tvTotalCartAmount;
     private float totalCartAmount;
+    String phone_no;
+    Context context;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cart,container,false);
-
-        recyclerViewCartItems=view.findViewById(R.id.recycler_view_cart_items);
+        View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        SharedPreferences preferences = getContext().getSharedPreferences("login", Activity.MODE_PRIVATE);
+        phone_no = preferences.getString("phone_no", "");
+        recyclerViewCartItems = view.findViewById(R.id.recycler_view_cart_items);
         recyclerViewCartItems.setHasFixedSize(true);
         recyclerViewCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -49,12 +56,10 @@ public class CartFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onChanged(Float aFloat) {
 
-                if (aFloat != null)
-                {
-                    tvTotalCartAmount.setText(aFloat+"");
-                }
-                else {
-                    tvTotalCartAmount.setText(00.0+"");
+                if (aFloat != null) {
+                    tvTotalCartAmount.setText(aFloat + "");
+                } else {
+                    tvTotalCartAmount.setText(00.0 + "");
                 }
 
             }
@@ -85,9 +90,14 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         int id = view.getId();
 
-        if (id == R.id.proceed_btn){
-            startActivity(new Intent(getContext(), DeliveryAddressActivity.class));
-
+        if (id == R.id.proceed_btn) {
+            if (phone_no.isEmpty()) {
+                Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(logInIntnet);
+            } else {
+                startActivity(new Intent(getContext(), DeliveryAddressActivity.class));
+            }
         }
     }
 }
