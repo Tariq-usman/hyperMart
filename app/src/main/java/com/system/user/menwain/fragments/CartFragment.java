@@ -49,6 +49,8 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         recyclerViewCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mProceedBtn = view.findViewById(R.id.proceed_btn);
+        mProceedBtn.setOnClickListener(this);
+
         cartViewModel = ViewModelProviders.of(CartFragment.this).get(CartViewModel.class);
 
         tvTotalCartAmount = view.findViewById(R.id.tv_total_cart_amount);
@@ -66,7 +68,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         });
 
         getCartData();
-        mProceedBtn.setOnClickListener(this);
+
 
         return view;
     }

@@ -1,14 +1,17 @@
 package com.system.user.menwain.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.ScanActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +20,8 @@ import androidx.fragment.app.Fragment;
 public class HomeFragment  extends Fragment implements View.OnClickListener {
     TextView mProductsCategory,mProductsStores;
     private ImageView mBarCodeScanner;
+    private Button btn;
+    private int CAMREA_CODE = 1;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,9 +33,11 @@ public class HomeFragment  extends Fragment implements View.OnClickListener {
         mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
             }
         });
+
         mProductsCategory=view.findViewById(R.id.products_category);
         mProductsStores = view.findViewById(R.id.products_stores);
 

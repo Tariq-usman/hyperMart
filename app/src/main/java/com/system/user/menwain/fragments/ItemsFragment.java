@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.system.user.menwain.CenterZoomLayoutManager;
+import com.system.user.menwain.custom_layout_manager.CenterZoomLayoutManager;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.FilterItemsAdapter;
 import com.system.user.menwain.adapters.SelectedItemAdapter;
@@ -39,26 +39,23 @@ public class ItemsFragment extends Fragment{
 
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_selected_items);
         recyclerViewProductCategory.setHasFixedSize(true);
-        CenterZoomLayoutManager layoutManager =
-                new CenterZoomLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewProductCategory.setLayoutManager(layoutManager);
-        /*recyclerViewProductCategory.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false));*/
-        selectedItemAdapter=new SelectedItemAdapter(getContext(),productsName,items);
-        recyclerViewProductCategory.setAdapter(selectedItemAdapter);
+        recyclerViewProductCategory.setLayoutManager( new CenterZoomLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewProductCategory.setAdapter(new SelectedItemAdapter(getContext(),productsName,items));
+
+
 
         recyclerViewItemNames = view.findViewById(R.id.recycler_view_selected_items_name);
         recyclerViewItemNames.setHasFixedSize(true);
-        recyclerViewItemNames.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL,false));
+        recyclerViewItemNames.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false));
         recyclerViewItemNames.setAdapter(new SelectedItemsNamesAdapter(getContext(),productsName));
+
+
 
 
         recyclerViewFilterItems = view.findViewById(R.id.recycler_view_filter_items);
         recyclerViewFilterItems.setHasFixedSize(true);
         recyclerViewFilterItems.setLayoutManager(new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false));
-        filterItemsAdapter = new FilterItemsAdapter(productsName, getContext(),items,storesName);
-        recyclerViewFilterItems.setAdapter(filterItemsAdapter);
+        recyclerViewFilterItems.setAdapter( new FilterItemsAdapter(productsName, getContext(),items,storesName));
 
         return view;
     }

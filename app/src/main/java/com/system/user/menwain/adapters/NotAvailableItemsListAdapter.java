@@ -11,24 +11,24 @@ import com.system.user.menwain.R;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolder> {
+public class NotAvailableItemsListAdapter extends RecyclerView.Adapter<NotAvailableItemsListAdapter.NotAvailableItemsListViewHolder> {
     private String[] productsName;
     Context context;
-    public ItemsListAdapter(String[] productsName, Context context) {
+    public NotAvailableItemsListAdapter(String[] productsName, Context context) {
         this.productsName = productsName;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ItemsListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_items_list, parent, false);
-        ItemsListViewHolder itemsListViewHolder = new ItemsListViewHolder(view);
+    public NotAvailableItemsListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_not_available_items_list, parent, false);
+        NotAvailableItemsListViewHolder itemsListViewHolder = new NotAvailableItemsListViewHolder(view);
         return itemsListViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemsListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NotAvailableItemsListViewHolder holder, int position) {
         if(productsName[position] != null) {
 
             holder.mProductNameView.setText(productsName[position]);
@@ -49,10 +49,10 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
         return productsName.length;
     }
 
-    public static class ItemsListViewHolder extends RecyclerView.ViewHolder {
+    public static class NotAvailableItemsListViewHolder extends RecyclerView.ViewHolder {
         TextView mProductNameView;
 
-        public ItemsListViewHolder(@NonNull View itemView) {
+        public NotAvailableItemsListViewHolder(@NonNull View itemView) {
             super(itemView);
             mProductNameView = (TextView) itemView.findViewById(R.id.available_items_list_product_name_view);
         }

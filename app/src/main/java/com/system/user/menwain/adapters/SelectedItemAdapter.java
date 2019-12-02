@@ -37,6 +37,7 @@ public int lastPosition = -1;
 
     @Override
     public void onBindViewHolder(@NonNull SelectedItemViewHolder holder, int position) {
+        position = position % productsName.length;
         holder.mProductNameView.setText(productsName[position]);
         holder.mProduct.setImageResource(items[position]);
 
@@ -50,7 +51,8 @@ public int lastPosition = -1;
 
     @Override
     public int getItemCount() {
-        return productsName.length;
+        //return productsName.length;
+        return Integer.MAX_VALUE;
     }
 
     public  class SelectedItemViewHolder extends RecyclerView.ViewHolder{

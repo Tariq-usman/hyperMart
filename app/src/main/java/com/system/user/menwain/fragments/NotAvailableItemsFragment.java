@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.system.user.menwain.R;
-import com.system.user.menwain.adapters.ItemsListAdapter;
+import com.system.user.menwain.adapters.AvailableItemsListAdapter;
+import com.system.user.menwain.adapters.NotAvailableItemsListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +19,7 @@ public class NotAvailableItemsFragment extends Fragment {
     private String [] productsName={"Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese"};
 
     RecyclerView recyclerViewItemsList;
-    ItemsListAdapter itemsListAdapter;
+    NotAvailableItemsListAdapter notAvailableItemsListAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,8 +28,8 @@ public class NotAvailableItemsFragment extends Fragment {
         recyclerViewItemsList.setHasFixedSize(true);
         recyclerViewItemsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        itemsListAdapter = new ItemsListAdapter(productsName,getContext());
-        recyclerViewItemsList.setAdapter(itemsListAdapter);
+        notAvailableItemsListAdapter= new NotAvailableItemsListAdapter(productsName,getContext());
+        recyclerViewItemsList.setAdapter(notAvailableItemsListAdapter);
         return view;
     }
 }
