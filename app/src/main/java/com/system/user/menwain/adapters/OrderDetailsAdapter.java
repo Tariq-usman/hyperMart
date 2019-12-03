@@ -32,14 +32,14 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
     @Override
     public void onBindViewHolder(@NonNull OrderDetailsItemViewHolder holder, int position) {
         holder.mProduct.setImageResource(products[position]);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ItemReviewActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override

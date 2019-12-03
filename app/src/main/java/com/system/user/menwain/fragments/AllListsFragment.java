@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class AllListsFragment extends Fragment {
 
-    private String [] listsName = {"List 1","List 2","List 3","List 4","List 5","List 6"};
+    private String [] listsName = {"List 1","List 2","List 3","List 4","List 5","List 6","List 1","List 2","List 3"};
 
     RecyclerView recyclerViewAllLists;
     AllListsAdapter allListsAdapter;

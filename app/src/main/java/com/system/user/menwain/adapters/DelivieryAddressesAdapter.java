@@ -1,7 +1,9 @@
 package com.system.user.menwain.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.MainActivity;
+import com.system.user.menwain.activities.MapsActivity;
+
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -39,6 +45,19 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
             holder.mAddress.setVisibility(View.INVISIBLE);
             holder.mAddNewBtn.setVisibility(View.VISIBLE);
             holder.mEditBtn.setVisibility(View.INVISIBLE);
+            holder.mAddNewBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent mapIntent = new Intent(context, MapsActivity.class);
+                    /*
+                    Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");*/
+                    mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(mapIntent);
+
+                }
+            });
             return;
         }
         holder.mMainAddress.setText(address[position]);
@@ -51,6 +70,10 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
                 holder.mEditBtn.setImageResource(R.drawable.ic_editwhite);
             }
         });
+
+
+
+
     }
 
     @Override

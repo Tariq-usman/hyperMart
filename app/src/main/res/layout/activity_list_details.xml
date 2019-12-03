@@ -49,10 +49,11 @@
             android:id="@+id/recycler_view_list_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="55dp"
             android:overScrollMode="never"
             tools:listitem="@layout/row_list_details" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="match_parent"
             android:id="@+id/action_btn_list_details"
             android:layout_height="wrap_content"
@@ -60,7 +61,7 @@
             android:layout_above="@+id/confirm_btn_list_details"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_plusbtn" />
+            android:src="@drawable/ic_plusbtn" />-->
         <TextView
             android:id="@+id/confirm_btn_list_details"
             android:layout_width="match_parent"

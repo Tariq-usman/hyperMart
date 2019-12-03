@@ -24,10 +24,8 @@
                 android:id="@+id/selected_product_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
                 android:padding="3dp"
-                android:layout_gravity="center"
-                android:src="@drawable/category" />
+                android:layout_gravity="center" />
         </androidx.cardview.widget.CardView>
 
         <TextView

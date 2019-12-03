@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class OrdersFragment extends Fragment {
 
-    private String [] amount = {"25","25","25","25","25","25","25","25","25","25"};
+    private String [] amount = {"25","28","23","45","23","5","55","75","35","15"};
     RecyclerView recyclerViewOrders;
     OrdersAdapter ordersAdapter;
     @Nullable

@@ -2,6 +2,7 @@ package com.system.user.menwain.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.system.user.menwain.activities.ItemsListActivity;
 import com.system.user.menwain.R;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -38,7 +41,8 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
+
         holder.mMartImageView.setImageResource(marts[position]);
         holder.mDistanceView.setText(distance.get(position).toString());
         holder.mSortByPrice.setText(String.valueOf(price.get(position)));
@@ -46,6 +50,10 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ItemsListActivity.class);
+                intent.putExtra("price",holder.mSortByPrice.getText().toString());
+                intent.putExtra("distance",holder.mDistanceView.getText().toString());
+                intent.putExtra("image_url",marts[position]);
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 // ((Activity)context).finish();

@@ -39,22 +39,16 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoresView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StoresViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final StoresViewHolder holder, final int position) {
         holder.mProductNameView.setText(productsName[position]);
         holder.mStore.setImageResource(stores[position]);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(context, ""+position, Toast.LENGTH_SHORT).show();
-                Log.e("check",position+"");
-                pos = position;
-//                             FragmentManager fragmentManager =   ((AppCompatActivity)context).getSupportFragmentManager();
-//                             fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
+                pos = holder.getAdapterPosition();
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Fragment myFragment = new SelectedStoreFragment();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, myFragment).addToBackStack(null).commit();
-
-
             }
         });
     }

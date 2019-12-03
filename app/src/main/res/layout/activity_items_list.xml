@@ -6,50 +6,220 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.ItemsListActivity">
-    <include
-        layout="@layout/header_item_details"/>
+
+    <include layout="@layout/header_item_details" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginVertical="5dp"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/available_items"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Available"
-            android:layout_weight="1"
-            android:gravity="center"
             android:layout_marginRight=".5dp"
-            android:textColor="@color/textColor"
-            android:background="@drawable/bg_selected"/>
+            android:layout_weight="1"
+            android:background="@drawable/bg_selected"
+            android:gravity="center"
+            android:text="Available"
+            android:textColor="@color/textColor" />
+
         <TextView
             android:id="@+id/not_available_items"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Not Available"
-            android:layout_weight="1"
-            android:gravity="center"
             android:layout_marginLeft=".5dp"
-            android:textColor="@color/textColor"
-            android:background="@drawable/bg_unselected"/>
+            android:layout_weight="1"
+            android:background="@drawable/bg_unselected"
+            android:gravity="center"
+            android:text="Not Available"
+            android:textColor="@color/textColor" />
 
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_unselected"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/current_list_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:paddingLeft="5dp"
+                                    android:text="Total: "
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_order_no"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="$ "
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/sort_by_price_view_item_details"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="50"
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp" />
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="10dp"
+                                android:background="@color/textColor" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:text="Availability "
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="10/14"
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp" />
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="10dp"
+                                android:background="@color/textColor" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:text="Distance: "
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/distance_view_item_details"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="15.4 "
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text=" km"
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="-2dp"
+                            android:background="#48D14E" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/mart_logo_view_item_details"
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/mart_logo" />
+                </LinearLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:gravity="center"
         android:text="These items will be placed in the order list"
         android:textColor="@color/textColorLikeBG"
-        android:textSize="@dimen/button_text_size"
-        android:gravity="center"
-        android:layout_marginVertical="10dp"/>
+        android:textSize="@dimen/button_text_size" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <FrameLayout
+            android:id="@+id/container_items_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/container_items_list"/>
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/confirm_btn_items_list"

@@ -19,8 +19,7 @@
                 android:id="@+id/selected_store_view"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:src="@drawable/category" />
+                android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/selected_store_name_view"
