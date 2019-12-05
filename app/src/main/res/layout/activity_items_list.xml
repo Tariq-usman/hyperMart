@@ -186,6 +186,7 @@
                         </LinearLayout>
 
                         <View
+                            android:id="@+id/show_status_color_view_details"
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
                             android:layout_marginTop="-2dp"

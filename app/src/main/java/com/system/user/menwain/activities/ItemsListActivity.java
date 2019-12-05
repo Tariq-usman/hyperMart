@@ -2,6 +2,7 @@ package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,8 +16,9 @@ import com.system.user.menwain.fragments.NotAvailableItemsFragment;
 
 public class ItemsListActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView mAvailable, mNotAvailable, mTitle, mConfirmBtn, mPrice, mDistance;
+    private View mShowStatusColor;
     private ImageView mBackBtn, mMartLogoView;
-
+    private String dist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,7 @@ public class ItemsListActivity extends AppCompatActivity implements View.OnClick
         mPrice = findViewById(R.id.sort_by_price_view_item_details);
         mDistance = findViewById(R.id.distance_view_item_details);
         mMartLogoView = findViewById(R.id.mart_logo_view_item_details);
+        mShowStatusColor = findViewById(R.id.show_status_color_view_details);
 
         mAvailable.setOnClickListener(this);
         mNotAvailable.setOnClickListener(this);
@@ -42,12 +45,25 @@ public class ItemsListActivity extends AppCompatActivity implements View.OnClick
         mTitle.setText("Items List");
 
         getIncomingIntent();
+
+
+
     }
 
     private void getIncomingIntent() {
         mPrice.setText(getIntent().getStringExtra("price"));
         mDistance.setText(getIntent().getStringExtra("distance"));
         mMartLogoView.setImageResource(getIntent().getIntExtra("image_url", 0));
+
+        dist = mDistance.getText().toString();
+        if (Double.valueOf(dist) <= 10) {
+            mShowStatusColor.setBackgroundColor(Color.parseColor("#36F43F"));
+        } else if (Double.valueOf(dist) > 10 && Double.valueOf(dist) <= 15) {
+            mShowStatusColor.setBackgroundColor(Color.parseColor("#FFFFEB3B"));
+        } else if (Double.valueOf(dist)>15){
+            mShowStatusColor.setBackgroundColor(Color.parseColor("#FFF44336"));
+
+        }
     }
 
     @Override

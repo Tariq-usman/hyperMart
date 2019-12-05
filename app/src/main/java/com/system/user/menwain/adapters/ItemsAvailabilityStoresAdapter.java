@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +71,8 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
                 intent.putExtra("distance",holder.mDistanceView.getText().toString());
                 intent.putExtra("image_url",marts[position]);
 
+              /*  int color = ((ColorDrawable)holder.mStatusColorView.getBackground()).getColor();
+                Log.i("color", String.valueOf(color));*/
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 //                 ((Activity)context).finish();
