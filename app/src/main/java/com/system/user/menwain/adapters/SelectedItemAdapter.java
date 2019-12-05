@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
@@ -21,6 +22,8 @@ public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapte
     Context context;
     private int[] items;
     public int lastPosition = -1;
+    private boolean check = false;
+    private int passedPosition = CategoryAdapter.passId;
 
     public SelectedItemAdapter(Context context, String[] productsName, int[] items) {
         this.productsName = productsName;
@@ -38,8 +41,23 @@ public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SelectedItemViewHolder holder, int position) {
-
-        position = position - 1;
+        holder.setIsRecyclable(false);
+        holder.mProductNameView.setText(productsName[position]);
+        holder.mProduct.setImageResource(items[position]);
+        if (check == false) {
+            if (passedPosition == position) {
+                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+                check = true;
+                holder.setIsRecyclable(true);
+            } else {
+                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
+            }
+        } else if (lastPosition == position) {
+            holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+        } else {
+            holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
+        }
+       /* position = position - 1;
         position = position % productsName.length;
 
         if (position == -1) {
@@ -49,13 +67,14 @@ public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapte
         } else if (position >= 0) {
             holder.mProductNameView.setText(productsName[position]);
             holder.mProduct.setImageResource(items[position]);
-        }
+        }*/
 
     }
 
     @Override
     public int getItemCount() {
-        return Integer.MAX_VALUE;
+        return items.length;
+//        return Integer.MAX_VALUE;
     }
 
     public class SelectedItemViewHolder extends RecyclerView.ViewHolder {
@@ -66,7 +85,18 @@ public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapte
             super(itemView);
             mProduct = itemView.findViewById(R.id.selected_product_view);
             mProductNameView = itemView.findViewById(R.id.product_name_view);
+            mProduct.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    lastPosition = getAdapterPosition();
+                    notifyDataSetChanged();
+                }
+            });
 
+        }
+
+        public View getView() {
+            return itemView;
         }
     }
 

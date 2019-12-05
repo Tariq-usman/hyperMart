@@ -1,8 +1,10 @@
 package com.system.user.menwain.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +48,19 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         holder.mMartImageView.setImageResource(marts[position]);
         holder.mDistanceView.setText(distance.get(position).toString());
         holder.mSortByPrice.setText(String.valueOf(price.get(position)));
+        String pos = holder.mDistanceView.getText().toString();
+        Double abc = distance.get(position);
+        for (int i =0; i<marts.length; i++){
+            if (Double.valueOf(abc)<= 10){
+                holder.mStatusColorView.setBackgroundColor(Color.parseColor("#36F43F"));
+            }
+            else if (Double.valueOf(abc)>10 && Double.valueOf(abc)<=15) {
+                holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFFFEB3B"));
+            }else {
+                holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFF44336"));
+
+            }
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,7 +71,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                // ((Activity)context).finish();
+//                 ((Activity)context).finish();
 
             }
         });
@@ -68,14 +83,15 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        ImageView mMartImageView;
+        private ImageView mMartImageView;
         private TextView mDistanceView,mSortByPrice;
-
+        private View mStatusColorView;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             mMartImageView = itemView.findViewById(R.id.mart_logo_view);
             mDistanceView = itemView.findViewById(R.id.distance_view);
             mSortByPrice = itemView.findViewById(R.id.sort_by_price);
+            mStatusColorView = itemView.findViewById(R.id.show_status_color_view);
         }
     }
 

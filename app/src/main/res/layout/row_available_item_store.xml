@@ -154,10 +154,11 @@
                             </LinearLayout>
                         </LinearLayout>
                         <View
+                            android:id="@+id/show_status_color_view"
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
                             android:layout_marginTop="-2dp"
-                            android:background="#48D14E"/>
+                            android:background="#36F43F"/>
                     </LinearLayout>
 
                     <ImageView

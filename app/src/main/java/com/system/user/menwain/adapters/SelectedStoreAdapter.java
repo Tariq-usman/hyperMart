@@ -16,11 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdapter.SelectedStoreViewHolder> {
+    private LayoutInflater layoutInflater;
     private String[] storesName;
     Context context;
     private int[] stores;
     int lastPosition = -1;
-    int abc;
+    int abc = StoresAdapter.pos;
     private boolean check = false;
 
     public SelectedStoreAdapter(String[] storesName, Context context, int[] stores) {
@@ -39,23 +40,44 @@ public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdap
 
     @Override
     public void onBindViewHolder(@NonNull final SelectedStoreViewHolder holder, int position) {
-        position = position - 1;
+        holder.setIsRecyclable(false);
+        holder.mStoreNameView.setText(storesName[position]);
+        holder.mStoreView.setImageResource(stores[position]);
+
+        if (check == false) {
+            if (abc == position) {
+                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+                check = true;
+                holder.setIsRecyclable(true);
+            } else {
+                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
+            }
+        } else if (lastPosition == position) {
+            holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+        } else {
+            holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
+        }
+
+         /*position = position - 1;
         position = position % storesName.length;
 
-        if (position == -1) {
+      if (position == -1) {
             holder.mStoreNameView.setText("");
             holder.mStoreView.setVisibility(View.INVISIBLE);
             position++;
         } else if (position >= 0) {
-            holder.mStoreNameView.setText(storesName[position]);
-            holder.mStoreView.setImageResource(stores[position]);
-        }
+         if (position == abc){
+                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+            }else if (abc !=position){
+                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
+            }
+        }*/
     }
 
     @Override
     public int getItemCount() {
-        //return storesName.length;
-        return Integer.MAX_VALUE;
+        return storesName.length;
+        //return Integer.MAX_VALUE;
     }
 
     public class SelectedStoreViewHolder extends RecyclerView.ViewHolder {
@@ -66,7 +88,7 @@ public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdap
             super(itemView);
             mStoreView = itemView.findViewById(R.id.selected_store_view);
             mStoreNameView = itemView.findViewById(R.id.selected_store_name_view);
-           /* mStoreView.setOnClickListener(new View.OnClickListener() {
+            mStoreView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     lastPosition = getAdapterPosition();
@@ -74,7 +96,7 @@ public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdap
 //                    getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
                     notifyDataSetChanged();
                 }
-            });*/
+            });
         }
 
         public View getView() {

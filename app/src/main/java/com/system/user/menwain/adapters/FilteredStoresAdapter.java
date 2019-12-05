@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAdapter.FilterStoresViewHolder> {
+
     private String[] storesName;
     int[] stores;
     Context context;

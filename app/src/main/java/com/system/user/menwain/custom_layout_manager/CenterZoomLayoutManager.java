@@ -6,8 +6,6 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static android.widget.LinearLayout.HORIZONTAL;
-
 public class CenterZoomLayoutManager  extends LinearLayoutManager {
 
     private final float mShrinkAmount = 0.55f;

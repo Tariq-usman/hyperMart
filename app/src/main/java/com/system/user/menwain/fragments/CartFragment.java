@@ -96,7 +96,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
             if (phone_no.isEmpty()) {
                 Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
                 logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(logInIntnet);
+                getActivity().startActivity(logInIntnet);
             } else {
                 startActivity(new Intent(getContext(), DeliveryAddressActivity.class));
             }

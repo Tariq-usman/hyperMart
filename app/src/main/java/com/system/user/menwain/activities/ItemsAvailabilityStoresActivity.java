@@ -121,10 +121,18 @@ public class ItemsAvailabilityStoresActivity extends AppCompatActivity implement
                 finish();
                 break;
             case R.id.pay_online:
+                mPayOnline.setBackgroundResource(R.drawable.bg_store_btn_colored);
+                mPayInStore.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mPayOnline.setTextColor(Color.parseColor("#FFFFFF"));
+                mPayInStore.setTextColor(Color.parseColor("#004040"));
                 DialogFragmentPayOnline method = new DialogFragmentPayOnline();
                 method.show(getSupportFragmentManager(), "pay online");
                 break;
             case R.id.pay_in_store:
+                mPayInStore.setBackgroundResource(R.drawable.bg_store_btn_colored);
+                mPayOnline.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mPayOnline.setTextColor(Color.parseColor("#004040"));
+                mPayInStore.setTextColor(Color.parseColor("#FFFFFF"));
                 DialogFragmentPayInstore payInstore = new DialogFragmentPayInstore();
                 payInstore.show(getSupportFragmentManager(), "pay in store");
 

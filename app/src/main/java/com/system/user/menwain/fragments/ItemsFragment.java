@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.system.user.menwain.adapters.CategoryAdapter;
-import com.system.user.menwain.custom_layout_manager.CenterZoomLayoutManager;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.FilterItemsAdapter;
 import com.system.user.menwain.adapters.SelectedItemAdapter;
@@ -26,7 +25,7 @@ public class ItemsFragment extends Fragment {
     private SelectedItemAdapter selectedItemAdapter;
     private FilterItemsAdapter filterItemsAdapter;
     private Context context;
-    private CenterZoomLayoutManager centerZoomLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
     private int getPreviousId = CategoryAdapter.passId;
 
     // private String [] productsName={"Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese"};
@@ -44,10 +43,10 @@ public class ItemsFragment extends Fragment {
 
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_selected_items);
         recyclerViewProductCategory.setHasFixedSize(true);
-        centerZoomLayoutManager = new CenterZoomLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewProductCategory.setLayoutManager(centerZoomLayoutManager);
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewProductCategory.setLayoutManager(linearLayoutManager);
         recyclerViewProductCategory.setAdapter(new SelectedItemAdapter(getContext(), productsName, items));
-        recyclerViewProductCategory.smoothScrollToPosition(getPreviousId+2);
+        recyclerViewProductCategory.smoothScrollToPosition(getPreviousId + 1);
 
 
         recyclerViewItemNames = view.findViewById(R.id.recycler_view_selected_items_name);

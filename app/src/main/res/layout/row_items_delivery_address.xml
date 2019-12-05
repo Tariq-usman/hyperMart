@@ -9,16 +9,17 @@
         android:id="@+id/addresses_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="5dp"
         app:cardCornerRadius="20dp"
-        android:layout_marginBottom="10dp"
-        app:cardElevation="5dp">
+        app:cardElevation="4dp">
 
         <LinearLayout
             android:id="@+id/addresses_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="20dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,8 +29,8 @@
                 <TextView
                     android:id="@+id/main_address_view"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Home"
                     android:textColor="@color/textColorLikeBG"
                     android:textSize="@dimen/heading_text_size"
@@ -37,32 +38,36 @@
 
                 <ImageView
                     android:id="@+id/edit_address"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:visibility="visible"
-                    android:src="@drawable/ic_edit" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_edit"
+                    android:visibility="visible" />
             </LinearLayout>
+
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
                 <TextView
                     android:id="@+id/address_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    android:text="Description is the pattern of narrative development that aims to make vivid a place"
+                    android:background="@android:color/transparent"
                     android:justificationMode="inter_word"
+                    android:text="Description is the pattern of narrative development that aims to make vivid a place"
+                    android:textColor="@color/textColorLikeBG"
                     android:textSize="@dimen/button_text_size"
-                    android:textColor="@color/textColorLikeBG"/>
+                    android:visibility="visible" />
+
                 <ImageView
                     android:id="@+id/add_new_address"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_plusbtn"
-                    android:visibility="invisible"
+                    android:layout_gravity="center_horizontal|center_vertical"
                     android:clickable="false"
-                    android:layout_gravity="center_horizontal|center_vertical"/>
+                    android:src="@drawable/ic_plusbtn"
+                    android:visibility="invisible" />
 
             </FrameLayout>
         </LinearLayout>
