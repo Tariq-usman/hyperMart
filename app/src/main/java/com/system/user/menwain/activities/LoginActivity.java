@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 editor.putString("phone_no",phn_no);
                 editor.apply();
 
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), DeliveryAddressActivity.class));
                 finish();
             }
         } else if (id == R.id.forget_pass) {

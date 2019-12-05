@@ -2,6 +2,8 @@ package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +17,12 @@ import com.system.user.menwain.fragments.DialogFragmentDeliveryTime;
 import com.system.user.menwain.fragments.NotAvailableItemsFragment;
 
 public class ItemsListActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView mAvailable, mNotAvailable, mTitle, mConfirmBtn, mPrice, mDistance;
+    private TextView mAvailable, mNotAvailable, mTitle, mConfirmBtn, mPrice, mDistance, mAvailItems;
     private View mShowStatusColor;
     private ImageView mBackBtn, mMartLogoView;
     private String dist;
+    public String available_items;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,18 +38,25 @@ public class ItemsListActivity extends AppCompatActivity implements View.OnClick
         mDistance = findViewById(R.id.distance_view_item_details);
         mMartLogoView = findViewById(R.id.mart_logo_view_item_details);
         mShowStatusColor = findViewById(R.id.show_status_color_view_details);
+        mAvailItems = findViewById(R.id.count_avail_items);
 
         mAvailable.setOnClickListener(this);
         mNotAvailable.setOnClickListener(this);
         mConfirmBtn.setOnClickListener(this);
         mBackBtn.setOnClickListener(this);
 
-
+        SharedPreferences preferences = getSharedPreferences("avail_length", Activity.MODE_PRIVATE);
+        available_items = preferences.getString("available","");
+        Log.i("available", String.valueOf(available_items));
+       // available_items = AvailableItemsFragment.avai_items;
+        if (!Integer.valueOf(available_items).equals(null)) {
+//            Log.i("available", String.valueOf(Integer.valueOf(available_items)));
+            mAvailItems.setText(String.valueOf(available_items));
+        }
         mBackBtn.setImageResource(R.drawable.ic_backwhite);
         mTitle.setText("Items List");
 
         getIncomingIntent();
-
 
 
     }
@@ -60,7 +71,7 @@ public class ItemsListActivity extends AppCompatActivity implements View.OnClick
             mShowStatusColor.setBackgroundColor(Color.parseColor("#36F43F"));
         } else if (Double.valueOf(dist) > 10 && Double.valueOf(dist) <= 15) {
             mShowStatusColor.setBackgroundColor(Color.parseColor("#FFFFEB3B"));
-        } else if (Double.valueOf(dist)>15){
+        } else if (Double.valueOf(dist) > 15) {
             mShowStatusColor.setBackgroundColor(Color.parseColor("#FFF44336"));
 
         }
