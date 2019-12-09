@@ -26,14 +26,14 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pay online, Home delivery"
+                android:text="Deliver to Address"
                 android:textColor="@color/textColorLikeBG" />
 
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cash on Delivery"
+                android:text="Prepare and Pick up From Store"
                 android:textColor="@color/textColorLikeBG" />
         </RadioGroup>
         <TextView

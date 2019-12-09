@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 import android.view.MenuItem;
@@ -29,6 +28,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.AllListsFragment;
 import com.system.user.menwain.fragments.CartFragment;
 import com.system.user.menwain.fragments.FavouriteFragment;
+import com.system.user.menwain.fragments.CategoryStoresFragment;
 import com.system.user.menwain.fragments.HomeFragment;
 import com.system.user.menwain.fragments.OrdersFragment;
 import com.system.user.menwain.viewmodel.CartViewModel;
@@ -38,24 +38,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.Menu;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Locale;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     public AppBarConfiguration mAppBarConfiguration;
-    ImageView mCart, mListing, mHome, mFavourite, mHistory;
+    ImageView mCart, mListing, mHome, mCategory, mFavourite, mHistory;
     DrawerLayout drawer;
     Toolbar toolbar;
     private CartViewModel cartViewModel;
     private TextView totalCartQuantity, mActionBarTitle;
     String langauge;
     SharedPreferences preferences;
-    SharedPreferences.Editor editor,editor1;
+    SharedPreferences.Editor editor, editor1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         mHome = findViewById(R.id.home_view);
+        mCategory = findViewById(R.id.category_view);
         mCart = findViewById(R.id.cart);
         mListing = findViewById(R.id.listing_view);
         mFavourite = findViewById(R.id.favourite);
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mActionBarTitle = findViewById(R.id.toolbar_title);
 
         mHome.setOnClickListener(this);
+        mCategory.setOnClickListener(this);
         mListing.setOnClickListener(this);
         mCart.setOnClickListener(this);
         mFavourite.setOnClickListener(this);
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
-        mHome.setImageResource(R.drawable.ic_homeselected);
+        mHome.setImageResource(R.drawable.ic_houseblue);
         //getSupportActionBar().setTitle("Home");
         mActionBarTitle.setText("Home");
 
@@ -143,18 +143,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-               switch (i){
-                   case 0:
+                switch (i) {
+                    case 0:
                         editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-                       editor.putString("my_lang", String.valueOf(i));
-                       editor.apply();
-                       break;
-                   case 1:
+                        editor.putString("my_lang", String.valueOf(i));
+                        editor.apply();
+                        break;
+                    case 1:
                         editor1 = getSharedPreferences("settings", MODE_PRIVATE).edit();
-                       editor1.putString("my_lang", String.valueOf(i));
-                       editor1.apply();
+                        editor1.putString("my_lang", String.valueOf(i));
+                        editor1.apply();
 
-               }
+                }
                 dialogInterface.dismiss();
             }
         });
@@ -177,46 +177,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (id == R.id.home_view) {
             mActionBarTitle.setText("Home");
             //getSupportActionBar().setTitle("Home");
-            mHome.setImageResource(R.drawable.ic_homeselected);
+            mHome.setImageResource(R.drawable.ic_houseblue);
+            mCategory.setImageResource(R.drawable.ic_searchwhite);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);
             mHistory.setImageResource(R.drawable.ic_history);
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
+        } else if (id == R.id.category_view) {
+            mActionBarTitle.setText("Category");
+            mCategory.setImageResource(R.drawable.ic_searchblue);
+            mHome.setImageResource(R.drawable.ic_housewhite);
+            mListing.setImageResource(R.drawable.ic_listing);
+            mCart.setImageResource(R.drawable.ic_cart);
+            mHistory.setImageResource(R.drawable.ic_history);
+            mFavourite.setImageResource(R.drawable.ic_wishlist);
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).commit();
         } else if (id == R.id.cart) {
             mActionBarTitle.setText("Cart");
             //getSupportActionBar().setTitle("Cart");
             mCart.setImageResource(R.drawable.ic_cartblue);
+            mCategory.setImageResource(R.drawable.ic_searchwhite);
             mListing.setImageResource(R.drawable.ic_listing);
             mHistory.setImageResource(R.drawable.ic_history);
-            mHome.setImageResource(R.drawable.ic_homewwhite);
+            mHome.setImageResource(R.drawable.ic_housewhite);
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
         } else if (id == R.id.history) {
             mActionBarTitle.setText("History");
             //getSupportActionBar().setTitle("History");
             mHistory.setImageResource(R.drawable.ic_historyblue);
+            mCategory.setImageResource(R.drawable.ic_searchwhite);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);
-            mHome.setImageResource(R.drawable.ic_homewwhite);
+            mHome.setImageResource(R.drawable.ic_housewhite);
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
         } else if (id == R.id.listing_view) {
             mActionBarTitle.setText("Listing");
             //getSupportActionBar().setTitle("Listing");
             mListing.setImageResource(R.drawable.ic_listingblue);
+            mCategory.setImageResource(R.drawable.ic_searchwhite);
             mCart.setImageResource(R.drawable.ic_cart);
             mHistory.setImageResource(R.drawable.ic_history);
-            mHome.setImageResource(R.drawable.ic_homewwhite);
+            mHome.setImageResource(R.drawable.ic_housewhite);
             mFavourite.setImageResource(R.drawable.ic_wishlist);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
         } else if (id == R.id.favourite) {
             mActionBarTitle.setText("Favourite");
             //getSupportActionBar().setTitle("Favourite");
+            mCategory.setImageResource(R.drawable.ic_searchwhite);
             mFavourite.setImageResource(R.drawable.ic_wishlistblue);
             mListing.setImageResource(R.drawable.ic_listing);
             mCart.setImageResource(R.drawable.ic_cart);
-            mHome.setImageResource(R.drawable.ic_homewwhite);
+            mHome.setImageResource(R.drawable.ic_housewhite);
             mHistory.setImageResource(R.drawable.ic_history);
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new FavouriteFragment()).commit();
         }
@@ -229,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.nav_my_lists:
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
                 mListing.setImageResource(R.drawable.ic_listingblue);
-                mHome.setImageResource(R.drawable.ic_homewwhite);
+                mHome.setImageResource(R.drawable.ic_housewhite);
                 break;
             case R.id.nav_my_order:
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
@@ -250,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.nav_logout:
                 SharedPreferences preferences = getSharedPreferences("login", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("phone_no","");
+                editor.putString("phone_no", "");
                 editor.apply();
                 break;
         }
@@ -272,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             finish();
         } else {
             setFragment(new HomeFragment(), "Home");
-            mHome.setImageResource(R.drawable.ic_homeselected);
+            mHome.setImageResource(R.drawable.ic_houseblue);
             mCart.setImageResource(R.drawable.ic_cart);
             mHistory.setImageResource(R.drawable.ic_history);
             mListing.setImageResource(R.drawable.ic_listing);

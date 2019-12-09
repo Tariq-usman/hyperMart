@@ -22,12 +22,14 @@
             android:layout_marginHorizontal="10dp"
             android:gravity="center">
 
+<!--
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Store By:"
                 android:textColor="@color/textColorLikeBG"
                 android:textSize="@dimen/content_text_size" />
+-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,18 +45,19 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_stores_btn_white"
                     android:gravity="center"
-                    android:text="Price"
+                    android:text="Lowest Price"
                     android:textColor="@color/textColorLikeBG"
                     android:textSize="@dimen/small_text_size" />
 
                 <TextView
+                    android:id="@+id/sort_by_availability"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginHorizontal="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_stores_btn_white"
                     android:gravity="center"
-                    android:text="Availability"
+                    android:text="Highest Availability"
                     android:textColor="@color/textColorLikeBG"
                     android:textSize="@dimen/small_text_size" />
 
@@ -66,7 +69,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_stores_btn_white"
                     android:gravity="center"
-                    android:text="Distance"
+                    android:text="Nearest Distance"
                     android:textColor="@color/textColorLikeBG"
                     android:textSize="@dimen/small_text_size" />
 
@@ -81,40 +84,40 @@
             android:layout_marginTop="5dp"
             android:gravity="center">
 
+<!--
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Purchase Method:"
                 android:textColor="@color/textColorLikeBG"
                 android:textSize="@dimen/content_text_size" />
+-->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/pay_online"
-                    android:layout_width="0dp"
+                    android:layout_width="100dp"
                     android:layout_height="30dp"
                     android:layout_marginHorizontal="4dp"
-                    android:layout_weight="1"
                     android:background="@drawable/bg_store_btn_colored"
                     android:gravity="center"
-                    android:text="Online"
+                    android:text="Pay Now"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/small_text_size" />
 
                 <TextView
                     android:id="@+id/pay_in_store"
-                    android:layout_width="0dp"
+                    android:layout_width="100dp"
                     android:layout_height="30dp"
                     android:layout_marginHorizontal="4dp"
-                    android:layout_weight="1"
                     android:background="@drawable/bg_stores_btn_white"
                     android:gravity="center"
-                    android:text="In store"
+                    android:text="Pay Later"
                     android:textColor="@color/textColorLikeBG"
                     android:textSize="@dimen/small_text_size" />
 

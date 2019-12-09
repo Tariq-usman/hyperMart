@@ -73,5 +73,7 @@ dependencies {
 
     //recycler view items animations
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+
+    implementation 'me.relex:circleindicator:1.2.2@aar'
 }
 

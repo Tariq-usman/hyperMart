@@ -48,6 +48,7 @@
                                 android:gravity="center"
                                 android:orientation="horizontal">
 
+<!--
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -57,7 +58,9 @@
                                     android:text="Total: "
                                     android:textColor="@color/textColor"
                                     android:textSize="10sp" />
+-->
 
+<!--
                                 <TextView
                                     android:id="@+id/tv_order_no"
                                     android:layout_width="wrap_content"
@@ -66,6 +69,7 @@
                                     android:text="$ "
                                     android:textColor="@color/textColor"
                                     android:textSize="10sp" />
+-->
                                 <TextView
                                     android:id="@+id/sort_by_price"
                                     android:layout_width="wrap_content"
@@ -74,15 +78,22 @@
                                     android:text="50"
                                     android:textColor="@color/textColor"
                                     android:textSize="10sp" />
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginLeft="4dp"
+                                    android:src="@drawable/ic_coin"/>
 
 
                             </LinearLayout>
 
+<!--
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="15dp"
                                 android:layout_gravity="center"
                                 android:background="@color/textColor" />
+-->
 
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -91,6 +102,7 @@
                                 android:gravity="center"
                                 android:orientation="horizontal">
 
+<!--
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -100,23 +112,49 @@
                                     android:text="Availability "
                                     android:textColor="@color/textColor"
                                     android:textSize="10sp" />
+-->
 
+                                <TextView
+                                    android:id="@+id/available_items_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="10"
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp" />
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="10/14"
+                                    android:text="/"
+                                    android:layout_marginHorizontal="2dp"
+                                    android:textColor="@color/textColor"
+                                    android:textSize="10sp"/>
+                                <TextView
+                                    android:id="@+id/total_items"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="14"
                                     android:textColor="@color/textColor"
                                     android:textSize="10sp" />
+                                <ImageView
+                                    android:id="@+id/show_cart_avail_items_status"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginLeft="4dp"
+                                    android:src="@drawable/ic_cart_fill"/>
 
 
                             </LinearLayout>
 
+<!--
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="15dp"
                                 android:layout_gravity="center"
                                 android:background="@color/textColor" />
+-->
 
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -125,6 +163,7 @@
                                 android:gravity="center"
                                 android:orientation="horizontal">
 
+<!--
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -134,6 +173,7 @@
                                     android:text="Distance: "
                                     android:textColor="@color/textColor"
                                     android:textSize="10sp" />
+-->
 
                                 <TextView
                                     android:id="@+id/distance_view"
@@ -150,6 +190,12 @@
                                     android:text=" km"
                                     android:textColor="@color/textColor"
                                     android:textSize="10sp" />
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginLeft="4dp"
+                                    android:src="@drawable/ic_placeholder"/>
+
 
                             </LinearLayout>
                         </LinearLayout>

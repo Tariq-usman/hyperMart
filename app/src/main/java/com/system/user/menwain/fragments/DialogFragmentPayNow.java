@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class DialogFragmentPayOnline extends DialogFragment implements View.OnClickListener {
+public class DialogFragmentPayNow extends DialogFragment implements View.OnClickListener {
     TextView mConfirm,mTitleView;
     ImageView mCloseBtn;
     @Nullable

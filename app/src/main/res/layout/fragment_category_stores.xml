@@ -36,7 +36,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:hint="Search here..."
+                    android:hint="menWain"
                     android:textColorHint="@color/textColor" />
                 <ImageView
                     android:id="@+id/bar_code_code_scanner"

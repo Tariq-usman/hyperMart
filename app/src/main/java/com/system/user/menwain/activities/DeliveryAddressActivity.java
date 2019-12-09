@@ -32,7 +32,7 @@ public class DeliveryAddressActivity extends AppCompatActivity implements View.O
         mConfirmBtn = findViewById(R.id.confirm_btn);
 
         mBackView.setImageResource(R.drawable.ic_backwhite);
-        mTitleView.setText("Deliver to");
+        mTitleView.setText("Choose Location");
         mConfirmBtn.setOnClickListener(this);
         mBackView.setOnClickListener(this);
 

@@ -47,7 +47,13 @@
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_homewwhite" />
+            android:src="@drawable/ic_housewhite" />
+        <ImageView
+            android:id="@+id/category_view"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_searchwhite" />
 
         <RelativeLayout
             android:layout_width="0dp"
