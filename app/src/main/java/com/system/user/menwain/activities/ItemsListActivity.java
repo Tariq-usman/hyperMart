@@ -53,7 +53,8 @@ public class ItemsListActivity extends AppCompatActivity implements View.OnClick
         not_available_items = notAvailPrefrences.getString("not_available","");
         Log.i("available", String.valueOf(available_items));
         // available_items = AvailableItemsFragment.avai_items;
-        if (!Integer.valueOf(available_items).equals(null) ) {
+
+        if (!available_items.isEmpty() ) {
 //            Log.i("available", String.valueOf(Integer.valueOf(available_items)));
             mAvailItems.setText(String.valueOf(available_items));
             mNotAvailItmes.setText(String.valueOf(not_available_items));

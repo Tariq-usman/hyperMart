@@ -65,5 +65,4 @@ public class SlidingImage_Adapter extends PagerAdapter {
         return null;
     }
 
-
 }

@@ -98,7 +98,7 @@ public class ItemsAvailabilityStoresActivity extends AppCompatActivity implement
                 mSortByPrice.setTextColor(Color.parseColor("#004040"));
 
                 mSortByAvailability.setBackgroundResource(R.drawable.bg_stores_btn_white);
-                mSortByAvailability.setTextColor(Color.parseColor("#FFFFFF"));
+                mSortByAvailability.setTextColor(Color.parseColor("#004040"));
                 //Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 distance.clear();
                 distance.add( 11.3);
@@ -138,7 +138,7 @@ public class ItemsAvailabilityStoresActivity extends AppCompatActivity implement
                 mSortByDistance.setTextColor(Color.parseColor("#004040"));
 
                 mSortByAvailability.setBackgroundResource(R.drawable.bg_stores_btn_white);
-                mSortByAvailability.setTextColor(Color.parseColor("#FFFFFF"));
+                mSortByAvailability.setTextColor(Color.parseColor("#004040"));
                // Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 price.clear();
                 price.add(23);

@@ -63,7 +63,7 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
             holder.mAddressesView.setBackgroundColor(Color.parseColor("#004040"));
             holder.mMainAddress.setTextColor(Color.parseColor("#FFFFFF"));
             holder.mAddress.setTextColor(Color.parseColor("#FFFFFF"));
-            holder.mEditBtn.setImageResource(R.drawable.ic_editwhite);
+            holder.mEditBtn.setImageResource(R.drawable.ic_edit_white);
         } else {
             holder.mAddressesView.setBackgroundColor(Color.parseColor("#FFFFFF"));
             holder.mMainAddress.setTextColor(Color.parseColor("#004040"));

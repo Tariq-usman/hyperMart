@@ -38,7 +38,7 @@ public class ExploreAndShopAdapter extends RecyclerView.Adapter<ExploreAndShopAd
 
     @Override
     public int getItemCount() {
-        return 6;
+        return items.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

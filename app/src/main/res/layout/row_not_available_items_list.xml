@@ -80,7 +80,7 @@
             android:layout_width="25dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_delete" />
+            android:src="@drawable/ic_dlt" />
 
     </LinearLayout>
 
