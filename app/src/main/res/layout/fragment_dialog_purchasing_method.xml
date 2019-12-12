@@ -45,6 +45,7 @@
                 android:background="@drawable/bg_email_pass"
                 android:gravity="center"
                 android:hint="11/11/19"
+                android:inputType="date"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor" />
         </LinearLayout>

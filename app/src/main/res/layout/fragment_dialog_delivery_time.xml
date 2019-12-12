@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_email_pass"
                 android:gravity="center"
+                android:inputType="date"
                 android:hint="11/11/19"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor" />
@@ -68,6 +69,7 @@
                 android:background="@drawable/bg_email_pass"
                 android:gravity="center"
                 android:hint="5:30 pm"
+                android:inputType="time"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor" />
         </LinearLayout>

@@ -292,14 +292,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.nav_my_lists:
                 mActionBarTitle.setText("List");
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
-                mFavourite.setImageResource(R.drawable.ic_moreblue);
-               // mHome.setImageResource(R.drawable.ic_housewhite);
+                mHome.setImageResource(R.drawable.ic_housewhite);
+                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+                mCategory.setImageResource(R.drawable.ic_searchwhite);
+                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+                mFavourite.setImageResource(R.drawable.ic_likewhite);
+                tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+                mCart.setImageResource(R.drawable.ic_cart_white);
+                tvCart.setTextColor(Color.parseColor("#FFFFFF"));
+                mMore.setImageResource(R.drawable.ic_moreblue);
+                tvMore.setTextColor(Color.parseColor("#00c1bd"));
                 break;
             case R.id.nav_my_order:
                 mActionBarTitle.setText("History");
-                mFavourite.setImageResource(R.drawable.ic_moreblue);
+                mHome.setImageResource(R.drawable.ic_housewhite);
+                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+                mCategory.setImageResource(R.drawable.ic_searchwhite);
+                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+                mFavourite.setImageResource(R.drawable.ic_likewhite);
+                tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+                mCart.setImageResource(R.drawable.ic_cart_white);
+                tvCart.setTextColor(Color.parseColor("#FFFFFF"));
+                mMore.setImageResource(R.drawable.ic_moreblue);
+                tvMore.setTextColor(Color.parseColor("#00c1bd"));
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
-               // mHistory.setImageResource(R.drawable.ic_historyblue);
                 break;
             case R.id.nav_delivery_addresses:
                 startActivity(new Intent(getApplicationContext(), AddressesActivity.class));
@@ -309,7 +325,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.nav_favourite:
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new FavouriteFragment()).commit();
-                break;
+                mHome.setImageResource(R.drawable.ic_housewhite);
+                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+                mCategory.setImageResource(R.drawable.ic_searchwhite);
+                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+                mFavourite.setImageResource(R.drawable.ic_likeblue);
+                tvFavourite.setTextColor(Color.parseColor("#00c1bd"));
+                mCart.setImageResource(R.drawable.ic_cart_white);
+                tvCart.setTextColor(Color.parseColor("#FFFFFF"));
+                mMore.setImageResource(R.drawable.ic_morewhite);
+                tvMore.setTextColor(Color.parseColor("#FFFFFF"));
             case R.id.nav_rate_app:
                 startActivity(new Intent(getApplicationContext(), RateUsActivity.class));
                 break;
