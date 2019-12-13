@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.ItemDetailsActivity">
-    <include
-        layout="@layout/header_item_details"/>
+    tools:context=".fragments.ItemDetailsFragment">
+    <!--<include
+        layout="@layout/header_item_details"/>-->
 
     <ScrollView
         android:layout_width="match_parent"
+        android:overScrollMode="never"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -26,6 +27,7 @@
                     android:id="@+id/selected_item_view"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
+                    android:layout_marginTop="6dp"
                     android:src="@drawable/category" />
 
                 <LinearLayout
@@ -354,8 +356,10 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_related_items_item_details"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_marginVertical="20dp" />
+                    android:layout_height="450dp"
+                    android:overScrollMode="never"
+                    android:layout_marginVertical="20dp"
+                    android:paddingBottom="30dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

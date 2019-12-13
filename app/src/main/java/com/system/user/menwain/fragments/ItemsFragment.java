@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.system.user.menwain.adapters.CategoryAdapter;
 import com.system.user.menwain.R;
@@ -28,6 +30,8 @@ public class ItemsFragment extends Fragment {
     private Context context;
     private LinearLayoutManager linearLayoutManager;
     private int getPreviousId = CategoryAdapter.passId;
+    private ImageView mMenu,mBackBtn;
+    private TextView mTitleview;
 
     // private String [] productsName={"Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese"};
     private String[] storesName = {"Madina c carry", "Metro c carry", "Makro c carry", "Pak c carry", "Alrasheed c carry", "ARY c carry",
@@ -41,6 +45,23 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_items, container, false);
 
+        mMenu = getActivity().findViewById(R.id.iv_open_drawer);
+        mMenu.setVisibility(View.GONE);
+
+        mTitleview = getActivity().findViewById(R.id.toolbar_title);
+        mTitleview.setText("Items");
+
+        mBackBtn = getActivity().findViewById(R.id.iv_back);
+        mBackBtn.setVisibility(View.VISIBLE);
+        mBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
+                mBackBtn.setVisibility(View.GONE);
+                mMenu.setVisibility(View.VISIBLE);
+                mTitleview.setText("Category");
+            }
+        });
 
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_selected_items);
         recyclerViewProductCategory.setHasFixedSize(true);

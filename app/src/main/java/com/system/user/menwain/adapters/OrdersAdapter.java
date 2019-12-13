@@ -32,15 +32,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersItem
 
     @Override
     public void onBindViewHolder(@NonNull OrdersItemViewHolder holder, int position) {
-        holder.mAmount.setText(amount[position]);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        //holder.mAmount.setText(amount[position]);
+      /*  holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, OrderDetailsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
@@ -52,7 +52,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersItem
         TextView mAmount;
         public OrdersItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            mAmount = itemView.findViewById(R.id.amount_view);
+          //  mAmount = itemView.findViewById(R.id.amount_view);
         }
     }
 }

@@ -41,7 +41,7 @@ public class SelectedItemsFilterAdapter extends RecyclerView.Adapter<SelectedIte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(context, ItemDetailsActivity.class);
+                /*Intent intent = new Intent(context, ItemDetailsFragment.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);*/
 //                             FragmentManager fragmentManager =   ((AppCompatActivity)context).getSupportFragmentManager();

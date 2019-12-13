@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:justificationMode="inter_word"
-                    android:text="Description is the pattern of narrative development that aims to make vivid a place"
+                    android:text="Street #20, Sector F-10/2 Islamabad, pakistan"
                     android:textColor="@color/textColorLikeBG"
                     android:textSize="@dimen/button_text_size"
                     android:visibility="visible" />

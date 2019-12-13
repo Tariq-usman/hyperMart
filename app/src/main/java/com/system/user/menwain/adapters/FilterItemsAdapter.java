@@ -1,9 +1,7 @@
 package com.system.user.menwain.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +9,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amitshekhar.DebugDB;
-import com.system.user.menwain.activities.ItemDetailsActivity;
+import com.system.user.menwain.fragments.ItemDetailsFragment;
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.entity.Cart;
+import com.system.user.menwain.fragments.ItemsFragment;
 import com.system.user.menwain.viewmodel.CartViewModel;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,11 +78,11 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
         holder.mFilteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ItemDetailsActivity.class);
+                /*Intent intent = new Intent(context, ItemDetailsFragment.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-//                             FragmentManager fragmentManager =   ((AppCompatActivity)context).getSupportFragmentManager();
-//                             fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
+                context.startActivity(intent);*/
+                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new ItemDetailsFragment()).addToBackStack(null).commit();
 //                AppCompatActivity activity = (AppCompatActivity) view.getContext();
 //                Fragment myFragment = new ItemsFragment();
 //                activity.getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, myFragment).addToBackStack(null).commit();
@@ -96,26 +96,26 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
             public void onClick(View view) {
 
 
-                    int productId = 12;
-                    String productName = holder.mProductNameView.getText().toString();
-                    String storeName = holder.mStoreName.getText().toString();
-                    String price = holder.mPriceFilterItem.getText().toString();
-                    String quantity = holder.mItemCounter.getText().toString();
-                    String strTotalPrice = price.substring(1, price.length());
-                    float totalPrice = Float.parseFloat(strTotalPrice);
+                int productId = 12;
+                String productName = holder.mProductNameView.getText().toString();
+                String storeName = holder.mStoreName.getText().toString();
+                String price = holder.mPriceFilterItem.getText().toString();
+                String quantity = holder.mItemCounter.getText().toString();
+                String strTotalPrice = price.substring(1, price.length());
+                float totalPrice = Float.parseFloat(strTotalPrice);
 
-                    int intQuantity = Integer.parseInt(quantity);
+                int intQuantity = Integer.parseInt(quantity);
 
-                    float unitPrice = totalPrice * intQuantity;
+                float unitPrice = totalPrice * intQuantity;
 
-                    cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
+                cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
 
-                    Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantity);
-                    //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
-                    cartViewModel.insertCart(cart);
-                    //cartViewModel.insertAllCart(cart, updateCartQuantity);
-                    Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
-                   // Toast.makeText(context, "" + DebugDB.getAddressLog(), Toast.LENGTH_SHORT).show();
+                Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantity);
+                //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
+                cartViewModel.insertCart(cart);
+                //cartViewModel.insertAllCart(cart, updateCartQuantity);
+                Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context, "" + DebugDB.getAddressLog(), Toast.LENGTH_SHORT).show();
             }
         });
     }

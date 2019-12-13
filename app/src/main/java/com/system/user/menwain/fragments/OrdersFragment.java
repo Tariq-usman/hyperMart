@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class OrdersFragment extends Fragment {
@@ -26,7 +27,7 @@ public class OrdersFragment extends Fragment {
 
         recyclerViewOrders = view.findViewById(R.id.recycler_view_orders);
 
-        recyclerViewOrders.setLayoutManager(new GridLayoutManager(getContext(),2,RecyclerView.VERTICAL,false));
+        recyclerViewOrders.setLayoutManager(new LinearLayoutManager(getContext()));
         ordersAdapter = new OrdersAdapter(getContext(),amount);
         recyclerViewOrders.setAdapter(ordersAdapter);
         return view;

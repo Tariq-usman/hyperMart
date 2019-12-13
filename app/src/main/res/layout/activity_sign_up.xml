@@ -55,6 +55,7 @@
                         android:background="@drawable/bg_email_pass"
                         android:gravity="center"
                         android:hint="John"
+                        android:inputType="text"
                         android:textColor="@color/textColor"
                         android:textColorHint="@color/textColor"
                         android:textSize="@dimen/button_text_size" />
@@ -81,6 +82,7 @@
                         android:background="@drawable/bg_email_pass"
                         android:gravity="center"
                         android:hint="John"
+                        android:inputType="text"
                         android:textColor="@color/textColor"
                         android:textColorHint="@color/textColor"
                         android:textSize="@dimen/button_text_size" />
@@ -93,66 +95,74 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:text="Phone No"
-                android:textSize="@dimen/button_text_size"
-                android:textColor="@color/textColorLikeBG" />
+                android:textColor="@color/textColorLikeBG"
+                android:textSize="@dimen/button_text_size" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/bg_email_pass"
-                android:hint="+92 345 1234567"
                 android:gravity="center"
-                android:textSize="@dimen/button_text_size"
+                android:hint="+92 345 1234567"
+                android:inputType="number"
                 android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor" />
+                android:textColorHint="@color/textColor"
+                android:textSize="@dimen/button_text_size" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:text="Email Address"
-                android:textSize="@dimen/button_text_size"
-                android:textColor="@color/textColorLikeBG" />
+                android:textColor="@color/textColorLikeBG"
+                android:textSize="@dimen/button_text_size" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_email_pass"
-                android:hint="johnsmith@email.com"
                 android:gravity="center"
+                android:hint="johnsmith@email.com"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/textColor"
-                android:textSize="@dimen/button_text_size"
-                android:textColorHint="@color/textColor" />
+                android:textColorHint="@color/textColor"
+                android:textSize="@dimen/button_text_size" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/button_text_size"
                 android:text="Sex"
-                android:textColor="@color/textColorLikeBG"/>
-            <LinearLayout
+                android:textColor="@color/textColorLikeBG"
+                android:textSize="@dimen/button_text_size" />
+
+
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginHorizontal="20dp"
-                >
+                android:orientation="horizontal">
+
                 <RadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Male"/>
+                    android:text="Male" />
+
                 <RadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Female"/>
-            </LinearLayout>
+                    android:text="Female" />
+            </RadioGroup>
+
         </LinearLayout>
 
         <LinearLayout
@@ -160,22 +170,24 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:text="Create Password"
-                android:textSize="@dimen/button_text_size"
                 android:textColor="@color/textColorLikeBG"
-                android:layout_marginLeft="15dp"/>
+                android:textSize="@dimen/button_text_size" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="2dp"
                 android:background="@drawable/bg_email_pass"
                 android:gravity="center"
                 android:hint="Password"
+                android:inputType="textPassword"
                 android:textColor="@color/textColor"
-                android:layout_marginVertical="2dp"
                 android:textColorHint="@color/textColor"
                 android:textSize="@dimen/button_text_size" />
 
@@ -185,24 +197,26 @@
                 android:layout_marginVertical="5dp"
                 android:background="@drawable/bg_email_pass"
                 android:gravity="center"
-                android:textColor="@color/textColor"
                 android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor"
                 android:textSize="@dimen/button_text_size" />
         </LinearLayout>
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_above="@+id/login_instead"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/bg_submit_btn"
+        android:gravity="center"
         android:text="Register"
         android:textColor="@color/textColor"
-        android:textSize="@dimen/twenty_dp"
-        android:layout_above="@+id/login_instead"
-        android:layout_marginBottom="30dp"/>
+        android:textSize="@dimen/twenty_dp" />
 
     <TextView
         android:id="@+id/login_instead"
@@ -212,7 +226,7 @@
         android:layout_marginBottom="25dp"
         android:gravity="center"
         android:text="Login Instead"
-        android:textSize="@dimen/twenty_dp"
-        android:textColor="@color/textColorLikeBG" />
+        android:textColor="@color/textColorLikeBG"
+        android:textSize="@dimen/twenty_dp" />
 
 </RelativeLayout>

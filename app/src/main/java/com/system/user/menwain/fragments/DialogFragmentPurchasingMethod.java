@@ -1,6 +1,5 @@
 package com.system.user.menwain.fragments;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.system.user.menwain.activities.PaymentActivity;
+import com.system.user.menwain.activities.PaymentFragment;
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;
@@ -40,7 +39,8 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
 
         int id = view.getId();
         if (id == R.id.confirm_btn_purchasing_method){
-            startActivity(new Intent(getContext(), PaymentActivity.class));
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new PaymentFragment()).commit();
+//            startActivity(new Intent(getContext(), PaymentFragment.class));
             dismiss();
         }else if (id == R.id.close_back_view){
             DialogFragmentDeliveryTime dialogFragmentDeliveryTime = new DialogFragmentDeliveryTime();

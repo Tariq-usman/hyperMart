@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
@@ -27,6 +26,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.system.user.menwain.custom_languages.BaseActivity;
+import com.system.user.menwain.custom_languages.LocaleManager;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.AllListsFragment;
 import com.system.user.menwain.fragments.CartFragment;
@@ -46,20 +47,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     public AppBarConfiguration mAppBarConfiguration;
-    ImageView mCart, mFavourite, mHome, mCategory, mMore, mHistory;
-    LinearLayout more_layout;
-    DrawerLayout drawer;
+    private ImageView mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
+    private LinearLayout more_layout;
+    private DrawerLayout drawer;
     Toolbar toolbar;
     private CartViewModel cartViewModel;
-    private TextView totalCartQuantity, mActionBarTitle,tvHome,tvCategory,tvCart,tvMore,tvFavourite;
-    String langauge;
+    private TextView totalCartQuantity, mActionBarTitle, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
+    private String langauge;
     SharedPreferences preferences;
     SharedPreferences.Editor editor, editor1;
+    Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,35 +75,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        initiateViews();
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.actionbar);
+           /* toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setCustomView(R.layout.actionbar);*/
 
-
-        mHome = findViewById(R.id.home_view);
-        tvHome = findViewById(R.id.tv_home_view);
-
-        mCategory = findViewById(R.id.category_view);
-        tvCategory = findViewById(R.id.tv_category_view);
-
-        mCart = findViewById(R.id.cart);
-        tvCart = findViewById(R.id.tv_cart);
-
-        mFavourite = findViewById(R.id.favourite_view);
-        tvFavourite = findViewById(R.id.tv_favourite_view);
-
-        mMore = findViewById(R.id.more);
-        tvMore = findViewById(R.id.tv_more);
-
-        totalCartQuantity = findViewById(R.id.total_cart_quantity);
-        mActionBarTitle = findViewById(R.id.toolbar_title);
-
-        mHome.setOnClickListener(this);
-        mCategory.setOnClickListener(this);
-        mFavourite.setOnClickListener(this);
-        mCart.setOnClickListener(this);
 
         more_layout = findViewById(R.id.more_layout);
         more_layout.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        /*getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -187,11 +166,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 drawer.openDrawer(GravityCompat.START);
             }
-        });
+        });*/
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
+            ivMenu.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void initiateViews() {
+        ivMenu = findViewById(R.id.iv_open_drawer);
+        ivMenu.setOnClickListener(this);
+
+        mHome = findViewById(R.id.home_view);
+        tvHome = findViewById(R.id.tv_home_view);
+
+        mCategory = findViewById(R.id.category_view);
+        tvCategory = findViewById(R.id.tv_category_view);
+
+        mCart = findViewById(R.id.cart);
+        tvCart = findViewById(R.id.tv_cart);
+
+        mFavourite = findViewById(R.id.favourite_view);
+        tvFavourite = findViewById(R.id.tv_favourite_view);
+
+        mMore = findViewById(R.id.more);
+        tvMore = findViewById(R.id.tv_more);
+
+        totalCartQuantity = findViewById(R.id.total_cart_quantity);
+        mActionBarTitle = findViewById(R.id.toolbar_title);
+
+        mHome.setOnClickListener(this);
+        mCategory.setOnClickListener(this);
+        mFavourite.setOnClickListener(this);
+        mCart.setOnClickListener(this);
     }
 
     private void showSelectLangaugeDialog() {
@@ -207,17 +215,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
                         editor.putString("my_lang", String.valueOf(i));
                         editor.apply();
+                        setNewLocale(MainActivity.this, LocaleManager.ENGLISH);
+                        recreate();
                         break;
                     case 1:
                         editor1 = getSharedPreferences("settings", MODE_PRIVATE).edit();
                         editor1.putString("my_lang", String.valueOf(i));
                         editor1.apply();
+                        setNewLocale(MainActivity.this, LocaleManager.ARABIC);
+                        recreate();
+                        break;
                 }
                 dialogInterface.dismiss();
             }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void setNewLocale(AppCompatActivity mContext, @LocaleManager.LocaleDef String language) {
+        LocaleManager.setNewLocale(this, language);
+        Intent intent = mContext.getIntent();
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     @Override
@@ -230,7 +249,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.home_view) {
+        if (id == R.id.iv_open_drawer) {
+            drawer.openDrawer(GravityCompat.START);
+        } else if (id == R.id.home_view) {
             mActionBarTitle.setText("Home");
             mHome.setImageResource(R.drawable.ic_houseblue);
             tvHome.setTextColor(Color.parseColor("#00c1bd"));
@@ -255,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvCart.setTextColor(Color.parseColor("#FFFFFF"));
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#FFFFFF"));
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
         } else if (id == R.id.cart) {
             mActionBarTitle.setText("Cart");
             mHome.setImageResource(R.drawable.ic_housewhite);
@@ -268,8 +289,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvCart.setTextColor(Color.parseColor("#00c1bd"));
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#FFFFFF"));
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
-        }else if (id == R.id.favourite_view) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
+        } else if (id == R.id.favourite_view) {
             mActionBarTitle.setText("Favourite");
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#FFFFFF"));
@@ -353,16 +374,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("Home");
+        fragment = getSupportFragmentManager().findFragmentByTag("Home");
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (fragment != null && fragment.isVisible()) {
+        } /*else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+
+        }else if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            finish();
+        }*/ else if (fragment != null && fragment.isVisible()) {
             Intent homeIntent = new Intent(Intent.ACTION_MAIN);
             homeIntent.addCategory(Intent.CATEGORY_HOME);
             homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             finish();
         } else {
             setFragment(new HomeFragment(), "Home");
+            ivBack = findViewById(R.id.iv_back);
+            ivBack.setOnClickListener(this);
+            ivBack.setVisibility(View.GONE);
+
+            ivListGridView = findViewById(R.id.iv_grid_list_view);
+            ivListGridView.setVisibility(View.GONE);
+            ivMenu.setVisibility(View.VISIBLE);
+
             mActionBarTitle.setText("Home");
             mHome.setImageResource(R.drawable.ic_houseblue);
             tvHome.setTextColor(Color.parseColor("#00c1bd"));
@@ -374,7 +408,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvCart.setTextColor(Color.parseColor("#FFFFFF"));
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#FFFFFF"));
-        }
+        }/*else if (fragment == getSupportFragmentManager().findFragmentByTag("Home")) {
+         *//*Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+            homeIntent.addCategory(Intent.CATEGORY_HOME);
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);*//*
+            finish();
+        }*/
     }
 
     public void setFragment(Fragment fragment, String tag) {

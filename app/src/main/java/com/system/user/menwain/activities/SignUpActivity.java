@@ -29,7 +29,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         int id = view.getId();
 
         if (id==R.id.register){
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), DeliveryAddressFragment.class));
             finish();
         }else
         if (id==R.id.login_instead){

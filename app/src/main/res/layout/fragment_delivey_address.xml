@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activities.DeliveryAddressActivity">
+    android:orientation="vertical">
+<!--
     <include
         layout="@layout/header_item_details"/>
+-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +16,7 @@
         android:textSize="@dimen/button_text_size"
         android:textColor="@color/textColorLikeBG"
         android:gravity="center"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="8dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginHorizontal="50dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="55dp"
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
             android:text="Confirm"

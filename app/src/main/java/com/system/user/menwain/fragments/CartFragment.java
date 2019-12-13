@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.system.user.menwain.activities.DeliveryAddressActivity;
+import com.system.user.menwain.activities.DeliveryAddressFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.CartItemsAdapter;
@@ -91,6 +91,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         int id = view.getId();
+        DeliveryAddressFragment fragment = new DeliveryAddressFragment();
 
         if (id == R.id.proceed_btn) {
             if (phone_no.isEmpty()) {
@@ -98,8 +99,10 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(logInIntnet);
             } else {
-                startActivity(new Intent(getContext(), DeliveryAddressActivity.class));
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,fragment).addToBackStack(null).commit();
+//                startActivity(new Intent(getContext(), DeliveryAddressFragment.class));
             }
         }
+
     }
 }

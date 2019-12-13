@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.AllItemsActivity"></activity>
+        <activity android:name=".activities.AllItemsFragment"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -44,10 +44,10 @@
         <activity android:name=".activities.ItemReviewActivity" />
         <activity android:name=".activities.OrderDetailsActivity" />
         <activity android:name=".activities.ListDetailsActivity" />
-        <activity android:name=".activities.PaymentActivity" />
-        <activity android:name=".activities.ItemsListActivity" />
-        <activity android:name=".activities.DeliveryAddressActivity" />
-        <activity android:name=".activities.ItemDetailsActivity" />
+        <activity android:name=".activities.PaymentFragment" />
+        <activity android:name=".activities.ItemsListFragment" />
+        <activity android:name=".activities.DeliveryAddressFragment" />
+        <activity android:name=".fragments.ItemDetailsFragment" />
         <activity android:name=".activities.ScanActivity" />
         <activity
             android:name=".activities.MainActivity"
@@ -56,7 +56,7 @@
         <activity android:name=".activities.SignUpActivity" />
         <activity android:name=".activities.ForgetPasswordActivity" />
         <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.ItemsAvailabilityStoresActivity" />
+        <activity android:name=".activities.ItemsAvailabilityStoresFragment" />
         <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

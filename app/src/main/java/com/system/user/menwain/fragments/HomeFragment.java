@@ -1,38 +1,31 @@
 package com.system.user.menwain.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.AllItemsActivity;
+import com.system.user.menwain.activities.AllItemsFragment;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.ExploreAndShopAdapter;
-import com.system.user.menwain.adapters.SlidingImage_Adapter;
+import com.system.user.menwain.adapters.Banner_SlidingImages_Adapter;
 
-import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Update;
 import androidx.viewpager.widget.ViewPager;
-import me.relex.circleindicator.CircleIndicator;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -44,7 +37,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static int NUM_PAGES = 0;
     private Handler handler;
     private Runnable runnable;
-
+    AllItemsFragment allItemsFragment;
+    private  Bundle bundle;
     private int[] IMAGES = {R.drawable.dis, R.drawable.disc, R.drawable.disco, R.drawable.discoun, R.drawable.discount};
     private String[] productsName = {"Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallaxy S8", "Samsung", "BlockBuster", "Gallexy M30",
             "Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallexy M30s", "Samsung s4"};
@@ -76,15 +70,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
         tvSeeAllExploreShop = view.findViewById(R.id.tv_see_all_explore_shop);
-        tvSeeAllExploreShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AllItemsActivity.class);
-                intent.putExtra("explore_shop", 1);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent);
-            }
-        });
+        tvSeeAllExploreShop.setOnClickListener(this);
+
         tvSeeAllExplore = view.findViewById(R.id.tv_see_all_explore);
         tvSeeAllExplore.setOnClickListener(this);
 
@@ -117,7 +104,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void init() {
 
-        mPager.setAdapter(new SlidingImage_Adapter(getContext(), IMAGES));
+        mPager.setAdapter(new Banner_SlidingImages_Adapter(getContext(), IMAGES));
         tabLayout.setupWithViewPager(mPager, true);
 
         NUM_PAGES = IMAGES.length;
@@ -153,17 +140,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_see_all_explore:
-                Intent intent_explore = new Intent(getContext(), AllItemsActivity.class);
+            case R.id.tv_see_all_explore_shop:
+                allItemsFragment = new AllItemsFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                bundle = new Bundle();
+                bundle.putString("explore", "1");
+                allItemsFragment.setArguments(bundle);
+                transaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
+                /*Intent intent_explore = new Intent(getContext(), AllItemsFragment.class);
                 intent_explore.putExtra("explore", 2);
                 intent_explore.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent_explore);
+                getContext().startActivity(intent_explore);*/
                 break;
             case R.id.tv_see_all_shop:
-                Intent intent_Shop = new Intent(getContext(), AllItemsActivity.class);
-                intent_Shop.putExtra("shop", 3);
-                intent_Shop.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent_Shop);
+                allItemsFragment = new AllItemsFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                bundle = new Bundle();
+                bundle.putString("explore", "2");
+                allItemsFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
                 break;
         }
 

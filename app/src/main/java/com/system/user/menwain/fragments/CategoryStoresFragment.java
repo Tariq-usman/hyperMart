@@ -26,7 +26,7 @@ public class CategoryStoresFragment extends Fragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_stores,container,false);
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.products_container,new ItemsCategoryFragment()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.products_container,new ItemsCategoryFragment()).addToBackStack(null).commit();
 
         mBarCodeScanner = view.findViewById(R.id.bar_code_code_scanner);
         mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +53,7 @@ public class CategoryStoresFragment extends Fragment implements View.OnClickList
         if (id==R.id.products_category){
             mProductsCategory.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bg_selected));
             mProductsStores.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bg_unselected));
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.products_container,new ItemsCategoryFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.products_container,new ItemsCategoryFragment()).addToBackStack(null).commit();
 
         }else if (id==R.id.products_stores){
             mProductsCategory.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bg_unselected));

@@ -1,26 +1,23 @@
 package com.system.user.menwain.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.system.user.menwain.activities.ItemsListActivity;
+import com.system.user.menwain.activities.ItemsListFragment;
 import com.system.user.menwain.R;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAvailabilityStoresAdapter.ItemViewHolder> {
@@ -29,6 +26,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     List<Double> distance;
     List<Integer> price;
     List<Integer> availItems;
+    Bundle bundle;
 
     public ItemsAvailabilityStoresAdapter(int[] marts, List<Double> distance, List<Integer> availItems, List<Integer> price, Context context) {
         this.marts = marts;
@@ -36,6 +34,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         this.distance = distance;
         this.price = price;
         this.availItems = availItems;
+
     }
 
     @NonNull
@@ -79,16 +78,26 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ItemsListActivity.class);
+                ItemsListFragment fragment = new ItemsListFragment();
+                FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+                bundle = new Bundle();
+                bundle.putString("price",holder.mSortByPrice.getText().toString());
+                bundle.putString("distance",holder.mDistanceView.getText().toString());
+                bundle.putString("image_url", String.valueOf(marts[position]));
+                fragment.setArguments(bundle);
+                transaction.replace(R.id.nav_host_fragment,fragment).addToBackStack(null).commit();
+
+                //((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().
+               /* Intent intent = new Intent(context, ItemsListFragment.class);
                 intent.putExtra("price",holder.mSortByPrice.getText().toString());
                 intent.putExtra("distance",holder.mDistanceView.getText().toString());
                 intent.putExtra("image_url",marts[position]);
 
-              /*  int color = ((ColorDrawable)holder.mStatusColorView.getBackground()).getColor();
-                Log.i("color", String.valueOf(color));*/
+              *//*  int color = ((ColorDrawable)holder.mStatusColorView.getBackground()).getColor();
+                Log.i("color", String.valueOf(color));*//*
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-//                 ((Activity)context).finish();
+//                 ((Activity)context).finish();*/
 
             }
         });

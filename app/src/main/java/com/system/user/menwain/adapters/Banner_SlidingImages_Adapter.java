@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import androidx.viewpager.widget.PagerAdapter;
 
-public class SlidingImage_Adapter extends PagerAdapter {
+public class Banner_SlidingImages_Adapter extends PagerAdapter {
 
 
     private int[] IMAGES;
@@ -21,7 +21,7 @@ public class SlidingImage_Adapter extends PagerAdapter {
     private Context context;
 
 
-    public SlidingImage_Adapter(Context context, int[] IMAGES) {
+    public Banner_SlidingImages_Adapter(Context context, int[] IMAGES) {
         this.context = context;
         this.IMAGES = IMAGES;
         inflater = LayoutInflater.from(context);
