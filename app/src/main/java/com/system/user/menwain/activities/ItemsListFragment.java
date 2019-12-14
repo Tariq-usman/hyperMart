@@ -36,7 +36,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener 
 
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
-        mMenu = getActivity().findViewById(R.id.iv_open_drawer);
+//        mMenu = getActivity().findViewById(R.id.iv_open_drawer);
         mAvailable = view.findViewById(R.id.available_items);
         mNotAvailable = view.findViewById(R.id.not_available_items);
         mTitle = getActivity().findViewById(R.id.toolbar_title);

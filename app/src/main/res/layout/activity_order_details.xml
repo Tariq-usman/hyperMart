@@ -221,8 +221,6 @@
                 android:layout_gravity="center"
                 android:textSize="@dimen/content_text_size"
                 android:textColor="@color/textColor"/>
-
-
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"

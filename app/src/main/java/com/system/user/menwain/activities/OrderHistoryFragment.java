@@ -1,41 +1,47 @@
 package com.system.user.menwain.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.OrderHistoryAdapter;
 
-public class OrderHistoryActivity extends AppCompatActivity implements View.OnClickListener {
+public class OrderHistoryFragment extends Fragment implements View.OnClickListener {
 
     String [] orderNumbers = {"25462","55214","14532","455132","32556","54268"};
     RecyclerView recyclerViewOrderHistory;
     OrderHistoryAdapter orderHistoryAdapter;
     TextView mTitle;
     ImageView mBackBtn;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_history);
 
-        mTitle = findViewById(R.id.title_view);
-        mBackBtn = findViewById(R.id.close_back_view);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_order_history,container,false);
+
+        mTitle = view.findViewById(R.id.title_view);
+        mBackBtn = view.findViewById(R.id.close_back_view);
         mBackBtn.setOnClickListener(this);
 
         mTitle.setText("Order History");
         mBackBtn.setImageResource(R.drawable.ic_backwhite);
 
-        recyclerViewOrderHistory = findViewById(R.id.recycler_view_order_history);
-        recyclerViewOrderHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerViewOrderHistory = view.findViewById(R.id.recycler_view_order_history);
+        recyclerViewOrderHistory.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        orderHistoryAdapter = new OrderHistoryAdapter(getApplicationContext(),orderNumbers);
+        orderHistoryAdapter = new OrderHistoryAdapter(getContext(),orderNumbers);
         recyclerViewOrderHistory.setAdapter(orderHistoryAdapter);
+        return view;
     }
 
     @Override
@@ -43,7 +49,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
         int id = view.getId();
         switch (view.getId()){
             case R.id.close_back_view:
-                finish();
+               // finish();
                 break;
         }
     }

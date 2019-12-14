@@ -1,6 +1,7 @@
 package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,13 +16,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     TextView mLogingBtn, mForgetPass, mCreateAccount;
     EditText mPhoneNo, mPassword;
-
+    Fragment fragment;
     SharedPreferences.Editor editor;
+    boolean isLogin = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         mLogingBtn = findViewById(R.id.login_btn);
         mForgetPass = findViewById(R.id.forget_pass);
         mCreateAccount = findViewById(R.id.create_an_account);
@@ -47,9 +48,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 editor = getSharedPreferences("login",MODE_PRIVATE).edit();
                 editor.putString("phone_no",phn_no);
                 editor.apply();
+                isLogin = true;
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("isLogin", isLogin);
+                startActivity(intent);
 
-                startActivity(new Intent(getApplicationContext(), DeliveryAddressFragment.class));
-                finish();
+               // getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new DeliveryAddressFragment())
+                //        .addToBackStack(null).commit();
+//                startActivity(new Intent(getApplicationContext(), DeliveryAddressFragment.class));
+//                finish();
             }
         } else if (id == R.id.forget_pass) {
             startActivity(new Intent(getApplicationContext(), ForgetPasswordActivity.class));

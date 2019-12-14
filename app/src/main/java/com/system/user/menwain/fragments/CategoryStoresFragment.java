@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class CategoryStoresFragment extends Fragment implements View.OnClickListener {
+public class CategoryStoresFragment extends Fragment  {
     TextView mProductsCategory,mProductsStores;
     private ImageView mBarCodeScanner;
     private Button btn;
@@ -37,17 +37,17 @@ public class CategoryStoresFragment extends Fragment implements View.OnClickList
             }
         });
 
-        mProductsCategory=view.findViewById(R.id.products_category);
+       /* mProductsCategory=view.findViewById(R.id.products_category);
         mProductsStores = view.findViewById(R.id.products_stores);
 
         mProductsCategory.setOnClickListener(this);
-        mProductsStores.setOnClickListener(this);
-        mProductsCategory.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bg_selected));
+        mProductsStores.setOnClickListener(this);*/
+//        mProductsCategory.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bg_selected));
 
         return view;
     }
 
-    @Override
+    /*@Override
     public void onClick(View view) {
         int id=view.getId();
         if (id==R.id.products_category){
@@ -55,10 +55,10 @@ public class CategoryStoresFragment extends Fragment implements View.OnClickList
             mProductsStores.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bg_unselected));
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.products_container,new ItemsCategoryFragment()).addToBackStack(null).commit();
 
-        }else if (id==R.id.products_stores){
+        }*//*else if (id==R.id.products_stores){
             mProductsCategory.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bg_unselected));
             mProductsStores.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bg_selected));
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.products_container,new StoresFragment()).commit();
-        }
-    }
+        }*//*
+    }*/
 }

@@ -36,8 +36,8 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         mTitleView = getActivity().findViewById(R.id.toolbar_title);
-        mMenu = getActivity().findViewById(R.id.iv_open_drawer);
-        mMenu.setVisibility(View.GONE);
+      /*  mMenu = getActivity().findViewById(R.id.iv_open_drawer);
+        mMenu.setVisibility(View.GONE);*/
         mBackView = getActivity().findViewById(R.id.iv_back);
         mBackView.setVisibility(View.VISIBLE);
         mConfirmBtn = view.findViewById(R.id.confirm_btn);
@@ -68,7 +68,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
 //            getActivity().finish();
         }else if (id == R.id.iv_back){
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
-            mMenu.setVisibility(View.VISIBLE);
+//            mMenu.setVisibility(View.VISIBLE);
             mTitleView.setText("Cart");
             mBackView.setVisibility(View.GONE);
         }

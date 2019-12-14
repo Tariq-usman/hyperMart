@@ -72,8 +72,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mPayInStore = view.findViewById(R.id.pay_in_store);
         mPayOnline = view.findViewById(R.id.pay_online);
-        mMenu = getActivity().findViewById(R.id.iv_open_drawer);
-        mMenu.setVisibility(View.GONE);
+       /* mMenu = getActivity().findViewById(R.id.iv_open_drawer);
+        mMenu.setVisibility(View.GONE);*/
         mBackBtn.setOnClickListener(this);
         mBackBtn.setVisibility(View.VISIBLE);
         mPayOnline.setOnClickListener(this);

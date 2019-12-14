@@ -27,8 +27,8 @@ public class PaymentFragment extends Fragment {
 
 
         mConfirm = view.findViewById(R.id.proceed_btn_payment);
-        mMenuPay = getActivity().findViewById(R.id.iv_open_drawer);
-        mMenuPay.setVisibility(View.GONE);
+      /*  mMenuPay = getActivity().findViewById(R.id.iv_open_drawer);
+        mMenuPay.setVisibility(View.GONE);*/
         mPaymentTitle = getActivity().findViewById(R.id.toolbar_title);
         mPaymentTitle.setText("Payment");
 

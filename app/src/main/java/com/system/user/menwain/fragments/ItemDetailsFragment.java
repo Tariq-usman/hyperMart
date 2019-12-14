@@ -44,8 +44,8 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         mCart = view.findViewById(R.id.cart);
         mBack = getActivity().findViewById(R.id.iv_back);
         mBack.setVisibility(View.VISIBLE);
-        mMenu = getActivity().findViewById(R.id.iv_open_drawer);
-        mMenu.setVisibility(View.GONE);
+      /*  mMenu = getActivity().findViewById(R.id.iv_open_drawer);
+        mMenu.setVisibility(View.GONE);*/
 
         mTitleItemDetails = getActivity().findViewById(R.id.toolbar_title);
         mTitleItemDetails.setText("Item Details");

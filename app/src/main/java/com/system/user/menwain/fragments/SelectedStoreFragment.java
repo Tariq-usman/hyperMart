@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.FilterItemsAdapter;
@@ -28,6 +29,7 @@ public class SelectedStoreFragment extends Fragment {
     private FilterItemsAdapter filterItemsAdapter;
     private LinearLayoutManager linearLayoutManager;
     private Context context;
+    private ImageView ivBackBtnSelectedStore;
 
 
     private String[] storesName = {"Madina", "Metro", "Makro", "Pak", "Alrasheed", "ARY", "Meezan", "Lahore", "ARY", "Meezan", "Lahore"};
@@ -38,6 +40,15 @@ public class SelectedStoreFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_store, container, false);
 
+        ivBackBtnSelectedStore = getActivity().findViewById(R.id.iv_back);
+        ivBackBtnSelectedStore.setVisibility(View.VISIBLE);
+        ivBackBtnSelectedStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new StoresFragment()).addToBackStack(null).commit();
+                ivBackBtnSelectedStore.setVisibility(View.INVISIBLE);
+            }
+        });
         recyclerViewSelectedStore = view.findViewById(R.id.recycler_view_selected_store);
         recyclerViewSelectedStore.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);

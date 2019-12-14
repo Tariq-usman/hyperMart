@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.system.user.menwain.fragments.CartFragment;
 import com.system.user.menwain.fragments.FavouriteFragment;
 import com.system.user.menwain.fragments.CategoryStoresFragment;
 import com.system.user.menwain.fragments.HomeFragment;
+import com.system.user.menwain.fragments.MoreFragment;
 import com.system.user.menwain.fragments.OrdersFragment;
 import com.system.user.menwain.viewmodel.CartViewModel;
 
@@ -48,24 +50,31 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     public AppBarConfiguration mAppBarConfiguration;
     private ImageView mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
     private LinearLayout more_layout;
-    private DrawerLayout drawer;
-    Toolbar toolbar;
     private CartViewModel cartViewModel;
     private TextView totalCartQuantity, mActionBarTitle, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
     private String langauge;
     SharedPreferences preferences;
     SharedPreferences.Editor editor, editor1;
-    Fragment fragment;
+     boolean isLogin= false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        Intent intent = getIntent();
+        Log.e ("IS LOGIN", String.valueOf(isLogin));
+        if (intent!=null){
+            Log.e ("IS LOGIN", String.valueOf(isLogin));
+            isLogin = intent.getBooleanExtra("isLogin", false);
+        }
         preferences = getSharedPreferences("settings", Activity.MODE_PRIVATE);
         langauge = preferences.getString("my_lang", "");
 
@@ -73,7 +82,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             showSelectLangaugeDialog();
         }
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         initiateViews();
 
@@ -83,7 +91,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             getSupportActionBar().setCustomView(R.layout.actionbar);*/
 
 
-        more_layout = findViewById(R.id.more_layout);
+
+/*
         more_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,7 +103,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.menu_history:
-                                mActionBarTitle.setText("History");
+                                mActionBarTitle.setText("More");
                                 mHome.setImageResource(R.drawable.ic_housewhite);
                                 tvHome.setTextColor(Color.parseColor("#FFFFFF"));
                                 mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -129,6 +138,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 popup.show();
             }
         });
+*/
 
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
 
@@ -149,7 +159,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         tvHome.setTextColor(Color.parseColor("#00c1bd"));
         mActionBarTitle.setText("Home");
 
-        drawer = findViewById(R.id.drawer_layout);
+        /*drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -158,7 +168,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        /*getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -169,15 +179,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         });*/
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
-            ivMenu.setVisibility(View.VISIBLE);
+            if (isLogin==true){
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment(), "del").commit();
+            }else{
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
+            }
+
+//            ivMenu.setVisibility(View.VISIBLE);
         }
     }
 
     private void initiateViews() {
-        ivMenu = findViewById(R.id.iv_open_drawer);
-        ivMenu.setOnClickListener(this);
-
+        ivBack = findViewById(R.id.iv_back);
+        ivBack.setOnClickListener(this);
         mHome = findViewById(R.id.home_view);
         tvHome = findViewById(R.id.tv_home_view);
 
@@ -192,10 +206,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         mMore = findViewById(R.id.more);
         tvMore = findViewById(R.id.tv_more);
+        more_layout = findViewById(R.id.more_layout);
 
         totalCartQuantity = findViewById(R.id.total_cart_quantity);
         mActionBarTitle = findViewById(R.id.toolbar_title);
 
+        more_layout.setOnClickListener(this);
         mHome.setOnClickListener(this);
         mCategory.setOnClickListener(this);
         mFavourite.setOnClickListener(this);
@@ -239,21 +255,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
-    @Override
+    /*@Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
+    }*/
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.iv_open_drawer) {
-            drawer.openDrawer(GravityCompat.START);
-        } else if (id == R.id.home_view) {
+        if (id == R.id.home_view) {
             mActionBarTitle.setText("Home");
             mHome.setImageResource(R.drawable.ic_houseblue);
+            ivBack.setVisibility(View.GONE);
             tvHome.setTextColor(Color.parseColor("#00c1bd"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
             tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
@@ -266,6 +281,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
         } else if (id == R.id.category_view) {
             mActionBarTitle.setText("Category");
+            ivBack.setVisibility(View.GONE);
+          //  ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#FFFFFF"));
             mCategory.setImageResource(R.drawable.ic_searchblue);
@@ -279,6 +296,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
         } else if (id == R.id.cart) {
             mActionBarTitle.setText("Cart");
+            ivBack.setVisibility(View.GONE);
+         //   ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#FFFFFF"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -291,7 +310,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             tvMore.setTextColor(Color.parseColor("#FFFFFF"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
         } else if (id == R.id.favourite_view) {
-            mActionBarTitle.setText("Favourite");
+            mActionBarTitle.setText("List");
+            ivBack.setVisibility(View.GONE);
+           // ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#FFFFFF"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -302,12 +323,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             tvCart.setTextColor(Color.parseColor("#FFFFFF"));
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#FFFFFF"));
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new FavouriteFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
+        } else if (id == R.id.more_layout) {
+            mActionBarTitle.setText("More");
+           // ivMenu.setVisibility(View.VISIBLE);
+            ivBack.setVisibility(View.GONE);
+            mHome.setImageResource(R.drawable.ic_housewhite);
+            tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+            mCategory.setImageResource(R.drawable.ic_searchwhite);
+            tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+            mFavourite.setImageResource(R.drawable.ic_likewhite);
+            tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+            mCart.setImageResource(R.drawable.ic_cart_white);
+            tvCart.setTextColor(Color.parseColor("#FFFFFF"));
+            mMore.setImageResource(R.drawable.ic_moreblue);
+            tvMore.setTextColor(Color.parseColor("#00c1bd"));
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).commit();
         }
     }
 
 
-    @Override
+   /* @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_my_lists:
@@ -342,7 +378,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 startActivity(new Intent(getApplicationContext(), AddressesActivity.class));
                 break;
             case R.id.nav_history:
-                startActivity(new Intent(getApplicationContext(), OrderHistoryActivity.class));
+                startActivity(new Intent(getApplicationContext(), OrderHistoryFragment.class));
                 break;
             case R.id.nav_favourite:
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new FavouriteFragment()).commit();
@@ -367,35 +403,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
         }
 
-        drawer.closeDrawer(GravityCompat.START);
+     //   drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
+    }*/
 
 
     @Override
     public void onBackPressed() {
-        fragment = getSupportFragmentManager().findFragmentByTag("Home");
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } /*else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            super.onBackPressed();
-
-        }else if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            finish();
-        }*/ else if (fragment != null && fragment.isVisible()) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("Home");
+         if (fragment != null && fragment.isVisible()) {
             Intent homeIntent = new Intent(Intent.ACTION_MAIN);
             homeIntent.addCategory(Intent.CATEGORY_HOME);
             homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             finish();
         } else {
             setFragment(new HomeFragment(), "Home");
-            ivBack = findViewById(R.id.iv_back);
-            ivBack.setOnClickListener(this);
             ivBack.setVisibility(View.GONE);
 
             ivListGridView = findViewById(R.id.iv_grid_list_view);
             ivListGridView.setVisibility(View.GONE);
-            ivMenu.setVisibility(View.VISIBLE);
+           // ivMenu.setVisibility(View.VISIBLE);
 
             mActionBarTitle.setText("Home");
             mHome.setImageResource(R.drawable.ic_houseblue);

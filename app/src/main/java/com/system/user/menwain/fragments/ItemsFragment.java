@@ -45,8 +45,8 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_items, container, false);
 
-        mMenu = getActivity().findViewById(R.id.iv_open_drawer);
-        mMenu.setVisibility(View.GONE);
+     /*   mMenu = getActivity().findViewById(R.id.iv_open_drawer);
+        mMenu.setVisibility(View.GONE);*/
 
         mTitleview = getActivity().findViewById(R.id.toolbar_title);
         mTitleview.setText("Items");
@@ -58,7 +58,7 @@ public class ItemsFragment extends Fragment {
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
-                mMenu.setVisibility(View.VISIBLE);
+               // mMenu.setVisibility(View.VISIBLE);
                 mTitleview.setText("Category");
             }
         });
@@ -79,7 +79,7 @@ public class ItemsFragment extends Fragment {
 
         recyclerViewFilterItems = view.findViewById(R.id.recycler_view_filter_items);
         recyclerViewFilterItems.setHasFixedSize(true);
-        recyclerViewFilterItems.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
+        recyclerViewFilterItems.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
         recyclerViewFilterItems.setAdapter(new FilterItemsAdapter(productsName, getContext(), items, storesName));
 
         return view;

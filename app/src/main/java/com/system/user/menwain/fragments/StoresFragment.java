@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.CategoryAdapter;
@@ -20,12 +22,26 @@ public class StoresFragment extends Fragment {
     private int[] stores = {R.drawable.madina, R.drawable.metro, R.drawable.makro, R.drawable.pak, R.drawable.alrasheed_cash_carry, R.drawable.ary_cash_carry, R.drawable.meezan, R.drawable.lahore};
     RecyclerView recyclerViewProductCategory;
     StoresAdapter storesAdapter;
+    private ImageView ivBackStores;
+    private TextView tvTitleStores;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stores, container, false);
 
+        ivBackStores = getActivity().findViewById(R.id.iv_back);
+        ivBackStores.setVisibility(View.VISIBLE);
+        tvTitleStores = getActivity().findViewById(R.id.toolbar_title);
+
+        ivBackStores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).addToBackStack(null).commit();
+                ivBackStores.setVisibility(View.INVISIBLE);
+                tvTitleStores.setText("More");
+            }
+        });
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_stores);
         recyclerViewProductCategory.setHasFixedSize(true);
         recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));

@@ -58,8 +58,8 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        ivMenu = getActivity().findViewById(R.id.iv_open_drawer);
-        ivMenu.setVisibility(View.GONE);
+      /*  ivMenu = getActivity().findViewById(R.id.iv_open_drawer);
+        ivMenu.setVisibility(View.GONE);*/
 
         fragTitle = getActivity().findViewById(R.id.toolbar_title);
         fragTitle.setText("Expole & Shop");
@@ -106,7 +106,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
             case R.id.iv_back:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new HomeFragment()).addToBackStack(null).commit();
                 ivBack.setVisibility(View.GONE);
-                ivMenu.setVisibility(View.VISIBLE);
+               // ivMenu.setVisibility(View.VISIBLE);
                 ivListGridView.setVisibility(View.GONE);
                 fragTitle.setText("Home");
 

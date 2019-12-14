@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.RateUsActivity">
-    <include layout="@layout/header_item_details" />
+    <!--<include layout="@layout/header_item_details" />-->
     <FrameLayout
         android:layout_width="match_parent"
         android:paddingBottom="80dp"

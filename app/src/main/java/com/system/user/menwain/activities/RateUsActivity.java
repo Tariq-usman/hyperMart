@@ -1,44 +1,53 @@
 package com.system.user.menwain.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.MoreFragment;
 
-public class RateUsActivity extends AppCompatActivity {
+public class RateUsActivity extends Fragment {
 
     TextView mConfirmBtn, mTitle;
     ImageView mBackBtn;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rate_us);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_rate_us,container,false);
 
-        mConfirmBtn = findViewById(R.id.submit);
-        mTitle = findViewById(R.id.title_view);
-        mBackBtn = findViewById(R.id.close_back_view);
+        mConfirmBtn = view.findViewById(R.id.submit);
+        mTitle = getActivity().findViewById(R.id.toolbar_title);
+        mBackBtn = getActivity().findViewById(R.id.iv_back);
 
         mTitle.setText("Rate Us");
-        mBackBtn.setImageResource(R.drawable.ic_backwhite);
+//        mBackBtn.setImageResource(R.drawable.ic_backwhite);
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                finish();
+               /* startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                finish();*/
             }
         });
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new MoreFragment()).addToBackStack(null).commit();
+                mBackBtn.setVisibility(View.INVISIBLE);
+               // finish();
             }
         });
 
+        return view;
     }
 }
