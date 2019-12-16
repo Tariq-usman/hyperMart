@@ -18,8 +18,8 @@
         android:layout_marginVertical="10dp"
         android:gravity="center"
         android:text="Addresses"
-        android:textColor="@color/textColorLikeBG"
-        android:textSize="@dimen/large_text_size" />
+        android:textColor="@color/darkGreenColor"
+        android:textSize="@dimen/twenty_four_sp" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_addresses"
         android:layout_width="match_parent"

@@ -51,16 +51,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$ "
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/content_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/twelve_sp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="45000"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/content_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/twelve_sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -68,8 +68,8 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text="4.5"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/content_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/twelve_sp" />
 
                 <RatingBar
                     style="?android:attr/ratingBarStyleSmall"

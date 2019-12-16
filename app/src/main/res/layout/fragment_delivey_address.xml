@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Please select your delivery address"
-        android:textSize="@dimen/button_text_size"
-        android:textColor="@color/textColorLikeBG"
+        android:textSize="@dimen/sixteen_sp"
+        android:textColor="@color/darkGreenColor"
         android:gravity="center"
         android:layout_marginTop="8dp"/>
 
@@ -41,7 +41,7 @@
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
             android:text="Confirm"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/whiteColor" />
     </FrameLayout>
 
 </LinearLayout>

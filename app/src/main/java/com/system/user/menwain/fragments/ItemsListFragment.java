@@ -1,4 +1,4 @@
-package com.system.user.menwain.activities;
+package com.system.user.menwain.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.AvailableItemsFragment;
-import com.system.user.menwain.fragments.DialogFragmentDeliveryTime;
-import com.system.user.menwain.fragments.NotAvailableItemsFragment;
 
 public class ItemsListFragment extends Fragment implements View.OnClickListener {
     private TextView mAvailable, mNotAvailable, mTitle, mConfirmBtn, mPrice, mDistance, mAvailItems, mNotAvailItmes;

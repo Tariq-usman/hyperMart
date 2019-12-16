@@ -1,4 +1,4 @@
-package com.system.user.menwain.activities;
+package com.system.user.menwain.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,6 +66,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
 
         ivListGridView = getActivity().findViewById(R.id.iv_grid_list_view);
         ivListGridView.setVisibility(View.VISIBLE);
+        ivListGridView.setImageResource(R.drawable.ic_list_view);
         ivListGridView.setOnClickListener(this);
 
 
@@ -90,10 +91,10 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
             recyclerViewAllitem.setHasFixedSize(true);
             recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
             recyclerViewAllitem.setAdapter(new ExploreShopItemsGridAdapter(getContext(), productsName, products));
-        } else if (val1 == 2) {
+        } else if (val.equals("2")) {
             recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
             recyclerViewAllitem.setAdapter(new ExploreItemsGridAdapter(getContext(), productsName1, items));
-        } else if (val2 == 3) {
+        } else if (val.equals("3")) {
             recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
             recyclerViewAllitem.setAdapter(new ExploreShopItemsGridAdapter(getContext(), productsName, products));
         }
@@ -105,9 +106,9 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.iv_back:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new HomeFragment()).addToBackStack(null).commit();
-                ivBack.setVisibility(View.GONE);
+                ivBack.setVisibility(View.INVISIBLE);
                // ivMenu.setVisibility(View.VISIBLE);
-                ivListGridView.setVisibility(View.GONE);
+                ivListGridView.setVisibility(View.INVISIBLE);
                 fragTitle.setText("Home");
 
                 break;
@@ -130,7 +131,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         recyclerViewAllitem.setAdapter(null);
                         recyclerViewAllitem.setAdapter(new ExploreShopItemsGridAdapter(getContext(), productsName, products));
                     }
-                } else if (val1 == 2) {
+                } else if (val.equals("2")) {
                     if (isList == false) {
                         isList = true;
                         ivListGridView.setImageResource(R.drawable.ic_grid_view);
@@ -148,7 +149,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         recyclerViewAllitem.setAdapter(null);
                         recyclerViewAllitem.setAdapter(new ExploreItemsGridAdapter(getContext(), productsName1, items));
                     }
-                } else if (val2 == 3) {
+                } else if (val.equals("3")) {
                     if (isList == false) {
                         isList = true;
                         ivListGridView.setImageResource(R.drawable.ic_grid_view);

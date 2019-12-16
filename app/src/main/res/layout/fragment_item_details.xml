@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="5dp"
-                android:background="@color/textColorLikeBG" />
+                android:background="@color/darkGreenColor" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,16 +86,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Product Title"
-                            android:textColor="@color/textColorLikeBG"
-                            android:textSize="@dimen/button_text_size"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/sixteen_sp"
                             android:textStyle="italic" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Average $ 35"
-                            android:textColor="@color/textColorLikeBG"
-                            android:textSize="@dimen/button_text_size"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/sixteen_sp"
                             android:textStyle="italic" />
                     </LinearLayout>
 
@@ -110,8 +110,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:text="By MeatOne"
-                            android:textColor="@color/textColorLikeBG"
-                            android:textSize="@dimen/button_text_size"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/sixteen_sp"
                             android:textStyle="italic" />
 
                         <LinearLayout
@@ -139,8 +139,8 @@
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"
                                 android:text="40 Reviews"
-                                android:textColor="@color/textColorLikeBG"
-                                android:textSize="@dimen/content_text_size" />
+                                android:textColor="@color/darkGreenColor"
+                                android:textSize="@dimen/twelve_sp" />
 
                         </LinearLayout>
 
@@ -163,8 +163,8 @@
                         android:background="@drawable/bg_selected"
                         android:gravity="center"
                         android:text="Description"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/button_text_size"
+                        android:textColor="@color/whiteColor"
+                        android:textSize="@dimen/sixteen_sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -176,8 +176,8 @@
                         android:background="@drawable/bg_unselected"
                         android:gravity="center"
                         android:text="Specification"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/button_text_size"
+                        android:textColor="@color/whiteColor"
+                        android:textSize="@dimen/sixteen_sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -189,8 +189,8 @@
                         android:background="@drawable/bg_unselected"
                         android:gravity="center"
                         android:text="Reviews"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/button_text_size"
+                        android:textColor="@color/whiteColor"
+                        android:textSize="@dimen/sixteen_sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -236,8 +236,8 @@
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:text="In Stock"
-                        android:textColor="@color/textColorLikeBG"
-                        android:textSize="@dimen/button_text_size" />
+                        android:textColor="@color/darkGreenColor"
+                        android:textSize="@dimen/sixteen_sp" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -284,8 +284,8 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="20dp"
                         android:text="Size"
-                        android:textColor="@color/textColorLikeBG"
-                        android:textSize="@dimen/button_text_size" />
+                        android:textColor="@color/darkGreenColor"
+                        android:textSize="@dimen/sixteen_sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -300,7 +300,7 @@
                             android:background="@drawable/bg_item_details_btn_selected"
                             android:gravity="center"
                             android:text="0.5 Kilogram"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/whiteColor" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -310,7 +310,7 @@
                             android:background="@drawable/bg_item_details_btn_unselected"
                             android:gravity="center"
                             android:text="0.5 Kilogram"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/whiteColor" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -320,7 +320,7 @@
                             android:background="@drawable/bg_item_details_btn_unselected"
                             android:gravity="center"
                             android:text="0.5 Kilogram"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/whiteColor" />
 
                     </LinearLayout>
 
@@ -334,8 +334,8 @@
                         android:gravity="center"
                         android:paddingHorizontal="80dp"
                         android:text="Add to Cart"
-                        android:textSize="@dimen/button_text_size"
-                        android:textColor="@color/textColor" />
+                        android:textSize="@dimen/sixteen_sp"
+                        android:textColor="@color/whiteColor" />
 
                 </LinearLayout>
 
@@ -343,15 +343,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="5dp"
-                    android:background="@color/textColorLikeBG" />
+                    android:background="@color/darkGreenColor" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Related Items"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/heading_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/eighteen_sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_related_items_item_details"

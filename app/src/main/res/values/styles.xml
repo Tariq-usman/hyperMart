@@ -12,11 +12,17 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="MyCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">#004040</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="popup_menu" parent="Widget.AppCompat.PopupMenu">
 
 
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:itemBackground">@color/textColorLikeBG</item>
+        <item name="android:itemBackground">@color/darkGreenColor</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

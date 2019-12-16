@@ -24,8 +24,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
                 android:text="Rate our store"
-                android:textColor="@color/textColorLikeBG"
-                android:textSize="@dimen/heading_text_size" />
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/eighteen_sp" />
 
             <RatingBar
                 android:layout_width="wrap_content"
@@ -40,8 +40,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
                 android:text="Rate our delivery boy"
-                android:textColor="@color/textColorLikeBG"
-                android:textSize="@dimen/heading_text_size" />
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/eighteen_sp" />
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,8 +55,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
                 android:text="Rate our overall services"
-                android:textColor="@color/textColorLikeBG"
-                android:textSize="@dimen/heading_text_size" />
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/eighteen_sp" />
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,8 +74,8 @@
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
             android:text="Submit"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/whiteColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </FrameLayout>
 

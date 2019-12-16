@@ -16,14 +16,14 @@
             android:overScrollMode="never"
             android:id="@+id/recycler_view_all_lists"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+       <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="50dp"
             android:layout_marginRight="16dp"
-            android:src="@drawable/ic_plusbtn" />
+            android:src="@drawable/ic_plusbtn" />-->
     </RelativeLayout>
 
 

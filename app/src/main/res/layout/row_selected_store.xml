@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Produce"
-            android:textColor="@color/blackTextColor"
+            android:textColor="@color/blackColor"
             android:textStyle="bold" />
 
     </LinearLayout>

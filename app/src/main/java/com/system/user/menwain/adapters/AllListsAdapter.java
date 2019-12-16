@@ -1,16 +1,17 @@
 package com.system.user.menwain.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.system.user.menwain.activities.ListDetailsActivity;
+import com.system.user.menwain.fragments.ListDetailsFragment;
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllListsViewHolder> {
@@ -36,9 +37,9 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent =new  Intent(context, ListDetailsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                ListDetailsFragment fragment = new ListDetailsFragment();
+                FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment,fragment).addToBackStack(null).commit();
             }
         });
     }

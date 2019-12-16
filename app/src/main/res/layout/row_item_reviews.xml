@@ -15,8 +15,8 @@
             android:justificationMode="inter_word"
 
             android:text="Name of user"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/heading_text_size"
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/eighteen_sp"
             android:textStyle="bold" />
 
         <TextView
@@ -25,7 +25,7 @@
             android:gravity="right"
             android:justificationMode="inter_word"
             android:text="19-october-2019"
-            android:textColor="@color/textColorLikeBG"
+            android:textColor="@color/darkGreenColor"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -56,7 +56,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:text="( "
-                android:textColor="@color/textColorLikeBG"
+                android:textColor="@color/darkGreenColor"
                 android:textSize="14sp" />
 
             <TextView
@@ -65,8 +65,8 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:text="4.5"
-                android:textColor="@color/textColorLikeBG"
-                android:textSize="@dimen/content_text_size" />
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/twelve_sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:text=" )"
-                android:textColor="@color/textColorLikeBG"
+                android:textColor="@color/darkGreenColor"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -86,6 +86,6 @@
         android:justificationMode="inter_word"
         android:text="@string/description"
         android:layout_marginVertical="10dp"
-        android:textColor="@color/textColorLikeBG"
-        android:textSize="@dimen/content_text_size" />
+        android:textColor="@color/darkGreenColor"
+        android:textSize="@dimen/twelve_sp" />
 </LinearLayout>

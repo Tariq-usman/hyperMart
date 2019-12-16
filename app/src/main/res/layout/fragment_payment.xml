@@ -19,15 +19,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$ "
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/heading_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/eighteen_sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="200"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/heading_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/eighteen_sp" />
 
     </LinearLayout>
 
@@ -51,7 +51,7 @@
             android:layout_gravity="bottom"
             android:gravity="center"
             android:text="Confirm"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/whiteColor" />
     </FrameLayout>
 
 

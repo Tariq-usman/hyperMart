@@ -38,8 +38,8 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:hint="menWain"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor" />
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor" />
 
                 <ImageView
                     android:id="@+id/bar_code_code_scanner"

@@ -1,4 +1,4 @@
-package com.system.user.menwain.activities;
+package com.system.user.menwain.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

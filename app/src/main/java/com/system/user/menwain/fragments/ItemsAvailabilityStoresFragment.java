@@ -1,4 +1,4 @@
-package com.system.user.menwain.activities;
+package com.system.user.menwain.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.ItemsAvailabilityStoresAdapter;
-import com.system.user.menwain.fragments.DialogFragmentPayInstore;
-import com.system.user.menwain.fragments.DialogFragmentPayNow;
 
 import java.util.ArrayList;
 import java.util.Collections;

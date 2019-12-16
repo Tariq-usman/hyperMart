@@ -1,7 +1,6 @@
 package com.system.user.menwain.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.system.user.menwain.activities.ItemsListFragment;
+import com.system.user.menwain.fragments.ItemsListFragment;
 import com.system.user.menwain.R;
 
 import java.util.List;

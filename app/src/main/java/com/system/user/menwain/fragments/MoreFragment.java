@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.ProfileFragment;
 import com.system.user.menwain.activities.RateUsActivity;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,7 @@ import androidx.fragment.app.Fragment;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
 
-    private ImageView ivOrder, ivCustomerServices,ivStores,ivBack;
+    private ImageView ivOrder, ivCustomerServices,ivStores,ivBack,mSettingsIcon;
     private TextView tvTitle,tvMyAccount, tvProfile, tvSettings, tvHelp, tvAbout, tvRateApp, tvLogout;
 
     @Nullable
@@ -29,6 +28,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
         ivBack = getActivity().findViewById(R.id.iv_back);
         tvTitle = getActivity().findViewById(R.id.toolbar_title);
+        mSettingsIcon = getActivity().findViewById(R.id.iv_grid_list_view);
+        mSettingsIcon.setVisibility(View.VISIBLE);
+        mSettingsIcon.setImageResource(R.drawable.ic_settings);
         ivStores = view.findViewById(R.id.iv_stores);
         tvMyAccount = view.findViewById(R.id.tv_my_account);
         tvProfile = view.findViewById(R.id.tv_profile);
@@ -62,15 +64,19 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 //ivBack.setVisibility(View.VISIBLE);
                 tvTitle.setText("Stores");
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new StoresFragment()).addToBackStack(null).commit();
+                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_profile:
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ProfileFragment()).addToBackStack(null).commit();
+                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.iv_order:
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).addToBackStack(null).commit();
+                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_rate_app:
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new RateUsActivity()).addToBackStack(null).commit();
+                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_log_out:
                 SharedPreferences preferences = getActivity().getSharedPreferences("login", Activity.MODE_PRIVATE);

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginHorizontal="30dp"
-    tools:context=".activities.ProfileFragment">
+    tools:context=".fragments.ProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -43,8 +43,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
                             android:text="First Name"
-                            android:textColor="@color/textColorLikeBG"
-                            android:textSize="@dimen/button_text_size" />
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/fourteen_sp" />
 
                         <EditText
                             android:layout_width="match_parent"
@@ -53,9 +53,9 @@
                             android:gravity="center"
                             android:hint="John"
                             android:inputType="text"
-                            android:textColor="@color/textColor"
-                            android:textColorHint="@color/textColor"
-                            android:textSize="@dimen/button_text_size" />
+                            android:textColor="@color/whiteColor"
+                            android:textColorHint="@color/whiteColor"
+                            android:textSize="@dimen/fourteen_sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -69,9 +69,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
-                            android:text="First Name"
-                            android:textColor="@color/textColorLikeBG"
-                            android:textSize="@dimen/button_text_size" />
+                            android:text="Last Name"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/fourteen_sp" />
 
                         <EditText
                             android:layout_width="match_parent"
@@ -80,9 +80,9 @@
                             android:gravity="center"
                             android:hint="John"
                             android:inputType="text"
-                            android:textColor="@color/textColor"
-                            android:textColorHint="@color/textColor"
-                            android:textSize="@dimen/button_text_size" />
+                            android:textColor="@color/whiteColor"
+                            android:textColorHint="@color/whiteColor"
+                            android:textSize="@dimen/fourteen_sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -92,8 +92,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:text="Phone No"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/button_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -103,17 +103,17 @@
                     android:gravity="center"
                     android:hint="+92 345 1234567"
                     android:inputType="number"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor"
-                    android:textSize="@dimen/button_text_size" />
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:text="Email Address"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/button_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -122,9 +122,9 @@
                     android:gravity="center"
                     android:hint="johnsmith@email.com"
                     android:inputType="textEmailAddress"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor"
-                    android:textSize="@dimen/button_text_size" />
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
 
             </LinearLayout>
 
@@ -137,8 +137,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Sex"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/button_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -155,12 +155,14 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textSize="@dimen/fourteen_sp"
                             android:text="Male" />
 
                         <RadioButton
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textSize="@dimen/fourteen_sp"
                             android:text="Female" />
                     </RadioGroup>
                 </LinearLayout>
@@ -177,8 +179,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:text="Change Language"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/button_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -205,8 +207,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:text="Update Password"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/button_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -216,9 +218,9 @@
                     android:gravity="center"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor"
-                    android:textSize="@dimen/button_text_size" />
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -228,9 +230,9 @@
                     android:gravity="center"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor"
-                    android:textSize="@dimen/button_text_size" />
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -246,7 +248,7 @@
         android:background="@drawable/bg_submit_btn"
         android:gravity="center"
         android:text="Edit"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/twenty_dp" />
+        android:textColor="@color/whiteColor"
+        android:textSize="@dimen/twenty_sp" />
 
 </RelativeLayout>

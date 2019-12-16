@@ -12,6 +12,6 @@
         android:background="@drawable/items_bg_unselected"
         android:gravity="center"
         android:text="Poultry Counter"
-        android:textColor="@color/textColorLikeBG"
+        android:textColor="@color/darkGreenColor"
         android:textSize="12sp" />
 </LinearLayout>

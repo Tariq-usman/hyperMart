@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingHorizontal="10dp"
-        android:background="@color/textColorLikeBG">
+        android:background="@color/darkGreenColor">
         <ImageView
             android:id="@+id/close_back_view"
             android:layout_width="16dp"
@@ -22,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Item Details"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/heading_text_size"
+            android:textColor="@color/whiteColor"
+            android:textSize="@dimen/eighteen_sp"
             android:gravity="center"/>
     </LinearLayout>
 </LinearLayout>

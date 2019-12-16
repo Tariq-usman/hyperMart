@@ -1,4 +1,4 @@
-package com.system.user.menwain.activities;
+package com.system.user.menwain.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.DelivieryAddressesAdapter;
 import com.system.user.menwain.fragments.CartFragment;
-import com.system.user.menwain.fragments.ItemDetailsFragment;
+import com.system.user.menwain.fragments.ItemsAvailabilityStoresFragment;
 
 public class DeliveryAddressFragment extends Fragment implements View.OnClickListener {
 

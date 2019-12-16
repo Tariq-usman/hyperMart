@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.system.user.menwain.activities.DeliveryAddressFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.CartItemsAdapter;

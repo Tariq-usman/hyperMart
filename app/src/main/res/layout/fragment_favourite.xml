@@ -27,7 +27,7 @@
             android:layout_alignParentBottom="true"
             android:gravity="center"
             android:text="Confirm"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/whiteColor" />
     </RelativeLayout>
 
 </LinearLayout>

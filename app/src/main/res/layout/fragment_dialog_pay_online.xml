@@ -27,14 +27,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Deliver to Address"
-                android:textColor="@color/textColorLikeBG" />
+                android:textColor="@color/darkGreenColor" />
 
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Prepare and Pick up From Store"
-                android:textColor="@color/textColorLikeBG" />
+                android:textColor="@color/darkGreenColor" />
         </RadioGroup>
         <TextView
             android:id="@+id/confirm_dialog_one"
@@ -45,7 +45,7 @@
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
             android:text="Confirm"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/whiteColor" />
 
     </LinearLayout>
 

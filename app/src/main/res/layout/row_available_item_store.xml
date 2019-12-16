@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -15,208 +14,139 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_unselected"
+            android:padding="1dp"
+            android:background="@drawable/bg_avail_items_store"
             android:orientation="horizontal">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
                 <LinearLayout
-                    android:id="@+id/current_list_wrapper"
                     android:layout_width="match_parent"
-                    android:layout_height="59dp"
+                    android:layout_height="55dp"
+                    android:gravity="center"
+                    android:weightSum="3"
                     android:orientation="horizontal">
+
 
                     <LinearLayout
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                        <TextView
+                            android:id="@+id/sort_by_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center">
+                            android:text="50"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="10sp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="4dp"
+                            android:src="@drawable/ic_coin" />
 
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-<!--
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:paddingLeft="5dp"
-                                    android:text="Total: "
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp" />
--->
-
-<!--
-                                <TextView
-                                    android:id="@+id/tv_order_no"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="$ "
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp" />
--->
-                                <TextView
-                                    android:id="@+id/sort_by_price"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="50"
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp" />
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_marginLeft="4dp"
-                                    android:src="@drawable/ic_coin"/>
-
-
-                            </LinearLayout>
-
-<!--
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:background="@color/textColor" />
--->
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="30dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-<!--
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:paddingLeft="5dp"
-                                    android:text="Availability "
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp" />
--->
-
-                                <TextView
-                                    android:id="@+id/available_items_view"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="10"
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="/"
-                                    android:layout_marginHorizontal="2dp"
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp"/>
-                                <TextView
-                                    android:id="@+id/total_items"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="14"
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp" />
-                                <ImageView
-                                    android:id="@+id/show_cart_avail_items_status"
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_marginLeft="4dp"
-                                    android:src="@drawable/ic_cart_fill"/>
-
-
-                            </LinearLayout>
-
-<!--
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:background="@color/textColor" />
--->
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-<!--
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:paddingLeft="5dp"
-                                    android:text="Distance: "
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp" />
--->
-
-                                <TextView
-                                    android:id="@+id/distance_view"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="15.4 "
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text=" km"
-                                    android:textColor="@color/textColor"
-                                    android:textSize="10sp" />
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_marginLeft="4dp"
-                                    android:src="@drawable/ic_placeholder"/>
-
-
-                            </LinearLayout>
-                        </LinearLayout>
-                        <View
-                            android:id="@+id/show_status_color_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="-2dp"
-                            android:background="#36F43F"/>
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/mart_logo_view"
-                        android:layout_width="85dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/mart_logo" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/available_items_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="10"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="2dp"
+                            android:text="/"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/total_items"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="14"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="10sp" />
+
+                        <ImageView
+                            android:id="@+id/show_cart_avail_items_status"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="4dp"
+                            android:src="@drawable/ic_cart_fill" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/distance_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="15.4 "
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text=" km"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="10sp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="4dp"
+                            android:src="@drawable/ic_placeholder" />
+
+
+                    </LinearLayout>
                 </LinearLayout>
-            </FrameLayout>
+                <View
+                    android:id="@+id/show_status_color_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="#36F43F" />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/mart_logo_view"
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/mart_logo" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

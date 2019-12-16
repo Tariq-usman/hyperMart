@@ -23,8 +23,8 @@
             android:layout_marginVertical="20dp"
             android:gravity="center"
             android:text="Save these product as list to use in future"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Date"
-                android:textColor="@color/textColorLikeBG" />
+                android:textColor="@color/darkGreenColor" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -46,8 +46,8 @@
                 android:gravity="center"
                 android:hint="11/11/19"
                 android:inputType="date"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor" />
+                android:textColor="@color/whiteColor"
+                android:textColorHint="@color/whiteColor" />
         </LinearLayout>
 
         <TextView
@@ -59,7 +59,7 @@
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
             android:text="Confirm"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/whiteColor" />
 
     </LinearLayout>
 

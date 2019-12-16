@@ -1,10 +1,9 @@
-package com.system.user.menwain.activities;
+package com.system.user.menwain.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.CartFragment;
 
 public class PaymentFragment extends Fragment {
 
@@ -49,6 +47,8 @@ public class PaymentFragment extends Fragment {
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
                         .addToBackStack(null).commit();
+                mPaymentTitle.setText("Cart");
+                mBackBtnPay.setVisibility(View.INVISIBLE);
                 //startActivity(new Intent(getContext(),MainActivity.class));
                // getActivity().finish();
             }

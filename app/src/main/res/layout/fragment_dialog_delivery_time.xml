@@ -23,8 +23,8 @@
             android:layout_marginVertical="20dp"
             android:gravity="center"
             android:text="Please let us your preferred delivery time"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Date"
-                android:textColor="@color/textColorLikeBG" />
+                android:textColor="@color/darkGreenColor" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -46,8 +46,8 @@
                 android:gravity="center"
                 android:inputType="date"
                 android:hint="11/11/19"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor" />
+                android:textColor="@color/whiteColor"
+                android:textColorHint="@color/whiteColor" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Time"
-                android:textColor="@color/textColorLikeBG" />
+                android:textColor="@color/darkGreenColor" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -70,8 +70,8 @@
                 android:gravity="center"
                 android:hint="5:30 pm"
                 android:inputType="time"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor" />
+                android:textColor="@color/whiteColor"
+                android:textColorHint="@color/whiteColor" />
         </LinearLayout>
 
 
@@ -84,7 +84,7 @@
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
             android:text="Confirm"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/whiteColor" />
 
     </LinearLayout>
 

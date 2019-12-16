@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="5dp"
-                android:background="@color/textColorLikeBG" />
+                android:background="@color/darkGreenColor" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,16 +85,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Product Title"
-                            android:textColor="@color/textColorLikeBG"
-                            android:textSize="@dimen/button_text_size"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/sixteen_sp"
                             android:textStyle="italic" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="$ 35"
-                            android:textColor="@color/textColorLikeBG"
-                            android:textSize="@dimen/button_text_size"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/sixteen_sp"
                             android:textStyle="italic" />
                     </LinearLayout>
 
@@ -109,8 +109,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:text="By MeatOne"
-                            android:textColor="@color/textColorLikeBG"
-                            android:textSize="@dimen/button_text_size"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/sixteen_sp"
                             android:textStyle="italic" />
 
                         <LinearLayout
@@ -125,8 +125,8 @@
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"
                                 android:text="Date: "
-                                android:textColor="@color/textColorLikeBG"
-                                android:textSize="@dimen/content_text_size" />
+                                android:textColor="@color/darkGreenColor"
+                                android:textSize="@dimen/twelve_sp" />
 
 
                             <TextView
@@ -136,8 +136,8 @@
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"
                                 android:text="12/11/2019"
-                                android:textColor="@color/textColorLikeBG"
-                                android:textSize="@dimen/content_text_size" />
+                                android:textColor="@color/darkGreenColor"
+                                android:textSize="@dimen/twelve_sp" />
 
                         </LinearLayout>
 
@@ -153,8 +153,8 @@
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"
                                 android:text="Time: "
-                                android:textColor="@color/textColorLikeBG"
-                                android:textSize="@dimen/content_text_size" />
+                                android:textColor="@color/darkGreenColor"
+                                android:textSize="@dimen/twelve_sp" />
 
 
                             <TextView
@@ -163,8 +163,8 @@
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"
                                 android:text="4:26 pm"
-                                android:textColor="@color/textColorLikeBG"
-                                android:textSize="@dimen/content_text_size" />
+                                android:textColor="@color/darkGreenColor"
+                                android:textSize="@dimen/twelve_sp" />
 
                         </LinearLayout>
 
@@ -187,8 +187,8 @@
                     android:justificationMode="inter_word"
                     android:text="Description"
                     android:textStyle="italic"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/heading_text_size" />
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/eighteen_sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:justificationMode="inter_word"
                     android:text="@string/description"
-                    android:textColor="@color/textColorLikeBG"
+                    android:textColor="@color/darkGreenColor"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -218,8 +218,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="10dp"
                         android:text="Rate our product"
-                        android:textColor="@color/textColorLikeBG"
-                        android:textSize="@dimen/heading_text_size" />
+                        android:textColor="@color/darkGreenColor"
+                        android:textSize="@dimen/eighteen_sp" />
 
                     <RatingBar
                         android:layout_width="wrap_content"
@@ -233,8 +233,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="10dp"
                         android:text="Write a review"
-                        android:textColor="@color/textColorLikeBG"
-                        android:textSize="@dimen/heading_text_size" />
+                        android:textColor="@color/darkGreenColor"
+                        android:textSize="@dimen/eighteen_sp" />
 
                 </LinearLayout>
 
@@ -259,7 +259,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="Write review here..."
-                                    android:textSize="@dimen/content_text_size"
+                                    android:textSize="@dimen/twelve_sp"
                                     android:padding="10dp"
                                     android:background="@android:color/transparent"/>
 
@@ -275,8 +275,8 @@
                         android:background="@drawable/bg_submit_btn"
                         android:gravity="center"
                         android:text="Submit"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/button_text_size" />
+                        android:textColor="@color/whiteColor"
+                        android:textSize="@dimen/sixteen_sp" />
 
                 </LinearLayout>
 

@@ -32,8 +32,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Home"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/heading_text_size"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/eighteen_sp"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -56,8 +56,8 @@
                     android:background="@android:color/transparent"
                     android:justificationMode="inter_word"
                     android:text="Street #20, Sector F-10/2 Islamabad, pakistan"
-                    android:textColor="@color/textColorLikeBG"
-                    android:textSize="@dimen/button_text_size"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/sixteen_sp"
                     android:visibility="visible" />
 
                 <ImageView

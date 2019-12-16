@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:hint="Search here..."
-                android:textColorHint="@color/textColor" />
+                android:textColorHint="@color/whiteColor" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

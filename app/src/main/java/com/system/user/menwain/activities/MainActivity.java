@@ -1,7 +1,6 @@
 package com.system.user.menwain.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,45 +8,31 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.navigation.NavigationView;
 import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.custom_languages.LocaleManager;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.AllListsFragment;
 import com.system.user.menwain.fragments.CartFragment;
-import com.system.user.menwain.fragments.FavouriteFragment;
+import com.system.user.menwain.fragments.DeliveryAddressFragment;
 import com.system.user.menwain.fragments.CategoryStoresFragment;
 import com.system.user.menwain.fragments.HomeFragment;
 import com.system.user.menwain.fragments.MoreFragment;
-import com.system.user.menwain.fragments.OrdersFragment;
 import com.system.user.menwain.viewmodel.CartViewModel;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
@@ -190,6 +175,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void initiateViews() {
+
+        ivListGridView = findViewById(R.id.iv_grid_list_view);
+
         ivBack = findViewById(R.id.iv_back);
         ivBack.setOnClickListener(this);
         mHome = findViewById(R.id.home_view);
@@ -267,8 +255,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         int id = view.getId();
         if (id == R.id.home_view) {
             mActionBarTitle.setText("Home");
+            ivListGridView.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_houseblue);
-            ivBack.setVisibility(View.GONE);
+            ivBack.setVisibility(View.INVISIBLE);
             tvHome.setTextColor(Color.parseColor("#00c1bd"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
             tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
@@ -281,8 +270,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
         } else if (id == R.id.category_view) {
             mActionBarTitle.setText("Category");
-            ivBack.setVisibility(View.GONE);
-          //  ivMenu.setVisibility(View.VISIBLE);
+            ivBack.setVisibility(View.INVISIBLE);
+            ivListGridView.setVisibility(View.INVISIBLE);
+//  ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#FFFFFF"));
             mCategory.setImageResource(R.drawable.ic_searchblue);
@@ -296,8 +286,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
         } else if (id == R.id.cart) {
             mActionBarTitle.setText("Cart");
-            ivBack.setVisibility(View.GONE);
-         //   ivMenu.setVisibility(View.VISIBLE);
+            ivBack.setVisibility(View.INVISIBLE);
+            ivListGridView.setVisibility(View.INVISIBLE);
+            //   ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#FFFFFF"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -311,8 +302,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
         } else if (id == R.id.favourite_view) {
             mActionBarTitle.setText("List");
-            ivBack.setVisibility(View.GONE);
-           // ivMenu.setVisibility(View.VISIBLE);
+            ivBack.setVisibility(View.INVISIBLE);
+            ivListGridView.setVisibility(View.INVISIBLE);
+            // ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#FFFFFF"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -327,7 +319,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         } else if (id == R.id.more_layout) {
             mActionBarTitle.setText("More");
            // ivMenu.setVisibility(View.VISIBLE);
-            ivBack.setVisibility(View.GONE);
+            ivBack.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#FFFFFF"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -418,10 +410,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             finish();
         } else {
             setFragment(new HomeFragment(), "Home");
-            ivBack.setVisibility(View.GONE);
+            ivBack.setVisibility(View.INVISIBLE);
 
-            ivListGridView = findViewById(R.id.iv_grid_list_view);
-            ivListGridView.setVisibility(View.GONE);
+            ivListGridView.setVisibility(View.INVISIBLE);
            // ivMenu.setVisibility(View.VISIBLE);
 
             mActionBarTitle.setText("Home");

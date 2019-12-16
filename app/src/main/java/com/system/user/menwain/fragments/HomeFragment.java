@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.AllItemsFragment;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.ExploreAndShopAdapter;
 import com.system.user.menwain.adapters.Banner_SlidingImages_Adapter;
@@ -20,7 +19,6 @@ import java.util.Timer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -153,12 +151,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 intent_explore.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getContext().startActivity(intent_explore);*/
                 break;
+            case R.id.tv_see_all_explore:
+                allItemsFragment = new AllItemsFragment();
+                FragmentTransaction explore_transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                bundle = new Bundle();
+                bundle.putString("explore", "2");
+                allItemsFragment.setArguments(bundle);
+                explore_transaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
+                break;
             case R.id.tv_see_all_shop:
                 allItemsFragment = new AllItemsFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 
                 bundle = new Bundle();
-                bundle.putString("explore", "2");
+                bundle.putString("explore", "3");
                 allItemsFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
                 break;

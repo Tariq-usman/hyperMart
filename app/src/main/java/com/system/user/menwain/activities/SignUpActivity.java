@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.DeliveryAddressFragment;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     TextView mLoginInstead,mRegister;

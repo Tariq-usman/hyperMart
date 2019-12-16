@@ -10,8 +10,8 @@
         android:justificationMode="inter_word"
         android:text="General"
         android:layout_marginVertical="10dp"
-        android:textColor="@color/textColorLikeBG"
-        android:textSize="@dimen/heading_text_size"
+        android:textColor="@color/darkGreenColor"
+        android:textSize="@dimen/eighteen_sp"
         android:textStyle="bold"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,15 +22,15 @@
             android:layout_height="wrap_content"
             android:text="Brand"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Nescafe"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -43,15 +43,15 @@
             android:layout_height="wrap_content"
             android:text="Manufacture Number"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="12190644"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -64,15 +64,15 @@
             android:layout_height="wrap_content"
             android:text="Oacjage thucjbess"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="37 centimeters"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -85,15 +85,15 @@
             android:layout_height="wrap_content"
             android:text="Depth"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="368 milimeters"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -106,15 +106,15 @@
             android:layout_height="wrap_content"
             android:text="Package weight in KGs"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="860 grams"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -127,15 +127,15 @@
             android:layout_height="wrap_content"
             android:text="Height"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="124 millimeters"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -148,15 +148,15 @@
             android:layout_height="wrap_content"
             android:text="Width"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="126 millimeters"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -169,15 +169,15 @@
             android:layout_height="wrap_content"
             android:text="Product weight"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="860 grams"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -190,16 +190,16 @@
             android:layout_height="wrap_content"
             android:text="Coffee Format"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Capusles"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -212,15 +212,15 @@
             android:layout_height="wrap_content"
             android:text="Caffeine Type"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Caffeinated"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -233,15 +233,15 @@
             android:layout_height="wrap_content"
             android:text="Coffee Type"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Latte"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -254,15 +254,15 @@
             android:layout_height="wrap_content"
             android:text="Roast Type"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Light"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -275,15 +275,15 @@
             android:layout_height="wrap_content"
             android:text="Size"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="48 Capsules"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 
@@ -296,15 +296,15 @@
             android:layout_height="wrap_content"
             android:text="Coffee Packaging"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Box"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -316,16 +316,16 @@
             android:layout_height="wrap_content"
             android:text="EAN-8"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -337,15 +337,15 @@
             android:layout_height="wrap_content"
             android:text="EAN-13"
             android:layout_weight="1"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="456258951335"
-            android:textColor="@color/textColorLikeBG"
-            android:textSize="@dimen/button_text_size" />
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp" />
 
     </LinearLayout>
 </LinearLayout>

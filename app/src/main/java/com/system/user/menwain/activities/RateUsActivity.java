@@ -29,7 +29,7 @@ public class RateUsActivity extends Fragment {
         mConfirmBtn = view.findViewById(R.id.submit);
         mTitle = getActivity().findViewById(R.id.toolbar_title);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
-
+        mBackBtn.setVisibility(View.VISIBLE);
         mTitle.setText("Rate Us");
 //        mBackBtn.setImageResource(R.drawable.ic_backwhite);
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {

@@ -37,7 +37,7 @@ public class NotAvailableItemsListAdapter extends RecyclerView.Adapter<NotAvaila
             @Override
             public void onClick(View view) {
                /* Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
-                Intent intent =new  Intent(context, ListDetailsActivity.class);
+                Intent intent =new  Intent(context, ListDetailsFragment.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);*/
             }
