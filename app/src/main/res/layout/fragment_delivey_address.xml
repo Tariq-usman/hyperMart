@@ -25,11 +25,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_delivery_address"
             android:layout_width="match_parent"
-            android:layout_margin="20dp"
+            android:layout_marginVertical="20dp"
             android:layout_height="wrap_content"
             android:overScrollMode="never"
             tools:listitem="@layout/row_items_delivery_address"
-            android:layout_marginBottom="50dp"/>
+            android:layout_marginBottom="43dp"/>
 
         <TextView
             android:id="@+id/confirm_btn"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginHorizontal="50dp"
-            android:layout_marginBottom="55dp"
+            android:layout_marginBottom="2dp"
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
             android:text="Confirm"

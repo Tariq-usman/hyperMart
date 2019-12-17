@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="10dp"
+        android:layout_marginTop="10dp"
         app:cardCornerRadius="20dp">
 
         <LinearLayout
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginVertical="2dp"
         android:orientation="horizontal"
         android:overScrollMode="never" />
 
@@ -66,9 +66,8 @@
         android:id="@+id/recycler_view_filter_filtered"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginHorizontal="10dp"
         android:gravity="center"
-        android:overScrollMode="never"
-        android:paddingBottom="20dp" />
+        android:overScrollMode="never" />
 
 </LinearLayout>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="4dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -106,7 +106,7 @@
             android:id="@+id/add_to_cart_filter_wrapper"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_marginVertical="5dp"
+            android:layout_marginVertical="2dp"
             app:cardCornerRadius="10dp">
             <TextView
                 android:layout_width="match_parent"

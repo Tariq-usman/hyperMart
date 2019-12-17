@@ -26,8 +26,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_height="wrap_content"
         android:overScrollMode="never"
-        tools:listitem="@layout/row_items_delivery_address"
-        android:layout_marginBottom="50dp"/>
+        tools:listitem="@layout/row_items_delivery_address"/>
 
 
 

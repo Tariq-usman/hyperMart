@@ -29,12 +29,12 @@ public class OrderHistoryFragment extends Fragment implements View.OnClickListen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_history,container,false);
 
-        mTitle = view.findViewById(R.id.title_view);
-        mBackBtn = view.findViewById(R.id.close_back_view);
+        //mTitle = view.findViewById(R.id.title_view);
+        mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setOnClickListener(this);
-
-        mTitle.setText("Order History");
-        mBackBtn.setImageResource(R.drawable.ic_backwhite);
+        mBackBtn.setVisibility(View.VISIBLE);
+//        mTitle.setText("Order History");
+//        mBackBtn.setImageResource(R.drawable.ic_backwhite);
 
         recyclerViewOrderHistory = view.findViewById(R.id.recycler_view_order_history);
         recyclerViewOrderHistory.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -48,7 +48,9 @@ public class OrderHistoryFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         int id = view.getId();
         switch (view.getId()){
-            case R.id.close_back_view:
+            case R.id.iv_back:
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new MoreFragment()).addToBackStack(null).commit();
+                mBackBtn.setVisibility(View.INVISIBLE);
                // finish();
                 break;
         }

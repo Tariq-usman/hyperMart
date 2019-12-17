@@ -58,8 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
         android:layout_marginHorizontal="20dp"
-        android:paddingBottom="40dp"
         tools:listitem="@layout/row_items_stores" />
 </LinearLayout>

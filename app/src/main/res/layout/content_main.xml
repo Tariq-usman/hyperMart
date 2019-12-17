@@ -13,5 +13,5 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="-50dp"/>
+        android:layout_marginBottom="48dp"/>
 </LinearLayout>

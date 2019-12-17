@@ -42,7 +42,7 @@
         <activity android:name=".fragments.OrderHistoryFragment" />
         <activity android:name=".activities.AddressesActivity" />
         <activity android:name=".activities.RateUsActivity" />
-        <activity android:name=".activities.ItemReviewActivity" />
+        <activity android:name=".activities.ItemReviewFragment" />
         <activity android:name=".activities.OrderDetailsActivity" />
         <activity android:name=".fragments.ListDetailsFragment" />
         <activity android:name=".fragments.PaymentFragment" />

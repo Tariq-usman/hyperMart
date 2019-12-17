@@ -2,6 +2,7 @@ package com.system.user.menwain.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +32,7 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
     private int[] items;
     private String[] storesName;
     private CartViewModel cartViewModel;
+    Bundle bundle;
 
 
     public FilterItemsAdapter(String[] productsName, Context context, int[] items, String[] storesName) {
@@ -50,7 +53,7 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
         holder.mProductNameView.setText(productsName[position]);
         holder.mFilteProduct.setImageResource(items[position]);
         holder.mStoreName.setText(storesName[position]);
@@ -78,16 +81,13 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
         holder.mFilteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(context, ItemDetailsFragment.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);*/
-                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new ItemDetailsFragment()).addToBackStack(null).commit();
-//                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-//                Fragment myFragment = new ItemsFragment();
-//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, myFragment).addToBackStack(null).commit();
-
-
+                bundle = new Bundle();
+                ItemDetailsFragment fragment = new ItemDetailsFragment();
+                FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+                bundle.putString("status","2");
+                bundle.putString("image_url", String.valueOf(items[position]));
+                fragment.setArguments(bundle);
+                transaction.replace(R.id.nav_host_fragment,fragment).commit();
             }
         });
 

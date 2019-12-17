@@ -64,7 +64,15 @@
                     android:text="Price "
                     android:textColor="@color/darkGreenColor"
                     android:textSize="12sp" />
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
+                    android:text="SAR"
+                    android:paddingHorizontal="2dp"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

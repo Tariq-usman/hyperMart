@@ -10,8 +10,12 @@ import android.widget.Toast;
 
 import com.system.user.menwain.activities.OrderDetailsActivity;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.ItemsFragment;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.OrderViewHolder> {
@@ -44,10 +48,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         holder.mViewOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,OrderDetailsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                context.startActivity(intent);
+                OrderDetailsActivity fragment = new OrderDetailsActivity();
+                FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment,fragment).commit();
                 //((Activity)context).finish();
             }
         });

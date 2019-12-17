@@ -99,10 +99,10 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             case R.id.sort_by_distance:
                 mSortByDistance.setBackgroundResource(R.drawable.bg_store_btn_colored);
                 mSortByDistance.setTextColor(Color.parseColor("#FFFFFF"));
-                mSortByPrice.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mSortByPrice.setBackgroundResource(0);
                 mSortByPrice.setTextColor(Color.parseColor("#004040"));
 
-                mSortByAvailability.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mSortByAvailability.setBackgroundResource(0);
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
                 //Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 distance.clear();
@@ -120,10 +120,10 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 mSortByAvailability.setBackgroundResource(R.drawable.bg_store_btn_colored);
                 mSortByAvailability.setTextColor(Color.parseColor("#FFFFFF"));
 
-                mSortByDistance.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mSortByDistance.setBackgroundResource(0);
                 mSortByDistance.setTextColor(Color.parseColor("#004040"));
 
-                mSortByPrice.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mSortByPrice.setBackgroundResource(0);
                 mSortByPrice.setTextColor(Color.parseColor("#004040"));
                 availItems.clear();
                 availItems.add(6);
@@ -139,10 +139,10 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 mSortByPrice.setBackgroundResource(R.drawable.bg_store_btn_colored);
                 mSortByPrice.setTextColor(Color.parseColor("#FFFFFF"));
 
-                mSortByDistance.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mSortByDistance.setBackgroundResource(0);
                 mSortByDistance.setTextColor(Color.parseColor("#004040"));
 
-                mSortByAvailability.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mSortByAvailability.setBackgroundResource(0);
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
                // Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 price.clear();
@@ -162,7 +162,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 break;
             case R.id.pay_online:
                 mPayOnline.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                mPayInStore.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mPayInStore.setBackgroundResource(0);
                 mPayOnline.setTextColor(Color.parseColor("#FFFFFF"));
                 mPayInStore.setTextColor(Color.parseColor("#004040"));
                 DialogFragmentPayNow method = new DialogFragmentPayNow();
@@ -170,7 +170,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 break;
             case R.id.pay_in_store:
                 mPayInStore.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                mPayOnline.setBackgroundResource(R.drawable.bg_stores_btn_white);
+                mPayOnline.setBackgroundResource(0);
                 mPayOnline.setTextColor(Color.parseColor("#004040"));
                 mPayInStore.setTextColor(Color.parseColor("#FFFFFF"));
                 DialogFragmentPayInstore payInstore = new DialogFragmentPayInstore();

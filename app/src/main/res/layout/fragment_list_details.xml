@@ -51,7 +51,7 @@
             android:id="@+id/recycler_view_list_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="55dp"
+            android:paddingBottom="43dp"
             android:overScrollMode="never"
             tools:listitem="@layout/row_list_details" />
 
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="2dp"
             android:background="@drawable/bg_submit_btn"
             android:layout_alignParentBottom="true"
             android:gravity="center"

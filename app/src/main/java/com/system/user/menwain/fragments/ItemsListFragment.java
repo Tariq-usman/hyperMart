@@ -3,6 +3,8 @@ package com.system.user.menwain.fragments;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -16,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.viewmodel.CartViewModel;
 
 public class ItemsListFragment extends Fragment implements View.OnClickListener {
-    private TextView mAvailable, mNotAvailable, mTitle, mConfirmBtn, mPrice, mDistance, mAvailItems, mNotAvailItmes;
+    private CartViewModel cartViewModel;
+    private TextView mAvailable, mNotAvailable, mTitle, mConfirmBtn, mTotalAmount, mPrice, mDistance, mAvailItems, mNotAvailItmes;
     private View mShowStatusColor;
     private ImageView mBackBtn, mMenu, mMartLogoView;
     private String dist;
@@ -33,17 +37,30 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener 
 
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
+        mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
+        cartViewModel = ViewModelProviders.of(ItemsListFragment.this).get(CartViewModel.class);
+        cartViewModel.getTotalCartPrice().observe(this, new Observer<Float>() {
+            @Override
+            public void onChanged(Float aFloat) {
+                if (aFloat != null){
+                    mTotalAmount.setText(aFloat.toString());
+                }else {
+                    mTotalAmount.setText(00.0 +"");
+                }
+            }
+        });
 //        mMenu = getActivity().findViewById(R.id.iv_open_drawer);
+
         mAvailable = view.findViewById(R.id.available_items);
         mNotAvailable = view.findViewById(R.id.not_available_items);
         mTitle = getActivity().findViewById(R.id.toolbar_title);
         mTitle.setText("Items List");
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mConfirmBtn = view.findViewById(R.id.confirm_btn_items_list);
-        mPrice = view.findViewById(R.id.sort_by_price_view_item_details);
-        mDistance = view.findViewById(R.id.distance_view_item_details);
-        mMartLogoView = view.findViewById(R.id.mart_logo_view_item_details);
-        mShowStatusColor = view.findViewById(R.id.show_status_color_view_details);
+//        mPrice = view.findViewById(R.id.sort_by_price_view_item_details);
+//        mDistance = view.findViewById(R.id.distance_view_item_details);
+//        mMartLogoView = view.findViewById(R.id.mart_logo_view_item_details);
+//        mShowStatusColor = view.findViewById(R.id.show_status_color_view_details);
         mAvailItems = view.findViewById(R.id.count_avail_items);
         mNotAvailItmes = view.findViewById(R.id.count_not_avail_items);
 
@@ -65,7 +82,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener 
             mNotAvailItmes.setText(String.valueOf(not_available_items));
         }
 
-       // getIncommingBundle();
+        // getIncommingBundle();
 
         return view;
     }
@@ -119,7 +136,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener 
             DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
             deliveryTime.show(getFragmentManager(), "Select Method");
         } else if (id == R.id.iv_back) {
-            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
             mTitle.setText("Stores");
             mBackBtn.setVisibility(View.GONE);
         }

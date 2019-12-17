@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="40dp"
             android:overScrollMode="never"
             tools:listitem="@layout/row_items_favourite" />
 
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/bg_submit_btn"
             android:layout_alignParentBottom="true"
             android:gravity="center"

@@ -18,23 +18,31 @@ import com.system.user.menwain.adapters.SelectedItemsFilterAdapter;
 
 public class ItemDetailsFragment extends Fragment implements View.OnClickListener {
 
-    private String [] storesName={"Madina c carry","Metro c carry","Makro c carry","Pak c carry","Alrasheed c carry","ARY c carry",
-            "Meezan c carry","Lahore c carry","ARY c carry","Meezan c carry"};
-    private String [] productsName={"Cooking oil","Chicken","Meat","Butter","Eggs","Chocolate","Frouts","Carrot","Mango","Vegetables"};
-    private int [] items = {R.drawable.coocking_oil,R.drawable.chikken,R.drawable.meat,R.drawable.butter,R.drawable.eggs,R.drawable.choclate,R.drawable.frouts,
-            R.drawable.carrot,R.drawable.mango,R.drawable.vagitables};
+    private String[] storesName = {"Madina c carry", "Metro c carry", "Makro c carry", "Pak c carry", "Alrasheed c carry", "ARY c carry",
+            "Meezan c carry", "Lahore c carry", "ARY c carry", "Meezan c carry"};
+    private String[] productsName = {"Cooking oil", "Chicken", "Meat", "Butter", "Eggs", "Chocolate", "Frouts", "Carrot", "Mango", "Vegetables"};
+    private int[] items = {R.drawable.coocking_oil, R.drawable.chikken, R.drawable.meat, R.drawable.butter, R.drawable.eggs, R.drawable.choclate, R.drawable.frouts,
+            R.drawable.carrot, R.drawable.mango, R.drawable.vagitables};
     RecyclerView recyclerViewRelateItems;
     SelectedItemsFilterAdapter selectedItemsFilterAdapter;
     TextView mDescription, mSpecification, mReviews;
-    TextView mTextView, mAddToCart,mTitleItemDetails;
-    ImageView mCart,mBack,mMenu;
+    TextView mTextView, mAddToCart, mTitleItemDetails;
+    ImageView mCart, mBack, mItem;
+    Bundle bundle;
+    String status;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_item_details,container,false);
+        View view = inflater.inflate(R.layout.fragment_item_details, container, false);
 
         getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemDescriptionFragment()).commit();
+
+        mItem = view.findViewById(R.id.selected_item_view);
+        bundle = this.getArguments();
+        mItem.setImageResource(Integer.parseInt(bundle.getString("image_url", "")));
+        status = bundle.getString("status", "");
+
 
         mDescription = view.findViewById(R.id.description_btn);
         mSpecification = view.findViewById(R.id.specificatin_btn);
@@ -60,10 +68,10 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         recyclerViewRelateItems = view.findViewById(R.id.recycler_view_related_items_item_details);
         recyclerViewRelateItems.setHasFixedSize(true);
         recyclerViewRelateItems.setLayoutManager(new GridLayoutManager(getContext(),
-                2, GridLayoutManager.VERTICAL, false));
-        selectedItemsFilterAdapter = new SelectedItemsFilterAdapter(getContext(),productsName,items,storesName);
+                3, GridLayoutManager.VERTICAL, false));
+        selectedItemsFilterAdapter = new SelectedItemsFilterAdapter(getContext(), productsName, items, storesName);
         recyclerViewRelateItems.setAdapter(selectedItemsFilterAdapter);
-    return view;
+        return view;
     }
 
     @Override
@@ -84,11 +92,17 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
             mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
             mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_selected));
-        }else if (id == R.id.add_to_cart){
+        } else if (id == R.id.add_to_cart) {
 
-        }else if (id == R.id.iv_back){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
-            mTitleItemDetails.setText("Items");
+        } else if (id == R.id.iv_back) {
+            if (status == "1") {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).addToBackStack(null).commit();
+                mTitleItemDetails.setText("Items");
+
+            } else {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
+                mTitleItemDetails.setText("Items");
+            }
         }
     }
 

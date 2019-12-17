@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.RateUsActivity;
@@ -19,7 +20,7 @@ import androidx.fragment.app.Fragment;
 public class MoreFragment extends Fragment implements View.OnClickListener {
 
     private ImageView ivOrder, ivCustomerServices,ivStores,ivBack,mSettingsIcon;
-    private TextView tvTitle,tvMyAccount, tvProfile, tvSettings, tvHelp, tvAbout, tvRateApp, tvLogout;
+    private TextView tvTitle,tvOrderHistory, tvProfile, tvSettings, tvHelp, tvAbout, tvRateApp, tvLogout;
 
     @Nullable
     @Override
@@ -32,7 +33,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         mSettingsIcon.setVisibility(View.VISIBLE);
         mSettingsIcon.setImageResource(R.drawable.ic_settings);
         ivStores = view.findViewById(R.id.iv_stores);
-        tvMyAccount = view.findViewById(R.id.tv_my_account);
+        tvOrderHistory= view.findViewById(R.id.tv_order_history);
         tvProfile = view.findViewById(R.id.tv_profile);
         ivOrder = view.findViewById(R.id.iv_order);
         ivCustomerServices = view.findViewById(R.id.iv_customer_services);
@@ -44,7 +45,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
         ivBack.setOnClickListener(this);
         ivStores.setOnClickListener(this);
-        tvMyAccount.setOnClickListener(this);
+        tvOrderHistory.setOnClickListener(this);
         tvProfile.setOnClickListener(this);
         ivOrder.setOnClickListener(this);
         ivCustomerServices.setOnClickListener(this);
@@ -78,11 +79,16 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new RateUsActivity()).addToBackStack(null).commit();
                 mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
+            case R.id.tv_order_history:
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrderHistoryFragment()).addToBackStack(null).commit();
+                mSettingsIcon.setVisibility(View.INVISIBLE);
+                break;
             case R.id.tv_log_out:
                 SharedPreferences preferences = getActivity().getSharedPreferences("login", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("phone_no", "");
                 editor.apply();
+                Toast.makeText(getContext(), "Logout Successfully..", Toast.LENGTH_SHORT).show();
                 break;
         }
 

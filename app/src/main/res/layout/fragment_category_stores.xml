@@ -53,39 +53,8 @@
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
-<!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/products_category"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight=".5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_selected"
-            android:gravity="center"
-            android:text="Categories"
-            android:textColor="@color/textColor" />
-
-        <TextView
-            android:id="@+id/products_stores"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft=".5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_unselected"
-            android:gravity="center"
-            android:text="Stores"
-            android:textColor="@color/textColor" />
-
-    </LinearLayout>
--->
-
     <FrameLayout
         android:id="@+id/products_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>

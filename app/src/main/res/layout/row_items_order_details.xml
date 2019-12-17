@@ -14,8 +14,8 @@
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             app:cardElevation="3dp"
             android:layout_margin="4dp"
             android:layout_gravity="center"
@@ -63,17 +63,30 @@
                     android:text="Average"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="12sp" />
-
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="2dp"
-                    android:text="$150"
+                    android:layout_marginHorizontal="3dp"
+                    android:text="SAR"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="12sp"
                     android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="2dp"
+                        android:text="150"
+                        android:textColor="@color/darkGreenColor"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-            </LinearLayout>
+                </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
