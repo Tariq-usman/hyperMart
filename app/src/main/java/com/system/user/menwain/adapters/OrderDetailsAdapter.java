@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.system.user.menwain.activities.ItemReviewFragment;
+import com.system.user.menwain.fragments.ItemReviewFragment;
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;

@@ -1,11 +1,9 @@
-package com.system.user.menwain.activities;
+package com.system.user.menwain.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.OrderDetailsFragment;
 
 public class ItemReviewFragment extends Fragment {
 
@@ -35,16 +34,16 @@ public class ItemReviewFragment extends Fragment {
         mSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrderDetailsActivity()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrderDetailsFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.INVISIBLE);
-//                startActivity(new Intent(getContext(),RateUsActivity.class));
+//                startActivity(new Intent(getContext(),RateUsFragment.class));
 //                finish();
             }
         });
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrderDetailsActivity()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrderDetailsFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.INVISIBLE);
 //                finish();
             }

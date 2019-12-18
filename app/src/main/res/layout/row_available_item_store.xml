@@ -137,7 +137,7 @@
                     android:id="@+id/show_status_color_view"
                     android:layout_width="match_parent"
                     android:layout_height="4dp"
-                    android:background="#36F43F" />
+                    android:background="@color/lightBlueColor" />
             </LinearLayout>
             <ImageView
                 android:id="@+id/mart_logo_view"

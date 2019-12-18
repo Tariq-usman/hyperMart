@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.OrderDetailsActivity;
+import com.system.user.menwain.fragments.OrderDetailsFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +38,7 @@ public class AllOrdersAdapter extends RecyclerView.Adapter<AllOrdersAdapter.Orde
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OrderDetailsActivity fragment = new OrderDetailsActivity();
+                OrderDetailsFragment fragment = new OrderDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.nav_host_fragment,fragment).commit();
             }

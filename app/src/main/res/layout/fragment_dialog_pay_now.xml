@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="Prepare and Pick up From Store"
                 android:textColor="@color/darkGreenColor" />
+
         </RadioGroup>
         <TextView
             android:id="@+id/confirm_dialog_one"

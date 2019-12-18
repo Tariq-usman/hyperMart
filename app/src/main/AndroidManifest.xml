@@ -40,13 +40,12 @@
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".fragments.OrderHistoryFragment" />
-        <activity android:name=".activities.AddressesActivity" />
-        <activity android:name=".activities.RateUsActivity" />
-        <activity android:name=".activities.ItemReviewFragment" />
-        <activity android:name=".activities.OrderDetailsActivity" />
+        <activity android:name=".fragments.RateUsFragment" />
+        <activity android:name=".fragments.ItemReviewFragment" />
+        <activity android:name=".fragments.OrderDetailsFragment" />
         <activity android:name=".fragments.ListDetailsFragment" />
         <activity android:name=".fragments.PaymentFragment" />
-        <activity android:name=".fragments.ItemsListFragment" />
+        <activity android:name=".fragments.AvailNotAvailItemsListsFragment" />
         <activity android:name=".fragments.DeliveryAddressFragment" />
         <activity android:name=".fragments.ItemDetailsFragment" />
         <activity android:name=".activities.ScanActivity" />

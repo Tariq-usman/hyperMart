@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.system.user.menwain.fragments.ItemsListFragment;
+import com.system.user.menwain.fragments.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.R;
 
 import java.util.List;
@@ -53,23 +53,15 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         holder.mAvailableItems.setText(String.valueOf(availItems.get(position)));
         String pos = holder.mDistanceView.getText().toString();
         int total = marts.length;
-        holder.mTotalItems.setText(""+total);
-
-       /* Integer avail_items = availItems.get(position);
-        for (int i = 0; i < marts.length; i++){
-            if (Integer.valueOf(avail_items)<=2){
-
-            }
-        }*/
+        holder.mTotalItems.setText("" + total);
 
         Double abc = distance.get(position);
-        for (int i =0; i<marts.length; i++){
-            if (Double.valueOf(abc)<= 10){
-                holder.mStatusColorView.setBackgroundColor(Color.parseColor("#36F43F"));
-            }
-            else if (Double.valueOf(abc)>10 && Double.valueOf(abc)<=15) {
+        for (int i = 0; i < marts.length; i++) {
+            if (Double.valueOf(abc) <= 10) {
+                holder.mStatusColorView.setBackgroundColor(Color.parseColor("#00c1bd"));
+            } else if (Double.valueOf(abc) > 10 && Double.valueOf(abc) <= 15) {
                 holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFFFEB3B"));
-            }else {
+            } else {
                 holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFF44336"));
 
             }
@@ -77,17 +69,17 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ItemsListFragment fragment = new ItemsListFragment();
-                FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+                AvailNotAvailItemsListsFragment fragment = new AvailNotAvailItemsListsFragment();
+                FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle = new Bundle();
-                bundle.putString("price",holder.mSortByPrice.getText().toString());
-                bundle.putString("distance",holder.mDistanceView.getText().toString());
+                bundle.putString("price", holder.mSortByPrice.getText().toString());
+                bundle.putString("distance", holder.mDistanceView.getText().toString());
                 bundle.putString("image_url", String.valueOf(marts[position]));
                 fragment.setArguments(bundle);
-                transaction.replace(R.id.nav_host_fragment,fragment).addToBackStack(null).commit();
+                transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
 
                 //((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().
-               /* Intent intent = new Intent(context, ItemsListFragment.class);
+               /* Intent intent = new Intent(context, AvailNotAvailItemsListsFragment.class);
                 intent.putExtra("price",holder.mSortByPrice.getText().toString());
                 intent.putExtra("distance",holder.mDistanceView.getText().toString());
                 intent.putExtra("image_url",marts[position]);
@@ -109,8 +101,9 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView mMartImageView;
-        private TextView mDistanceView,mSortByPrice,mAvailableItems,mTotalItems;
+        private TextView mDistanceView, mSortByPrice, mAvailableItems, mTotalItems;
         private View mStatusColorView;
+
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             mMartImageView = itemView.findViewById(R.id.mart_logo_view);

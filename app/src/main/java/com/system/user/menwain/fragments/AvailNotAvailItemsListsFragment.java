@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.system.user.menwain.R;
 import com.system.user.menwain.viewmodel.CartViewModel;
 
-public class ItemsListFragment extends Fragment implements View.OnClickListener {
+public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
     private CartViewModel cartViewModel;
     private TextView mAvailable, mNotAvailable, mTitle, mConfirmBtn, mTotalAmount, mPrice, mDistance, mAvailItems, mNotAvailItmes;
     private View mShowStatusColor;
@@ -29,16 +29,17 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener 
     public String available_items, not_available_items;
     SharedPreferences availPreferences, notAvailPrefrences;
     Bundle bundle;
+    public static Boolean isCheck = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_items_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_avail_not_avial_items_lists, container, false);
 
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
         mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
-        cartViewModel = ViewModelProviders.of(ItemsListFragment.this).get(CartViewModel.class);
+        cartViewModel = ViewModelProviders.of(AvailNotAvailItemsListsFragment.this).get(CartViewModel.class);
         cartViewModel.getTotalCartPrice().observe(this, new Observer<Float>() {
             @Override
             public void onChanged(Float aFloat) {

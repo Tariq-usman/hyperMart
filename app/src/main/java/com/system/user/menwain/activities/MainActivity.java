@@ -35,7 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public AppBarConfiguration mAppBarConfiguration;
     private ImageView mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private String langauge;
     SharedPreferences preferences;
     SharedPreferences.Editor editor, editor1;
-     boolean isLogin= false;
+    boolean isLogin, isSignUp = false;
 
 
     @Override
@@ -55,10 +55,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         Intent intent = getIntent();
-        Log.e ("IS LOGIN", String.valueOf(isLogin));
-        if (intent!=null){
-            Log.e ("IS LOGIN", String.valueOf(isLogin));
+        Log.e("IS LOGIN", String.valueOf(isLogin));
+        if (intent != null) {
+            Log.e("IS LOGIN", String.valueOf(isLogin));
             isLogin = intent.getBooleanExtra("isLogin", false);
+            isSignUp = intent.getBooleanExtra("is_sign_up", false);
         }
         preferences = getSharedPreferences("settings", Activity.MODE_PRIVATE);
         langauge = preferences.getString("my_lang", "");
@@ -164,9 +165,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         });*/
 
         if (savedInstanceState == null) {
-            if (isLogin==true){
+            if (isLogin == true) {
+                mHome.setImageResource(R.drawable.ic_housewhite);
+                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+                mCategory.setImageResource(R.drawable.ic_searchwhite);
+                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+                mFavourite.setImageResource(R.drawable.ic_likewhite);
+                tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+                mCart.setImageResource(R.drawable.ic_cart_blue);
+                tvCart.setTextColor(Color.parseColor("#00c1bd"));
+                mMore.setImageResource(R.drawable.ic_morewhite);
+                tvMore.setTextColor(Color.parseColor("#FFFFFF"));
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment(), "del").commit();
-            }else{
+            } else if (isSignUp == true) {
+                mHome.setImageResource(R.drawable.ic_housewhite);
+                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+                mCategory.setImageResource(R.drawable.ic_searchwhite);
+                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+                mFavourite.setImageResource(R.drawable.ic_likewhite);
+                tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+                mCart.setImageResource(R.drawable.ic_cart_blue);
+                tvCart.setTextColor(Color.parseColor("#00c1bd"));
+                mMore.setImageResource(R.drawable.ic_morewhite);
+                tvMore.setTextColor(Color.parseColor("#FFFFFF"));
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment(), "del").commit();
+            } else {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
             }
 
@@ -318,7 +341,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
         } else if (id == R.id.more_layout) {
             mActionBarTitle.setText("More");
-           // ivMenu.setVisibility(View.VISIBLE);
+            // ivMenu.setVisibility(View.VISIBLE);
             ivBack.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#FFFFFF"));
@@ -385,7 +408,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 mMore.setImageResource(R.drawable.ic_morewhite);
                 tvMore.setTextColor(Color.parseColor("#FFFFFF"));
             case R.id.nav_rate_app:
-                startActivity(new Intent(getApplicationContext(), RateUsActivity.class));
+                startActivity(new Intent(getApplicationContext(), RateUsFragment.class));
                 break;
             case R.id.nav_logout:
                 SharedPreferences preferences = getSharedPreferences("login", Activity.MODE_PRIVATE);
@@ -403,7 +426,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("Home");
-         if (fragment != null && fragment.isVisible()) {
+        if (fragment != null && fragment.isVisible()) {
             Intent homeIntent = new Intent(Intent.ACTION_MAIN);
             homeIntent.addCategory(Intent.CATEGORY_HOME);
             homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -413,7 +436,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             ivBack.setVisibility(View.INVISIBLE);
 
             ivListGridView.setVisibility(View.INVISIBLE);
-           // ivMenu.setVisibility(View.VISIBLE);
+            // ivMenu.setVisibility(View.VISIBLE);
 
             mActionBarTitle.setText("Home");
             mHome.setImageResource(R.drawable.ic_houseblue);

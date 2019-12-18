@@ -62,7 +62,9 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         int id= view.getId();
 
         if (id==R.id.confirm_btn){
-            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,itemsAvailabilityStoresFragment).addToBackStack(backStateName).commit();
+            DialogFragmentPayMethod payMethod = new DialogFragmentPayMethod();
+            payMethod.show(getFragmentManager(),"payment method");
+            //getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,itemsAvailabilityStoresFragment).addToBackStack(backStateName).commit();
 //            startActivity(new Intent(getContext(), ItemsAvailabilityStoresFragment.class));
 //            getActivity().finish();
         }else if (id == R.id.iv_back){

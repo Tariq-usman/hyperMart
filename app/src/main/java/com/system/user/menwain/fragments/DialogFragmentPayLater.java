@@ -15,13 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class DialogFragmentPayInstore extends DialogFragment implements View.OnClickListener {
+public class DialogFragmentPayLater extends DialogFragment implements View.OnClickListener {
     TextView mConfirm,mTitleView;
     ImageView mCloseBtn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dialog_pay_instore,container,false);
+        View view = inflater.inflate(R.layout.fragment_dialog_pay_later,container,false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         mConfirm = view.findViewById(R.id.confirm_dialog_one);

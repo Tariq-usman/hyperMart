@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.RateUsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,7 +75,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_rate_app:
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new RateUsActivity()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new RateUsFragment()).addToBackStack(null).commit();
                 mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_order_history:

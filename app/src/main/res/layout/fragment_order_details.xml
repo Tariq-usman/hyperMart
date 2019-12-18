@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.OrderDetailsActivity">
+    tools:context=".fragments.OrderDetailsFragment">
 <!--<include layout="@layout/header_item_details"/>-->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

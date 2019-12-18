@@ -12,6 +12,7 @@ import com.system.user.menwain.fragments.DeliveryAddressFragment;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     TextView mLoginInstead,mRegister;
+    boolean isSignUp = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +31,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         int id = view.getId();
 
         if (id==R.id.register){
-            startActivity(new Intent(getApplicationContext(), DeliveryAddressFragment.class));
-            finish();
+            isSignUp = true;
+            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+            intent.putExtra("is_sign_up", isSignUp);
+            startActivity(intent);
         }else
         if (id==R.id.login_instead){
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));

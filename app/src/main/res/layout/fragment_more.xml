@@ -44,7 +44,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Stores"
+                            android:text="Browse Stores"
                             android:textColor="@color/whiteColor"
                             android:textSize="@dimen/eighteen_sp"
                             android:layout_gravity="center_vertical"

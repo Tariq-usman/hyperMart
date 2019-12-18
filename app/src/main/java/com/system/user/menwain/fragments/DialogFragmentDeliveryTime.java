@@ -52,7 +52,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                 dismiss();
                 break;
             case R.id.close_back_view:
-                /*DialogFragmentPayNow dialogFragmentPayNow = new DialogFragmentPayNow();
+                /*DialogFragmentPayMethod dialogFragmentPayNow = new DialogFragmentPayMethod();
                 dialogFragmentPayNow.show(getFragmentManager(),"Method Fragment");*/
                 dismiss();
                 break;

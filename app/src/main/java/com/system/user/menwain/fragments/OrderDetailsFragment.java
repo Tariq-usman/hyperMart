@@ -1,4 +1,4 @@
-package com.system.user.menwain.activities;
+package com.system.user.menwain.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +17,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.OrderDetailsAdapter;
 import com.system.user.menwain.fragments.OrdersFragment;
 
-public class OrderDetailsActivity extends Fragment {
+public class OrderDetailsFragment extends Fragment {
    // private int[] products = {R.drawable.productpic, R.drawable.productdisplay, R.drawable.productpic, R.drawable.productdisplay, R.drawable.productpic, R.drawable.productdisplay};
 
     private String [] storesName={"Madina c carry","Metro c carry","Makro c carry","Pak c carry","Alrasheed c carry","ARY c carry",
@@ -37,6 +37,7 @@ public class OrderDetailsActivity extends Fragment {
 
         mTitle = getActivity().findViewById(R.id.toolbar_title);
         mTitle.setText("Order Details");
+        
         mBack = getActivity().findViewById(R.id.iv_back);
         mBack.setVisibility(View.VISIBLE);
         mBack.setOnClickListener(new View.OnClickListener() {

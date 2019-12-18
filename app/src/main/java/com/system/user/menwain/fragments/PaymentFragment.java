@@ -35,7 +35,7 @@ public class PaymentFragment extends Fragment {
         mBackBtnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new ItemsListFragment())
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new AvailNotAvailItemsListsFragment())
                         .addToBackStack(null).commit();
                 mPaymentTitle.setText("Items List");
 

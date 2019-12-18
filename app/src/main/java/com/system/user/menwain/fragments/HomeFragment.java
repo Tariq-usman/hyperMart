@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView recyclerViewExploreAndShop, recyclerViewExplore, recyclerViewShop;
     private LinearLayoutManager linearLayoutManager;
-    private ImageView mBarCodeScanner;
+    private ImageView mBarCodeScanner,mBackBtn;
     private TextView tvSeeAllExploreShop, tvSeeAllExplore, tvSeeAllShop;
     private TabLayout tabLayout;
 
@@ -57,6 +57,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         mPager = view.findViewById(R.id.pager);
         tabLayout = view.findViewById(R.id.tab_layout);
+        mBackBtn = getActivity().findViewById(R.id.iv_back);
+        mBackBtn.setVisibility(View.INVISIBLE);
 
         mBarCodeScanner = view.findViewById(R.id.bar_code_code_scanner_home);
         mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
@@ -101,12 +103,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void init() {
-
         mPager.setAdapter(new Banner_SlidingImages_Adapter(getContext(), IMAGES));
         tabLayout.setupWithViewPager(mPager, true);
-
         NUM_PAGES = IMAGES.length;
-
         /*After setting the adapter use the timer */
         handler = new Handler();
         runnable = new Runnable() {
@@ -120,7 +119,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 handler.postDelayed(this, PERIOD_MS);
             }
         };
-
     }
 
     @Override
@@ -146,10 +144,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 bundle.putString("explore", "1");
                 allItemsFragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
-                /*Intent intent_explore = new Intent(getContext(), AllItemsFragment.class);
-                intent_explore.putExtra("explore", 2);
-                intent_explore.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent_explore);*/
                 break;
             case R.id.tv_see_all_explore:
                 allItemsFragment = new AllItemsFragment();

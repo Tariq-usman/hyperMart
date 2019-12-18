@@ -47,7 +47,7 @@
                         android:layout_marginLeft="15dp"
                         android:text="First Name"
                         android:textColor="@color/darkGreenColor"
-                        android:textSize="@dimen/sixteen_sp" />
+                        android:textSize="@dimen/fourteen_sp" />
 
                     <EditText
                         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                         android:inputType="text"
                         android:textColor="@color/whiteColor"
                         android:textColorHint="@color/whiteColor"
-                        android:textSize="@dimen/sixteen_sp" />
+                        android:textSize="@dimen/fourteen_sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -72,9 +72,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:text="First Name"
+                        android:text="Last Name"
                         android:textColor="@color/darkGreenColor"
-                        android:textSize="@dimen/sixteen_sp" />
+                        android:textSize="@dimen/fourteen_sp" />
 
                     <EditText
                         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                         android:inputType="text"
                         android:textColor="@color/whiteColor"
                         android:textColorHint="@color/whiteColor"
-                        android:textSize="@dimen/sixteen_sp" />
+                        android:textSize="@dimen/fourteen_sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -96,7 +96,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="Phone No"
                 android:textColor="@color/darkGreenColor"
-                android:textSize="@dimen/sixteen_sp" />
+                android:textSize="@dimen/fourteen_sp" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                 android:inputType="number"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor"
-                android:textSize="@dimen/sixteen_sp" />
+                android:textSize="@dimen/fourteen_sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -116,7 +116,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="Email Address"
                 android:textColor="@color/darkGreenColor"
-                android:textSize="@dimen/sixteen_sp" />
+                android:textSize="@dimen/fourteen_sp" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                 android:inputType="textEmailAddress"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor"
-                android:textSize="@dimen/sixteen_sp" />
+                android:textSize="@dimen/fourteen_sp" />
 
         </LinearLayout>
 
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sex"
                 android:textColor="@color/darkGreenColor"
-                android:textSize="@dimen/sixteen_sp" />
+                android:textSize="@dimen/fourteen_sp" />
 
 
             <RadioGroup
@@ -154,13 +154,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Male" />
+                    android:text="Male"
+                    android:textSize="@dimen/fourteen_sp" />
 
                 <RadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Female" />
+                    android:text="Female"
+                    android:textSize="@dimen/fourteen_sp" />
             </RadioGroup>
 
         </LinearLayout>
@@ -177,7 +179,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="Create Password"
                 android:textColor="@color/darkGreenColor"
-                android:textSize="@dimen/sixteen_sp" />
+                android:textSize="@dimen/fourteen_sp" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -189,7 +191,7 @@
                 android:inputType="textPassword"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor"
-                android:textSize="@dimen/sixteen_sp" />
+                android:textSize="@dimen/fourteen_sp" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -201,7 +203,7 @@
                 android:inputType="textPassword"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor"
-                android:textSize="@dimen/sixteen_sp" />
+                android:textSize="@dimen/fourteen_sp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -1,11 +1,9 @@
-package com.system.user.menwain.activities;
+package com.system.user.menwain.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,7 @@ import android.widget.TextView;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.MoreFragment;
 
-public class RateUsActivity extends Fragment {
+public class RateUsFragment extends Fragment {
 
     TextView mConfirmBtn, mTitle;
     ImageView mBackBtn;
@@ -24,7 +22,7 @@ public class RateUsActivity extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_rate_us,container,false);
+        View view = inflater.inflate(R.layout.fragment_rate_us,container,false);
 
         mConfirmBtn = view.findViewById(R.id.submit);
         mTitle = getActivity().findViewById(R.id.toolbar_title);

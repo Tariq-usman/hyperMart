@@ -8,11 +8,12 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_horizontal"
         android:layout_marginHorizontal="6dp"
-        android:layout_marginVertical="8dp"
+        android:layout_marginVertical="4dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
@@ -39,6 +40,7 @@
                 android:id="@+id/tv_all_items_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/fourteen_sp"
                 android:layout_marginTop="4dp"
                 android:text="ONLINE DEALS" />
 
@@ -74,7 +76,7 @@
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginHorizontal="1dp"
                     android:numStars="1"
                     android:rating="5" />
 

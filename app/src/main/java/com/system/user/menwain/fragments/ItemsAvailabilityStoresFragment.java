@@ -30,15 +30,21 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private RecyclerView recyclerViewAvailableItemsStore;
     ItemsAvailabilityStoresAdapter itemsAvailabilityStoresAdapter;
 
-    private TextView mTitleView, mPayOnline, mPayInStore,mSortByDistance,mSortByPrice,mSortByAvailability;
-    private ImageView mBackBtn,mMenu;
+    private TextView mTitleView, mPayNow, mPayLater, mSortByDistance, mSortByPrice, mSortByAvailability;
+    private ImageView mBackBtn, mMenu;
+    Bundle bundle;
+    private Boolean pay_now, pay_later = false;
+    public static Boolean isCheck = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_items_availability_stores,container,false);
+        View view = inflater.inflate(R.layout.fragment_items_availability_stores, container, false);
+        bundle = this.getArguments();
+
+
         distance = new ArrayList<>();
-        distance.add( 11.3);
+        distance.add(11.3);
         distance.add(9.);
         distance.add(17.0);
         distance.add(11.3);
@@ -68,14 +74,14 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         mSortByAvailability = view.findViewById(R.id.sort_by_availability);
         mTitleView = getActivity().findViewById(R.id.toolbar_title);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mPayInStore = view.findViewById(R.id.pay_in_store);
-        mPayOnline = view.findViewById(R.id.pay_online);
+        mPayLater = view.findViewById(R.id.pay_later);
+        mPayNow = view.findViewById(R.id.pay_now);
        /* mMenu = getActivity().findViewById(R.id.iv_open_drawer);
         mMenu.setVisibility(View.GONE);*/
         mBackBtn.setOnClickListener(this);
         mBackBtn.setVisibility(View.VISIBLE);
-        mPayOnline.setOnClickListener(this);
-        mPayInStore.setOnClickListener(this);
+        mPayNow.setOnClickListener(this);
+        mPayLater.setOnClickListener(this);
         mSortByDistance.setOnClickListener(this);
         mSortByPrice.setOnClickListener(this);
         mSortByAvailability.setOnClickListener(this);
@@ -83,11 +89,35 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 //        mBackBtn.setImageResource(R.drawable.ic_backwhite);
         mTitleView.setText("Stores");
 
+
+
+            if (bundle !=null ) {
+                pay_now = bundle.getBoolean("pay_now", false);
+                pay_later = bundle.getBoolean("pay_later", false);
+                if (pay_now == true) {
+                    mPayNow.setBackgroundResource(R.drawable.bg_store_btn_colored);
+                    mPayLater.setBackgroundResource(0);
+                    mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
+                    mPayLater.setTextColor(Color.parseColor("#004040"));
+                } else {
+                    mPayLater.setBackgroundResource(R.drawable.bg_store_btn_colored);
+                    mPayNow.setBackgroundResource(0);
+                    mPayNow.setTextColor(Color.parseColor("#004040"));
+                    mPayLater.setTextColor(Color.parseColor("#FFFFFF"));
+                }
+            } else {
+                mPayNow.setBackgroundResource(R.drawable.bg_store_btn_colored);
+                mPayLater.setBackgroundResource(0);
+                mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
+                mPayLater.setTextColor(Color.parseColor("#004040"));
+            }
+
+
         recyclerViewAvailableItemsStore = view.findViewById(R.id.recycler_view_available_item_store);
         recyclerViewAvailableItemsStore.setHasFixedSize(true);
         recyclerViewAvailableItemsStore.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(marts, distance,availItems, price,getContext());
+        itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(marts, distance, availItems, price, getContext());
         recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
 
         return view;
@@ -106,7 +136,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
                 //Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 distance.clear();
-                distance.add( 11.3);
+                distance.add(11.3);
                 distance.add(9.);
                 distance.add(17.0);
                 distance.add(11.3);
@@ -144,7 +174,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 
                 mSortByAvailability.setBackgroundResource(0);
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
-               // Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 price.clear();
                 price.add(23);
                 price.add(54);
@@ -156,24 +186,24 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                 break;
             case R.id.iv_back:
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new DeliveryAddressFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
                 mTitleView.setText("Choose Location");
                 mBackBtn.setVisibility(View.GONE);
                 break;
-            case R.id.pay_online:
-                mPayOnline.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                mPayInStore.setBackgroundResource(0);
-                mPayOnline.setTextColor(Color.parseColor("#FFFFFF"));
-                mPayInStore.setTextColor(Color.parseColor("#004040"));
+            case R.id.pay_now:
+                mPayNow.setBackgroundResource(R.drawable.bg_store_btn_colored);
+                mPayLater.setBackgroundResource(0);
+                mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
+                mPayLater.setTextColor(Color.parseColor("#004040"));
                 DialogFragmentPayNow method = new DialogFragmentPayNow();
                 method.show(getFragmentManager(), "pay online");
                 break;
-            case R.id.pay_in_store:
-                mPayInStore.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                mPayOnline.setBackgroundResource(0);
-                mPayOnline.setTextColor(Color.parseColor("#004040"));
-                mPayInStore.setTextColor(Color.parseColor("#FFFFFF"));
-                DialogFragmentPayInstore payInstore = new DialogFragmentPayInstore();
+            case R.id.pay_later:
+                mPayLater.setBackgroundResource(R.drawable.bg_store_btn_colored);
+                mPayNow.setBackgroundResource(0);
+                mPayNow.setTextColor(Color.parseColor("#004040"));
+                mPayLater.setTextColor(Color.parseColor("#FFFFFF"));
+                DialogFragmentPayLater payInstore = new DialogFragmentPayLater();
                 payInstore.show(getFragmentManager(), "pay in store");
 
 
