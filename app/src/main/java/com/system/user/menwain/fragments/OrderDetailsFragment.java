@@ -37,7 +37,7 @@ public class OrderDetailsFragment extends Fragment {
 
         mTitle = getActivity().findViewById(R.id.toolbar_title);
         mTitle.setText("Order Details");
-        
+
         mBack = getActivity().findViewById(R.id.iv_back);
         mBack.setVisibility(View.VISIBLE);
         mBack.setOnClickListener(new View.OnClickListener() {
