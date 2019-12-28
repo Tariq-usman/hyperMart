@@ -10,6 +10,7 @@ import com.system.user.menwain.adapters.AllListsAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,10 +21,14 @@ public class AllListsFragment extends Fragment {
 
     RecyclerView recyclerViewAllLists;
     AllListsAdapter allListsAdapter;
+    private CardView mSearchViewAllLists;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_lists,container,false);
+
+        mSearchViewAllLists = getActivity().findViewById(R.id.search_view);
+        mSearchViewAllLists.setVisibility(View.INVISIBLE);
 
         recyclerViewAllLists = view.findViewById(R.id.recycler_view_all_lists);
         recyclerViewAllLists.setHasFixedSize(true);

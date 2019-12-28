@@ -32,8 +32,8 @@ public class ProfileFragment extends Fragment implements
 
         ivBackProfile = getActivity().findViewById(R.id.iv_back);
         ivBackProfile.setVisibility(View.VISIBLE);
-        tvTitleProfile = getActivity().findViewById(R.id.toolbar_title);
-        tvTitleProfile.setText("Profile");
+       /* tvTitleProfile = getActivity().findViewById(R.id.toolbar_title);
+        tvTitleProfile.setText("Profile");*/
 
         ivBackProfile.setOnClickListener(new View.OnClickListener() {
             @Override

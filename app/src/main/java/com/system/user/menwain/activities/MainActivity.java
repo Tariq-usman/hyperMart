@@ -8,8 +8,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -71,61 +73,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         initiateViews();
 
-           /* toolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            getSupportActionBar().setCustomView(R.layout.actionbar);*/
-
-
-
-/*
-        more_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context wrapper = new ContextThemeWrapper(MainActivity.this, R.style.popup_menu);
-                PopupMenu popup = new PopupMenu(wrapper, view);
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.menu_history:
-                                mActionBarTitle.setText("More");
-                                mHome.setImageResource(R.drawable.ic_housewhite);
-                                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
-                                mCategory.setImageResource(R.drawable.ic_searchwhite);
-                                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
-                                mFavourite.setImageResource(R.drawable.ic_likewhite);
-                                tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
-                                mCart.setImageResource(R.drawable.ic_cart_white);
-                                tvCart.setTextColor(Color.parseColor("#FFFFFF"));
-                                mMore.setImageResource(R.drawable.ic_moreblue);
-                                tvMore.setTextColor(Color.parseColor("#00c1bd"));
-                                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
-                                return true;
-                            case R.id.menu_my_list:
-                                mActionBarTitle.setText("List");
-                                mHome.setImageResource(R.drawable.ic_housewhite);
-                                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
-                                mCategory.setImageResource(R.drawable.ic_searchwhite);
-                                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
-                                mFavourite.setImageResource(R.drawable.ic_likewhite);
-                                tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
-                                mCart.setImageResource(R.drawable.ic_cart_white);
-                                tvCart.setTextColor(Color.parseColor("#FFFFFF"));
-                                mMore.setImageResource(R.drawable.ic_moreblue);
-                                tvMore.setTextColor(Color.parseColor("#00c1bd"));
-                                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
-                                return true;
-                        }
-                        return false;
-                    }
-                });
-                popup.inflate(R.menu.popup_menu_more);
-                popup.show();
-            }
-        });
-*/
-
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
 
         cartViewModel.getTotalItemQuantity().observe(this, new Observer<Integer>() {
@@ -143,26 +90,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
         mHome.setImageResource(R.drawable.ic_houseblue);
         tvHome.setTextColor(Color.parseColor("#00c1bd"));
-        mActionBarTitle.setText("Home");
-
-        /*drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.ic_menu);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(GravityCompat.START);
-            }
-        });*/
+//        mActionBarTitle.setText("Home");
 
         if (savedInstanceState == null) {
             if (isLogin == true) {
@@ -193,7 +121,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
             }
 
-//            ivMenu.setVisibility(View.VISIBLE);
         }
     }
 
@@ -220,7 +147,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         more_layout = findViewById(R.id.more_layout);
 
         totalCartQuantity = findViewById(R.id.total_cart_quantity);
-        mActionBarTitle = findViewById(R.id.toolbar_title);
+       // mActionBarTitle = findViewById(R.id.toolbar_title);
 
         more_layout.setOnClickListener(this);
         mHome.setOnClickListener(this);
@@ -277,151 +204,79 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.home_view) {
-            mActionBarTitle.setText("Home");
+          //  mActionBarTitle.setText("Home");
             ivListGridView.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_houseblue);
             ivBack.setVisibility(View.INVISIBLE);
             tvHome.setTextColor(Color.parseColor("#00c1bd"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
-            tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCategory.setTextColor(Color.parseColor("#004040"));
             mFavourite.setImageResource(R.drawable.ic_likewhite);
-            tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+            tvFavourite.setTextColor(Color.parseColor("#004040"));
             mCart.setImageResource(R.drawable.ic_cart_white);
-            tvCart.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCart.setTextColor(Color.parseColor("#004040"));
             mMore.setImageResource(R.drawable.ic_morewhite);
-            tvMore.setTextColor(Color.parseColor("#FFFFFF"));
+            tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
         } else if (id == R.id.category_view) {
-            mActionBarTitle.setText("Category");
+           // mActionBarTitle.setText("Category");
             ivBack.setVisibility(View.INVISIBLE);
             ivListGridView.setVisibility(View.INVISIBLE);
 //  ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
-            tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+            tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchblue);
             tvCategory.setTextColor(Color.parseColor("#00c1bd"));
             mFavourite.setImageResource(R.drawable.ic_likewhite);
-            tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+            tvFavourite.setTextColor(Color.parseColor("#004040"));
             mCart.setImageResource(R.drawable.ic_cart_white);
-            tvCart.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCart.setTextColor(Color.parseColor("#004040"));
             mMore.setImageResource(R.drawable.ic_morewhite);
-            tvMore.setTextColor(Color.parseColor("#FFFFFF"));
+            tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
         } else if (id == R.id.cart) {
-            mActionBarTitle.setText("Cart");
             ivBack.setVisibility(View.INVISIBLE);
             ivListGridView.setVisibility(View.INVISIBLE);
-            //   ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
-            tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+            tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
-            tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCategory.setTextColor(Color.parseColor("#004040"));
             mFavourite.setImageResource(R.drawable.ic_likewhite);
-            tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+            tvFavourite.setTextColor(Color.parseColor("#004040"));
             mCart.setImageResource(R.drawable.ic_cart_blue);
             tvCart.setTextColor(Color.parseColor("#00c1bd"));
             mMore.setImageResource(R.drawable.ic_morewhite);
-            tvMore.setTextColor(Color.parseColor("#FFFFFF"));
+            tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
         } else if (id == R.id.favourite_view) {
-            mActionBarTitle.setText("List");
             ivBack.setVisibility(View.INVISIBLE);
             ivListGridView.setVisibility(View.INVISIBLE);
-            // ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
-            tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+            tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
-            tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCategory.setTextColor(Color.parseColor("#004040"));
             mFavourite.setImageResource(R.drawable.ic_likeblue);
             tvFavourite.setTextColor(Color.parseColor("#00c1bd"));
             mCart.setImageResource(R.drawable.ic_cart_white);
-            tvCart.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCart.setTextColor(Color.parseColor("#004040"));
             mMore.setImageResource(R.drawable.ic_morewhite);
-            tvMore.setTextColor(Color.parseColor("#FFFFFF"));
+            tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
         } else if (id == R.id.more_layout) {
-            mActionBarTitle.setText("More");
-            // ivMenu.setVisibility(View.VISIBLE);
             ivBack.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
-            tvHome.setTextColor(Color.parseColor("#FFFFFF"));
+            tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
-            tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCategory.setTextColor(Color.parseColor("#004040"));
             mFavourite.setImageResource(R.drawable.ic_likewhite);
-            tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+            tvFavourite.setTextColor(Color.parseColor("#004040"));
             mCart.setImageResource(R.drawable.ic_cart_white);
-            tvCart.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCart.setTextColor(Color.parseColor("#004040"));
             mMore.setImageResource(R.drawable.ic_moreblue);
             tvMore.setTextColor(Color.parseColor("#00c1bd"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).commit();
         }
     }
-
-
-   /* @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.nav_my_lists:
-                mActionBarTitle.setText("List");
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
-                mHome.setImageResource(R.drawable.ic_housewhite);
-                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
-                mCategory.setImageResource(R.drawable.ic_searchwhite);
-                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
-                mFavourite.setImageResource(R.drawable.ic_likewhite);
-                tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
-                mCart.setImageResource(R.drawable.ic_cart_white);
-                tvCart.setTextColor(Color.parseColor("#FFFFFF"));
-                mMore.setImageResource(R.drawable.ic_moreblue);
-                tvMore.setTextColor(Color.parseColor("#00c1bd"));
-                break;
-            case R.id.nav_my_order:
-                mActionBarTitle.setText("History");
-                mHome.setImageResource(R.drawable.ic_housewhite);
-                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
-                mCategory.setImageResource(R.drawable.ic_searchwhite);
-                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
-                mFavourite.setImageResource(R.drawable.ic_likewhite);
-                tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
-                mCart.setImageResource(R.drawable.ic_cart_white);
-                tvCart.setTextColor(Color.parseColor("#FFFFFF"));
-                mMore.setImageResource(R.drawable.ic_moreblue);
-                tvMore.setTextColor(Color.parseColor("#00c1bd"));
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
-                break;
-            case R.id.nav_delivery_addresses:
-                startActivity(new Intent(getApplicationContext(), AddressesActivity.class));
-                break;
-            case R.id.nav_history:
-                startActivity(new Intent(getApplicationContext(), OrderHistoryFragment.class));
-                break;
-            case R.id.nav_favourite:
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new FavouriteFragment()).commit();
-                mHome.setImageResource(R.drawable.ic_housewhite);
-                tvHome.setTextColor(Color.parseColor("#FFFFFF"));
-                mCategory.setImageResource(R.drawable.ic_searchwhite);
-                tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
-                mFavourite.setImageResource(R.drawable.ic_likeblue);
-                tvFavourite.setTextColor(Color.parseColor("#00c1bd"));
-                mCart.setImageResource(R.drawable.ic_cart_white);
-                tvCart.setTextColor(Color.parseColor("#FFFFFF"));
-                mMore.setImageResource(R.drawable.ic_morewhite);
-                tvMore.setTextColor(Color.parseColor("#FFFFFF"));
-            case R.id.nav_rate_app:
-                startActivity(new Intent(getApplicationContext(), RateUsFragment.class));
-                break;
-            case R.id.nav_logout:
-                SharedPreferences preferences = getSharedPreferences("login", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("phone_no", "");
-                editor.apply();
-                break;
-        }
-
-     //   drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
-
 
     @Override
     public void onBackPressed() {
@@ -436,19 +291,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             ivBack.setVisibility(View.INVISIBLE);
 
             ivListGridView.setVisibility(View.INVISIBLE);
-            // ivMenu.setVisibility(View.VISIBLE);
-
-            mActionBarTitle.setText("Home");
             mHome.setImageResource(R.drawable.ic_houseblue);
             tvHome.setTextColor(Color.parseColor("#00c1bd"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
-            tvCategory.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCategory.setTextColor(Color.parseColor("#004040"));
             mFavourite.setImageResource(R.drawable.ic_likewhite);
-            tvFavourite.setTextColor(Color.parseColor("#FFFFFF"));
+            tvFavourite.setTextColor(Color.parseColor("#004040"));
             mCart.setImageResource(R.drawable.ic_cart_white);
-            tvCart.setTextColor(Color.parseColor("#FFFFFF"));
+            tvCart.setTextColor(Color.parseColor("#004040"));
             mMore.setImageResource(R.drawable.ic_morewhite);
-            tvMore.setTextColor(Color.parseColor("#FFFFFF"));
+            tvMore.setTextColor(Color.parseColor("#004040"));
         }/*else if (fragment == getSupportFragmentManager().findFragmentByTag("Home")) {
          *//*Intent homeIntent = new Intent(Intent.ACTION_MAIN);
             homeIntent.addCategory(Intent.CATEGORY_HOME);

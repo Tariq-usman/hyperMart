@@ -30,6 +30,8 @@
             android:layout_weight="1"
             android:layout_marginHorizontal="8dp"
             android:hint="List Name"
+            android:inputType="text"
+            android:maxLines="1"
             android:textColorHint="@color/whiteColor"
             android:background="@android:color/transparent"
             android:textColor="@color/whiteColor"

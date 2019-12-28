@@ -35,8 +35,8 @@ public class OrderDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_details,container,false);
 
-        mTitle = getActivity().findViewById(R.id.toolbar_title);
-        mTitle.setText("Order Details");
+       /* mTitle = getActivity().findViewById(R.id.toolbar_title);
+        mTitle.setText("Order Details");*/
 
         mBack = getActivity().findViewById(R.id.iv_back);
         mBack.setVisibility(View.VISIBLE);

@@ -44,8 +44,6 @@ public class DialogFragmentPayMethod extends DialogFragment implements View.OnCl
 
         return view;
     }
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

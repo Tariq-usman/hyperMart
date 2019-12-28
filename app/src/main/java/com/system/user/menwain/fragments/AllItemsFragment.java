@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +50,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     Bundle bundle;
     Toolbar toolbar;
     private TextView fragTitle;
+    private CardView searchViewAllItems;
 
 
     @Nullable
@@ -58,11 +60,13 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        searchViewAllItems = getActivity().findViewById(R.id.search_view);
+        //searchViewAllItems.setVisibility(View.INVISIBLE);
       /*  ivMenu = getActivity().findViewById(R.id.iv_open_drawer);
         ivMenu.setVisibility(View.GONE);*/
 
-        fragTitle = getActivity().findViewById(R.id.toolbar_title);
-        fragTitle.setText("Expole & Shop");
+        /*fragTitle = getActivity().findViewById(R.id.toolbar_title);
+        fragTitle.setText("Expole & Shop");*/
 
         ivListGridView = getActivity().findViewById(R.id.iv_grid_list_view);
         ivListGridView.setVisibility(View.VISIBLE);
@@ -109,7 +113,6 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                 ivBack.setVisibility(View.INVISIBLE);
                // ivMenu.setVisibility(View.VISIBLE);
                 ivListGridView.setVisibility(View.INVISIBLE);
-                fragTitle.setText("Home");
 
                 break;
             case R.id.iv_grid_list_view:

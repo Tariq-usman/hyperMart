@@ -19,6 +19,7 @@ import java.util.Timer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +50,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ImageView mBarCodeScanner,mBackBtn;
     private TextView tvSeeAllExploreShop, tvSeeAllExplore, tvSeeAllShop;
     private TabLayout tabLayout;
+    private CardView mSearchView;
 
     @Nullable
     @Override
@@ -59,8 +61,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         tabLayout = view.findViewById(R.id.tab_layout);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setVisibility(View.INVISIBLE);
+        mSearchView = getActivity().findViewById(R.id.search_view);
+        mSearchView.setVisibility(View.VISIBLE);
 
-        mBarCodeScanner = view.findViewById(R.id.bar_code_code_scanner_home);
+        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
         mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

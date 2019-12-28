@@ -8,10 +8,13 @@
     tools:context=".fragments.ItemDetailsFragment">
     <!--<include
         layout="@layout/header_item_details"/>-->
-
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="none"
         android:overScrollMode="never">
 
         <LinearLayout
@@ -30,39 +33,7 @@
                     android:layout_marginTop="6dp"
                     android:src="@drawable/category" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:gravity="right"
-                    android:orientation="horizontal">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:src="@drawable/ic_dotdark" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:src="@drawable/ic_dotlight" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:src="@drawable/ic_dotlight" />
-
-                </LinearLayout>
             </FrameLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="5dp"
-                android:background="@color/darkGreenColor" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -394,18 +365,6 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/add_to_cart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginVertical="8dp"
-                        android:background="@drawable/bg_submit_btn"
-                        android:gravity="center"
-                        android:paddingHorizontal="80dp"
-                        android:text="Add to Cart"
-                        android:textColor="@color/whiteColor"
-                        android:textSize="@dimen/sixteen_sp" />
 
                 </LinearLayout>
 
@@ -426,11 +385,26 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_related_items_item_details"
                     android:layout_width="match_parent"
-                    android:layout_height="450dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="35dp"
                     android:overScrollMode="never"
                     tools:listitem="@layout/row_selected_items_filter" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <TextView
+        android:id="@+id/add_to_cart"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="6dp"
+        android:background="@drawable/bg_submit_btn"
+        android:gravity="center"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="Add to Cart"
+        android:textColor="@color/whiteColor"
+        android:textSize="@dimen/sixteen_sp" />
+
+</FrameLayout>
+
 </LinearLayout>

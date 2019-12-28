@@ -30,8 +30,8 @@ public class OrdersFragment extends Fragment {
 
         mBackBtnOrders = getActivity().findViewById(R.id.iv_back);
         mBackBtnOrders.setVisibility(View.VISIBLE);
-        mTitleOrder = getActivity().findViewById(R.id.toolbar_title);
-        mTitleOrder.setText("Orders");
+      /*  mTitleOrder = getActivity().findViewById(R.id.toolbar_title);
+        mTitleOrder.setText("Orders");*/
         viewPager = view.findViewById(R.id.vp_orders_container);
 
         viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));

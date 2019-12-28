@@ -25,10 +25,10 @@ public class RateUsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_rate_us,container,false);
 
         mConfirmBtn = view.findViewById(R.id.submit);
-        mTitle = getActivity().findViewById(R.id.toolbar_title);
+      //  mTitle = getActivity().findViewById(R.id.toolbar_title);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setVisibility(View.VISIBLE);
-        mTitle.setText("Rate Us");
+        //mTitle.setText("Rate Us");
 //        mBackBtn.setImageResource(R.drawable.ic_backwhite);
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override

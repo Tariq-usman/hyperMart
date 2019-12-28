@@ -20,6 +20,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -36,6 +37,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     private float totalCartAmount;
     String phone_no;
     Context context;
+    private CardView mSearchViewCart;
 
     @Nullable
     @Override
@@ -46,6 +48,9 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         recyclerViewCartItems = view.findViewById(R.id.recycler_view_cart_items);
         recyclerViewCartItems.setHasFixedSize(true);
         recyclerViewCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mSearchViewCart = getActivity().findViewById(R.id.search_view);
+        mSearchViewCart.setVisibility(View.VISIBLE);
 
         mProceedBtn = view.findViewById(R.id.proceed_btn);
         mProceedBtn.setOnClickListener(this);

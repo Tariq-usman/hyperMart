@@ -13,6 +13,7 @@ import com.system.user.menwain.adapters.StoresAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,7 @@ public class StoresFragment extends Fragment {
     StoresAdapter storesAdapter;
     private ImageView ivBackStores;
     private TextView tvTitleStores;
+    private CardView mSearchStores;
 
     @Nullable
     @Override
@@ -32,14 +34,14 @@ public class StoresFragment extends Fragment {
 
         ivBackStores = getActivity().findViewById(R.id.iv_back);
         ivBackStores.setVisibility(View.VISIBLE);
-        tvTitleStores = getActivity().findViewById(R.id.toolbar_title);
-
+        mSearchStores = getActivity().findViewById(R.id.search_view);
+        mSearchStores.setVisibility(View.VISIBLE);
         ivBackStores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).addToBackStack(null).commit();
                 ivBackStores.setVisibility(View.INVISIBLE);
-                tvTitleStores.setText("More");
+             //   tvTitleStores.setText("More");
             }
         });
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_stores);

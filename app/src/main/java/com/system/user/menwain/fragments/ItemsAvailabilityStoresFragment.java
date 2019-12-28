@@ -72,12 +72,9 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         mSortByPrice = view.findViewById(R.id.sort_by_price_view);
         mSortByDistance = view.findViewById(R.id.sort_by_distance);
         mSortByAvailability = view.findViewById(R.id.sort_by_availability);
-        mTitleView = getActivity().findViewById(R.id.toolbar_title);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mPayLater = view.findViewById(R.id.pay_later);
         mPayNow = view.findViewById(R.id.pay_now);
-       /* mMenu = getActivity().findViewById(R.id.iv_open_drawer);
-        mMenu.setVisibility(View.GONE);*/
         mBackBtn.setOnClickListener(this);
         mBackBtn.setVisibility(View.VISIBLE);
         mPayNow.setOnClickListener(this);
@@ -85,11 +82,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         mSortByDistance.setOnClickListener(this);
         mSortByPrice.setOnClickListener(this);
         mSortByAvailability.setOnClickListener(this);
-
-//        mBackBtn.setImageResource(R.drawable.ic_backwhite);
-        mTitleView.setText("Stores");
-
-
 
             if (bundle !=null ) {
                 pay_now = bundle.getBoolean("pay_now", false);
@@ -134,7 +126,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 
                 mSortByAvailability.setBackgroundResource(0);
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
-                //Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 distance.clear();
                 distance.add(11.3);
                 distance.add(9.);
@@ -174,7 +165,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 
                 mSortByAvailability.setBackgroundResource(0);
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
-                // Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
                 price.clear();
                 price.add(23);
                 price.add(54);
@@ -187,7 +177,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 break;
             case R.id.iv_back:
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
-                mTitleView.setText("Choose Location");
                 mBackBtn.setVisibility(View.GONE);
                 break;
             case R.id.pay_now:

@@ -2,6 +2,7 @@ package com.system.user.menwain.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,22 +27,20 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     private String [] address = {"Home","Office"};
     RecyclerView recyclerViewAddress;
     DelivieryAddressesAdapter delivieryAddressesAdapter;
-
+    private CardView mSearchViewAddress;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_delivey_address,container,false);
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        mSearchViewAddress = getActivity().findViewById(R.id.search_view);
+        mSearchViewAddress.setVisibility(View.INVISIBLE);
 
-        mTitleView = getActivity().findViewById(R.id.toolbar_title);
-      /*  mMenu = getActivity().findViewById(R.id.iv_open_drawer);
-        mMenu.setVisibility(View.GONE);*/
         mBackView = getActivity().findViewById(R.id.iv_back);
         mBackView.setVisibility(View.VISIBLE);
         mConfirmBtn = view.findViewById(R.id.confirm_btn);
 
-        mTitleView.setText("Choose Location");
         mConfirmBtn.setOnClickListener(this);
         mBackView.setOnClickListener(this);
 
@@ -64,13 +63,9 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         if (id==R.id.confirm_btn){
             DialogFragmentPayMethod payMethod = new DialogFragmentPayMethod();
             payMethod.show(getFragmentManager(),"payment method");
-            //getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,itemsAvailabilityStoresFragment).addToBackStack(backStateName).commit();
-//            startActivity(new Intent(getContext(), ItemsAvailabilityStoresFragment.class));
-//            getActivity().finish();
+
         }else if (id == R.id.iv_back){
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
-//            mMenu.setVisibility(View.VISIBLE);
-            mTitleView.setText("Cart");
             mBackView.setVisibility(View.GONE);
         }
 

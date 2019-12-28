@@ -23,14 +23,14 @@
             android:text="Brand"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Nescafe"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -44,14 +44,14 @@
             android:text="Manufacture Number"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="12190644"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -65,14 +65,14 @@
             android:text="Oacjage thucjbess"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="37 centimeters"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -86,14 +86,14 @@
             android:text="Depth"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="368 milimeters"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -107,14 +107,14 @@
             android:text="Package weight in KGs"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="860 grams"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -128,14 +128,14 @@
             android:text="Height"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="124 millimeters"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -149,14 +149,14 @@
             android:text="Width"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="126 millimeters"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -170,14 +170,14 @@
             android:text="Product weight"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="860 grams"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -191,7 +191,7 @@
             android:text="Coffee Format"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -199,7 +199,7 @@
             android:layout_weight="1"
             android:text="Capusles"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -213,14 +213,14 @@
             android:text="Caffeine Type"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Caffeinated"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -234,14 +234,14 @@
             android:text="Coffee Type"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Latte"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -255,14 +255,14 @@
             android:text="Roast Type"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Light"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -276,14 +276,14 @@
             android:text="Size"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="48 Capsules"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 
@@ -297,14 +297,14 @@
             android:text="Coffee Packaging"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Box"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -317,7 +317,7 @@
             android:text="EAN-8"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -325,7 +325,7 @@
             android:layout_weight="1"
             android:text=""
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -338,14 +338,14 @@
             android:text="EAN-13"
             android:layout_weight="1"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="456258951335"
             android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/sixteen_sp" />
+            android:textSize="@dimen/twelve_sp" />
 
     </LinearLayout>
 </LinearLayout>

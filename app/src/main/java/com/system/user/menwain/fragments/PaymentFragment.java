@@ -25,10 +25,6 @@ public class PaymentFragment extends Fragment {
 
 
         mConfirm = view.findViewById(R.id.proceed_btn_payment);
-      /*  mMenuPay = getActivity().findViewById(R.id.iv_open_drawer);
-        mMenuPay.setVisibility(View.GONE);*/
-        mPaymentTitle = getActivity().findViewById(R.id.toolbar_title);
-        mPaymentTitle.setText("Payment");
 
         mBackBtnPay = getActivity().findViewById(R.id.iv_back);
         mBackBtnPay.setVisibility(View.VISIBLE);
@@ -37,7 +33,6 @@ public class PaymentFragment extends Fragment {
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new AvailNotAvailItemsListsFragment())
                         .addToBackStack(null).commit();
-                mPaymentTitle.setText("Items List");
 
             }
         });
@@ -47,10 +42,7 @@ public class PaymentFragment extends Fragment {
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
                         .addToBackStack(null).commit();
-                mPaymentTitle.setText("Cart");
                 mBackBtnPay.setVisibility(View.INVISIBLE);
-                //startActivity(new Intent(getContext(),MainActivity.class));
-               // getActivity().finish();
             }
         });
         return view;

@@ -16,6 +16,7 @@ import com.system.user.menwain.adapters.SelectedItemsNamesAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +32,7 @@ public class ItemsFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private int getPreviousId = CategoryAdapter.passId;
     private ImageView mMenu,mBackBtn;
-    private TextView mTitleview;
+    private CardView mSearchViewItemsFragment;
 
     // private String [] productsName={"Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese"};
     private String[] storesName = {"Madina c carry", "Metro c carry", "Makro c carry", "Pak c carry", "Alrasheed c carry", "ARY c carry",
@@ -45,12 +46,8 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_items, container, false);
 
-     /*   mMenu = getActivity().findViewById(R.id.iv_open_drawer);
-        mMenu.setVisibility(View.GONE);*/
-
-        mTitleview = getActivity().findViewById(R.id.toolbar_title);
-        mTitleview.setText("Items");
-
+        mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
+        mSearchViewItemsFragment.setVisibility(View.INVISIBLE);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setVisibility(View.VISIBLE);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -58,8 +55,6 @@ public class ItemsFragment extends Fragment {
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
-               // mMenu.setVisibility(View.VISIBLE);
-                mTitleview.setText("Category");
             }
         });
 

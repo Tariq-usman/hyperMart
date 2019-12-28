@@ -33,8 +33,6 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_list_details,container,false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        mTitleListDetails= getActivity().findViewById(R.id.toolbar_title);
-        mTitleListDetails.setText("Items Details");
         mConfirmBtn = view.findViewById(R.id.confirm_btn_list_details);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setVisibility(View.VISIBLE);
@@ -57,11 +55,9 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         int id = view.getId();
         if (id == R.id.confirm_btn_list_details) {
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new AllListsFragment()).addToBackStack(null).commit();
-            mTitleListDetails.setText("Lists");
             mBackBtn.setVisibility(View.INVISIBLE);
         } else if (id == R.id.iv_back) {
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new AllListsFragment()).addToBackStack(null).commit();
-            mTitleListDetails.setText("Lists");
             mBackBtn.setVisibility(View.INVISIBLE);
         }
 

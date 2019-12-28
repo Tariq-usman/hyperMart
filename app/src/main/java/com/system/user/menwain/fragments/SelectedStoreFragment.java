@@ -17,6 +17,7 @@ import com.system.user.menwain.adapters.StoresAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +31,7 @@ public class SelectedStoreFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private Context context;
     private ImageView ivBackBtnSelectedStore;
+    private CardView mSearchViewSelecredStore;
 
 
     private String[] storesName = {"Madina", "Metro", "Makro", "Pak", "Alrasheed", "ARY", "Meezan", "Lahore", "ARY", "Meezan", "Lahore"};
@@ -40,6 +42,8 @@ public class SelectedStoreFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_store, container, false);
 
+        mSearchViewSelecredStore = getActivity().findViewById(R.id.search_view);
+        mSearchViewSelecredStore.setVisibility(View.INVISIBLE);
         ivBackBtnSelectedStore = getActivity().findViewById(R.id.iv_back);
         ivBackBtnSelectedStore.setVisibility(View.VISIBLE);
         ivBackBtnSelectedStore.setOnClickListener(new View.OnClickListener() {
