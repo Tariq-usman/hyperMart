@@ -43,7 +43,6 @@ public class OrdersFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new MoreFragment()).addToBackStack(null).commit();
-                mTitleOrder.setText("More");
                 mBackBtnOrders.setVisibility(View.INVISIBLE);
             }
         });

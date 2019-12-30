@@ -11,7 +11,7 @@
         android:text="General"
         android:layout_marginVertical="10dp"
         android:textColor="@color/darkGreenColor"
-        android:textSize="@dimen/eighteen_sp"
+        android:textSize="@dimen/sixteen_sp"
         android:textStyle="bold"/>
     <LinearLayout
         android:layout_width="match_parent"

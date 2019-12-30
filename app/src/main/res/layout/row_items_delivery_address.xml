@@ -9,21 +9,24 @@
         android:id="@+id/addresses_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:layout_margin="5dp"
         android:layout_marginBottom="5dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="4dp">
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/addresses_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bg_unselected"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingHorizontal="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
@@ -33,7 +36,7 @@
                     android:layout_weight="1"
                     android:text="Home"
                     android:textColor="@color/darkGreenColor"
-                    android:textSize="@dimen/eighteen_sp"
+                    android:textSize="@dimen/fourteen_sp"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -46,30 +49,36 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_height="match_parent">
 
-                <TextView
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/add_new_address_row"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:clickable="false"
+                        android:src="@drawable/ic_placeholder"
+                        android:visibility="invisible" />
+
+                </FrameLayout>
+
+                <EditText
                     android:id="@+id/address_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:justificationMode="inter_word"
-                    android:text="Street #20, Sector F-10/2 Islamabad, pakistan"
+                    android:hint="Street #20, Sector F-10/2 Islamabad, pakistan"
+                    android:textColorHint="@color/darkGreenColor"
                     android:textColor="@color/darkGreenColor"
-                    android:textSize="@dimen/sixteen_sp"
-                    android:visibility="visible" />
-
-                <ImageView
-                    android:id="@+id/add_new_address"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:clickable="false"
-                    android:src="@drawable/ic_placeholder"
-                    android:visibility="invisible" />
-
+                    android:textSize="@dimen/twelve_sp"
+                    android:visibility="gone" />
             </FrameLayout>
-        </LinearLayout>
+        </FrameLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

@@ -35,13 +35,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public AppBarConfiguration mAppBarConfiguration;
     private ImageView mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
-    private LinearLayout more_layout;
+    private LinearLayout home_layout, category_layout, my_list_layout, more_layout;
+    private RelativeLayout cart_layout;
     private CartViewModel cartViewModel;
     private TextView totalCartQuantity, mActionBarTitle, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
     private String langauge;
@@ -130,15 +132,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         ivBack = findViewById(R.id.iv_back);
         ivBack.setOnClickListener(this);
+        home_layout = findViewById(R.id.home_layout);
         mHome = findViewById(R.id.home_view);
         tvHome = findViewById(R.id.tv_home_view);
 
+        category_layout = findViewById(R.id.category_layout);
         mCategory = findViewById(R.id.category_view);
         tvCategory = findViewById(R.id.tv_category_view);
 
+        cart_layout = findViewById(R.id.cart_layout);
         mCart = findViewById(R.id.cart);
         tvCart = findViewById(R.id.tv_cart);
 
+        my_list_layout = findViewById(R.id.my_list_layout);
         mFavourite = findViewById(R.id.favourite_view);
         tvFavourite = findViewById(R.id.tv_favourite_view);
 
@@ -147,13 +153,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         more_layout = findViewById(R.id.more_layout);
 
         totalCartQuantity = findViewById(R.id.total_cart_quantity);
-       // mActionBarTitle = findViewById(R.id.toolbar_title);
+        // mActionBarTitle = findViewById(R.id.toolbar_title);
 
         more_layout.setOnClickListener(this);
-        mHome.setOnClickListener(this);
-        mCategory.setOnClickListener(this);
-        mFavourite.setOnClickListener(this);
-        mCart.setOnClickListener(this);
+        home_layout.setOnClickListener(this);
+        category_layout.setOnClickListener(this);
+        cart_layout.setOnClickListener(this);
+        my_list_layout.setOnClickListener(this);
     }
 
     private void showSelectLangaugeDialog() {
@@ -203,8 +209,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.home_view) {
-          //  mActionBarTitle.setText("Home");
+        if (id == R.id.home_layout) {
+            //  mActionBarTitle.setText("Home");
             ivListGridView.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_houseblue);
             ivBack.setVisibility(View.INVISIBLE);
@@ -218,8 +224,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
-        } else if (id == R.id.category_view) {
-           // mActionBarTitle.setText("Category");
+        } else if (id == R.id.category_layout) {
+            // mActionBarTitle.setText("Category");
             ivBack.setVisibility(View.INVISIBLE);
             ivListGridView.setVisibility(View.INVISIBLE);
 //  ivMenu.setVisibility(View.VISIBLE);
@@ -234,7 +240,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
-        } else if (id == R.id.cart) {
+        } else if (id == R.id.cart_layout) {
             ivBack.setVisibility(View.INVISIBLE);
             ivListGridView.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
@@ -248,7 +254,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
-        } else if (id == R.id.favourite_view) {
+        } else if (id == R.id.my_list_layout) {
             ivBack.setVisibility(View.INVISIBLE);
             ivListGridView.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);

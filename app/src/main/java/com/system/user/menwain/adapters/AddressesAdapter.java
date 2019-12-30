@@ -53,7 +53,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.Addr
             super(itemView);
             mAddNewBtn = itemView.findViewById(R.id.add_new_address);
             mMainAddress = itemView.findViewById(R.id.main_address_view);
-            mAddress = itemView.findViewById(R.id.address_view);
+        //    mAddress = itemView.findViewById(R.id.address_view);
             mEditBtn = itemView.findViewById(R.id.edit_address);
         }
     }

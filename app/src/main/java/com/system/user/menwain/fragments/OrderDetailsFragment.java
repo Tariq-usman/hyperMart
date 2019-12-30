@@ -44,7 +44,6 @@ public class OrderDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new OrdersFragment()).addToBackStack(null).commit();
-                mTitle.setText("Orders");
                 mBack.setVisibility(View.INVISIBLE);
             }
         });

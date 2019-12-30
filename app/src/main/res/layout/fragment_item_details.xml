@@ -26,14 +26,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/selected_item_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_marginTop="6dp"
-                    android:src="@drawable/category" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_item_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="20dp">
 
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/item_detail_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:background="@color/darkGreenColor" />
+                </androidx.cardview.widget.CardView>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout_item_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    app:tabBackground="@drawable/indicator_selector"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp" />
             </FrameLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,7 +75,7 @@
                             android:layout_height="wrap_content"
                             android:text="Product Title"
                             android:textColor="@color/darkGreenColor"
-                            android:textSize="@dimen/sixteen_sp"
+                            android:textSize="@dimen/fourteen_sp"
                             android:textStyle="italic" />
 
                         <LinearLayout
@@ -71,7 +88,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Average"
                                 android:textColor="@color/darkGreenColor"
-                                android:textSize="@dimen/sixteen_sp"
+                                android:textSize="@dimen/fourteen_sp"
                                 android:textStyle="italic" />
 
                             <TextView
@@ -80,7 +97,7 @@
                                 android:layout_marginHorizontal="4dp"
                                 android:text="SAR"
                                 android:textColor="@color/darkGreenColor"
-                                android:textSize="@dimen/sixteen_sp"
+                                android:textSize="@dimen/fourteen_sp"
                                 android:textStyle="italic" />
 
                             <TextView
@@ -88,7 +105,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="35"
                                 android:textColor="@color/darkGreenColor"
-                                android:textSize="@dimen/sixteen_sp"
+                                android:textSize="@dimen/fourteen_sp"
                                 android:textStyle="italic" />
                         </LinearLayout>
 
@@ -106,7 +123,7 @@
                             android:gravity="right"
                             android:text="By MeatOne"
                             android:textColor="@color/darkGreenColor"
-                            android:textSize="@dimen/sixteen_sp"
+                            android:textSize="@dimen/fourteen_sp"
                             android:textStyle="italic" />
 
                         <LinearLayout
@@ -155,11 +172,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="1dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_selected"
+                        android:background="@drawable/bg_item_details_btn_selected"
                         android:gravity="center"
                         android:text="Description"
                         android:textColor="@color/whiteColor"
-                        android:textSize="@dimen/sixteen_sp"
+                        android:textSize="@dimen/fourteen_sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -168,11 +185,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="1dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_unselected"
+                        android:background="@drawable/bg_item_details_btn_unselected"
                         android:gravity="center"
                         android:text="Specification"
                         android:textColor="@color/whiteColor"
-                        android:textSize="@dimen/sixteen_sp"
+                        android:textSize="@dimen/fourteen_sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -181,11 +198,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="1dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_unselected"
+                        android:background="@drawable/bg_item_details_btn_unselected"
                         android:gravity="center"
                         android:text="Reviews"
                         android:textColor="@color/whiteColor"
-                        android:textSize="@dimen/sixteen_sp"
+                        android:textSize="@dimen/fourteen_sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -232,7 +249,7 @@
                         android:layout_marginRight="10dp"
                         android:text="In Stock"
                         android:textColor="@color/darkGreenColor"
-                        android:textSize="@dimen/sixteen_sp" />
+                        android:textSize="@dimen/fourteen_sp" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -380,7 +397,7 @@
                     android:layout_gravity="center"
                     android:text="Related Items"
                     android:textColor="@color/darkGreenColor"
-                    android:textSize="@dimen/eighteen_sp" />
+                    android:textSize="@dimen/sixteen_sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_related_items_item_details"

@@ -20,10 +20,10 @@ import androidx.fragment.app.Fragment;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
 
-    private ImageView ivOrder, ivCustomerServices,ivBack,mSettingsIcon;
+    private ImageView  ivCustomerServices,ivBack,mSettingsIcon;
     private TextView tvTitle,tvOrderHistory, tvProfile, tvSettings, tvHelp, tvAbout, tvRateApp, tvLogout;
     private CardView mSearchViewMore;
-    private LinearLayout ivStores;
+    private LinearLayout ivStores,ivOrder;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

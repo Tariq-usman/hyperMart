@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_custom_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -62,7 +63,12 @@
                 android:layout_height="wrap_content"
                 android:text="Time"
                 android:textColor="@color/darkGreenColor" />
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_view_delivery_time"
+                tools:listitem="@layout/row_items_delivery_time"/>
+<!--
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,6 +78,7 @@
                 android:inputType="time"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor" />
+-->
         </LinearLayout>
 
 

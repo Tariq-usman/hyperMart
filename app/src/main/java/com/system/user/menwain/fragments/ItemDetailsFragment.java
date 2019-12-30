@@ -20,10 +20,11 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.Banner_SlidingImages_Adapter;
+import com.system.user.menwain.adapters.Item_details_SlidingImages_Adapter;
 import com.system.user.menwain.adapters.SelectedItemsFilterAdapter;
 
 public class ItemDetailsFragment extends Fragment implements View.OnClickListener {
-    private int[] IMAGES = {R.drawable.dis, R.drawable.disc, R.drawable.disco, R.drawable.discoun, R.drawable.discount};
+    private int[] IMAGES; /*= {R.drawable.dis, R.drawable.disc, R.drawable.disco, R.drawable.discoun, R.drawable.discount};*/
     private String[] storesName = {"Madina c carry", "Metro c carry", "Makro c carry", "Pak c carry", "Alrasheed c carry", "ARY c carry",
             "Meezan c carry", "Lahore c carry", "ARY c carry", "Meezan c carry"};
     private String[] productsName = {"Cooking oil", "Chicken", "Meat", "Butter", "Eggs", "Chocolate", "Frouts", "Carrot", "Mango", "Vegetables"};
@@ -39,10 +40,12 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private static ViewPager mPager;
     private TabLayout tabLayout;
     private static int NUM_PAGES = 0;
+    final long PERIOD_MS = 3000;
     private Handler handler;
     private Runnable runnable;
     private int currentPage = 0;
     private CardView mSearchView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,13 +54,13 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemDescriptionFragment()).commit();
         mSearchView = getActivity().findViewById(R.id.search_view);
         mSearchView.setVisibility(View.INVISIBLE);
+        mPager = view.findViewById(R.id.item_detail_pager);
+        tabLayout = view.findViewById(R.id.tab_layout_item_details);
 
-        //init();
 
-
-        mItem = view.findViewById(R.id.selected_item_view);
+        // mItem = view.findViewById(R.id.selected_item_view);
         bundle = this.getArguments();
-        mItem.setImageResource(Integer.parseInt(bundle.getString("image_url", "")));
+        IMAGES = new int[]{(Integer.parseInt(bundle.getString("image_url", ""))), (Integer.parseInt(bundle.getString("image_url1", ""))), (Integer.parseInt(bundle.getString("image_url2", "")))};
         status = bundle.getString("status", "");
 
         mDescription = view.findViewById(R.id.description_btn);
@@ -82,10 +85,12 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 RecyclerView.HORIZONTAL, false));
         selectedItemsFilterAdapter = new SelectedItemsFilterAdapter(getContext(), productsName, items, storesName);
         recyclerViewRelateItems.setAdapter(selectedItemsFilterAdapter);
+        init();
         return view;
     }
+
     private void init() {
-        mPager.setAdapter(new Banner_SlidingImages_Adapter(getContext(), IMAGES));
+        mPager.setAdapter(new Item_details_SlidingImages_Adapter(getContext(), IMAGES));
         tabLayout.setupWithViewPager(mPager, true);
         NUM_PAGES = IMAGES.length;
         /*After setting the adapter use the timer */
@@ -98,9 +103,21 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                     currentPage++;
                 }
                 mPager.setCurrentItem(currentPage, true);
-                handler.postDelayed(this, 3000);
+                handler.postDelayed(this, PERIOD_MS);
             }
         };
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, PERIOD_MS);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
     }
 
     @Override
@@ -108,19 +125,19 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         int id = view.getId();
         if (id == R.id.description_btn) {
             getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemDescriptionFragment()).commit();
-            mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_selected));
-            mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
-            mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
+            mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_selected));
+            mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
+            mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
         } else if (id == R.id.specificatin_btn) {
             getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemSpecificationFragment()).commit();
-            mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
-            mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_selected));
-            mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
+            mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
+            mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_selected));
+            mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
         } else if (id == R.id.reviews_btn) {
             getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemReviewsFragment()).commit();
-            mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
-            mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_unselected));
-            mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_selected));
+            mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
+            mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
+            mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_selected));
         } else if (id == R.id.add_to_cart) {
 
         } else if (id == R.id.iv_back) {

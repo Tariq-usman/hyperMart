@@ -122,13 +122,13 @@
                         app:cardCornerRadius="5dp">
 
                         <LinearLayout
+                            android:id="@+id/iv_order"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@color/darkGreenColor"
                             android:gravity="center">
 
                             <ImageView
-                                android:id="@+id/iv_order"
                                 android:layout_width="26dp"
                                 android:layout_height="26dp"
                                 android:src="@drawable/ic_order" />
@@ -199,6 +199,35 @@
                     android:text="Profile"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height=".1dp"
+                    android:background="#97ADAD"/>
+                <TextView
+                    android:id="@+id/tv_terms_conditions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="4dp"
+                    android:text="Terms &amp; Conditions"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height=".1dp"
+                    android:background="#97ADAD"/>
+
+                <TextView
+                    android:id="@+id/tv_privacy_policy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="4dp"
+                    android:text="Privacy Policy "
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height=".1dp"
+                    android:background="#97ADAD"/>
 
                 <TextView
                     android:id="@+id/tv_settings"
@@ -208,6 +237,10 @@
                     android:text="Settings"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height=".1dp"
+                    android:background="#97ADAD"/>
 
                 <TextView
                     android:id="@+id/tv_about"
@@ -217,6 +250,10 @@
                     android:text="About"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height=".1dp"
+                    android:background="#97ADAD"/>
 
                 <TextView
                     android:id="@+id/tv_rate_app"
@@ -226,6 +263,10 @@
                     android:text="Rate Application"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height=".1dp"
+                    android:background="#97ADAD"/>
 
                 <TextView
                     android:id="@+id/tv_log_out"
@@ -235,6 +276,10 @@
                     android:text="Logout"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height=".1dp"
+                    android:background="#97ADAD"/>
 
             </LinearLayout>
         </LinearLayout>
