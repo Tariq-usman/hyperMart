@@ -1,7 +1,6 @@
-package com.system.user.menwain.adapters;
+package com.system.user.menwain.adapters.cart_adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;

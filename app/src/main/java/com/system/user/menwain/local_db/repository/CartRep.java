@@ -1,12 +1,12 @@
-package com.system.user.menwain.repository;
+package com.system.user.menwain.local_db.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
-import com.system.user.menwain.dao.CartDao;
-import com.system.user.menwain.database.HyperMart;
-import com.system.user.menwain.entity.Cart;
-import com.system.user.menwain.model.UpdateCartQuantity;
+import com.system.user.menwain.local_db.dao.CartDao;
+import com.system.user.menwain.local_db.database.HyperMart;
+import com.system.user.menwain.local_db.entity.Cart;
+import com.system.user.menwain.local_db.model.UpdateCartQuantity;
 
 import java.util.List;
 

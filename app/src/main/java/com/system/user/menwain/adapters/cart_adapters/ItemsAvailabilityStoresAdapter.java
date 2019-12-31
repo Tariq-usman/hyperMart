@@ -1,6 +1,7 @@
 package com.system.user.menwain.adapters.cart_adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.R;
 
@@ -26,6 +28,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     List<Integer> price;
     List<Integer> availItems;
     Bundle bundle;
+    Prefrences prefrences;
 
     public ItemsAvailabilityStoresAdapter(int[] marts, List<Double> distance, List<Integer> availItems, List<Integer> price, Context context) {
         this.marts = marts;
@@ -33,7 +36,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         this.distance = distance;
         this.price = price;
         this.availItems = availItems;
-
+        prefrences = new Prefrences(context);
     }
 
     @NonNull
@@ -69,6 +72,9 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*editor.apply();
+                editor.putInt("frag_status",2);*/
+                prefrences.setFragStatus(3);
                 AvailNotAvailItemsListsFragment fragment = new AvailNotAvailItemsListsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle = new Bundle();
@@ -77,19 +83,6 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
                 bundle.putString("image_url", String.valueOf(marts[position]));
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
-
-                //((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().
-               /* Intent intent = new Intent(context, AvailNotAvailItemsListsFragment.class);
-                intent.putExtra("price",holder.mSortByPrice.getText().toString());
-                intent.putExtra("distance",holder.mDistanceView.getText().toString());
-                intent.putExtra("image_url",marts[position]);
-
-              *//*  int color = ((ColorDrawable)holder.mStatusColorView.getBackground()).getColor();
-                Log.i("color", String.valueOf(color));*//*
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-//                 ((Activity)context).finish();*/
-
             }
         });
     }

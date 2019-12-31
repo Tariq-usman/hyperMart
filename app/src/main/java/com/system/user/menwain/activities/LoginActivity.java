@@ -16,7 +16,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     TextView mLogingBtn, mForgetPass, mCreateAccount;
     EditText mPhoneNo, mPassword;
-    Fragment fragment;
     SharedPreferences.Editor editor;
     boolean isLogin = false;
     @Override
@@ -52,11 +51,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("isLogin", isLogin);
                 startActivity(intent);
-
-               // getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new DeliveryAddressFragment())
-                //        .addToBackStack(null).commit();
-//                startActivity(new Intent(getApplicationContext(), DeliveryAddressFragment.class));
-//                finish();
             }
         } else if (id == R.id.forget_pass) {
             startActivity(new Intent(getApplicationContext(), ForgetPasswordActivity.class));

@@ -1,4 +1,4 @@
-package com.system.user.menwain.fragments;
+package com.system.user.menwain.fragments.others;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

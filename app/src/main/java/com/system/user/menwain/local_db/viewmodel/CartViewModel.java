@@ -1,10 +1,10 @@
-package com.system.user.menwain.viewmodel;
+package com.system.user.menwain.local_db.viewmodel;
 
 import android.app.Application;
 
-import com.system.user.menwain.entity.Cart;
-import com.system.user.menwain.model.UpdateCartQuantity;
-import com.system.user.menwain.repository.CartRep;
+import com.system.user.menwain.local_db.entity.Cart;
+import com.system.user.menwain.local_db.model.UpdateCartQuantity;
+import com.system.user.menwain.local_db.repository.CartRep;
 
 import java.util.List;
 

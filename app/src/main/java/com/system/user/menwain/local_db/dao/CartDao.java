@@ -1,7 +1,6 @@
-package com.system.user.menwain.dao;
+package com.system.user.menwain.local_db.dao;
 
-import com.system.user.menwain.entity.Cart;
-import com.system.user.menwain.model.UpdateCartQuantity;
+import com.system.user.menwain.local_db.entity.Cart;
 
 import java.util.List;
 

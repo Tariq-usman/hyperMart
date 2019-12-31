@@ -9,9 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.system.user.menwain.R;
-import com.system.user.menwain.entity.Cart;
-import com.system.user.menwain.model.UpdateCartQuantity;
-import com.system.user.menwain.viewmodel.CartViewModel;
+import com.system.user.menwain.local_db.entity.Cart;
+import com.system.user.menwain.local_db.model.UpdateCartQuantity;
+import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

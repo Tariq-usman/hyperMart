@@ -9,10 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.system.user.menwain.fragments.ItemDetailsFragment;
+import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.R;
-import com.system.user.menwain.entity.Cart;
-import com.system.user.menwain.viewmodel.CartViewModel;
+import com.system.user.menwain.local_db.entity.Cart;
+import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -113,7 +113,7 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
                 String storeName = holder.mStoreName.getText().toString();
                 String price = holder.mPriceFilterItem.getText().toString();
                 String quantity = holder.mItemCounter.getText().toString();
-                String strTotalPrice = price.substring(1, price.length());
+                String strTotalPrice = price;
                 float totalPrice = Float.parseFloat(strTotalPrice);
 
                 int intQuantity = Integer.parseInt(quantity);

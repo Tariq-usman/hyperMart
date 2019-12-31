@@ -47,7 +47,7 @@
         <activity android:name=".fragments.cart.PaymentFragment" />
         <activity android:name=".fragments.cart.AvailNotAvailItemsListsFragment" />
         <activity android:name=".fragments.cart.DeliveryAddressFragment" />
-        <activity android:name=".fragments.ItemDetailsFragment" />
+        <activity android:name=".fragments.others.ItemDetailsFragment" />
         <activity android:name=".activities.ScanActivity" />
         <activity
             android:name=".activities.MainActivity"

@@ -1,4 +1,4 @@
-package com.system.user.menwain.model;
+package com.system.user.menwain.local_db.model;
 
 public class UpdateCartQuantity {
 

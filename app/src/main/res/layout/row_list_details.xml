@@ -61,7 +61,6 @@
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/price_view_filter_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"

@@ -1,5 +1,7 @@
 package com.system.user.menwain.fragments.cart;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPayLater;
@@ -37,14 +40,16 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     Bundle bundle;
     private Boolean pay_now, pay_later = false;
     public static Boolean isCheck = false;
-
+    private SharedPreferences.Editor editor;
+    Prefrences prefrences;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_items_availability_stores, container, false);
         bundle = this.getArguments();
+        editor = getActivity().getSharedPreferences("fragment_status", Context.MODE_PRIVATE).edit();
 
-
+        prefrences = new Prefrences(getContext());
         distance = new ArrayList<>();
         distance.add(11.3);
         distance.add(9.);
@@ -178,6 +183,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                 break;
             case R.id.iv_back:
+                prefrences.setFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
                 break;

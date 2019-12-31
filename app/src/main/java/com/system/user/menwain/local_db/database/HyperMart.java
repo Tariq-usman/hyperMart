@@ -1,9 +1,9 @@
-package com.system.user.menwain.database;
+package com.system.user.menwain.local_db.database;
 
 import android.content.Context;
 
-import com.system.user.menwain.dao.CartDao;
-import com.system.user.menwain.entity.Cart;
+import com.system.user.menwain.local_db.dao.CartDao;
+import com.system.user.menwain.local_db.entity.Cart;
 
 import androidx.room.Database;
 import androidx.room.Room;

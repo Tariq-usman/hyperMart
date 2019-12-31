@@ -1,4 +1,4 @@
-package com.system.user.menwain.adapters;
+package com.system.user.menwain.adapters.category_adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -10,11 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.cart_adapters.CartItemsAdapter;
-import com.system.user.menwain.entity.Cart;
-import com.system.user.menwain.viewmodel.CartViewModel;
+import com.system.user.menwain.local_db.entity.Cart;
+import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
 import java.util.List;
 
@@ -38,12 +39,16 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     String phone_no;
     Context context;
     private CardView mSearchViewCart;
+    private SharedPreferences.Editor editor;
+    SharedPreferences preferences,fragment_status_pref;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
-        SharedPreferences preferences = getContext().getSharedPreferences("login", Activity.MODE_PRIVATE);
+        editor = getActivity().getSharedPreferences("fragment_status",Context.MODE_PRIVATE).edit();
+        preferences = getContext().getSharedPreferences("login", Activity.MODE_PRIVATE);
         phone_no = preferences.getString("phone_no", "");
         recyclerViewCartItems = view.findViewById(R.id.recycler_view_cart_items);
         recyclerViewCartItems.setHasFixedSize(true);
@@ -103,7 +108,12 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(logInIntnet);
             } else {
+                Prefrences prefrences = new Prefrences(getContext());
+                prefrences.setFragStatus(1);
+                /*editor.putInt("frag_status",1);
+                editor.apply();*/
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,fragment).addToBackStack(null).commit();
+
 //                startActivity(new Intent(getContext(), DeliveryAddressFragment.class));
             }
         }

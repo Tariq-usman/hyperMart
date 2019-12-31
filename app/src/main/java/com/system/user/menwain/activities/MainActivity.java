@@ -1,6 +1,7 @@
 package com.system.user.menwain.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,16 +18,19 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.custom_languages.LocaleManager;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
+import com.system.user.menwain.fragments.cart.ItemsAvailabilityStoresFragment;
 import com.system.user.menwain.fragments.my_list.AllListsFragment;
 import com.system.user.menwain.fragments.cart.CartFragment;
 import com.system.user.menwain.fragments.cart.DeliveryAddressFragment;
 import com.system.user.menwain.fragments.category.CategoryStoresFragment;
 import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.fragments.more.MoreFragment;
-import com.system.user.menwain.viewmodel.CartViewModel;
+import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -48,14 +52,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     SharedPreferences preferences;
     SharedPreferences.Editor editor, editor1;
     boolean isLogin, isSignUp = false;
-
-
+    private SharedPreferences fragment_status_pref;
+    private int frag_status;
+    Prefrences prefrences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        prefrences = new Prefrences(this);
+        //fragment_status_pref = getSharedPreferences("fragment_status", MODE_PRIVATE);
+        frag_status = prefrences.getFragStatus();
+//        frag_status = fragment_status_pref.getInt("frag_status", 0);
         Intent intent = getIntent();
         Log.e("IS LOGIN", String.valueOf(isLogin));
         if (intent != null) {
@@ -236,7 +245,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
+
         } else if (id == R.id.cart_layout) {
+            frag_status = prefrences.getFragStatus();
             ivBack.setVisibility(View.INVISIBLE);
             ivListGridView.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
@@ -249,7 +260,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             tvCart.setTextColor(Color.parseColor("#00c1bd"));
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#004040"));
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
+            if (frag_status == 0) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
+            } else if (frag_status == 1) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
+            } else if (frag_status == 2) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
+            } else if (frag_status == 3){
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).addToBackStack(null).commit();
+            }
         } else if (id == R.id.my_list_layout) {
             ivBack.setVisibility(View.INVISIBLE);
             ivListGridView.setVisibility(View.INVISIBLE);

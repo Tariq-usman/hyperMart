@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.ItemDetailsFragment;
+import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

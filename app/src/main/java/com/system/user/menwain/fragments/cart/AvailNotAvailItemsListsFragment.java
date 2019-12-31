@@ -18,11 +18,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.category.AvailableItemsFragment;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentDeliveryTime;
 import com.system.user.menwain.fragments.category.NotAvailableItemsFragment;
-import com.system.user.menwain.viewmodel.CartViewModel;
+import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
 public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
     private CartViewModel cartViewModel;
@@ -35,12 +36,13 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     SharedPreferences availPreferences, notAvailPrefrences;
     Bundle bundle;
     public static Boolean isCheck = false;
+    Prefrences prefrences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avail_not_avial_items_lists, container, false);
-
+        prefrences = new Prefrences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
         mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
@@ -48,10 +50,10 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         cartViewModel.getTotalCartPrice().observe(this, new Observer<Float>() {
             @Override
             public void onChanged(Float aFloat) {
-                if (aFloat != null){
+                if (aFloat != null) {
                     mTotalAmount.setText(aFloat.toString());
-                }else {
-                    mTotalAmount.setText(00.0 +"");
+                } else {
+                    mTotalAmount.setText(00.0 + "");
                 }
             }
         });
@@ -129,6 +131,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
             deliveryTime.show(getFragmentManager(), "Select Method");
         } else if (id == R.id.iv_back) {
+            prefrences.setFragStatus(2);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
             mBackBtn.setVisibility(View.GONE);
         }

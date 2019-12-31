@@ -1,4 +1,4 @@
-package com.system.user.menwain.fragments;
+package com.system.user.menwain.fragments.others;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.Item_details_SlidingImages_Adapter;
-import com.system.user.menwain.adapters.SelectedItemsFilterAdapter;
+import com.system.user.menwain.adapters.category_adapters.SelectedItemsFilterAdapter;
 import com.system.user.menwain.fragments.category.ItemsFragment;
 import com.system.user.menwain.fragments.home.HomeFragment;
 

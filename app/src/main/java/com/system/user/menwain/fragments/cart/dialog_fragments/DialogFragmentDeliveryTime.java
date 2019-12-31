@@ -12,8 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
-import com.system.user.menwain.adapters.DeliveryTimesAdapter;
-import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPurchasingMethod;
+import com.system.user.menwain.adapters.cart_adapters.DeliveryTimesAdapter;
 
 import java.util.Calendar;
 
