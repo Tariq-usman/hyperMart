@@ -39,15 +39,14 @@
                 android:text="Date"
                 android:textColor="@color/darkGreenColor" />
 
-            <EditText
+            <TextView
+                android:id="@+id/tv_date_in_store_purchase"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_email_pass"
+                android:layout_height="35dp"
+                android:background="@drawable/bg_order_details"
                 android:gravity="center"
-                android:hint="11/11/19"
-                android:inputType="date"
-                android:textColor="@color/whiteColor"
-                android:textColorHint="@color/whiteColor" />
+                android:text="11/11/19"
+                android:textColor="@color/darkGreenColor"/>
         </LinearLayout>
 
         <TextView

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.system.user.menwain.fragments.OrderDetailsFragment;
+import com.system.user.menwain.fragments.more.orders.OrderDetailsFragment;
 import com.system.user.menwain.R;
 
 import androidx.annotation.NonNull;

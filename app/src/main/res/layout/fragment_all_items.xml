@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".fragments.AllItemsFragment">
+    tools:context=".fragments.home.AllItemsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_grid_items"

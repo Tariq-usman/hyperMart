@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -19,9 +18,10 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.system.user.menwain.R;
-import com.system.user.menwain.adapters.Banner_SlidingImages_Adapter;
 import com.system.user.menwain.adapters.Item_details_SlidingImages_Adapter;
 import com.system.user.menwain.adapters.SelectedItemsFilterAdapter;
+import com.system.user.menwain.fragments.category.ItemsFragment;
+import com.system.user.menwain.fragments.home.HomeFragment;
 
 public class ItemDetailsFragment extends Fragment implements View.OnClickListener {
     private int[] IMAGES; /*= {R.drawable.dis, R.drawable.disc, R.drawable.disco, R.drawable.discoun, R.drawable.discount};*/

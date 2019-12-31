@@ -195,7 +195,7 @@
                     android:id="@+id/tv_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
+                    android:layout_marginVertical="5dp"
                     android:text="Profile"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -207,7 +207,7 @@
                     android:id="@+id/tv_terms_conditions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
+                    android:layout_marginVertical="5dp"
                     android:text="Terms &amp; Conditions"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -220,7 +220,7 @@
                     android:id="@+id/tv_privacy_policy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
+                    android:layout_marginVertical="5dp"
                     android:text="Privacy Policy "
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -233,7 +233,7 @@
                     android:id="@+id/tv_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
+                    android:layout_marginVertical="5dp"
                     android:text="Settings"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -246,7 +246,7 @@
                     android:id="@+id/tv_about"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
+                    android:layout_marginVertical="5dp"
                     android:text="About"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -259,7 +259,7 @@
                     android:id="@+id/tv_rate_app"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
+                    android:layout_marginVertical="5dp"
                     android:text="Rate Application"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -272,7 +272,7 @@
                     android:id="@+id/tv_log_out"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
+                    android:layout_marginVertical="5dp"
                     android:text="Logout"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />

@@ -8,10 +8,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,12 +20,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.custom_languages.LocaleManager;
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.AllListsFragment;
-import com.system.user.menwain.fragments.CartFragment;
-import com.system.user.menwain.fragments.DeliveryAddressFragment;
-import com.system.user.menwain.fragments.CategoryStoresFragment;
-import com.system.user.menwain.fragments.HomeFragment;
-import com.system.user.menwain.fragments.MoreFragment;
+import com.system.user.menwain.fragments.my_list.AllListsFragment;
+import com.system.user.menwain.fragments.cart.CartFragment;
+import com.system.user.menwain.fragments.cart.DeliveryAddressFragment;
+import com.system.user.menwain.fragments.category.CategoryStoresFragment;
+import com.system.user.menwain.fragments.home.HomeFragment;
+import com.system.user.menwain.fragments.more.MoreFragment;
 import com.system.user.menwain.viewmodel.CartViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -225,10 +223,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
         } else if (id == R.id.category_layout) {
-            // mActionBarTitle.setText("Category");
             ivBack.setVisibility(View.INVISIBLE);
             ivListGridView.setVisibility(View.INVISIBLE);
-//  ivMenu.setVisibility(View.VISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchblue);

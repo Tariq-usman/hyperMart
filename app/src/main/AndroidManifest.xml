@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".fragments.AllItemsFragment"></activity>
+        <activity android:name=".fragments.home.AllItemsFragment"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -39,14 +39,14 @@
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".fragments.OrderHistoryFragment" />
-        <activity android:name=".fragments.RateUsFragment" />
-        <activity android:name=".fragments.ItemReviewFragment" />
-        <activity android:name=".fragments.OrderDetailsFragment" />
-        <activity android:name=".fragments.ListDetailsFragment" />
-        <activity android:name=".fragments.PaymentFragment" />
-        <activity android:name=".fragments.AvailNotAvailItemsListsFragment" />
-        <activity android:name=".fragments.DeliveryAddressFragment" />
+        <activity android:name=".fragments.more.orders.OrderHistoryFragment" />
+        <activity android:name=".fragments.more.menu_fragment.RateUsFragment" />
+        <activity android:name=".fragments.more.orders.ItemReviewFragment" />
+        <activity android:name=".fragments.more.orders.OrderDetailsFragment" />
+        <activity android:name=".fragments.my_list.ListDetailsFragment" />
+        <activity android:name=".fragments.cart.PaymentFragment" />
+        <activity android:name=".fragments.cart.AvailNotAvailItemsListsFragment" />
+        <activity android:name=".fragments.cart.DeliveryAddressFragment" />
         <activity android:name=".fragments.ItemDetailsFragment" />
         <activity android:name=".activities.ScanActivity" />
         <activity
@@ -56,7 +56,7 @@
         <activity android:name=".activities.SignUpActivity" />
         <activity android:name=".activities.ForgetPasswordActivity" />
         <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".fragments.ItemsAvailabilityStoresFragment" />
+        <activity android:name=".fragments.cart.ItemsAvailabilityStoresFragment" />
         <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
