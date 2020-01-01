@@ -22,6 +22,7 @@ import com.system.user.menwain.adapters.Item_details_SlidingImages_Adapter;
 import com.system.user.menwain.adapters.category_adapters.SelectedItemsFilterAdapter;
 import com.system.user.menwain.fragments.category.ItemsFragment;
 import com.system.user.menwain.fragments.home.HomeFragment;
+import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 
 public class ItemDetailsFragment extends Fragment implements View.OnClickListener {
     private int[] IMAGES; /*= {R.drawable.dis, R.drawable.disc, R.drawable.disco, R.drawable.discoun, R.drawable.discount};*/
@@ -143,8 +144,11 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         } else if (id == R.id.iv_back) {
             if (status == "1") {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).addToBackStack(null).commit();
-            } else {
+            } else if (status=="2"){
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
+            }else {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SelectedStoreFragment()).addToBackStack(null).commit();
+
             }
         }
     }

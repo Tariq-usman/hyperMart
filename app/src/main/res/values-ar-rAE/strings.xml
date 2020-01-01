@@ -10,18 +10,17 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">Main Activity</string>
 
-    <!-- navigation drawer -->
-    <string name="menu_my_order">طلباتي</string>
-    <string name="menu_my_lists">قوائم بلدي</string>
-    <string name="menu_delivery_addresses">عناوين التسليم</string>
-    <string name="menu_payment_methods">طرق الدفع</string>
-    <string name="menu_history">التاريخ</string>
-    <string name="menu_favourite">مفضل</string>
-    <string name="menu_settings">الإعدادات</string>
-    <string name="menu_help">مساعدة</string>
-    <string name="menu_about">حول</string>
-    <string name="menu_rate_app">معدل التطبيق</string>
-    <string name="menu_logout">الخروج</string>
+    <!-- main page -->
+    <string name="search_hint">menWain</string>
+    <string name="explore_shop">استكشاف والتسوق</string>
+    <string name="explore">يكتشف</string>
+    <string name="shop">متجر</string>
+    <string name="see_all">اظهار الكل</string>
+    <string name="home">الصفحة الرئيسية</string>
+    <string name="category">الفئة</string>
+    <string name="cart">عربة التسوق</string>
+    <string name="my_list">قائمتي</string>
+    <string name="more">أكثر</string>
 
     <string name="description">Description is the pattern of narrative development that aims to make vivid a place,
         object, character, or group. Description is one of four rhetorical modes (also known as modes of discourse),

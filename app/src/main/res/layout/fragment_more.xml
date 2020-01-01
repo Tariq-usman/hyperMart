@@ -199,10 +199,13 @@
                     android:text="Profile"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height=".1dp"
-                    android:background="#97ADAD"/>
+                    android:layout_marginBottom="4dp"
+                    android:background="#97ADAD" />
+
                 <TextView
                     android:id="@+id/tv_terms_conditions"
                     android:layout_width="match_parent"
@@ -211,10 +214,12 @@
                     android:text="Terms &amp; Conditions"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height=".1dp"
-                    android:background="#97ADAD"/>
+                    android:layout_marginBottom="4dp"
+                    android:background="#97ADAD" />
 
                 <TextView
                     android:id="@+id/tv_privacy_policy"
@@ -224,10 +229,12 @@
                     android:text="Privacy Policy "
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height=".1dp"
-                    android:background="#97ADAD"/>
+                    android:layout_marginBottom="4dp"
+                    android:background="#97ADAD" />
 
                 <TextView
                     android:id="@+id/tv_settings"
@@ -237,10 +244,12 @@
                     android:text="Settings"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height=".1dp"
-                    android:background="#97ADAD"/>
+                    android:layout_marginBottom="4dp"
+                    android:background="#97ADAD" />
 
                 <TextView
                     android:id="@+id/tv_about"
@@ -250,10 +259,12 @@
                     android:text="About"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height=".1dp"
-                    android:background="#97ADAD"/>
+                    android:layout_marginBottom="4dp"
+                    android:background="#97ADAD" />
 
                 <TextView
                     android:id="@+id/tv_rate_app"
@@ -263,10 +274,12 @@
                     android:text="Rate Application"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height=".1dp"
-                    android:background="#97ADAD"/>
+                    android:layout_marginBottom="4dp"
+                    android:background="#97ADAD" />
 
                 <TextView
                     android:id="@+id/tv_log_out"
@@ -276,10 +289,12 @@
                     android:text="Logout"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height=".1dp"
-                    android:background="#97ADAD"/>
+                    android:layout_marginBottom="4dp"
+                    android:background="#97ADAD" />
 
             </LinearLayout>
         </LinearLayout>
