@@ -17,6 +17,7 @@ public abstract class HyperMart extends RoomDatabase {
 
     public static synchronized HyperMart getInstance(Context context){
         if (INSTANCE == null){
+
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                     HyperMart.class, HyperMart.class.getName())
                     .fallbackToDestructiveMigration()
