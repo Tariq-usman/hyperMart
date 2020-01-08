@@ -33,6 +33,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="Prepare and Pick up From Store"
                 android:textColor="@color/darkGreenColor" />
 

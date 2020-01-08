@@ -59,10 +59,10 @@ public class ItemsFragment extends Fragment {
         recyclerViewProductCategory.smoothScrollToPosition(getPreviousId + 1);
 
 
-        recyclerViewItemNames = view.findViewById(R.id.recycler_view_selected_items_name);
+        /*recyclerViewItemNames = view.findViewById(R.id.recycler_view_selected_items_name);
         recyclerViewItemNames.setHasFixedSize(true);
         recyclerViewItemNames.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewItemNames.setAdapter(new SelectedItemsNamesAdapter(getContext(), productsName));
+        recyclerViewItemNames.setAdapter(new SelectedItemsNamesAdapter(getContext(), productsName));*/
 
 
         recyclerViewFilterItems = view.findViewById(R.id.recycler_view_filter_items);

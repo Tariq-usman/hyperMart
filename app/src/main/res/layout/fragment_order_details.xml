@@ -110,6 +110,50 @@
                         android:textSize="@dimen/ten_sp" />
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:text="Date:"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/twelve_sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="08/01/2020"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/ten_sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:text="Time:"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/twelve_sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="02:30 PM"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/ten_sp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,63 +203,6 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-
-    <!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/darkGreenColor"
-            android:orientation="horizontal">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center"
-                android:src="@drawable/profilepic"/>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Delivery Man"
-                    android:paddingLeft="20dp"
-                    android:textSize="@dimen/eighteen_sp"
-                    android:textColor="@color/whiteColor"
-                    android:gravity="center"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="10dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Name"
-                        android:textSize="@dimen/twelve_sp"
-                        android:textColor="@color/whiteColor"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Phone No"
-                        android:textSize="@dimen/twelve_sp"
-                        android:textColor="@color/whiteColor"/>
-
-                </LinearLayout>
-            </LinearLayout>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight=".5"
-                    android:layout_height="wrap_content"
-                    android:text="Delivery No"
-                    android:layout_gravity="center"
-                    android:textSize="@dimen/twelve_sp"
-                    android:textColor="@color/whiteColor"/>
-        </LinearLayout>
-    -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_order_details"
         android:layout_width="match_parent"

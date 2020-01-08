@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPurchasingMethod;
 import com.system.user.menwain.fragments.category.AvailableItemsFragment;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentDeliveryTime;
 import com.system.user.menwain.fragments.category.NotAvailableItemsFragment;
@@ -35,14 +36,18 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     public String available_items, not_available_items;
     SharedPreferences availPreferences, notAvailPrefrences;
     Bundle bundle;
+    private Boolean pay_now, pay_later = false;
     public static Boolean isCheck = false;
     Prefrences prefrences;
+    private int pay_status;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avail_not_avial_items_lists, container, false);
+        bundle = this.getArguments();
         prefrences = new Prefrences(getContext());
+        pay_status = prefrences.getPaymentStatus();
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
         mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
@@ -83,25 +88,6 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         return view;
     }
 
-    private void getIncommingBundle() {
-        bundle = this.getArguments();
-        if (!bundle.isEmpty()) {
-            String pr = bundle.getString("price", "");
-            mPrice.setText(pr);
-            mDistance.setText(bundle.getString("distance", ""));
-            mMartLogoView.setImageResource(Integer.parseInt(bundle.getString("image_url", "")));
-            Log.i("pri  ce", pr);
-            dist = mDistance.getText().toString();
-            if (Double.valueOf(dist) <= 10) {
-                mShowStatusColor.setBackgroundColor(Color.parseColor("#36F43F"));
-            } else if (Double.valueOf(dist) > 10 && Double.valueOf(dist) <= 15) {
-                mShowStatusColor.setBackgroundColor(Color.parseColor("#FFFFEB3B"));
-            } else if (Double.valueOf(dist) > 15) {
-                mShowStatusColor.setBackgroundColor(Color.parseColor("#FFF44336"));
-            }
-        }
-    }
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -128,8 +114,13 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             mAvailItems.setBackgroundResource(R.drawable.bg_avail_not_avail_item_unselected);
             getFragmentManager().beginTransaction().replace(R.id.container_items_list, new NotAvailableItemsFragment()).commit();
         } else if (id == R.id.confirm_btn_items_list) {
-            DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
-            deliveryTime.show(getFragmentManager(), "Select Method");
+            if (pay_status == 1) {
+                DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
+                deliveryTime.show(getFragmentManager(), "Select Method");
+            } else if (pay_status == 2){
+                DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
+                dialogFragmentPurchasingMethod.show(getFragmentManager(),"Purchasing Method");
+            }
         } else if (id == R.id.iv_back) {
             prefrences.setFragStatus(2);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();

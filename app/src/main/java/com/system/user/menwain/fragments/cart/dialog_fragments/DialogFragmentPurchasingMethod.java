@@ -11,7 +11,10 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
+import com.system.user.menwain.fragments.cart.CartFragment;
 import com.system.user.menwain.fragments.cart.PaymentFragment;
 
 import java.util.Calendar;
@@ -24,21 +27,22 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
     TextView mConfirm, mTitleView, tvDateInStorePurchase;
     ImageView mCloseBtn;
     private int mYear, mMonth, mDay;
+    Prefrences prefrences;
+    private int pay_status;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_purchasing_method, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        prefrences = new Prefrences(getContext());
+        pay_status = prefrences.getPaymentStatus();
         mConfirm = view.findViewById(R.id.confirm_btn_purchasing_method);
         mTitleView = view.findViewById(R.id.title_view);
         mCloseBtn = view.findViewById(R.id.close_back_view);
-        tvDateInStorePurchase = view.findViewById(R.id.tv_date_in_store_purchase);
 
         mTitleView.setText("In Store Purchase");
         mCloseBtn.setOnClickListener(this);
         mConfirm.setOnClickListener(this);
-        tvDateInStorePurchase.setOnClickListener(this);
         return view;
     }
 
@@ -47,15 +51,20 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
 
         int id = view.getId();
         if (id == R.id.confirm_btn_purchasing_method) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
+            if (pay_status == 1) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
+                dismiss();
+            } else if (pay_status == 2) {
+                prefrences.setFragStatus(0);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
 //            startActivity(new Intent(getContext(), PaymentFragment.class));
-            dismiss();
+                dismiss();
+            }
         } else if (id == R.id.close_back_view) {
-            DialogFragmentDeliveryTime dialogFragmentDeliveryTime = new DialogFragmentDeliveryTime();
-            dialogFragmentDeliveryTime.show(getFragmentManager(), "Delivery time");
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).commit();
+//            DialogFragmentDeliveryTime dialogFragmentDeliveryTime = new DialogFragmentDeliveryTime();
+//            dialogFragmentDeliveryTime.show(getFragmentManager(), "Delivery time");
             dismiss();
-        } else if (id == R.id.tv_date_in_store_purchase) {
-            pickDate();
         }
 
     }
@@ -68,8 +77,8 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year , int monthOfYear, int dayOfMonth) {
-                        tvDateInStorePurchase.setText(dayOfMonth + "/" + (monthOfYear+ 1) + "/" + year);
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        tvDateInStorePurchase.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     }
                 }, mYear, mMonth, mYear);
         datePickerDialog.setTitle("Select Date..");

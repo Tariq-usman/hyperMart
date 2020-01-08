@@ -126,27 +126,27 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         int id = view.getId();
         if (id == R.id.description_btn) {
             getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemDescriptionFragment()).commit();
-            mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_selected));
-            mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
-            mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
+            mDescription.setTextColor(getResources().getColor(R.color.lightBlueColor));
+            mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
+            mReviews.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.specificatin_btn) {
             getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemSpecificationFragment()).commit();
-            mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
-            mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_selected));
-            mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
+            mSpecification.setTextColor(getResources().getColor(R.color.lightBlueColor));
+            mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
+            mReviews.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.reviews_btn) {
             getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemReviewsFragment()).commit();
-            mDescription.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
-            mSpecification.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_unselected));
-            mReviews.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_item_details_btn_selected));
+            mReviews.setTextColor(getResources().getColor(R.color.lightBlueColor));
+            mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
+            mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.add_to_cart) {
 
         } else if (id == R.id.iv_back) {
             if (status == "1") {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).addToBackStack(null).commit();
-            } else if (status=="2"){
+            } else if (status == "2") {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
-            }else {
+            } else {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SelectedStoreFragment()).addToBackStack(null).commit();
 
             }

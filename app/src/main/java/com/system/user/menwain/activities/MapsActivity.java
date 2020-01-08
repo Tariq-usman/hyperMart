@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -38,10 +39,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int MY_REQUEST_INT = 101;
     private GoogleMap mMap;
-    ImageView searchBtn;
-    EditText searchEt;
-    LocationManager manager;
-    LatLng current;
+    private TextView searchBtn;
+    private EditText searchEt;
+    private ImageView backBtn;
+    private LocationManager manager;
+    private LatLng current;
     double currentLat;
     double currentLng;
     Location currentLocation;
@@ -55,6 +57,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         searchBtn = findViewById(R.id.searchBtn);
         searchEt = findViewById(R.id.searchEt);
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override

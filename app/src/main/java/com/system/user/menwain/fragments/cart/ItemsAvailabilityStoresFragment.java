@@ -37,19 +37,18 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 
     private TextView mTitleView, mPayNow, mPayLater, mSortByDistance, mSortByPrice, mSortByAvailability;
     private ImageView mBackBtn, mMenu;
-    Bundle bundle;
     private Boolean pay_now, pay_later = false;
     public static Boolean isCheck = false;
     private SharedPreferences.Editor editor;
     Prefrences prefrences;
+    private int pay_status;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_items_availability_stores, container, false);
-        bundle = this.getArguments();
-        editor = getActivity().getSharedPreferences("fragment_status", Context.MODE_PRIVATE).edit();
-
         prefrences = new Prefrences(getContext());
+        pay_status = prefrences.getPaymentStatus();
+
         distance = new ArrayList<>();
         distance.add(11.3);
         distance.add(9.);
@@ -90,28 +89,17 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         mSortByPrice.setOnClickListener(this);
         mSortByAvailability.setOnClickListener(this);
 
-            if (bundle !=null ) {
-                pay_now = bundle.getBoolean("pay_now", false);
-                pay_later = bundle.getBoolean("pay_later", false);
-                if (pay_now == true) {
-                    mPayNow.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                    mPayLater.setBackgroundResource(0);
-                    mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
-                    mPayLater.setTextColor(Color.parseColor("#004040"));
-                } else if (pay_later==true){
-                    mPayLater.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                    mPayNow.setBackgroundResource(0);
-                    mPayNow.setTextColor(Color.parseColor("#004040"));
-                    mPayLater.setTextColor(Color.parseColor("#FFFFFF"));
-                }
-            } else {
-                mPayNow.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                mPayLater.setBackgroundResource(0);
-                mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
-                mPayLater.setTextColor(Color.parseColor("#004040"));
-            }
-
-
+        if (pay_status == 1){
+            mPayNow.setBackgroundResource(R.drawable.bg_store_btn_colored);
+            mPayLater.setBackgroundResource(0);
+            mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
+            mPayLater.setTextColor(Color.parseColor("#004040"));
+        }else {
+            mPayLater.setBackgroundResource(R.drawable.bg_store_btn_colored);
+            mPayNow.setBackgroundResource(0);
+            mPayNow.setTextColor(Color.parseColor("#004040"));
+            mPayLater.setTextColor(Color.parseColor("#FFFFFF"));
+        }
         recyclerViewAvailableItemsStore = view.findViewById(R.id.recycler_view_available_item_store);
         recyclerViewAvailableItemsStore.setHasFixedSize(true);
         recyclerViewAvailableItemsStore.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -187,23 +175,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
                 break;
-            case R.id.pay_now:
-                mPayNow.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                mPayLater.setBackgroundResource(0);
-                mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
-                mPayLater.setTextColor(Color.parseColor("#004040"));
-                DialogFragmentPayNow method = new DialogFragmentPayNow();
-                method.show(getFragmentManager(), "pay online");
-                break;
-            case R.id.pay_later:
-                mPayLater.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                mPayNow.setBackgroundResource(0);
-                mPayNow.setTextColor(Color.parseColor("#004040"));
-                mPayLater.setTextColor(Color.parseColor("#FFFFFF"));
-                DialogFragmentPayLater payInstore = new DialogFragmentPayLater();
-                payInstore.show(getFragmentManager(), "pay in store");
-
-
         }
     }
 }

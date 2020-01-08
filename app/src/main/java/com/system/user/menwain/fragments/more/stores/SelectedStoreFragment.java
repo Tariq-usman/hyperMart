@@ -56,7 +56,7 @@ public class SelectedStoreFragment extends Fragment {
         stars.getDrawable(2).setColorFilter(getContext().getResources().getColor(R.color.yellowColor), PorterDuff.Mode.SRC_ATOP);
 
         mSearchViewSelecredStore = getActivity().findViewById(R.id.search_view);
-        mSearchViewSelecredStore.setVisibility(View.INVISIBLE);
+        mSearchViewSelecredStore.setVisibility(View.VISIBLE);
         ivBackBtnSelectedStore = getActivity().findViewById(R.id.iv_back);
         ivBackBtnSelectedStore.setVisibility(View.VISIBLE);
         ivBackBtnSelectedStore.setOnClickListener(new View.OnClickListener() {

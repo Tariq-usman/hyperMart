@@ -36,16 +36,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
+                android:text="List Name"
                 android:textColor="@color/darkGreenColor" />
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_date_in_store_purchase"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:background="@drawable/bg_order_details"
                 android:gravity="center"
-                android:text="11/11/19"
+                android:hint="List 1"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColorHint="@color/darkGreenColor"
                 android:textColor="@color/darkGreenColor"/>
         </LinearLayout>
 
