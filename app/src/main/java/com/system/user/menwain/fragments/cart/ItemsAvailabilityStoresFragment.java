@@ -1,6 +1,5 @@
 package com.system.user.menwain.fragments.cart;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
-import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPayLater;
-import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPayNow;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -171,7 +168,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                 break;
             case R.id.iv_back:
-                prefrences.setFragStatus(1);
+                prefrences.setCartFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
                 break;

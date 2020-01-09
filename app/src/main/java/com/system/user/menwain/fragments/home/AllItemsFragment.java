@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.home_adapters.ExploreItemsGridAdapter;
 import com.system.user.menwain.adapters.home_adapters.ExploreItemsListAdapter;
@@ -40,7 +41,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView recyclerViewAllitem;
     private LinearLayoutManager linearLayoutManager;
-    private ImageView ivGridListView, ivBack,ivListGridView,ivMenu;
+    private ImageView ivGridListView, ivBack, ivListGridView, ivMenu;
     private boolean isList = false;
     private Intent intent;
     private String val;
@@ -50,13 +51,13 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     Toolbar toolbar;
     private TextView fragTitle;
     private CardView searchViewAllItems;
-
+    Prefrences prefrences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_all_items,container,false);
-
+        View view = inflater.inflate(R.layout.fragment_all_items, container, false);
+        prefrences = new Prefrences(getContext());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         searchViewAllItems = getActivity().findViewById(R.id.search_view);
@@ -66,14 +67,13 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         ivListGridView.setOnClickListener(this);
 
 
-
         ivBack = getActivity().findViewById(R.id.iv_back);
         ivBack.setOnClickListener(this);
         ivBack.setVisibility(View.VISIBLE);
 
 
         bundle = this.getArguments();
-        val = bundle.getString("explore","");
+        val = bundle.getString("explore", "");
         Log.i("val", String.valueOf(val));
         Log.i("val1", String.valueOf(val1));
         recyclerViewAllitem = view.findViewById(R.id.recycler_view_grid_items);
@@ -95,7 +95,8 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new HomeFragment()).addToBackStack(null).commit();
+                prefrences.setHomeFragStatus(0);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(),"Home").addToBackStack(null).commit();
                 ivBack.setVisibility(View.INVISIBLE);
                 ivListGridView.setVisibility(View.INVISIBLE);
 

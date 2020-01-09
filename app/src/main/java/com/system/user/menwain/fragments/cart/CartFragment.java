@@ -109,7 +109,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 getActivity().startActivity(logInIntnet);
             } else {
                 Prefrences prefrences = new Prefrences(getContext());
-                prefrences.setFragStatus(1);
+                prefrences.setCartFragStatus(1);
                 /*editor.putInt("frag_status",1);
                 editor.apply();*/
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,fragment).addToBackStack(null).commit();

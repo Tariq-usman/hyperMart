@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.fragments.more.orders.ItemReviewFragment;
 import com.system.user.menwain.R;
 
@@ -17,9 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.OrderDetailsItemViewHolder>{
     private int [] products;
     Context context;
+    Prefrences prefrences;
     public OrderDetailsAdapter(Context context, int[] products) {
         this.products = products;
         this.context = context;
+        prefrences = new Prefrences(context);
     }
 
     @NonNull
@@ -36,6 +39,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                prefrences.setMoreOrdersFragStatus(3);
                 ItemReviewFragment fragment = new ItemReviewFragment();
                 FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.nav_host_fragment,fragment).commit();

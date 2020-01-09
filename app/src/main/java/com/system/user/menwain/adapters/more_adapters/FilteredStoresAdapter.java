@@ -6,12 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
@@ -23,7 +22,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAdapter.FilterStoresViewHolder> {
 
@@ -33,11 +31,13 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
     private String[] storesName;
     private CartViewModel cartViewModel;
     Bundle bundle;
+    private Prefrences prefrences;
 
     public FilteredStoresAdapter(String[] productsName, Context context, int[] items, String[] storesName) {
         this.productsName = productsName;
         this.context = context;
         this.items = items;
+        prefrences = new Prefrences(context);
         this.storesName = storesName;
 
     }
@@ -80,6 +80,7 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
             @Override
             public void onClick(View view) {
                 bundle = new Bundle();
+                prefrences.setMoreStoresFragStatus(3);
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                 bundle.putString("status","3");

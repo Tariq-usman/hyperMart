@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
@@ -29,15 +30,14 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
     private String[] storesName;
     private CartViewModel cartViewModel;
     Bundle bundle;
-
+    Prefrences prefrences;
 
     public FilterItemsAdapter(String[] productsName, Context context, int[] items, String[] storesName) {
         this.productsName = productsName;
         this.context = context;
         this.items = items;
         this.storesName = storesName;
-
-
+        prefrences = new Prefrences(context);
     }
 
     @NonNull
@@ -78,6 +78,7 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
             @Override
             public void onClick(View view) {
                 bundle = new Bundle();
+                prefrences.setCategoryFragStatus(2);
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                 bundle.putString("status","2");

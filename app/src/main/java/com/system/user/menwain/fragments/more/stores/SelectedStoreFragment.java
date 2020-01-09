@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.category_adapters.FilterItemsAdapter;
 import com.system.user.menwain.adapters.more_adapters.FilteredStoresAdapter;
@@ -36,6 +37,7 @@ public class SelectedStoreFragment extends Fragment {
     private ImageView ivBackBtnSelectedStore;
     private CardView mSearchViewSelecredStore;
     private RatingBar ratingBar;
+    private Prefrences prefrences;
 
 
     private String[] storesName = {"Madina", "Metro", "Makro", "Pak", "Alrasheed", "ARY", "Meezan", "Lahore", "ARY", "Meezan", "Lahore"};
@@ -49,6 +51,7 @@ public class SelectedStoreFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_store, container, false);
+        prefrences = new Prefrences(getContext());
         ratingBar = view.findViewById(R.id.rating_bar_selected_stores);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         //stars.getDrawable(0).setColorFilter(getResources().getColor(R.color.colorButton), PorterDuff.Mode.SRC_ATOP);
@@ -62,6 +65,7 @@ public class SelectedStoreFragment extends Fragment {
         ivBackBtnSelectedStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                prefrences.setMoreStoresFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new StoresFragment()).addToBackStack(null).commit();
                 ivBackBtnSelectedStore.setVisibility(View.INVISIBLE);
             }

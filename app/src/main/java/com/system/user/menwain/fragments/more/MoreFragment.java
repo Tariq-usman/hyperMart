@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.menu_fragment.ProfileFragment;
 import com.system.user.menwain.fragments.more.menu_fragment.RateUsFragment;
@@ -28,13 +29,16 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private TextView tvTitle,tvOrderHistory, tvProfile, tvSettings, tvHelp, tvAbout, tvRateApp, tvLogout;
     private CardView mSearchViewMore;
     private LinearLayout ivStores,ivOrder;
+    Prefrences prefrences;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
+        prefrences = new Prefrences(getContext());
         mSearchViewMore = getActivity().findViewById(R.id.search_view);
         mSearchViewMore.setVisibility(View.INVISIBLE);
         ivBack = getActivity().findViewById(R.id.iv_back);
+        ivBack.setVisibility(View.INVISIBLE);
         ivStores = view.findViewById(R.id.iv_stores);
         tvProfile = view.findViewById(R.id.tv_profile);
         ivOrder = view.findViewById(R.id.iv_order);
@@ -61,14 +65,20 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_stores:
+                prefrences.setMorFragStatus(1);
+                prefrences.setMoreStoresFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new StoresFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_profile:
+                prefrences.setMorFragStatus(3);
+                prefrences.setProfileFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ProfileFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.iv_order:
+                prefrences.setMorFragStatus(2);
+                prefrences.setMoreOrdersFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;

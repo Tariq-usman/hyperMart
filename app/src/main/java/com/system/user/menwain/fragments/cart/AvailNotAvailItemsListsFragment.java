@@ -122,7 +122,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
                 dialogFragmentPurchasingMethod.show(getFragmentManager(),"Purchasing Method");
             }
         } else if (id == R.id.iv_back) {
-            prefrences.setFragStatus(2);
+            prefrences.setCartFragStatus(2);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
             mBackBtn.setVisibility(View.GONE);
         }

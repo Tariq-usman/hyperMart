@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.category_adapters.FilterItemsAdapter;
 import com.system.user.menwain.adapters.category_adapters.SelectedItemAdapter;
-import com.system.user.menwain.adapters.category_adapters.SelectedItemsNamesAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +27,7 @@ public class ItemsFragment extends Fragment {
     private int getPreviousId = CategoryAdapter.passId;
     private ImageView mBackBtn;
     private CardView mSearchViewItemsFragment;
+    private Prefrences prefrences;
 
     private String[] storesName = {"Madina c carry", "Metro c carry", "Makro c carry", "Pak c carry", "Alrasheed c carry", "ARY c carry",
             "Meezan c carry", "Lahore c carry", "ARY c carry", "Meezan c carry"};
@@ -38,7 +39,7 @@ public class ItemsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_items, container, false);
-
+        prefrences = new Prefrences(getContext());
         mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
         mSearchViewItemsFragment.setVisibility(View.INVISIBLE);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
@@ -46,7 +47,8 @@ public class ItemsFragment extends Fragment {
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryStoresFragment()).addToBackStack(null).commit();
+                prefrences.setCategoryFragStatus(0);
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
             }
         });

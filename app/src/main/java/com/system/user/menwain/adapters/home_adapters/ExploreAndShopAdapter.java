@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 
@@ -22,11 +23,13 @@ public class ExploreAndShopAdapter extends RecyclerView.Adapter<ExploreAndShopAd
     private int[] items;
     public boolean status = false;
     Bundle bundle;
+    Prefrences prefrences;
 
     public ExploreAndShopAdapter(Context context, String[] productsName, int[] items) {
         this.context = context;
         this.productsName = productsName;
         this.items = items;
+        prefrences = new Prefrences(context);
     }
 
     @NonNull
@@ -44,6 +47,7 @@ public class ExploreAndShopAdapter extends RecyclerView.Adapter<ExploreAndShopAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                prefrences.setHomeFragStatus(4);
                 bundle = new Bundle();
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();

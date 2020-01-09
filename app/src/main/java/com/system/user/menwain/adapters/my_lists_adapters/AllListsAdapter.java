@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.fragments.my_list.ListDetailsFragment;
 import com.system.user.menwain.R;
 
@@ -18,9 +19,11 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
 
     private String listaName [];
     Context context;
+    Prefrences prefrences;
     public AllListsAdapter(String[] listsName, Context context) {
         this.listaName = listsName;
         this.context = context;
+        prefrences = new Prefrences(context);
     }
 
     @NonNull
@@ -37,6 +40,7 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                prefrences.setMyListFragStatus(1);
                 ListDetailsFragment fragment = new ListDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.nav_host_fragment,fragment).addToBackStack(null).commit();

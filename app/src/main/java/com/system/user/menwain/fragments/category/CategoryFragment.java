@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-public class CategoryStoresFragment extends Fragment {
+public class CategoryFragment extends Fragment {
     TextView mProductsCategory, mProductsStores;
     private ImageView mBarCodeScanner;
     private Button btn;

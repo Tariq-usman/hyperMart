@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 
@@ -17,17 +18,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoresViewHolder> {
     private String [] productsName;
     int [] stores;
     static Context context;
     public static int pos;
+    private Prefrences prefrences;
     public StoresAdapter(Context context, String[] productsName, int[] stores) {
         this.productsName = productsName;
         this.context = context;
         this.stores = stores;
+        prefrences = new Prefrences(context);
     }
 
     @NonNull
@@ -48,6 +50,7 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoresView
             @Override
             public void onClick(View view) {
                 pos = holder.getAdapterPosition();
+                prefrences.setMoreStoresFragStatus(2);
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Fragment myFragment = new SelectedStoreFragment();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, myFragment).addToBackStack(null).commit();

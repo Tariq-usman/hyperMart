@@ -29,7 +29,7 @@ public class ItemsCategoryFragment extends Fragment {
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_category);
         recyclerViewProductCategory.setHasFixedSize(true);
         recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(),3, GridLayoutManager.VERTICAL,false));
-        recyclerViewProductCategory.setAdapter(new CategoryAdapter(productsName,items));
+        recyclerViewProductCategory.setAdapter(new CategoryAdapter(getContext(),productsName,items));
 
         return view;
     }

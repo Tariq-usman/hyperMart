@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.my_lists_adapters.ListDetailsAdapter;
 
@@ -23,15 +24,16 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
     private RecyclerView recyclerViewListDetails;
     private ListDetailsAdapter listDetailsAdapter;
     private FloatingActionButton floatingActionButton;
-    private TextView mConfirmBtn,mTitleListDetails;
+    private TextView mConfirmBtn, mTitleListDetails;
     private ImageView mBackBtn;
+    private Prefrences prefrences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_details,container,false);
+        View view = inflater.inflate(R.layout.fragment_list_details, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
+        prefrences = new Prefrences(getContext());
         mConfirmBtn = view.findViewById(R.id.confirm_btn_list_details);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setVisibility(View.VISIBLE);
@@ -53,10 +55,11 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.confirm_btn_list_details) {
-            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new AllListsFragment()).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).addToBackStack(null).commit();
             mBackBtn.setVisibility(View.INVISIBLE);
         } else if (id == R.id.iv_back) {
-            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new AllListsFragment()).addToBackStack(null).commit();
+            prefrences.setMyListFragStatus(0);
+            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).addToBackStack(null).commit();
             mBackBtn.setVisibility(View.INVISIBLE);
         }
 

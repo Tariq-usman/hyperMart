@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.home_adapters.ExploreAndShopAdapter;
@@ -51,12 +52,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private TextView tvSeeAllExploreShop, tvSeeAllExplore, tvSeeAllShop;
     private TabLayout tabLayout;
     private CardView mSearchView;
+    Prefrences prefrences;
+    private int frag_status;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmet_home, container, false);
-
+        prefrences = new Prefrences(getContext());
+        prefrences.setBottomNavStatus(1);
         mPager = view.findViewById(R.id.pager);
         tabLayout = view.findViewById(R.id.tab_layout);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
@@ -141,6 +145,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_see_all_explore_shop:
+                prefrences.setHomeFragStatus(1);
                 allItemsFragment = new AllItemsFragment();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -150,6 +155,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 transaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
                 break;
             case R.id.tv_see_all_explore:
+                prefrences.setHomeFragStatus(2);
                 allItemsFragment = new AllItemsFragment();
                 FragmentTransaction explore_transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -159,6 +165,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 explore_transaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
                 break;
             case R.id.tv_see_all_shop:
+                prefrences.setHomeFragStatus(3);
                 allItemsFragment = new AllItemsFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 

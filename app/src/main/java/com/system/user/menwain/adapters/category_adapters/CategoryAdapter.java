@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.category.ItemsFragment;
 
@@ -20,10 +21,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private int[] items;
     public static int passId;
     Context context;
-
-    public CategoryAdapter(String[] productsName, int[] items) {
+    Prefrences prefrences;
+    public CategoryAdapter(Context context, String[] productsName, int[] items) {
         this.productsName = productsName;
         this.items = items;
+        this.context = context;
+        prefrences = new Prefrences(context);
     }
 
     @NonNull
@@ -42,6 +45,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             @Override
             public void onClick(View view) {
                 passId = holder.getAdapterPosition();
+                prefrences.setCategoryFragStatus(1);
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Fragment myFragment = new ItemsFragment();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, myFragment).addToBackStack(null).commit();

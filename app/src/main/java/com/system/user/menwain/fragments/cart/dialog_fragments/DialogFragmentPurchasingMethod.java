@@ -52,10 +52,11 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
         int id = view.getId();
         if (id == R.id.confirm_btn_purchasing_method) {
             if (pay_status == 1) {
+                prefrences.setCartFragStatus(4);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
                 dismiss();
             } else if (pay_status == 2) {
-                prefrences.setFragStatus(0);
+                prefrences.setCartFragStatus(0);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
 //            startActivity(new Intent(getContext(), PaymentFragment.class));
                 dismiss();

@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,8 +22,6 @@ import android.widget.TextView;
 import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.DelivieryAddressesAdapter;
-import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPayLater;
-import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPayNow;
 
 public class DeliveryAddressFragment extends Fragment implements View.OnClickListener {
 
@@ -38,6 +35,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     Prefrences prefrences;
     private RadioButton rbDeliverToAddress, rbPreparePickUp, rbCashOnDelivery, rbPreparePickFromStore, rbWalkInStore;
     private RadioGroup rgPayNow, rgPayLater;
+    private int rBtnPaymentStatus;
 
     @Nullable
     @Override
@@ -45,10 +43,24 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_delivey_address, container, false);
         prefrences = new Prefrences(getContext());
         prefrences.setPaymentStatus(1);
+        rBtnPaymentStatus = prefrences.getPayRBtnStatus();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         mSearchViewAddress = getActivity().findViewById(R.id.search_view);
         mSearchViewAddress.setVisibility(View.INVISIBLE);
+
+        rbDeliverToAddress = view.findViewById(R.id.rb_deliver_to_address);
+        rbDeliverToAddress.setOnClickListener(this);
+        rbPreparePickUp = view.findViewById(R.id.rb_prepare_pick_fr_store);
+        rbPreparePickUp.setOnClickListener(this);
+
+        if (rBtnPaymentStatus == 1) {
+            rbPreparePickUp.setChecked(false);
+            rbDeliverToAddress.setChecked(true);
+        } else if (rBtnPaymentStatus == 2) {
+            rbPreparePickUp.setChecked(true);
+            rbDeliverToAddress.setChecked(false);
+        }
 
         rbCashOnDelivery = view.findViewById(R.id.rb_cash_on_delivery);
         rbCashOnDelivery.setOnClickListener(this);
@@ -82,19 +94,22 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     }
 
     private void setRadioButtonChecked() {
-        int rBtnStatus = prefrences.getPayLateStatus();
-        if (rBtnStatus == 1) {
-            prefrences.setPayLaterStatus(1);
+
+        if (rBtnPaymentStatus == 1) {
+            rbPreparePickUp.setChecked(false);
+            rbDeliverToAddress.setChecked(true);
+        } else if (rBtnPaymentStatus == 2) {
+            rbPreparePickUp.setChecked(true);
+            rbDeliverToAddress.setChecked(false);
+        } else if (rBtnPaymentStatus == 3) {
             rbWalkInStore.setChecked(false);
             rbPreparePickFromStore.setChecked(false);
             rbCashOnDelivery.setChecked(true);
-        } else if (rBtnStatus == 2) {
-            prefrences.setPayLaterStatus(2);
+        } else if (rBtnPaymentStatus == 4) {
             rbWalkInStore.setChecked(false);
             rbPreparePickFromStore.setChecked(true);
             rbCashOnDelivery.setChecked(false);
-        } else if (rBtnStatus == 3) {
-            prefrences.setPayLaterStatus(3);
+        } else if (rBtnPaymentStatus == 5) {
             rbWalkInStore.setChecked(true);
             rbPreparePickFromStore.setChecked(false);
             rbCashOnDelivery.setChecked(false);
@@ -107,6 +122,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         String backStateName = itemsAvailabilityStoresFragment.getClass().getName();
         int id = view.getId();
         if (id == R.id.pay_now_delivery_adr) {
+            setRadioButtonChecked();
             rgPayNow.setVisibility(View.VISIBLE);
             rgPayLater.setVisibility(View.GONE);
             prefrences.setPaymentStatus(1);
@@ -123,27 +139,35 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             mPayNow.setBackgroundResource(0);
             mPayNow.setTextColor(Color.parseColor("#004040"));
             mPayLater.setTextColor(Color.parseColor("#FFFFFF"));
+        } else if (id == R.id.rb_deliver_to_address) {
+            prefrences.setPayRBtnStatus(1);
+            rbPreparePickUp.setChecked(false);
+            rbDeliverToAddress.setChecked(true);
+        } else if (id == R.id.rb_prepare_pick_fr_store) {
+            prefrences.setPayRBtnStatus(2);
+            rbPreparePickUp.setChecked(true);
+            rbDeliverToAddress.setChecked(false);
         } else if (id == R.id.rb_cash_on_delivery) {
-            prefrences.setPayLaterStatus(1);
+            prefrences.setPayRBtnStatus(3);
             rbWalkInStore.setChecked(false);
             rbPreparePickFromStore.setChecked(false);
             rbCashOnDelivery.setChecked(true);
         } else if (id == R.id.rb_prepare_and_pick) {
-            prefrences.setPayLaterStatus(2);
+            prefrences.setPayRBtnStatus(4);
             rbWalkInStore.setChecked(false);
             rbPreparePickFromStore.setChecked(true);
             rbCashOnDelivery.setChecked(false);
         } else if (id == R.id.rb_Walk_in_tore) {
-            prefrences.setPayLaterStatus(3);
+            prefrences.setPayRBtnStatus(5);
             rbWalkInStore.setChecked(true);
             rbPreparePickFromStore.setChecked(false);
             rbCashOnDelivery.setChecked(false);
         } else if (id == R.id.confirm_btn) {
-            prefrences.setFragStatus(2);
+            prefrences.setCartFragStatus(2);
             ItemsAvailabilityStoresFragment storesFragment = new ItemsAvailabilityStoresFragment();
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, storesFragment).addToBackStack(null).commit();
         } else if (id == R.id.iv_back) {
-            prefrences.setFragStatus(0);
+            prefrences.setCartFragStatus(0);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
             mBackView.setVisibility(View.GONE);
         }

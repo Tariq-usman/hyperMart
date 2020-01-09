@@ -1,7 +1,6 @@
 package com.system.user.menwain.adapters.cart_adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -74,7 +73,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
             public void onClick(View view) {
                 /*editor.apply();
                 editor.putInt("frag_status",2);*/
-                prefrences.setFragStatus(3);
+                prefrences.setCartFragStatus(3);
                 AvailNotAvailItemsListsFragment fragment = new AvailNotAvailItemsListsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle = new Bundle();

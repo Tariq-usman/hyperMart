@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.Item_details_SlidingImages_Adapter;
 import com.system.user.menwain.adapters.category_adapters.SelectedItemsFilterAdapter;
@@ -46,12 +47,13 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private Runnable runnable;
     private int currentPage = 0;
     private CardView mSearchView;
+    Prefrences prefrences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_details, container, false);
-
+        prefrences = new Prefrences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemDescriptionFragment()).commit();
         mSearchView = getActivity().findViewById(R.id.search_view);
         mSearchView.setVisibility(View.INVISIBLE);
@@ -143,10 +145,13 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
 
         } else if (id == R.id.iv_back) {
             if (status == "1") {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).addToBackStack(null).commit();
+                prefrences.setHomeFragStatus(0);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(),"Home").addToBackStack(null).commit();
             } else if (status == "2") {
+                prefrences.setCategoryFragStatus(1);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
             } else {
+                prefrences.setMoreStoresFragStatus(2);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SelectedStoreFragment()).addToBackStack(null).commit();
 
             }

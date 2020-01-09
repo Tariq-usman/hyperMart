@@ -18,16 +18,6 @@ public class Prefrences {
         editor = sharedPreferences.edit();
     }
 
-    public void setFragStatus(int fragStatus) {
-        editor.putInt("frag_status", fragStatus);
-        editor.apply();
-        editor.commit();
-    }
-
-    public int getFragStatus() {
-        return sharedPreferences.getInt("frag_status", 0);
-    }
-
     public void setPaymentStatus(int paymentStatus){
         editor.putInt("payment_status", paymentStatus);
         editor.apply();
@@ -36,20 +26,102 @@ public class Prefrences {
     public int getPaymentStatus() {
         return sharedPreferences.getInt("payment_status", 0);
     }
-    public void setPayLaterStatus(int paymentStatus){
-        editor.putInt("pay_later_checked", paymentStatus);
+
+    public void setPayRBtnStatus(int rBtnStatus){
+        editor.putInt("pay_r_btn_checked", rBtnStatus);
         editor.apply();
         editor.commit();
     }
-    public int getPayLateStatus() {
-        return sharedPreferences.getInt("pay_later_checked", 0);
+    public int getPayRBtnStatus() {
+        return sharedPreferences.getInt("pay_r_btn_checked", 0);
     }
-    public void setPayNowStatus(int paymentStatus){
-        editor.putInt("pay_now_checked", paymentStatus);
+
+
+    public void setBottomNavStatus(int bottomNavStatus){
+        editor.putInt("Bottom_Nav_status", bottomNavStatus);
         editor.apply();
         editor.commit();
     }
-    public int getPayNowStatus() {
-        return sharedPreferences.getInt("pay_now_checked", 0);
+    public int getBottomNavStatus() {
+        return sharedPreferences.getInt("Bottom_Nav_status", 0);
+    }
+
+    public void setHomeFragStatus(int fragStatus) {
+        editor.putInt("home_frag_status", fragStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getHomeFragStatus() {
+        return sharedPreferences.getInt("home_frag_status", 0);
+    }
+
+    public void setCategoryFragStatus(int fragStatus) {
+        editor.putInt("category_frag_status", fragStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getCategoryFragStatus() {
+        return sharedPreferences.getInt("category_frag_status", 0);
+    }
+
+    public void setCartFragStatus(int fragStatus) {
+        editor.putInt("cart_frag_status", fragStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getCartFragStatus() {
+        return sharedPreferences.getInt("cart_frag_status", 0);
+    }
+
+    public void setMyListFragStatus(int fragStatus) {
+        editor.putInt("my_list_frag_status", fragStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getMyListFragStatus() {
+        return sharedPreferences.getInt("my_list_frag_status", 0);
+    }
+
+    public void setMorFragStatus(int fragStatus) {
+        editor.putInt("more_frag_status", fragStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getMoreFragStatus() {
+        return sharedPreferences.getInt("more_frag_status", 0);
+    }
+
+    public void setMoreStoresFragStatus(int fragStatus) {
+        editor.putInt("store_frag_status", fragStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getMoreStoresFragStatus() {
+        return sharedPreferences.getInt("store_frag_status", 0);
+    }
+    public void setMoreOrdersFragStatus(int fragStatus) {
+        editor.putInt("store_frag_status", fragStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getMoreOrdersFragStatus() {
+        return sharedPreferences.getInt("store_frag_status", 0);
+    }
+
+    public void setProfileFragStatus(int fragStatus) {
+        editor.putInt("profile_frag_status", fragStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getProfileFragStatus() {
+        return sharedPreferences.getInt("profile_frag_status", 0);
     }
 }

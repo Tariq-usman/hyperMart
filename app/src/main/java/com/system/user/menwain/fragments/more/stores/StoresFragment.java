@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.StoresAdapter;
 import com.system.user.menwain.fragments.more.MoreFragment;
@@ -26,12 +27,13 @@ public class StoresFragment extends Fragment {
     private ImageView ivBackStores;
     private TextView tvTitleStores;
     private CardView mSearchStores;
+    private Prefrences prefrences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stores, container, false);
-
+        prefrences = new Prefrences(getContext());
         ivBackStores = getActivity().findViewById(R.id.iv_back);
         ivBackStores.setVisibility(View.VISIBLE);
         mSearchStores = getActivity().findViewById(R.id.search_view);
@@ -39,6 +41,7 @@ public class StoresFragment extends Fragment {
         ivBackStores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                prefrences.setMoreStoresFragStatus(0);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).addToBackStack(null).commit();
                 ivBackStores.setVisibility(View.INVISIBLE);
              //   tvTitleStores.setText("More");

@@ -33,7 +33,7 @@ public class PaymentFragment extends Fragment {
         mBackBtnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prefrences.setFragStatus(3);
+                prefrences.setCartFragStatus(3);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new AvailNotAvailItemsListsFragment())
                         .addToBackStack(null).commit();
 
@@ -43,7 +43,7 @@ public class PaymentFragment extends Fragment {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prefrences.setFragStatus(0);
+                prefrences.setCartFragStatus(0);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
                         .addToBackStack(null).commit();
                 mBackBtnPay.setVisibility(View.INVISIBLE);
