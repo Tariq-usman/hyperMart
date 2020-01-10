@@ -30,7 +30,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return childFragments.length; //3 items
+        return childFragments.length; //4 items
     }
 
     @Override

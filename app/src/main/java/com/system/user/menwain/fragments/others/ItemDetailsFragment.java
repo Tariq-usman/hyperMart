@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -24,6 +26,8 @@ import com.system.user.menwain.adapters.category_adapters.SelectedItemsFilterAda
 import com.system.user.menwain.fragments.category.ItemsFragment;
 import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
+import com.system.user.menwain.local_db.entity.Cart;
+import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
 public class ItemDetailsFragment extends Fragment implements View.OnClickListener {
     private int[] IMAGES; /*= {R.drawable.dis, R.drawable.disc, R.drawable.disco, R.drawable.discoun, R.drawable.discount};*/
@@ -63,7 +67,9 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
 
         // mItem = view.findViewById(R.id.selected_item_view);
         bundle = this.getArguments();
-        IMAGES = new int[]{(Integer.parseInt(bundle.getString("image_url", ""))), (Integer.parseInt(bundle.getString("image_url1", ""))), (Integer.parseInt(bundle.getString("image_url2", "")))};
+        IMAGES = new int[]{(Integer.parseInt(bundle.getString("image_url", ""))),
+                (Integer.parseInt(bundle.getString("image_url1", ""))),
+                (Integer.parseInt(bundle.getString("image_url2", "")))};
         status = bundle.getString("status", "");
 
         mDescription = view.findViewById(R.id.description_btn);
@@ -142,6 +148,8 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
             mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.add_to_cart) {
+            CartViewModel cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+//            Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantit)
 
         } else if (id == R.id.iv_back) {
             if (status == "1") {

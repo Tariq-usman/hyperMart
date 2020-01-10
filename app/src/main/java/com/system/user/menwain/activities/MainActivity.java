@@ -1,6 +1,7 @@
 package com.system.user.menwain.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,11 +39,14 @@ import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -59,6 +63,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private SharedPreferences fragment_status_pref;
     private int frag_status;
     Prefrences prefrences;
+    private Dialog MyDialog;
+    private Button btnYes, btnNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -314,7 +320,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             Intent homeIntent = new Intent(Intent.ACTION_MAIN);
             homeIntent.addCategory(Intent.CATEGORY_HOME);
             homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            finish();
+            MyCustomAlertDialog();
+            //exitAppDialog();
+            //  finish();
         } else if (prefrences.getBottomNavStatus() == 1) {
             if (home_fragment_status == 4) {
                 prefrences.setHomeFragStatus(3);
@@ -489,27 +497,48 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         }
-       /* Fragment fragment = getSupportFragmentManager().findFragmentByTag("Home");
-        if (fragment != null && fragment.isVisible()) {
-            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-            homeIntent.addCategory(Intent.CATEGORY_HOME);
-            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            finish();
-        } else {
-            setFragment(new HomeFragment());
-            ivBack.setVisibility(View.INVISIBLE);
-            ivListGridView.setVisibility(View.INVISIBLE);
-            mHome.setImageResource(R.drawable.ic_houseblue);
-            tvHome.setTextColor(Color.parseColor("#00c1bd"));
-            mCategory.setImageResource(R.drawable.ic_searchwhite);
-            tvCategory.setTextColor(Color.parseColor("#004040"));
-            mFavourite.setImageResource(R.drawable.ic_likewhite);
-            tvFavourite.setTextColor(Color.parseColor("#004040"));
-            mCart.setImageResource(R.drawable.ic_cart_white);
-            tvCart.setTextColor(Color.parseColor("#004040"));
-            mMore.setImageResource(R.drawable.ic_morewhite);
-            tvMore.setTextColor(Color.parseColor("#004040"));
-        }*/
+    }
+
+    public void MyCustomAlertDialog() {
+        MyDialog = new Dialog(MainActivity.this);
+        MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        MyDialog.setContentView(R.layout.customdialog);
+        btnYes = MyDialog.findViewById(R.id.btn_yes);
+        btnNo = MyDialog.findViewById(R.id.btn_no);
+        btnYes.setEnabled(true);
+        btnNo.setEnabled(true);
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               MainActivity.this.finish();
+            }
+        });
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialog.cancel();
+            }
+        });
+        MyDialog.show();
+    }
+
+    private void exitAppDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.this.finish();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public void setFragment(Fragment fragment, String tag) {

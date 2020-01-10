@@ -31,7 +31,9 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
     private CartViewModel cartViewModel;
     Bundle bundle;
     Prefrences prefrences;
-
+    int productId,intQuantity;
+    String productName,storeName,price,quantity,strTotalPrice;
+    float totalPrice,unitPrice;
     public FilterItemsAdapter(String[] productsName, Context context, int[] items, String[] storesName) {
         this.productsName = productsName;
         this.context = context;
@@ -50,6 +52,18 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
+        productId = 12;
+        productName = holder.mProductNameView.getText().toString();
+        storeName = holder.mStoreName.getText().toString();
+        price = holder.mPriceFilterItem.getText().toString();
+        quantity = holder.mItemCounter.getText().toString();
+        strTotalPrice = price;
+        totalPrice = Float.parseFloat(price);
+
+        intQuantity = Integer.parseInt(quantity);
+
+         unitPrice = totalPrice * intQuantity;
+
         holder.mProductNameView.setText(productsName[position]);
         holder.mFilteProduct.setImageResource(items[position]);
         holder.mStoreName.setText(storesName[position]);
@@ -77,6 +91,7 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
         holder.mFilteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 bundle = new Bundle();
                 prefrences.setCategoryFragStatus(2);
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
@@ -108,18 +123,6 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
             @Override
             public void onClick(View view) {
 
-
-                int productId = 12;
-                String productName = holder.mProductNameView.getText().toString();
-                String storeName = holder.mStoreName.getText().toString();
-                String price = holder.mPriceFilterItem.getText().toString();
-                String quantity = holder.mItemCounter.getText().toString();
-                String strTotalPrice = price;
-                float totalPrice = Float.parseFloat(strTotalPrice);
-
-                int intQuantity = Integer.parseInt(quantity);
-
-                float unitPrice = totalPrice * intQuantity;
 
                 cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
 
