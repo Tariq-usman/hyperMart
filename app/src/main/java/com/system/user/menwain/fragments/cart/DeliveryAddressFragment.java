@@ -135,6 +135,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             rgPayNow.setVisibility(View.GONE);
             rgPayLater.setVisibility(View.VISIBLE);
             prefrences.setPaymentStatus(2);
+            prefrences.setPayRBtnStatus(3);
             mPayLater.setBackgroundResource(R.drawable.bg_store_btn_colored);
             mPayNow.setBackgroundResource(0);
             mPayNow.setTextColor(Color.parseColor("#004040"));

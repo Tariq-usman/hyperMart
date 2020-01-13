@@ -122,8 +122,6 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
         holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
 
                 Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantity);

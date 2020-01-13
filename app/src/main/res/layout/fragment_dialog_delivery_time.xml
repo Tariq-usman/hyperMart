@@ -18,12 +18,13 @@
         <include layout="@layout/header_item_details" />
 
         <TextView
+            android:id="@+id/tv_delivery_pickup"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_marginVertical="20dp"
             android:gravity="center"
-            android:text="Please let us your preferred delivery time"
+            android:text="Please tell us your preferred delivery time"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/sixteen_sp" />
 

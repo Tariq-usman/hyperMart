@@ -35,7 +35,7 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
         View view = inflater.inflate(R.layout.fragment_dialog_purchasing_method, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         prefrences = new Prefrences(getContext());
-        pay_status = prefrences.getPaymentStatus();
+        pay_status = prefrences.getPayRBtnStatus();
         mConfirm = view.findViewById(R.id.confirm_btn_purchasing_method);
         mTitleView = view.findViewById(R.id.title_view);
         mCloseBtn = view.findViewById(R.id.close_back_view);
@@ -51,11 +51,11 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
 
         int id = view.getId();
         if (id == R.id.confirm_btn_purchasing_method) {
-            if (pay_status == 1) {
+            if (pay_status == 1 || pay_status == 3) {
                 prefrences.setCartFragStatus(4);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
                 dismiss();
-            } else if (pay_status == 2) {
+            } else/* if (pay_status == 2)*/ {
                 prefrences.setCartFragStatus(0);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
 //            startActivity(new Intent(getContext(), PaymentFragment.class));

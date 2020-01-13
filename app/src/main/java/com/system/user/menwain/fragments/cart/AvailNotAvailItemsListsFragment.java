@@ -47,7 +47,6 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         View view = inflater.inflate(R.layout.fragment_avail_not_avial_items_lists, container, false);
         bundle = this.getArguments();
         prefrences = new Prefrences(getContext());
-        pay_status = prefrences.getPaymentStatus();
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
         mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
@@ -114,12 +113,14 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             mAvailItems.setBackgroundResource(R.drawable.bg_avail_not_avail_item_unselected);
             getFragmentManager().beginTransaction().replace(R.id.container_items_list, new NotAvailableItemsFragment()).commit();
         } else if (id == R.id.confirm_btn_items_list) {
-            if (pay_status == 1) {
+            pay_status = prefrences.getPayRBtnStatus();
+            if (pay_status == 5) {
+                DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
+                dialogFragmentPurchasingMethod.show(getFragmentManager(), "Purchasing Method");
+            } else {
+                //if (pay_status == 2){
                 DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
                 deliveryTime.show(getFragmentManager(), "Select Method");
-            } else if (pay_status == 2){
-                DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
-                dialogFragmentPurchasingMethod.show(getFragmentManager(),"Purchasing Method");
             }
         } else if (id == R.id.iv_back) {
             prefrences.setCartFragStatus(2);

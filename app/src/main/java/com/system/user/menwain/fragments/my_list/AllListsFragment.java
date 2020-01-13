@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.my_lists_adapters.AllListsAdapter;
@@ -22,11 +23,13 @@ public class AllListsFragment extends Fragment {
     RecyclerView recyclerViewAllLists;
     AllListsAdapter allListsAdapter;
     private CardView mSearchViewAllLists;
+    ImageView mBackBtn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_lists,container,false);
-
+        mBackBtn = getActivity().findViewById(R.id.iv_back);
+        mBackBtn.setVisibility(View.INVISIBLE);
         mSearchViewAllLists = getActivity().findViewById(R.id.search_view);
         mSearchViewAllLists.setVisibility(View.INVISIBLE);
 
