@@ -25,10 +25,8 @@ public class DialogFragmentPayLater extends DialogFragment implements View.OnCli
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         mConfirm = view.findViewById(R.id.confirm_dialog_one);
-        mTitleView = view.findViewById(R.id.title_view);
         mCloseBtn = view.findViewById(R.id.close_back_view);
 
-        mTitleView.setText("Select method");
         mConfirm.setOnClickListener(this);
         mCloseBtn.setOnClickListener(this);
 

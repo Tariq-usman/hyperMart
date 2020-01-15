@@ -2,11 +2,13 @@ package com.system.user.menwain.fragments.cart;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPurchasingMethod;
 import com.system.user.menwain.fragments.category.AvailableItemsFragment;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentDeliveryTime;
@@ -30,7 +33,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     private CartViewModel cartViewModel;
     private TextView mAvailable, mNotAvailable, mTitle, mTotalAmount, mPrice, mDistance, mAvailItems, mNotAvailItmes;
     private View mShowStatusColor;
-    private ImageView mBackBtn, mMenu, mMartLogoView;
+    private ImageView mBackBtn, mBarCodeScanner, mMartLogoView;
     private LinearLayout mConfirmBtn;
     private String dist;
     public String available_items, not_available_items;
@@ -40,6 +43,8 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     public static Boolean isCheck = false;
     Prefrences prefrences;
     private int pay_status;
+    private CardView mSearchView;
+
 
     @Nullable
     @Override
@@ -48,6 +53,17 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         bundle = this.getArguments();
         prefrences = new Prefrences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
+
+        mSearchView = getActivity().findViewById(R.id.search_view);
+        mSearchView.setVisibility(View.VISIBLE);
+        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
+        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
         cartViewModel = ViewModelProviders.of(AvailNotAvailItemsListsFragment.this).get(CartViewModel.class);

@@ -1,5 +1,6 @@
 package com.system.user.menwain.fragments.category;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.system.user.menwain.Prefrences;
+import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.category_adapters.FilterItemsAdapter;
@@ -25,7 +27,8 @@ public class ItemsFragment extends Fragment {
     private RecyclerView recyclerViewProductCategory, recyclerViewItemNames, recyclerViewFilterItems;
     private LinearLayoutManager linearLayoutManager;
     private int getPreviousId = CategoryAdapter.passId;
-    private ImageView mBackBtn;
+    private ImageView mBackBtn,mBarCodeScanner;
+
     private CardView mSearchViewItemsFragment;
     private Prefrences prefrences;
 
@@ -41,7 +44,7 @@ public class ItemsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_selected_items, container, false);
         prefrences = new Prefrences(getContext());
         mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
-        mSearchViewItemsFragment.setVisibility(View.INVISIBLE);
+        //mSearchViewItemsFragment.setVisibility(View.INVISIBLE);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setVisibility(View.VISIBLE);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +53,15 @@ public class ItemsFragment extends Fragment {
                 prefrences.setCategoryFragStatus(0);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
+            }
+        });
+
+        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
+        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
             }
         });
 

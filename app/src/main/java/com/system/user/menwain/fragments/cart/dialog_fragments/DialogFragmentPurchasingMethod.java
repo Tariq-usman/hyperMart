@@ -25,7 +25,7 @@ import androidx.fragment.app.DialogFragment;
 
 public class DialogFragmentPurchasingMethod extends DialogFragment implements View.OnClickListener {
     TextView mConfirm, mTitleView, tvDateInStorePurchase;
-    ImageView mCloseBtn;
+    ImageView mCloseBtn,mBackBtnPay;
     private int mYear, mMonth, mDay;
     Prefrences prefrences;
     private int pay_status;
@@ -34,13 +34,14 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_purchasing_method, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         prefrences = new Prefrences(getContext());
         pay_status = prefrences.getPayRBtnStatus();
         mConfirm = view.findViewById(R.id.confirm_btn_purchasing_method);
-        mTitleView = view.findViewById(R.id.title_view);
         mCloseBtn = view.findViewById(R.id.close_back_view);
+        mBackBtnPay = getActivity().findViewById(R.id.iv_back);
+        mBackBtnPay.setVisibility(View.VISIBLE);
 
-        mTitleView.setText("In Store Purchase");
         mCloseBtn.setOnClickListener(this);
         mConfirm.setOnClickListener(this);
         return view;
@@ -51,20 +52,16 @@ public class DialogFragmentPurchasingMethod extends DialogFragment implements Vi
 
         int id = view.getId();
         if (id == R.id.confirm_btn_purchasing_method) {
-            if (pay_status == 1 || pay_status == 3) {
-                prefrences.setCartFragStatus(4);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
-                dismiss();
-            } else/* if (pay_status == 2)*/ {
-                prefrences.setCartFragStatus(0);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
+            prefrences.setCartFragStatus(0);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
 //            startActivity(new Intent(getContext(), PaymentFragment.class));
-                dismiss();
-            }
+            mBackBtnPay.setVisibility(View.INVISIBLE);
+            dismiss();
+
         } else if (id == R.id.close_back_view) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).commit();
-//            DialogFragmentDeliveryTime dialogFragmentDeliveryTime = new DialogFragmentDeliveryTime();
-//            dialogFragmentDeliveryTime.show(getFragmentManager(), "Delivery time");
+            prefrences.setCartFragStatus(0);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
+            mBackBtnPay.setVisibility(View.INVISIBLE);
             dismiss();
         }
 

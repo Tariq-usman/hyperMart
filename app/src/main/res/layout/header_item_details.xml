@@ -9,21 +9,12 @@
         android:layout_height="45dp"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingHorizontal="10dp"
         android:background="@color/darkGreenColor">
         <ImageView
             android:id="@+id/close_back_view"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="45dp"
+            android:padding="14dp"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_cross"/>
-        <TextView
-            android:id="@+id/title_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Item Details"
-            android:textColor="@color/whiteColor"
-            android:textSize="@dimen/eighteen_sp"
-            android:gravity="center"/>
     </LinearLayout>
 </LinearLayout>

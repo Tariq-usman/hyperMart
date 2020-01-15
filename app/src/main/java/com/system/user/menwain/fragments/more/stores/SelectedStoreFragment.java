@@ -74,9 +74,9 @@ public class SelectedStoreFragment extends Fragment {
         recyclerViewSelectedStore.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewSelectedStore.setLayoutManager(linearLayoutManager);
-        recyclerViewSelectedStore.setAdapter(new SelectedStoreAdapter(storesName, getContext(), stores));
+        recyclerViewSelectedStore.setAdapter(new SelectedStoreAdapter(productsName, getContext(), items));
         int position = StoresAdapter.pos;
-        recyclerViewSelectedStore.smoothScrollToPosition(position + 1);
+        //recyclerViewSelectedStore.smoothScrollToPosition(position + 1);
 
 
         /*recyclerViewStoresName = view.findViewById(R.id.recycler_view_selected_stores_name);

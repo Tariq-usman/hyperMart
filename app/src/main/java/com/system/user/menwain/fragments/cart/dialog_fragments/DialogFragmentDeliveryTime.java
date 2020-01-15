@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.DeliveryTimesAdapter;
+import com.system.user.menwain.fragments.cart.PaymentFragment;
 
 import java.util.Calendar;
 
@@ -39,12 +40,10 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
 
         tvDeliveryPickUp = view.findViewById(R.id.tv_delivery_pickup);
         mConfirm = view.findViewById(R.id.confirm_btn_delivery_time);
-        mTitleView = view.findViewById(R.id.title_view);
         mCloseBtn = view.findViewById(R.id.close_back_view);
         recyclerView = view.findViewById(R.id.recycler_view_delivery_time);
         tvDate = view.findViewById(R.id.tv_date);
 
-        mTitleView.setText("Delivery time");
         mConfirm.setOnClickListener(this);
         mCloseBtn.setOnClickListener(this);
         tvDate.setOnClickListener(this);
@@ -60,8 +59,9 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.confirm_btn_delivery_time:
-                DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
-                dialogFragmentPurchasingMethod.show(getFragmentManager(),"Purchasing Method");
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
+               /* DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
+                dialogFragmentPurchasingMethod.show(getFragmentManager(),"Purchasing Method");*/
                 dismiss();
                 break;
             case R.id.tv_date:

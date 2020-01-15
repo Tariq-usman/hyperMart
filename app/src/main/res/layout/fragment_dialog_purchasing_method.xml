@@ -22,7 +22,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginVertical="20dp"
             android:gravity="center"
-            android:text="Save these product as list to use in future"
+            android:text="Do you want to save these product as list to use in future?"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/sixteen_sp" />
 

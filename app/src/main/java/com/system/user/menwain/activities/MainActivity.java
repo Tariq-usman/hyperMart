@@ -496,6 +496,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     tvMore.setTextColor(Color.parseColor("#004040"));
                 }
             }
+        }else if (prefrences.getBottomNavStatus() == 6){
+            prefrences.setBottomNavStatus(3);
+            if (cart_fragment_status == 0) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
+            } else if (cart_fragment_status == 1) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
+            } else if (cart_fragment_status == 2) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
+            } else if (cart_fragment_status == 3) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).addToBackStack(null).commit();
+            }
         }
     }
 

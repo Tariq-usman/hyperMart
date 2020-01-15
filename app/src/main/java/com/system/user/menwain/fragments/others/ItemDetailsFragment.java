@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.Item_details_SlidingImages_Adapter;
 import com.system.user.menwain.adapters.category_adapters.SelectedItemsFilterAdapter;
 import com.system.user.menwain.fragments.category.ItemsFragment;
@@ -40,7 +42,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     SelectedItemsFilterAdapter selectedItemsFilterAdapter;
     TextView mDescription, mSpecification, mReviews;
     TextView mTextView, mAddToCart;
-    ImageView mCart, mBack, mItem;
+    private ImageView mCart, mBack, mBarCodeScanner;
     Bundle bundle;
     String status;
     private static ViewPager mPager;
@@ -60,10 +62,18 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         prefrences = new Prefrences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.d_s_r_container, new ItemDescriptionFragment()).commit();
         mSearchView = getActivity().findViewById(R.id.search_view);
-        mSearchView.setVisibility(View.INVISIBLE);
+        //mSearchView.setVisibility(View.INVISIBLE);
         mPager = view.findViewById(R.id.item_detail_pager);
         tabLayout = view.findViewById(R.id.tab_layout_item_details);
 
+        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
+        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // mItem = view.findViewById(R.id.selected_item_view);
         bundle = this.getArguments();

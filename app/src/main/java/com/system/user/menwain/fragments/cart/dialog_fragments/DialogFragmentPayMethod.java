@@ -32,11 +32,9 @@ public class DialogFragmentPayMethod extends DialogFragment implements View.OnCl
         rbPayLater = view.findViewById(R.id.rb_pay_later);
         rbPayNow = view.findViewById(R.id.rb_pay_now);
         mConfirm = view.findViewById(R.id.confirm_dialog_one);
-        mTitleView = view.findViewById(R.id.title_view);
         mCloseBtn = view.findViewById(R.id.close_back_view);
         bundle = new Bundle();
 
-        mTitleView.setText("Select method");
         mConfirm.setOnClickListener(this);
         mCloseBtn.setOnClickListener(this);
 

@@ -20,6 +20,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,10 +40,14 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private SharedPreferences.Editor editor;
     Prefrences prefrences;
     private int pay_status;
+    private CardView mSearchView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_items_availability_stores, container, false);
+        mSearchView = getActivity().findViewById(R.id.search_view);
+        mSearchView.setVisibility(View.INVISIBLE);
         prefrences = new Prefrences(getContext());
         pay_status = prefrences.getPaymentStatus();
 
@@ -76,17 +81,17 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         mSortByDistance = view.findViewById(R.id.sort_by_distance);
         mSortByAvailability = view.findViewById(R.id.sort_by_availability);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mPayLater = view.findViewById(R.id.pay_later);
-        mPayNow = view.findViewById(R.id.pay_now);
+//        mPayLater = view.findViewById(R.id.pay_later);
+//        mPayNow = view.findViewById(R.id.pay_now);
         mBackBtn.setOnClickListener(this);
         mBackBtn.setVisibility(View.VISIBLE);
-        mPayNow.setOnClickListener(this);
-        mPayLater.setOnClickListener(this);
+//        mPayNow.setOnClickListener(this);
+//        mPayLater.setOnClickListener(this);
         mSortByDistance.setOnClickListener(this);
         mSortByPrice.setOnClickListener(this);
         mSortByAvailability.setOnClickListener(this);
 
-        if (pay_status == 1){
+      /*  if (pay_status == 1){
             mPayNow.setBackgroundResource(R.drawable.bg_store_btn_colored);
             mPayLater.setBackgroundResource(0);
             mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
@@ -96,7 +101,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             mPayNow.setBackgroundResource(0);
             mPayNow.setTextColor(Color.parseColor("#004040"));
             mPayLater.setTextColor(Color.parseColor("#FFFFFF"));
-        }
+        }*/
         recyclerViewAvailableItemsStore = view.findViewById(R.id.recycler_view_available_item_store);
         recyclerViewAvailableItemsStore.setHasFixedSize(true);
         recyclerViewAvailableItemsStore.setLayoutManager(new LinearLayoutManager(getContext()));

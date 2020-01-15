@@ -18,7 +18,7 @@ public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdap
     private String[] storesName;
     Context context;
     private int[] stores;
-    int lastPosition = -1;
+    int lastPosition = 0;
     int abc = StoresAdapter.pos;
     private boolean check = false;
 
@@ -41,8 +41,10 @@ public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdap
         holder.setIsRecyclable(false);
         holder.mStoreNameView.setText(storesName[position]);
         holder.mStoreView.setImageResource(stores[position]);
+        holder.setIsRecyclable(true);
 
-        if (check == false) {
+
+       /* if (check == false) {
             if (abc == position) {
                 holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
                 check = true;
@@ -50,7 +52,7 @@ public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdap
             } else {
                 holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
             }
-        } else if (lastPosition == position) {
+        } else */if (lastPosition == position) {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
         } else {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));

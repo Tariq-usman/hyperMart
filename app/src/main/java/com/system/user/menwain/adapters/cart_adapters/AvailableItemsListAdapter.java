@@ -7,17 +7,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
+import com.system.user.menwain.fragments.category.ItemsFragment;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableItemsListAdapter.ItemsListViewHolder> {
     private String[] productsName;
     Context context;
+    Prefrences prefrences;
     public AvailableItemsListAdapter(String[] productsName, Context context) {
         this.productsName = productsName;
         this.context = context;
+        prefrences = new Prefrences(context);
     }
 
     @NonNull
@@ -56,6 +63,15 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
                 }
             }
         });
+        holder.ivProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prefrences.setBottomNavStatus(6);
+                ItemsFragment fragment = new ItemsFragment();
+                FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
+            }
+        });
     }
 
     @Override
@@ -65,10 +81,11 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
 
     public static class ItemsListViewHolder extends RecyclerView.ViewHolder {
         TextView mProductNameView,mAvilNotAvailItemsView;
-        ImageView mIncreaseAvailItems,mDecreaseAvailItems;
+        private ImageView mIncreaseAvailItems,mDecreaseAvailItems,ivProduct;
 
         public ItemsListViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivProduct = itemView.findViewById(R.id.iv_product);
             mProductNameView = (TextView) itemView.findViewById(R.id.available_items_list_product_name_view);
             mAvilNotAvailItemsView = itemView.findViewById(R.id.view_avil_not_avil_items);
             mIncreaseAvailItems = itemView.findViewById(R.id.increase_available_items);
