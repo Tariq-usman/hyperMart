@@ -40,7 +40,7 @@
             android:id="@+id/filter_store_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="By MeatOne"
+            android:text="Smart Mobiles"
             android:gravity="center"
             android:textColor="@color/darkGreenColor"
             android:textSize="12sp" />

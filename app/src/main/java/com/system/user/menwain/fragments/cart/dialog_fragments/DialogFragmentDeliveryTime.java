@@ -60,7 +60,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         switch (view.getId()){
             case R.id.confirm_btn_delivery_time:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
-               /* DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
+               /* DialogFragmentSaveList dialogFragmentPurchasingMethod = new DialogFragmentSaveList();
                 dialogFragmentPurchasingMethod.show(getFragmentManager(),"Purchasing Method");*/
                 dismiss();
                 break;

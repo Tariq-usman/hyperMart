@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
-import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPurchasingMethod;
+import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
 import com.system.user.menwain.fragments.category.AvailableItemsFragment;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentDeliveryTime;
 import com.system.user.menwain.fragments.category.NotAvailableItemsFragment;
@@ -131,8 +131,8 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         } else if (id == R.id.confirm_btn_items_list) {
             pay_status = prefrences.getPayRBtnStatus();
             if (pay_status == 5) {
-                DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
-                dialogFragmentPurchasingMethod.show(getFragmentManager(), "Purchasing Method");
+                DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
+                dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
             } else {
                 //if (pay_status == 2){
                 DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();

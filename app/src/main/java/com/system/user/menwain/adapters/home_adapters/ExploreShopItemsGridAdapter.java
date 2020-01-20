@@ -25,7 +25,7 @@ public class ExploreShopItemsGridAdapter extends RecyclerView.Adapter<ExploreSho
     @NonNull
     @Override
     public AllItemsGridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_items_all_items_grid,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_filter_items,parent,false);
         AllItemsGridViewHolder viewHolder = new AllItemsGridViewHolder(view);
         return viewHolder;
     }
@@ -46,8 +46,8 @@ public class ExploreShopItemsGridAdapter extends RecyclerView.Adapter<ExploreSho
         private ImageView ivAllItemsGrid;
         public AllItemsGridViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvAllItemsGrid = itemView.findViewById(R.id.tv_all_items_grid);
-            ivAllItemsGrid = itemView.findViewById(R.id.image_view_all_items_grid);
+            tvAllItemsGrid = itemView.findViewById(R.id.filter_product_name_view);
+            ivAllItemsGrid = itemView.findViewById(R.id.view_filter_product);
         }
     }
 }

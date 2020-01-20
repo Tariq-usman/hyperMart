@@ -75,10 +75,10 @@
 
             <ImageView
                 android:id="@+id/iv_grid_list_view"
-                android:layout_width="20dp"
+                android:layout_width="45dp"
+                android:padding="12dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="14dp"
                 android:src="@drawable/ic_list_view"
                 android:visibility="invisible" />
         </FrameLayout>

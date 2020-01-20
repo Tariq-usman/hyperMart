@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
-import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentPurchasingMethod;
+import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
 
 public class PaymentFragment extends Fragment {
 
@@ -57,8 +57,8 @@ public class PaymentFragment extends Fragment {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragmentPurchasingMethod dialogFragmentPurchasingMethod = new DialogFragmentPurchasingMethod();
-                dialogFragmentPurchasingMethod.show(getFragmentManager(),"Purchasing Method");
+                DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
+                dialogFragmentSaveList.show(getFragmentManager(),"Purchasing Method");
                 /*getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
                         .addToBackStack(null).commit();*/
                 prefrences.setCartFragStatus(0);
