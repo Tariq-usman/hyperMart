@@ -1,6 +1,10 @@
 package com.system.user.menwain.adapters.category_adapters;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amitshekhar.DebugDB;
 import com.system.user.menwain.Prefrences;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.R;
@@ -23,17 +28,25 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.FilterItemViewHolder> {
     private String[] productsName;
     Context context;
     private int[] items;
+    byte[] productImage;
+    String imagePath;
     private String[] storesName;
     private CartViewModel cartViewModel;
     Bundle bundle;
     Prefrences prefrences;
-    int productId,intQuantity;
-    String productName,storeName,price,quantity,strTotalPrice;
-    float totalPrice,unitPrice;
+    int productId, intQuantity;
+    String productName, storeName, price, quantity, strTotalPrice;
+    float totalPrice, unitPrice;
+
     public FilterItemsAdapter(String[] productsName, Context context, int[] items, String[] storesName) {
         this.productsName = productsName;
         this.context = context;
@@ -52,17 +65,6 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
-        productId = 12;
-        productName = holder.mProductNameView.getText().toString();
-        storeName = holder.mStoreName.getText().toString();
-        price = holder.mPriceFilterItem.getText().toString();
-        quantity = holder.mItemCounter.getText().toString();
-        strTotalPrice = price;
-        totalPrice = Float.parseFloat(price);
-
-        intQuantity = Integer.parseInt(quantity);
-
-         unitPrice = totalPrice * intQuantity;
 
         holder.mProductNameView.setText(productsName[position]);
         holder.mFilteProduct.setImageResource(items[position]);
@@ -95,41 +97,52 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
                 bundle = new Bundle();
                 prefrences.setCategoryFragStatus(2);
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
-                FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
-                bundle.putString("status","2");
+                FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                bundle.putString("status", "2");
                 if (position == items.length - 1) {
                     bundle.putString("image_url", String.valueOf(items[position]));
                     bundle.putString("image_url1", String.valueOf(items[position - 1]));
                     bundle.putString("image_url2", String.valueOf(items[position - 2]));
-                } else if (position==items.length-2){
+                } else if (position == items.length - 2) {
                     bundle.putString("image_url", String.valueOf(items[position]));
                     bundle.putString("image_url1", String.valueOf(items[position + 1]));
                     bundle.putString("image_url2", String.valueOf(items[position - 2]));
-                }else if (position==items.length-3){
+                } else if (position == items.length - 3) {
                     bundle.putString("image_url", String.valueOf(items[position]));
                     bundle.putString("image_url1", String.valueOf(items[position + 1]));
                     bundle.putString("image_url2", String.valueOf(items[position + 2]));
-                }else {
+                } else {
                     bundle.putString("image_url", String.valueOf(items[position]));
                     bundle.putString("image_url1", String.valueOf(items[position + 1]));
                     bundle.putString("image_url2", String.valueOf(items[position + 2]));
                 }
                 fragment.setArguments(bundle);
-                transaction.replace(R.id.nav_host_fragment,fragment).commit();
+                transaction.replace(R.id.nav_host_fragment, fragment).commit();
             }
         });
 
         holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
+                productId = 12;
+                Drawable drawable = holder.mFilteProduct.getDrawable();
+                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                productName = holder.mProductNameView.getText().toString();
+                storeName = holder.mStoreName.getText().toString();
+                price = holder.mPriceFilterItem.getText().toString();
+                quantity = holder.mItemCounter.getText().toString();
+                // strTotalPrice = price;
+                totalPrice = Float.parseFloat(price);
+                intQuantity = Integer.parseInt(quantity);
+                unitPrice = totalPrice * intQuantity;
+                saveToInternalStorage(bitmap);
 
-                Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantity);
+                cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
+                Cart cart = new Cart(productId, imagePath,productName, storeName, totalPrice, unitPrice, intQuantity);
                 //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
                 cartViewModel.insertCart(cart);
                 //cartViewModel.insertAllCart(cart, updateCartQuantity);
                 Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
-                // Toast.makeText(context, "" + DebugDB.getAddressLog(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -157,5 +170,29 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
             mPriceFilterItem = itemView.findViewById(R.id.price_view_filter_item);
 
         }
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(context);
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory, productName + ".jpg");
+        imagePath = String.valueOf(mypath);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
     }
 }

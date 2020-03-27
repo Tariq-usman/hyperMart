@@ -1,6 +1,10 @@
 package com.system.user.menwain.adapters.more_adapters;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +27,19 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAdapter.FilterStoresViewHolder> {
 
     private String[] productsName;
     Context context;
     private int[] items;
+    byte[] productImage;
     private String[] storesName;
+    String productName,storeName,price,quantity,strTotalPrice,imagePath;
     private CartViewModel cartViewModel;
     Bundle bundle;
     private Prefrences prefrences;
@@ -110,22 +121,24 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
             @Override
             public void onClick(View view) {
 
-
+                Drawable drawable = holder.mFilteProduct.getDrawable();
+                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 int productId = 12;
-                String productName = holder.mProductNameView.getText().toString();
-                String storeName = holder.mStoreName.getText().toString();
-                String price = holder.mPriceFilterItem.getText().toString();
-                String quantity = holder.mItemCounter.getText().toString();
-                String strTotalPrice = price;
+                 productName = holder.mProductNameView.getText().toString();
+                 storeName = holder.mStoreName.getText().toString();
+                 price = holder.mPriceFilterItem.getText().toString();
+                quantity = holder.mItemCounter.getText().toString();
+                 strTotalPrice = price;
                 float totalPrice = Float.parseFloat(strTotalPrice);
 
                 int intQuantity = Integer.parseInt(quantity);
 
                 float unitPrice = totalPrice * intQuantity;
+                saveToInternalStorage(bitmap);
 
                 cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
 
-                Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantity);
+                Cart cart = new Cart(productId, imagePath,productName, storeName, totalPrice, unitPrice, intQuantity);
                 //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
                 cartViewModel.insertCart(cart);
                 //cartViewModel.insertAllCart(cart, updateCartQuantity);
@@ -134,7 +147,29 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
             }
         });
     }
-
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(context);
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory, productName + ".jpg");
+        imagePath = String.valueOf(mypath);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
     @Override
     public int getItemCount() {
         return productsName.length;

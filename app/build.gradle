@@ -79,5 +79,7 @@ dependencies {
 
     implementation 'me.relex:circleindicator:1.2.2@aar'
 
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
 
 }

@@ -1,6 +1,10 @@
 package com.system.user.menwain.adapters.cart_adapters;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,9 @@ import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +31,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
     private CartViewModel cartViewModel;
     private List<Cart> cartList = new ArrayList<>();
     private Context context;
-
+    byte[] bytArrayImage;
+    String path;
     public void setCartData(List<Cart> cartList, CartViewModel cartViewModel) {
         this.cartList = cartList;
         this.cartViewModel = cartViewModel;
@@ -42,6 +50,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
     @Override
     public void onBindViewHolder(@NonNull final SelectedItemsFilterAdapter holder, final int position) {
         Cart cart = cartList.get(position);
+        path = cart.getProduct_image();
+        Bitmap myBitmap = BitmapFactory.decodeFile(path);
+        holder.productView.setImageBitmap(myBitmap);
         holder.mProductNameView.setText(cart.getProduct_name());
         holder.mCartStoreName.setText(cart.getStore_name());
         holder.mCartPrice.setText("$ "+cart.getPer_unit_price());
@@ -63,8 +74,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
                 float unitPrice = 150;
 
                 float finalPrice = unitPrice + fTotalPrice;
-
-
 
                 UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(cartList.get(position).getId(), quant, finalPrice);
                 cartViewModel.updateCartQuantity(updateCartQuantity);
@@ -115,10 +124,11 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
 
     public static class SelectedItemsFilterAdapter extends RecyclerView.ViewHolder {
         TextView mProductNameView,mCartStoreName,mCartPrice,mCartQuantity;
-        private ImageView imgDeleteCartItem,mIncreaseCartQuantity,mDecreaseCartQuantity;
+        private ImageView productView,imgDeleteCartItem,mIncreaseCartQuantity,mDecreaseCartQuantity;
 
         public SelectedItemsFilterAdapter(@NonNull View itemView) {
             super(itemView);
+            productView = itemView.findViewById(R.id.product_view);
             mProductNameView = itemView.findViewById(R.id.cart_product_name_view);
             mCartStoreName= itemView.findViewById(R.id.cart_product_store_name);
             mCartPrice = itemView.findViewById(R.id.cart_product_price_view);
@@ -128,4 +138,5 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
             mDecreaseCartQuantity = itemView.findViewById(R.id.cart_decrease_quantity);
         }
     }
+
 }

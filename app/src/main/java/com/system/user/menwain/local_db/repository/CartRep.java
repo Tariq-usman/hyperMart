@@ -109,7 +109,7 @@ public class CartRep {
     private static class DeleteCartDataAsyncTask extends AsyncTask<Cart, Void, Void > {
 
         private CartDao cartDao;
-        private DeleteCartDataAsyncTask(CartDao cartDao) {
+        private  DeleteCartDataAsyncTask(CartDao cartDao) {
             this.cartDao = cartDao;
         }
 
