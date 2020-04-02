@@ -76,10 +76,12 @@ dependencies {
 
     //recycler view items animations
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
-
+    //Circle Indicator
     implementation 'me.relex:circleindicator:1.2.2@aar'
+    //Volley + Gson + Glid
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-
-
 }

@@ -10,9 +10,10 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:overScrollMode="never"
         android:paddingBottom="45dp"
-        android:overScrollMode="never">
+        android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,12 +48,18 @@
                             android:textSize="@dimen/fourteen_sp" />
 
                         <EditText
+                            android:id="@+id/et_f_name_profile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_email_pass"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:gravity="center"
                             android:hint="John"
                             android:inputType="text"
+                            android:maxLines="1"
                             android:textColor="@color/whiteColor"
                             android:textColorHint="@color/whiteColor"
                             android:textSize="@dimen/fourteen_sp" />
@@ -74,12 +81,18 @@
                             android:textSize="@dimen/fourteen_sp" />
 
                         <EditText
+                            android:id="@+id/et_l_name_profile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_email_pass"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:gravity="center"
                             android:hint="John"
                             android:inputType="text"
+                            android:maxLines="1"
                             android:textColor="@color/whiteColor"
                             android:textColorHint="@color/whiteColor"
                             android:textSize="@dimen/fourteen_sp" />
@@ -96,13 +109,19 @@
                     android:textSize="@dimen/fourteen_sp" />
 
                 <EditText
+                    android:id="@+id/et_phone_no_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/bg_email_pass"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:gravity="center"
                     android:hint="+92 345 1234567"
                     android:inputType="number"
+                    android:maxLines="1"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -116,12 +135,18 @@
                     android:textSize="@dimen/fourteen_sp" />
 
                 <EditText
+                    android:id="@+id/et_email_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_email_pass"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:gravity="center"
                     android:hint="johnsmith@email.com"
                     android:inputType="textEmailAddress"
+                    android:maxLines="1"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -152,18 +177,20 @@
                         android:orientation="horizontal">
 
                         <RadioButton
+                            android:id="@+id/rb_male_profile"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="@dimen/fourteen_sp"
-                            android:text="Male" />
+                            android:text="Male"
+                            android:textSize="@dimen/fourteen_sp" />
 
                         <RadioButton
+                            android:id="@+id/rb_female_profile"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="@dimen/fourteen_sp"
-                            android:text="Female" />
+                            android:text="Female"
+                            android:textSize="@dimen/fourteen_sp" />
                     </RadioGroup>
                 </LinearLayout>
             </LinearLayout>
@@ -211,25 +238,37 @@
                     android:textSize="@dimen/fourteen_sp" />
 
                 <EditText
+                    android:id="@+id/et_pass_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="2dp"
                     android:background="@drawable/bg_email_pass"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:gravity="center"
                     android:hint="Password"
                     android:inputType="textPassword"
+                    android:maxLines="1"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
 
                 <EditText
+                    android:id="@+id/et_conf_pass_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
                     android:background="@drawable/bg_email_pass"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:gravity="center"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
+                    android:maxLines="1"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -239,15 +278,16 @@
 
     </ScrollView>
 
-    <TextView
+    <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="5dp"
         android:background="@drawable/bg_submit_btn"
         android:gravity="center"
         android:text="Edit"
+        android:textAllCaps="false"
         android:textColor="@color/whiteColor"
         android:textSize="@dimen/twenty_sp" />
 

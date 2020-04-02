@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.system.user.menwain.Prefrences;
+import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.fragments.more.orders.ItemReviewFragment;
 import com.system.user.menwain.R;
 

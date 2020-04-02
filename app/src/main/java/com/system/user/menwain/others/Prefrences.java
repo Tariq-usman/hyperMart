@@ -1,4 +1,4 @@
-package com.system.user.menwain;
+package com.system.user.menwain.others;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,6 +16,16 @@ public class Prefrences {
         this.context = context;
         sharedPreferences = context.getSharedPreferences("fragment_status", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+    }
+
+    public void setToken(String token) {
+        editor.putString("token", token);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getToken() {
+        return sharedPreferences.getString("token", "");
     }
 
     public void setPaymentStatus(int paymentStatus){

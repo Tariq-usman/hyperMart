@@ -1,6 +1,5 @@
 package com.system.user.menwain.fragments.cart;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.system.user.menwain.Prefrences;
+import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.cart_adapters.CartItemsAdapter;
@@ -36,11 +35,12 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     CartItemsAdapter cartItemsAdapter;
     TextView mProceedBtn, tvTotalCartAmount;
     private float totalCartAmount;
-    String phone_no;
+    String user_token;
     Context context;
     private CardView mSearchViewCart;
     private SharedPreferences.Editor editor;
     SharedPreferences preferences,fragment_status_pref;
+    private Prefrences prefrences;
 
 
     @Nullable
@@ -48,8 +48,8 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         editor = getActivity().getSharedPreferences("fragment_status",Context.MODE_PRIVATE).edit();
-        preferences = getContext().getSharedPreferences("login", Activity.MODE_PRIVATE);
-        phone_no = preferences.getString("phone_no", "");
+        prefrences = new Prefrences(getContext());
+        user_token = prefrences.getToken();
         recyclerViewCartItems = view.findViewById(R.id.recycler_view_cart_items);
         recyclerViewCartItems.setHasFixedSize(true);
         recyclerViewCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -103,12 +103,11 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         DeliveryAddressFragment fragment = new DeliveryAddressFragment();
 
         if (id == R.id.proceed_btn) {
-            if (phone_no.isEmpty()) {
+            if (user_token.isEmpty()) {
                 Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
                 logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(logInIntnet);
             } else {
-                Prefrences prefrences = new Prefrences(getContext());
                 prefrences.setCartFragStatus(1);
                 /*editor.putInt("frag_status",1);
                 editor.apply();*/

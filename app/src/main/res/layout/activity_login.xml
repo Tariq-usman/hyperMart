@@ -33,45 +33,44 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:text="Phone no"
-                android:textSize="@dimen/fourteen_sp"
-                android:textColor="@color/darkGreenColor" />
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/fourteen_sp" />
 
             <EditText
                 android:id="@+id/et_phone_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/bg_email_pass"
-                android:hint="phone no"
                 android:gravity="center"
-                android:textSize="@dimen/fourteen_sp"
-                android:text="03453456789"
+                android:hint="phone no"
+                android:inputType="phone"
+                android:text="03439801420"
                 android:textColor="@color/whiteColor"
-                android:textColorHint="@color/whiteColor" />
+                android:textColorHint="@color/whiteColor"
+                android:textSize="@dimen/fourteen_sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:text="Password"
-                android:textSize="@dimen/fourteen_sp"
-                android:textColor="@color/darkGreenColor" />
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/fourteen_sp" />
 
             <EditText
                 android:id="@+id/et_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_email_pass"
-                android:hint="Enter Password"
                 android:gravity="center"
+                android:hint="Enter Password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:textSize="@dimen/fourteen_sp"
-                android:text="123ert56"
+                android:text="123456789"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor"
-                />
+                android:textSize="@dimen/fourteen_sp" />
 
         </LinearLayout>
 
@@ -98,8 +97,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Forget Password"
-                android:textSize="@dimen/fourteen_sp"
-                android:textColor="@color/darkGreenColor" />
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/fourteen_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -118,9 +117,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="@dimen/eighteen_sp"
                 android:text="Use TouchID"
-                android:textColor="@color/darkGreenColor" />
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/eighteen_sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -129,10 +128,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:textSize="@dimen/eighteen_sp"
-        android:textColor="@color/darkGreenColor"
         android:layout_marginBottom="25dp"
-        android:text="Create an Account" />
+        android:gravity="center"
+        android:text="Create an Account"
+        android:textColor="@color/darkGreenColor"
+        android:textSize="@dimen/eighteen_sp" />
 
 </RelativeLayout>

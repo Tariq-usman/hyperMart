@@ -1,21 +1,39 @@
 package com.system.user.menwain.fragments.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
-import com.system.user.menwain.Prefrences;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.system.user.menwain.adapters.home_adapters.ExploreAdapter;
+import com.system.user.menwain.adapters.home_adapters.ShopAdapter;
+import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.home_adapters.ExploreAndShopAdapter;
 import com.system.user.menwain.adapters.home_adapters.Banner_SlidingImages_Adapter;
+import com.system.user.menwain.responses.HomeExploreAndShop;
+import com.system.user.menwain.responses.HomeExploreResponse;
+import com.system.user.menwain.utils.URLs;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 import androidx.annotation.NonNull;
@@ -38,7 +56,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private Handler handler;
     private Runnable runnable;
     AllItemsFragment allItemsFragment;
-    private  Bundle bundle;
+    private Bundle bundle;
     private int[] IMAGES = {R.drawable.dis, R.drawable.disc, R.drawable.disco, R.drawable.discoun, R.drawable.discount};
     private String[] productsName = {"Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallaxy S8", "Samsung", "BlockBuster", "Gallexy M30",
             "Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallexy M30s", "Samsung s4"};
@@ -48,12 +66,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView recyclerViewExploreAndShop, recyclerViewExplore, recyclerViewShop;
     private LinearLayoutManager linearLayoutManager;
-    private ImageView mBarCodeScanner,mBackBtn;
+    private ImageView mBarCodeScanner, mBackBtn;
     private TextView tvSeeAllExploreShop, tvSeeAllExplore, tvSeeAllShop;
     private TabLayout tabLayout;
     private CardView mSearchView;
     Prefrences prefrences;
     private int frag_status;
+    private Context context;
+    private List<HomeExploreAndShop.Datum> exploreShopList = new ArrayList<>();
+    private List<HomeExploreResponse.Datum> exploreList = new ArrayList<>();
+    private ExploreAndShopAdapter exploreAndShopAdapter;
+    private ExploreAdapter exploreAdapter;
 
     @Nullable
     @Override
@@ -61,6 +84,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragmet_home, container, false);
         prefrences = new Prefrences(getContext());
         prefrences.setBottomNavStatus(1);
+
+        getExploreAndShop();
+        getExplore();
+
         mPager = view.findViewById(R.id.pager);
         tabLayout = view.findViewById(R.id.tab_layout);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
@@ -90,21 +117,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recyclerViewExploreAndShop.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerViewExploreAndShop.setLayoutManager(linearLayoutManager);
-        recyclerViewExploreAndShop.setAdapter(new ExploreAndShopAdapter(getContext(), productsName, items));
+        exploreAndShopAdapter = new ExploreAndShopAdapter(getContext(), exploreShopList);
+        recyclerViewExploreAndShop.setAdapter(exploreAndShopAdapter);
 
 
         recyclerViewExplore = view.findViewById(R.id.recycler_view_explore);
         recyclerViewExplore.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerViewExplore.setLayoutManager(linearLayoutManager);
-        recyclerViewExplore.setAdapter(new ExploreAndShopAdapter(getContext(), productsName, items));
+        exploreAdapter = new ExploreAdapter(getContext(),exploreList);
+        recyclerViewExplore.setAdapter(exploreAdapter);
 
 
         recyclerViewShop = view.findViewById(R.id.recycler_view_shop);
         recyclerViewShop.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerViewShop.setLayoutManager(linearLayoutManager);
-        recyclerViewShop.setAdapter(new ExploreAndShopAdapter(getContext(), productsName, items));
+        recyclerViewShop.setAdapter(new ShopAdapter(getContext(), productsName, items));
 
         init();
         return view;
@@ -152,7 +181,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 bundle = new Bundle();
                 bundle.putString("explore", "1");
                 allItemsFragment.setArguments(bundle);
-                transaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.nav_host_fragment, allItemsFragment).addToBackStack(null).commit();
                 break;
             case R.id.tv_see_all_explore:
                 prefrences.setHomeFragStatus(2);
@@ -162,7 +191,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 bundle = new Bundle();
                 bundle.putString("explore", "2");
                 allItemsFragment.setArguments(bundle);
-                explore_transaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
+                explore_transaction.replace(R.id.nav_host_fragment, allItemsFragment).addToBackStack(null).commit();
                 break;
             case R.id.tv_see_all_shop:
                 prefrences.setHomeFragStatus(3);
@@ -172,9 +201,88 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 bundle = new Bundle();
                 bundle.putString("explore", "3");
                 allItemsFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.nav_host_fragment,allItemsFragment).addToBackStack(null).commit();
+                fragmentTransaction.replace(R.id.nav_host_fragment, allItemsFragment).addToBackStack(null).commit();
                 break;
         }
 
     }
+
+    public void getExploreAndShop() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_explore_and_shop_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                HomeExploreAndShop exploreAndShop = gson.fromJson(response,HomeExploreAndShop.class);
+                exploreShopList.clear();
+                for (int i=0;i<exploreAndShop.getData().size();i++){
+                    exploreShopList.add(exploreAndShop.getData().get(i));
+                    exploreAndShopAdapter.notifyDataSetChanged();
+                }
+                Log.e( "Response",(String.valueOf(exploreShopList.size())));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e( "erroe", error.toString());
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
+    public void getExplore() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_explore_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                HomeExploreResponse exploreResponse = gson.fromJson(response, HomeExploreResponse.class);
+                exploreShopList.clear();
+                for (int i=0;i<exploreResponse.getData().size();i++){
+                    exploreList.add(exploreResponse.getData().get(i));
+                    exploreAdapter.notifyDataSetChanged();
+                }
+                Log.e( "Response",(String.valueOf(exploreShopList.size())));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e( "erroe", error.toString());
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
 }

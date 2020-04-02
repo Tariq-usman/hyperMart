@@ -19,13 +19,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.system.user.menwain.Prefrences;
+import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.home_adapters.ExploreItemsGridAdapter;
 import com.system.user.menwain.adapters.home_adapters.ExploreItemsListAdapter;
 import com.system.user.menwain.adapters.home_adapters.ExploreShopItemsGridAdapter;
 import com.system.user.menwain.adapters.home_adapters.ExploreShopItemsListAdapter;
-import com.system.user.menwain.fragments.home.HomeFragment;
 
 public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private String[] productsName = {"Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallaxy S8", "Samsung", "BlockBuster", "Gallexy M30",

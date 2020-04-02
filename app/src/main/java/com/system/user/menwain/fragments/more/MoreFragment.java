@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.system.user.menwain.Prefrences;
+import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.menu_fragment.ProfileFragment;
 import com.system.user.menwain.fragments.more.menu_fragment.RateUsFragment;
@@ -87,10 +87,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_log_out:
-                SharedPreferences preferences = getActivity().getSharedPreferences("login", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("phone_no", "");
-                editor.apply();
+                prefrences.setToken("");
                 Toast.makeText(getContext(), "Logout Successfully..", Toast.LENGTH_SHORT).show();
                 break;
         }

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.system.user.menwain.Prefrences;
+import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
 import com.system.user.menwain.R;

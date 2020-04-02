@@ -10,13 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
-import com.system.user.menwain.Prefrences;
+import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.category_adapters.FilterItemsAdapter;
 import com.system.user.menwain.adapters.more_adapters.FilteredStoresAdapter;
 import com.system.user.menwain.adapters.category_adapters.SelectedItemAdapter;
 import com.system.user.menwain.adapters.more_adapters.SelectedStoreAdapter;
-import com.system.user.menwain.adapters.more_adapters.SelectedStoresNamesAdapter;
 import com.system.user.menwain.adapters.more_adapters.StoresAdapter;
 
 import androidx.annotation.NonNull;
