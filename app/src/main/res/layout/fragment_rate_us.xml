@@ -28,11 +28,12 @@
                 android:textSize="@dimen/eighteen_sp" />
 
             <RatingBar
+                android:id="@+id/rating_bar_store"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:numStars="5"
-                android:rating="4" />
+                android:rating="5" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -43,11 +44,12 @@
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/eighteen_sp" />
             <RatingBar
+                android:id="@+id/rating_bar_delivery_boy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:numStars="5"
-                android:rating="4" />
+                android:rating="5" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -58,11 +60,12 @@
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/eighteen_sp" />
             <RatingBar
+                android:id="@+id/rating_bar_overall_services"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:numStars="5"
-                android:rating="4" />
+                android:rating="5" />
 
         </LinearLayout>
         <TextView

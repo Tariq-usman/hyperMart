@@ -24,7 +24,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.Item_details_SlidingImages_Adapter;
 import com.system.user.menwain.adapters.category_adapters.SelectedItemsFilterAdapter;
-import com.system.user.menwain.fragments.category.ItemsFragment;
+import com.system.user.menwain.fragments.category.CategoryItemsFragment;
 import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
@@ -165,7 +165,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(),"Home").addToBackStack(null).commit();
             } else if (status == "2") {
                 prefrences.setCategoryFragStatus(1);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryItemsFragment()).addToBackStack(null).commit();
             } else {
                 prefrences.setMoreStoresFragStatus(2);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SelectedStoreFragment()).addToBackStack(null).commit();

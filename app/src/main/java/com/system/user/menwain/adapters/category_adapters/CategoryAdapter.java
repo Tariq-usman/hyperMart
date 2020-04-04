@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.category.ItemsFragment;
+import com.system.user.menwain.fragments.category.CategoryItemsFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,7 +47,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 passId = holder.getAdapterPosition();
                 prefrences.setCategoryFragStatus(1);
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                Fragment myFragment = new ItemsFragment();
+                Fragment myFragment = new CategoryItemsFragment();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, myFragment).addToBackStack(null).commit();
 
 

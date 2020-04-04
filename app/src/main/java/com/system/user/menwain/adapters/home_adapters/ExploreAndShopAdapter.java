@@ -24,12 +24,12 @@ import java.util.List;
 
 public class ExploreAndShopAdapter extends RecyclerView.Adapter<ExploreAndShopAdapter.ViewHolder> {
     Context context;
-    List<HomeExploreAndShop.Datum> exploreShopList;
+    List<HomeExploreAndShop.Dymmy1> exploreShopList;
     public boolean status = false;
     Bundle bundle;
     Prefrences prefrences;
 
-    public ExploreAndShopAdapter(Context context, List<HomeExploreAndShop.Datum> exploreShopList) {
+    public ExploreAndShopAdapter(Context context, List<HomeExploreAndShop.Dymmy1> exploreShopList) {
         this.context = context;
         this.exploreShopList = exploreShopList;
         prefrences = new Prefrences(context);
@@ -45,7 +45,7 @@ public class ExploreAndShopAdapter extends RecyclerView.Adapter<ExploreAndShopAd
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-       // Glide.with(holder.mExploreShopImage).load(exploreShopList.get(position).getProductpic().get(position).getImageUrl());
+        Glide.with(holder.mExploreShopImage).load(exploreShopList.get(position).getImage());
         holder.mExploreShopStatus.setText(exploreShopList.get(position).getName());
        /* holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

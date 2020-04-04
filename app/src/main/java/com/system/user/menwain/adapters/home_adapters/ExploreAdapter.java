@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.responses.HomeExploreAndShop;
 import com.system.user.menwain.responses.HomeExploreResponse;
 
 import java.util.List;
@@ -23,12 +24,12 @@ import java.util.List;
 public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHolder> {
     Context context;
     private String[] productsName;
-    List<HomeExploreResponse.Datum> exploreList;
+    List<HomeExploreAndShop.Dummy2> exploreList;
     public boolean status = false;
     Bundle bundle;
     Prefrences prefrences;
 
-    public ExploreAdapter(Context context, List<HomeExploreResponse.Datum> exploreList) {
+    public ExploreAdapter(Context context, List<HomeExploreAndShop.Dummy2> exploreList) {
         this.context = context;
         this.exploreList = exploreList;
         prefrences = new Prefrences(context);

@@ -1,5 +1,6 @@
 package com.system.user.menwain.fragments.home;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,8 +29,8 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.home_adapters.ExploreAndShopAdapter;
 import com.system.user.menwain.adapters.home_adapters.Banner_SlidingImages_Adapter;
+import com.system.user.menwain.responses.HomeBannerResponse;
 import com.system.user.menwain.responses.HomeExploreAndShop;
-import com.system.user.menwain.responses.HomeExploreResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ import androidx.viewpager.widget.ViewPager;
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private static ViewPager mPager;
+    private ProgressDialog progressDialog;
     int currentPage = 0;
     Timer timer;
     final long DELAY_MS = 1000;
@@ -73,8 +75,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     Prefrences prefrences;
     private int frag_status;
     private Context context;
-    private List<HomeExploreAndShop.Datum> exploreShopList = new ArrayList<>();
-    private List<HomeExploreResponse.Datum> exploreList = new ArrayList<>();
+
+    // List for banner images
+    private List<HomeBannerResponse.Datum> bannersList = new ArrayList<>();
+    private Banner_SlidingImages_Adapter banner_slidingImages_adapter;
+
+    private List<HomeExploreAndShop.Dymmy1> exploreShopList = new ArrayList<>();
+    private List<HomeExploreAndShop.Dummy2> exploreList = new ArrayList<>();
     private ExploreAndShopAdapter exploreAndShopAdapter;
     private ExploreAdapter exploreAdapter;
 
@@ -85,8 +92,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         prefrences = new Prefrences(getContext());
         prefrences.setBottomNavStatus(1);
 
+        customProgressDialog(getContext());
+
         getExploreAndShop();
-        getExplore();
+        getBannerData();
+     //   getExplore();
 
         mPager = view.findViewById(R.id.pager);
         tabLayout = view.findViewById(R.id.tab_layout);
@@ -113,6 +123,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         tvSeeAllShop = view.findViewById(R.id.tv_see_all_shop);
         tvSeeAllShop.setOnClickListener(this);
 
+        banner_slidingImages_adapter = new Banner_SlidingImages_Adapter(getContext(), bannersList);
+
         recyclerViewExploreAndShop = view.findViewById(R.id.recycler_view_explore_shop);
         recyclerViewExploreAndShop.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
@@ -135,12 +147,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recyclerViewShop.setLayoutManager(linearLayoutManager);
         recyclerViewShop.setAdapter(new ShopAdapter(getContext(), productsName, items));
 
+        /* ----Banner ---*/
         init();
         return view;
     }
 
     private void init() {
-        mPager.setAdapter(new Banner_SlidingImages_Adapter(getContext(), IMAGES));
+        mPager.setAdapter(banner_slidingImages_adapter);
         tabLayout.setupWithViewPager(mPager, true);
         NUM_PAGES = IMAGES.length;
         /*After setting the adapter use the timer */
@@ -206,8 +219,50 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+    private void getBannerData() {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_banner_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                HomeBannerResponse  bannerResponse = gson.fromJson(response,HomeBannerResponse.class);
+                bannersList.clear();
+                for (int i=0;i<bannerResponse.getData().size();i++){
+                    bannersList.add(bannerResponse.getData().get(i));
+                }
+                banner_slidingImages_adapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e( "erroe", error.toString());
+                progressDialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
 
     public void getExploreAndShop() {
+        progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_explore_and_shop_url, new Response.Listener<String>() {
@@ -215,9 +270,54 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onResponse(String response) {
                 HomeExploreAndShop exploreAndShop = gson.fromJson(response,HomeExploreAndShop.class);
                 exploreShopList.clear();
-                for (int i=0;i<exploreAndShop.getData().size();i++){
-                    exploreShopList.add(exploreAndShop.getData().get(i));
+                for (int i=0;i<exploreAndShop.getDymmy1().size();i++){
+                    exploreShopList.add(exploreAndShop.getDymmy1().get(i));
                     exploreAndShopAdapter.notifyDataSetChanged();
+                }
+                for (int i=0;i<exploreAndShop.getDummy2().size();i++){
+                    exploreList.add(exploreAndShop.getDummy2().get(i));
+                    exploreAdapter.notifyDataSetChanged();
+                }
+                Log.e( "Response",(String.valueOf(exploreShopList.size())));
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e( "erroe", error.toString());
+                progressDialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
+    public void getExplore() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_explore_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                HomeExploreAndShop exploreAndShop = gson.fromJson(response, HomeExploreAndShop.class);
+                exploreShopList.clear();
+                for (int i=0;i<exploreAndShop.getDummy2().size();i++){
+                    exploreList.add(exploreAndShop.getDummy2().get(i));
+                    exploreAdapter.notifyDataSetChanged();
                 }
                 Log.e( "Response",(String.valueOf(exploreShopList.size())));
             }
@@ -246,43 +346,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    public void getExplore() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_explore_url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                HomeExploreResponse exploreResponse = gson.fromJson(response, HomeExploreResponse.class);
-                exploreShopList.clear();
-                for (int i=0;i<exploreResponse.getData().size();i++){
-                    exploreList.add(exploreResponse.getData().get(i));
-                    exploreAdapter.notifyDataSetChanged();
-                }
-                Log.e( "Response",(String.valueOf(exploreShopList.size())));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e( "erroe", error.toString());
-            }
-        });
-        requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+    public void customProgressDialog(Context context) {
+        progressDialog = new ProgressDialog(context);
+        // Setting Message
+        progressDialog.setMessage("Loading...");
+        // Progress Dialog Style Spinner
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        // Fetching max value
+        progressDialog.getMax();
     }
 
 }

@@ -7,21 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.responses.HomeBannerResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.viewpager.widget.PagerAdapter;
 
 public class Banner_SlidingImages_Adapter extends PagerAdapter {
 
-
-    private int[] IMAGES;
     private LayoutInflater inflater;
     private Context context;
+    List<HomeBannerResponse.Datum> IMAGES;
 
 
-    public Banner_SlidingImages_Adapter(Context context, int[] IMAGES) {
+    public Banner_SlidingImages_Adapter(Context context, List<HomeBannerResponse.Datum> IMAGES) {
         this.context = context;
         this.IMAGES = IMAGES;
         inflater = LayoutInflater.from(context);
@@ -34,17 +36,17 @@ public class Banner_SlidingImages_Adapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return IMAGES.length;
+        return IMAGES.size();
     }
 
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
         View imageLayout = LayoutInflater.from(context).inflate(R.layout.slidingimages_layout, view, false);
-               // inflater.inflate(R.layout.slidingimages_layout, view, false);
 
         assert imageLayout != null;
         final ImageView imageView =  imageLayout.findViewById(R.id.image);
-        imageView.setImageResource(IMAGES[position]);
+        Glide.with(context).load(IMAGES.get(position).getPic()).into(imageView);
+//        imageView.setImageResource(IMAGES.get(position));
 
         view.addView(imageLayout, 0);
 

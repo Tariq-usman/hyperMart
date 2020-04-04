@@ -9,4 +9,6 @@ public class URLs {
     public static String get_explore_and_shop_url = base_url + "products";
     public static String update_current_user_profile_url = base_url + "customerupdatepro";
     public static String get_explore_url = base_url + "exploreproducts";
+    public static String get_banner_url = base_url + "homebanner";
+    public static String over_all_rating_url = base_url + "orderrating";
 }

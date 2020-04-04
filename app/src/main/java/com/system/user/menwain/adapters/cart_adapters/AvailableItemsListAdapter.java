@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.category.ItemsFragment;
+import com.system.user.menwain.fragments.category.CategoryItemsFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,7 +66,7 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
             @Override
             public void onClick(View v) {
                 prefrences.setBottomNavStatus(6);
-                ItemsFragment fragment = new ItemsFragment();
+                CategoryItemsFragment fragment = new CategoryItemsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }
