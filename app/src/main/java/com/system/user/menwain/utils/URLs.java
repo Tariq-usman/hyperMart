@@ -11,4 +11,7 @@ public class URLs {
     public static String get_explore_url = base_url + "exploreproducts";
     public static String get_banner_url = base_url + "homebanner";
     public static String over_all_rating_url = base_url + "orderrating";
+    public static String get_super_category_url = base_url + "getsupercats";
+    public static String get_user_address_url = base_url + "useraddresslist";
+    public static String get_category_url = base_url+"getcats/";
 }

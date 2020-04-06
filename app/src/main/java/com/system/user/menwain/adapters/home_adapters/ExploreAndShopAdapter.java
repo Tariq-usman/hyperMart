@@ -45,7 +45,7 @@ public class ExploreAndShopAdapter extends RecyclerView.Adapter<ExploreAndShopAd
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        Glide.with(holder.mExploreShopImage).load(exploreShopList.get(position).getImage());
+        Glide.with(holder.mExploreShopImage.getContext()).load(exploreShopList.get(position).getImage()).into(holder.mExploreShopImage);
         holder.mExploreShopStatus.setText(exploreShopList.get(position).getName());
        /* holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

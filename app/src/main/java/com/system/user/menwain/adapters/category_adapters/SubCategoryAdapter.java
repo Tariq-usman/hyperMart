@@ -13,12 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.system.user.menwain.local_db.model.UpdateCartQuantity;
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.responses.category.CategoryResponse;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,14 +32,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
-public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.FilterItemViewHolder> {
-    private String[] productsName;
+public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.FilterItemViewHolder> {
     Context context;
     private int[] items;
-    byte[] productImage;
     String imagePath;
-    private String[] storesName;
+    List<CategoryResponse.Product> subCatergoryList;
     private CartViewModel cartViewModel;
     Bundle bundle;
     Prefrences prefrences;
@@ -46,11 +46,10 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
     String productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
 
-    public FilterItemsAdapter(String[] productsName, Context context, int[] items, String[] storesName) {
-        this.productsName = productsName;
+    public SubCategoryAdapter(Context context, List<CategoryResponse.Product> subCatergoryList) {
         this.context = context;
         this.items = items;
-        this.storesName = storesName;
+        this.subCatergoryList = subCatergoryList;
         prefrences = new Prefrences(context);
     }
 
@@ -65,9 +64,9 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
     @Override
     public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
 
-        holder.mProductNameView.setText(productsName[position]);
-        holder.mFilteProduct.setImageResource(items[position]);
-        holder.mStoreName.setText(storesName[position]);
+        holder.mProductNameView.setText(subCatergoryList.get(position).getName());
+        Glide.with(holder.mFilteProduct.getContext()).load(subCatergoryList.get(position).getImage()).into(holder.mFilteProduct);
+//        holder.mStoreName.setText(storesName[position]);
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +147,7 @@ public class FilterItemsAdapter extends RecyclerView.Adapter<FilterItemsAdapter.
 
     @Override
     public int getItemCount() {
-        return productsName.length;
+        return subCatergoryList.size();
     }
 
     public static class FilterItemViewHolder extends RecyclerView.ViewHolder {

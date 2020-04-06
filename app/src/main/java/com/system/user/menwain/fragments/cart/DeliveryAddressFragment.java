@@ -19,9 +19,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.DelivieryAddressesAdapter;
+import com.system.user.menwain.utils.URLs;
 
 public class DeliveryAddressFragment extends Fragment implements View.OnClickListener {
 
@@ -90,8 +97,10 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
 
         delivieryAddressesAdapter = new DelivieryAddressesAdapter(address, getContext());
         recyclerViewAddress.setAdapter(delivieryAddressesAdapter);
+        //getUserAddress();
         return view;
     }
+
 
     private void setRadioButtonChecked() {
 
@@ -174,4 +183,22 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         }
 
     }
+    private void getUserAddress() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_address_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+
+        };
+    }
+
 }

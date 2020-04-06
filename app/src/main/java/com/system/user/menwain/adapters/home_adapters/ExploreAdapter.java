@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.others.Prefrences;
@@ -45,6 +46,7 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        Glide.with(holder.mExploreShopImage.getContext()).load(exploreList.get(position).getImage()).into(holder.mExploreShopImage);
 
         holder.mExploreShopStatus.setText(exploreList.get(position).getName());
         /*holder.itemView.setOnClickListener(new View.OnClickListener() {

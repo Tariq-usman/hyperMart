@@ -12,7 +12,7 @@ import android.widget.RatingBar;
 
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.adapters.category_adapters.FilterItemsAdapter;
+import com.system.user.menwain.adapters.category_adapters.SubCategoryAdapter;
 import com.system.user.menwain.adapters.more_adapters.FilteredStoresAdapter;
 import com.system.user.menwain.adapters.category_adapters.SelectedItemAdapter;
 import com.system.user.menwain.adapters.more_adapters.SelectedStoreAdapter;
@@ -30,7 +30,7 @@ public class SelectedStoreFragment extends Fragment {
 
     private RecyclerView recyclerViewSelectedStore, recyclerViewStoresName, recyclerViewFilterStores;
     private SelectedItemAdapter selectedItemAdapter;
-    private FilterItemsAdapter filterItemsAdapter;
+    private SubCategoryAdapter filterItemsAdapter;
     private LinearLayoutManager linearLayoutManager;
     private Context context;
     private ImageView ivBackBtnSelectedStore;

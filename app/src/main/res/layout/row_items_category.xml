@@ -37,6 +37,7 @@
                 android:paddingRight="3dp"
                 android:textColor="@color/blackColor"/>
             <TextView
+                android:id="@+id/category_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"

@@ -7,24 +7,31 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.responses.category.SuperCategoryResponse;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapter.SelectedItemViewHolder> {
-    private String[] productsName;
     Context context;
-    private int[] items;
+    List<SuperCategoryResponse.SuperCategory.Datum> catergoryList;
     public int lastPosition = -1;
     private boolean check = false;
     private int passedPosition = CategoryAdapter.passId;
+    RecyclerClickInterface clickInterface;
 
-    public SelectedItemAdapter(Context context, String[] productsName, int[] items) {
-        this.productsName = productsName;
-        this.items = items;
+    public SelectedItemAdapter(Context context, List<SuperCategoryResponse.SuperCategory.Datum> catergoryList, RecyclerClickInterface clickInterface) {
+        this.catergoryList = catergoryList;
         this.context = context;
+        this.clickInterface = clickInterface;
+
     }
 
     @NonNull
@@ -36,10 +43,11 @@ public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SelectedItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SelectedItemViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
-        holder.mProductNameView.setText(productsName[position]);
-        holder.mProduct.setImageResource(items[position]);
+        holder.mProductNameView.setText(catergoryList.get(position).getDescription());
+        Glide.with(holder.mProduct.getContext()).load(catergoryList.get(position).getPicture()).into(holder.mProduct);
+
         if (check == false) {
             if (passedPosition == position) {
                 holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
@@ -50,9 +58,11 @@ public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapte
             }
         } else if (lastPosition == position) {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+            clickInterface.interfaceOnClick(holder.getView(), position);
         } else {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
         }
+
        /* position = position - 1;
         position = position % productsName.length;
 
@@ -69,7 +79,7 @@ public class SelectedItemAdapter extends RecyclerView.Adapter<SelectedItemAdapte
 
     @Override
     public int getItemCount() {
-        return items.length;
+        return catergoryList.size();
 //        return Integer.MAX_VALUE;
     }
 
