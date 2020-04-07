@@ -7,9 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,30 +23,42 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.system.user.menwain.activities.MapsActivity;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.DelivieryAddressesAdapter;
+import com.system.user.menwain.responses.cart.UserAddressListResponse;
 import com.system.user.menwain.utils.URLs;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DeliveryAddressFragment extends Fragment implements View.OnClickListener {
 
     private TextView mTitleView, mConfirmBtn, mPayNow, mPayLater;
     private ImageView mBackView, mAddNewAddress;
-    private String[] address = {"Current Location", "Home", "Office"};
+    private String[] address;
     RecyclerView recyclerViewAddress;
     DelivieryAddressesAdapter delivieryAddressesAdapter;
-    private CardView mSearchViewAddress;
+    private CardView mSearchViewAddress,addNewAddress;
     private SharedPreferences.Editor editor;
     Prefrences prefrences;
     private RadioButton rbDeliverToAddress, rbPreparePickUp, rbCashOnDelivery, rbPreparePickFromStore, rbWalkInStore;
     private RadioGroup rgPayNow, rgPayLater;
     private int rBtnPaymentStatus;
+    private ProgressDialog progressDialog;
+    private List<UserAddressListResponse.Addresslist> addressList = new ArrayList<UserAddressListResponse.Addresslist>();
 
     @Nullable
     @Override
@@ -50,12 +66,17 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_delivey_address, container, false);
         prefrences = new Prefrences(getContext());
         prefrences.setPaymentStatus(1);
+        customProgressDialog(getContext());
         rBtnPaymentStatus = prefrences.getPayRBtnStatus();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        getUserAddress();
 
         mSearchViewAddress = getActivity().findViewById(R.id.search_view);
         mSearchViewAddress.setVisibility(View.INVISIBLE);
 
+        addNewAddress = view.findViewById(R.id.add_address_card_view);
+        addNewAddress.setOnClickListener(this);
         rbDeliverToAddress = view.findViewById(R.id.rb_deliver_to_address);
         rbDeliverToAddress.setOnClickListener(this);
         rbPreparePickUp = view.findViewById(R.id.rb_prepare_pick_fr_store);
@@ -95,9 +116,8 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         recyclerViewAddress.setHasFixedSize(true);
         recyclerViewAddress.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        delivieryAddressesAdapter = new DelivieryAddressesAdapter(address, getContext());
+        delivieryAddressesAdapter = new DelivieryAddressesAdapter(getContext(), addressList);
         recyclerViewAddress.setAdapter(delivieryAddressesAdapter);
-        //getUserAddress();
         return view;
     }
 
@@ -180,25 +200,54 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             prefrences.setCartFragStatus(0);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
             mBackView.setVisibility(View.GONE);
+        }else if (id == R.id.add_address_card_view){
+            Intent intent = new Intent(getContext(), MapsActivity.class);
+            intent.putExtra("address_id",-1);
+            startActivity(intent);
         }
 
     }
     private void getUserAddress() {
+        progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-
+        final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_address_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                UserAddressListResponse addressListResponse = gson.fromJson(response,UserAddressListResponse.class);
+                addressList.clear();
+                for (int i=0;i<addressListResponse.getAddresslist().size();i++){
+                    addressList.add(addressListResponse.getAddresslist().get(i));
+                }
+                addressList.size();
+                delivieryAddressesAdapter.notifyDataSetChanged();
+                Log.i("Address_response", response);
+                progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.e("Address_error", error.toString());
+                progressDialog.dismiss();
             }
         }){
-
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization","Bearer "+ prefrences.getToken());
+                return headerMap;
+            }
         };
+        requestQueue.add(request);
+    }
+    public void customProgressDialog(Context context) {
+        progressDialog = new ProgressDialog(context);
+        // Setting Message
+        progressDialog.setMessage("Loading...");
+        // Progress Dialog Style Spinner
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        // Fetching max value
+        progressDialog.getMax();
     }
 
 }

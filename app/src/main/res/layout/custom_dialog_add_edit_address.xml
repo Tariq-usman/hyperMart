@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_alert_dialog"
+        android:orientation="vertical"
+        android:padding="1dp">
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:background="@color/darkGreenColor"
+            android:text="Address Title"
+            android:textColor="@color/whiteColor"
+            android:textSize="@dimen/sixteen_sp" />
+
+
+        <EditText
+            android:id="@+id/et_edit_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="16dp"
+            android:background="@android:color/transparent"
+            android:hint="Office.."
+            android:maxLines="1"
+            android:paddingHorizontal="60dp"
+            android:textColorHint="@color/darkGreenColor"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:background="@android:color/transparent"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

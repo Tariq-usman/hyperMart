@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class UserAddressListResponse {
+
     @SerializedName("addresslist")
     @Expose
     private List<Addresslist> addresslist = null;
@@ -17,6 +18,7 @@ public class UserAddressListResponse {
     public void setAddresslist(List<Addresslist> addresslist) {
         this.addresslist = addresslist;
     }
+
     public class Addresslist {
 
         @SerializedName("id")
@@ -36,16 +38,16 @@ public class UserAddressListResponse {
         private String addressLine1;
         @SerializedName("address_line2")
         @Expose
-        private String addressLine2;
+        private Object addressLine2;
         @SerializedName("is_favorite")
         @Expose
-        private Integer isFavorite;
+        private Object isFavorite;
         @SerializedName("primary")
         @Expose
-        private Integer primary;
+        private Object primary;
         @SerializedName("date_created")
         @Expose
-        private String dateCreated;
+        private Object dateCreated;
         @SerializedName("status")
         @Expose
         private Integer status;
@@ -99,35 +101,35 @@ public class UserAddressListResponse {
             this.addressLine1 = addressLine1;
         }
 
-        public String getAddressLine2() {
+        public Object getAddressLine2() {
             return addressLine2;
         }
 
-        public void setAddressLine2(String addressLine2) {
+        public void setAddressLine2(Object addressLine2) {
             this.addressLine2 = addressLine2;
         }
 
-        public Integer getIsFavorite() {
+        public Object getIsFavorite() {
             return isFavorite;
         }
 
-        public void setIsFavorite(Integer isFavorite) {
+        public void setIsFavorite(Object isFavorite) {
             this.isFavorite = isFavorite;
         }
 
-        public Integer getPrimary() {
+        public Object getPrimary() {
             return primary;
         }
 
-        public void setPrimary(Integer primary) {
+        public void setPrimary(Object primary) {
             this.primary = primary;
         }
 
-        public String getDateCreated() {
+        public Object getDateCreated() {
             return dateCreated;
         }
 
-        public void setDateCreated(String dateCreated) {
+        public void setDateCreated(Object dateCreated) {
             this.dateCreated = dateCreated;
         }
 
@@ -166,5 +168,3 @@ public class UserAddressListResponse {
     }
 
 }
-
-
