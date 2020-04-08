@@ -28,7 +28,6 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.MoreFragment;
 import com.system.user.menwain.others.Prefrences;
-import com.system.user.menwain.responses.HomeExploreAndShop;
 import com.system.user.menwain.responses.more.OverAllRatingResponse;
 import com.system.user.menwain.utils.URLs;
 

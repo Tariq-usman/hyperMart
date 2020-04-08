@@ -2,7 +2,6 @@ package com.system.user.menwain.adapters.home_adapters;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.others.ItemDetailsFragment;
-import com.system.user.menwain.responses.HomeExploreAndShop;
+import com.system.user.menwain.responses.home.HomeExploreAndShop;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;

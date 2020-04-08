@@ -9,9 +9,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
-import com.system.user.menwain.responses.HomeBannerResponse;
+import com.system.user.menwain.responses.home.HomeBannerResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.viewpager.widget.PagerAdapter;

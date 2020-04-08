@@ -23,6 +23,7 @@
             app:cardCornerRadius="10dp">
 
             <ImageView
+                android:id="@+id/iv_store_iamge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/metro" />
@@ -35,6 +36,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_selected_store_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Metro"
@@ -42,6 +44,7 @@
                 android:textSize="@dimen/sixteen_sp" />
 
             <TextView
+                android:id="@+id/tv_selected_store_place_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Riyadh"
@@ -62,26 +65,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     />
+
                 <TextView
+                    android:id="@+id/tv_selected_store_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="("
+                    android:text="( 4.5 )"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/sixteen_sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="4.5"
-                    android:textColor="@color/darkGreenColor"
-                    android:textSize="@dimen/sixteen_sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=")"
-                    android:textColor="@color/darkGreenColor"
-                    android:textSize="@dimen/sixteen_sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

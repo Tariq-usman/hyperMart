@@ -29,8 +29,8 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.home_adapters.ExploreAndShopAdapter;
 import com.system.user.menwain.adapters.home_adapters.Banner_SlidingImages_Adapter;
-import com.system.user.menwain.responses.HomeBannerResponse;
-import com.system.user.menwain.responses.HomeExploreAndShop;
+import com.system.user.menwain.responses.home.HomeBannerResponse;
+import com.system.user.menwain.responses.home.HomeExploreAndShop;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.ArrayList;

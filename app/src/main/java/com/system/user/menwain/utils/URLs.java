@@ -16,4 +16,6 @@ public class URLs {
     public static String get_category_url = base_url + "getcats/";
     public static String add_user_address_url = base_url + "addadress";
     public static String update_user_address_url = base_url + "useraddressupdate/";
+    public static String get_all_stores_data_url = base_url + "getStoreMainBranch";
+    public static String get_selected_store_data_url = base_url +"getStoreProducts/";
 }

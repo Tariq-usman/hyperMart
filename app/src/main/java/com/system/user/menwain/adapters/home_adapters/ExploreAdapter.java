@@ -9,16 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.others.Prefrences;
-import com.system.user.menwain.responses.HomeExploreAndShop;
-import com.system.user.menwain.responses.HomeExploreResponse;
+import com.system.user.menwain.responses.home.HomeExploreAndShop;
 
 import java.util.List;
 

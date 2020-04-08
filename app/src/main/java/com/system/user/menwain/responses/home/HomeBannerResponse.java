@@ -1,4 +1,4 @@
-package com.system.user.menwain.responses;
+package com.system.user.menwain.responses.home;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

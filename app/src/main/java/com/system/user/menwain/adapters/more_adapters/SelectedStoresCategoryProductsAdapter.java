@@ -13,11 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,25 +32,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
-public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAdapter.FilterStoresViewHolder> {
+public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<SelectedStoresCategoryProductsAdapter.FilterStoresViewHolder> {
 
-    private String[] productsName;
+    private List<SelectedStoreResponse.Product.Datum> category_products_list;
     Context context;
-    private int[] items;
     byte[] productImage;
-    private String[] storesName;
-    String productName,storeName,price,quantity,strTotalPrice,imagePath;
+    String productName, storeName, price, quantity, strTotalPrice, imagePath;
     private CartViewModel cartViewModel;
     Bundle bundle;
     private Prefrences prefrences;
 
-    public FilteredStoresAdapter(String[] productsName, Context context, int[] items, String[] storesName) {
-        this.productsName = productsName;
+    public SelectedStoresCategoryProductsAdapter(Context context, List<SelectedStoreResponse.Product.Datum> category_products_list) {
+        this.category_products_list = category_products_list;
         this.context = context;
-        this.items = items;
         prefrences = new Prefrences(context);
-        this.storesName = storesName;
 
     }
 
@@ -62,9 +61,10 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
 
     @Override
     public void onBindViewHolder(@NonNull final FilterStoresViewHolder holder, final int position) {
-        holder.mProductNameView.setText(productsName[position]);
-        holder.mFilteProduct.setImageResource(items[position]);
-        holder.mStoreName.setText(storesName[position]);
+        Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getProducts().get(position).getImage()).into(holder.mFilteProduct);
+        holder.mProductNameView.setText(category_products_list.get(position).getProducts().get(position).getName());
+        holder.mStoreName.setText(category_products_list.get(position).getName());
+        holder.mPriceFilterItem.setText(category_products_list.get(position).getProducts().get(position).getAvgPrice().toString());
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,9 +92,9 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
                 bundle = new Bundle();
                 prefrences.setMoreStoresFragStatus(3);
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
-                FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
-                bundle.putString("status","3");
-                if (position == items.length - 1) {
+                FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                bundle.putString("status", "3");
+               /* if (position == items.length - 1) {
                     bundle.putString("image_url", String.valueOf(items[position]));
                     bundle.putString("image_url1", String.valueOf(items[position - 1]));
                     bundle.putString("image_url2", String.valueOf(items[position - 2]));
@@ -110,9 +110,9 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
                     bundle.putString("image_url", String.valueOf(items[position]));
                     bundle.putString("image_url1", String.valueOf(items[position + 1]));
                     bundle.putString("image_url2", String.valueOf(items[position + 2]));
-                }
+                }*/
                 fragment.setArguments(bundle);
-                transaction.replace(R.id.nav_host_fragment,fragment).commit();
+                transaction.replace(R.id.nav_host_fragment, fragment).commit();
             }
         });
 
@@ -123,11 +123,11 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 int productId = 12;
-                 productName = holder.mProductNameView.getText().toString();
-                 storeName = holder.mStoreName.getText().toString();
-                 price = holder.mPriceFilterItem.getText().toString();
+                productName = holder.mProductNameView.getText().toString();
+                storeName = holder.mStoreName.getText().toString();
+                price = holder.mPriceFilterItem.getText().toString();
                 quantity = holder.mItemCounter.getText().toString();
-                 strTotalPrice = price;
+                strTotalPrice = price;
                 float totalPrice = Float.parseFloat(strTotalPrice);
 
                 int intQuantity = Integer.parseInt(quantity);
@@ -137,7 +137,7 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
 
                 cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
 
-                Cart cart = new Cart(productId, imagePath,productName, storeName, totalPrice, unitPrice, intQuantity);
+                Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
                 //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
                 cartViewModel.insertCart(cart);
                 //cartViewModel.insertAllCart(cart, updateCartQuantity);
@@ -146,6 +146,7 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
             }
         });
     }
+
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(context);
         // path to /data/data/yourapp/app_data/imageDir
@@ -169,9 +170,10 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
         }
         return directory.getAbsolutePath();
     }
+
     @Override
     public int getItemCount() {
-        return productsName.length;
+        return category_products_list.size();
     }
 
     public static class FilterStoresViewHolder extends RecyclerView.ViewHolder {
@@ -179,6 +181,7 @@ public class FilteredStoresAdapter extends RecyclerView.Adapter<FilteredStoresAd
         private CardView mAddToCart;
         private ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
         int count = 0;
+
         public FilterStoresViewHolder(@NonNull View itemView) {
             super(itemView);
             mFilteProduct = itemView.findViewById(R.id.view_filter_product);

@@ -7,25 +7,28 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdapter.SelectedStoreViewHolder> {
+public class SelectedStoreCategoryAdapter extends RecyclerView.Adapter<SelectedStoreCategoryAdapter.SelectedStoreViewHolder> {
     private LayoutInflater layoutInflater;
-    private String[] storesName;
     Context context;
-    private int[] stores;
+    List<SelectedStoreResponse.Category> category_list;
     int lastPosition = 0;
     int abc = StoresAdapter.pos;
     private boolean check = false;
 
-    public SelectedStoreAdapter(String[] storesName, Context context, int[] stores) {
-        this.storesName = storesName;
+    public SelectedStoreCategoryAdapter(Context context, List<SelectedStoreResponse.Category> category_list) {
         this.context = context;
-        this.stores = stores;
+        this.category_list = category_list;
     }
 
     @NonNull
@@ -39,8 +42,8 @@ public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdap
     @Override
     public void onBindViewHolder(@NonNull final SelectedStoreViewHolder holder, int position) {
         holder.setIsRecyclable(false);
-        holder.mStoreNameView.setText(storesName[position]);
-        holder.mStoreView.setImageResource(stores[position]);
+        holder.mStoreNameView.setText(category_list.get(position).getDescription());
+        Glide.with(holder.mStoreView.getContext()).load(category_list.get(position).getPicture()).into(holder.mStoreView);
         holder.setIsRecyclable(true);
 
 
@@ -76,7 +79,7 @@ public class SelectedStoreAdapter extends RecyclerView.Adapter<SelectedStoreAdap
 
     @Override
     public int getItemCount() {
-        return storesName.length;
+        return category_list.size();
         //return Integer.MAX_VALUE;
     }
 

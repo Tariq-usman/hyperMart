@@ -53,23 +53,11 @@
                 android:layout_height="wrap_content"
                 />
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:text="("
-                android:textColor="@color/whiteColor"/>
-            <TextView
                 android:id="@+id/ratting_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/ten_sp"
-                android:text="4.5"
-                android:textColor="@color/whiteColor"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/ten_sp"
-                android:text=")"
+                android:text="( 4.5 )"
                 android:textColor="@color/whiteColor"/>
         </LinearLayout>
 
