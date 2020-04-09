@@ -7,33 +7,39 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.responses.more.orders.CancelledOrdersResponse;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class OrdersCancelledAdapter extends RecyclerView.Adapter<OrdersCancelledAdapter.ItemViewHolder>{
-    private String [] amount;
-    private String [] order_status;
+    private List<CancelledOrdersResponse.Allorders.Datum> canceled_orders_list;
     Context context;
 
-    public OrdersCancelledAdapter(Context context, String[] amount, String[] order_status) {
+    public OrdersCancelledAdapter(Context context, List<CancelledOrdersResponse.Allorders.Datum> canceled_orders_list) {
         this.context = context;
-        this.amount = amount;
-        this.order_status = order_status;
+        this.canceled_orders_list = canceled_orders_list;
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_orders_cancelled,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_orders_delivered,parent,false);
         ItemViewHolder itemViewHolder = new ItemViewHolder(view);
         return itemViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        holder.mAmount.setText(amount[position]);
-        holder.mOrderStatus.setText(order_status[position]);
+        holder.tvOrderNo.setText(canceled_orders_list.get(position).getId().toString());
+        holder.tvOrderStatus.setText(canceled_orders_list.get(position).getOrderStatus());
+        String date_time = canceled_orders_list.get(position).getDateTime();
+        String[] split_date_time = date_time.split(" ");
+        String date = split_date_time[0];
+        holder.tvOrderDate.setText(date);
+        holder.tvTotalPrice.setText(canceled_orders_list.get(position).getTotalPrice() +" SAR");
       /*  holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,15 +52,17 @@ public class OrdersCancelledAdapter extends RecyclerView.Adapter<OrdersCancelled
 
     @Override
     public int getItemCount() {
-        return amount.length;
+        return canceled_orders_list.size();
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder{
-        private TextView mAmount,mOrderStatus;
+        private TextView tvTotalPrice,tvOrderNo,tvOrderStatus,tvOrderDate;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            mOrderStatus = itemView.findViewById(R.id.tv_order_cancel_status);
-            mAmount = itemView.findViewById(R.id.tv_total_amount_order_processing);
+            tvOrderNo = itemView.findViewById(R.id.tv_order_no);
+            tvOrderStatus = itemView.findViewById(R.id.tv_delivered_order_status);
+            tvOrderDate = itemView.findViewById(R.id.tv_order_date);
+            tvTotalPrice = itemView.findViewById(R.id.tv_total_amount_order);
         }
     }
 }

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,13 +24,14 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.adapters.more_adapters.CategoryProductsAdapter;
+import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.adapters.category_adapters.SubCategoryAdapter;
 import com.system.user.menwain.adapters.more_adapters.SelectedStoresCategoryProductsAdapter;
-import com.system.user.menwain.adapters.category_adapters.SelectedItemAdapter;
 import com.system.user.menwain.adapters.more_adapters.SelectedStoreCategoryAdapter;
 import com.system.user.menwain.adapters.more_adapters.StoresAdapter;
+import com.system.user.menwain.responses.more.stores.SelectedStoreCategoryProductsResponse;
 import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -48,9 +48,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SelectedStoreFragment extends Fragment {
+public class SelectedStoreFragment extends Fragment implements RecyclerClickInterface {
 
-    private RecyclerView recyclerViewSelectedStore, recyclerViewFilterStores;
+    private RecyclerView recyclerViewSelectedStore, recyclerViewFilterStores,recyclerViewCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
     private ImageView ivBackBtnSelectedStore, ivSelectedStore;
     private TextView tvStoreName, tvStoreLocation, tvStoreRating;
@@ -62,9 +62,11 @@ public class SelectedStoreFragment extends Fragment {
     private Geocoder geocoder;
     private List<Address> addresses;
     private SelectedStoreCategoryAdapter storeCategoryAdapter;
-    private SelectedStoresCategoryProductsAdapter categoryProductsAdapter;
+    private SelectedStoresCategoryProductsAdapter selectedStorecategoryProductsAdapter;
+    private CategoryProductsAdapter categoryProductsAdapter;
     private List<SelectedStoreResponse.Category> category_list = new ArrayList<>();
-    private List<SelectedStoreResponse.Product.Datum> category_products_list = new ArrayList<>();
+    private List<SelectedStoreResponse.Product.Datum> selected_store_category_products_list = new ArrayList<>();
+    private List<SelectedStoreCategoryProductsResponse.Product.Datum> category_products_list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -100,20 +102,36 @@ public class SelectedStoreFragment extends Fragment {
         recyclerViewSelectedStore.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewSelectedStore.setLayoutManager(linearLayoutManager);
-        storeCategoryAdapter = new SelectedStoreCategoryAdapter(getContext(), category_list);
+        storeCategoryAdapter = new SelectedStoreCategoryAdapter(getContext(), category_list, this);
         recyclerViewSelectedStore.setAdapter(storeCategoryAdapter);
         int position = StoresAdapter.pos;
         //recyclerViewSelectedStore.smoothScrollToPosition(position + 1);
 
-        recyclerViewFilterStores = view.findViewById(R.id.recycler_view_filter_filtered);
+        /*recyclerViewFilterStores = view.findViewById(R.id.recycler_view_filter_filtered);
         recyclerViewFilterStores.setHasFixedSize(true);
         recyclerViewFilterStores.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
-        categoryProductsAdapter = new SelectedStoresCategoryProductsAdapter(getContext(), category_products_list);
-        recyclerViewFilterStores.setAdapter(categoryProductsAdapter);
+        selectedStorecategoryProductsAdapter = new SelectedStoresCategoryProductsAdapter(getContext(), selected_store_category_products_list);
+        recyclerViewFilterStores.setAdapter(selectedStorecategoryProductsAdapter);*/
+
+        recyclerViewCategoryProducts = view.findViewById(R.id.recycler_view_category_products);
+        recyclerViewCategoryProducts.setVisibility(View.GONE);
+        recyclerViewCategoryProducts.setHasFixedSize(true);
+        recyclerViewCategoryProducts.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        categoryProductsAdapter = new CategoryProductsAdapter(getContext(), category_products_list);
+        recyclerViewCategoryProducts.setAdapter(categoryProductsAdapter);
 
         getSelectedStoreData();
         return view;
     }
+    @Override
+    public void interfaceOnClick(View view, int position) {
+//        recyclerViewFilterStores.setVisibility(View.GONE);
+        recyclerViewCategoryProducts.setVisibility(View.VISIBLE);
+        int category_id = category_list.get(position).getId();
+        getCategoryProducts( category_id);
+    }
+
+
 
     private void getSelectedStoreData() {
         progressDialog.show();
@@ -145,9 +163,34 @@ public class SelectedStoreFragment extends Fragment {
                     category_list.add(storeResponse.getCategory().get(i));
                 }
                 storeCategoryAdapter.notifyDataSetChanged();
-                category_products_list.clear();
+                /*selected_store_category_products_list.clear();
                 for (int i = 0; i < storeResponse.getProduct().getData().size(); i++) {
-                    category_products_list.add(storeResponse.getProduct().getData().get(i));
+                    selected_store_category_products_list.add(storeResponse.getProduct().getData().get(i));
+                }
+                selectedStorecategoryProductsAdapter.notifyDataSetChanged();*/
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("ss_error", error.toString());
+                progressDialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+    }
+    private void getCategoryProducts( int category_id) {
+        progressDialog.show();
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_category_products_data_url + category_id, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                SelectedStoreCategoryProductsResponse categoryProductsResponse = gson.fromJson(response, SelectedStoreCategoryProductsResponse.class);
+                category_products_list.clear();
+                for (int i = 0; i < categoryProductsResponse.getProduct().getData().size(); i++) {
+                    category_products_list.add(categoryProductsResponse.getProduct().getData().get(i));
                 }
                 categoryProductsAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
@@ -161,7 +204,6 @@ public class SelectedStoreFragment extends Fragment {
         });
         requestQueue.add(request);
     }
-
     public void customProgressDialog(Context context) {
         progressDialog = new ProgressDialog(context);
         // Setting Message
@@ -171,5 +213,6 @@ public class SelectedStoreFragment extends Fragment {
         // Fetching max value
         progressDialog.getMax();
     }
+
 
 }

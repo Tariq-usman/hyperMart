@@ -17,5 +17,13 @@ public class URLs {
     public static String add_user_address_url = base_url + "addadress";
     public static String update_user_address_url = base_url + "useraddressupdate/";
     public static String get_all_stores_data_url = base_url + "getStoreMainBranch";
-    public static String get_selected_store_data_url = base_url +"getStoreProducts/";
+    public static String get_selected_store_data_url = base_url + "getStoreProducts/";
+    public static String get_category_products_data_url = base_url + "store_prods/";
+
+    /*    Orders Urls    */
+    public static String get_all_orders_url = base_url + "allorders";
+    public static String get_processing_orders_url = base_url + "Processingorders";
+    public static String get_delivered_orders_url = base_url + "Deliveredorders";
+    public static String get_cancelled_orders_url = base_url + "cancelledorders";
+    public static String get_orders_details_url = base_url + "openorder/";
 }

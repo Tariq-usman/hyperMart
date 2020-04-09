@@ -33,6 +33,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_order_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2541256"
@@ -56,7 +57,7 @@
                 <TextView
                     android:id="@+id/tv_delivered_order_status"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="Pending"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/twelve_sp"
@@ -78,6 +79,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_order_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20 oct 2019"
@@ -99,19 +101,19 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_total_amount_order_processing"
+                    android:id="@+id/tv_total_amount_order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3245.452"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" SAR"
                     android:textColor="@color/darkGreenColor"
-                    android:textSize="@dimen/twelve_sp" />
+                    android:textSize="@dimen/twelve_sp" />-->
             </LinearLayout>
 
         </LinearLayout>

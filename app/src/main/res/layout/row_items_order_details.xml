@@ -45,6 +45,7 @@
                 android:textColor="@color/blackColor" />
 
             <TextView
+                android:id="@+id/tv_store_name_order_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="By MeatOne"
@@ -77,6 +78,7 @@
                     android:textSize="12sp"
                     android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tv_price_order_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="2dp"
@@ -122,6 +124,7 @@
             android:textSize="@dimen/twelve_sp"
             android:text="( "/>
         <TextView
+            android:id="@+id/tv_rating_view_order_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/darkGreenColor"

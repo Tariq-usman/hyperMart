@@ -95,12 +95,21 @@
         android:background="@color/darkGreenColor" />
 -->
 
-    <androidx.recyclerview.widget.RecyclerView
+    <!--<androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_filter_filtered"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:gravity="center"
+        android:visibility="gone"
+        android:overScrollMode="never" />-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_category_products"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:gravity="center"
+        android:visibility="visible"
         android:overScrollMode="never" />
 
 </LinearLayout>

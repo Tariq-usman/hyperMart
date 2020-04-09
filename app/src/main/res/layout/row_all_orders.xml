@@ -33,6 +33,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_order_no_all_orders"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2541256"
@@ -54,6 +55,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_ordr_status_all_orders"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pending"
@@ -77,6 +79,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_order_date_all_orders"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20 oct 2019"
@@ -98,19 +101,21 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_total_amount"
+                    android:id="@+id/tv_total_amount_all_orders"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3245.452"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 
+<!--
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" SAR"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
+-->
             </LinearLayout>
 
         </LinearLayout>

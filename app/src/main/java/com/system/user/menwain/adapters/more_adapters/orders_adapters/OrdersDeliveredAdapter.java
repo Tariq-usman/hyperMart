@@ -7,19 +7,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.responses.more.orders.DeleveredOrdersResponse;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class OrdersDeliveredAdapter extends RecyclerView.Adapter<OrdersDeliveredAdapter.ItemViewHolder>{
-    private String [] amount;
-    private String [] order_status;
+    private List<DeleveredOrdersResponse.Allorders.Datum> delivered_orders_list;
     Context context;
 
-    public OrdersDeliveredAdapter(Context context, String[] amount, String[] order_status) {
+    public OrdersDeliveredAdapter(Context context, List<DeleveredOrdersResponse.Allorders.Datum> delivered_orders_list) {
         this.context = context;
-        this.amount = amount;
-        this.order_status = order_status;
+        this.delivered_orders_list = delivered_orders_list;
     }
 
     @NonNull
@@ -32,8 +33,13 @@ public class OrdersDeliveredAdapter extends RecyclerView.Adapter<OrdersDelivered
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        holder.mAmount.setText(amount[position]);
-        holder.mOrderStatus.setText(order_status[position]);
+        holder.tvOrderNo.setText(delivered_orders_list.get(position).getId().toString());
+        holder.tvOrderStatus.setText(delivered_orders_list.get(position).getOrderStatus());
+        String date_time = delivered_orders_list.get(position).getDateTime();
+        String[] split_date_time = date_time.split(" ");
+        String date = split_date_time[0];
+        holder.tvOrderDate.setText(date);
+        holder.tvTotalPrice.setText(delivered_orders_list.get(position).getTotalPrice() +" SAR");
       /*  holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,15 +52,17 @@ public class OrdersDeliveredAdapter extends RecyclerView.Adapter<OrdersDelivered
 
     @Override
     public int getItemCount() {
-        return amount.length;
+        return delivered_orders_list.size();
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder{
-        private TextView mAmount,mOrderStatus;
+        private TextView tvTotalPrice,tvOrderNo,tvOrderStatus,tvOrderDate;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            mOrderStatus = itemView.findViewById(R.id.tv_delivered_order_status);
-            mAmount = itemView.findViewById(R.id.tv_total_amount_order_processing);
+            tvOrderNo = itemView.findViewById(R.id.tv_order_no);
+            tvOrderStatus = itemView.findViewById(R.id.tv_delivered_order_status);
+            tvOrderDate = itemView.findViewById(R.id.tv_order_date);
+            tvTotalPrice = itemView.findViewById(R.id.tv_total_amount_order);
         }
     }
 }

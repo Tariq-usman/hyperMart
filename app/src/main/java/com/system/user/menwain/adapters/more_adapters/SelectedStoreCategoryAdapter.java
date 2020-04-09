@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
 
 import androidx.annotation.NonNull;
@@ -25,9 +26,11 @@ public class SelectedStoreCategoryAdapter extends RecyclerView.Adapter<SelectedS
     int lastPosition = 0;
     int abc = StoresAdapter.pos;
     private boolean check = false;
+    private RecyclerClickInterface clickInterface;
 
-    public SelectedStoreCategoryAdapter(Context context, List<SelectedStoreResponse.Category> category_list) {
+    public SelectedStoreCategoryAdapter(Context context, List<SelectedStoreResponse.Category> category_list,RecyclerClickInterface clickInterface) {
         this.context = context;
+        this.clickInterface = clickInterface;
         this.category_list = category_list;
     }
 
@@ -40,7 +43,7 @@ public class SelectedStoreCategoryAdapter extends RecyclerView.Adapter<SelectedS
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final SelectedStoreViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final SelectedStoreViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
         holder.mStoreNameView.setText(category_list.get(position).getDescription());
         Glide.with(holder.mStoreView.getContext()).load(category_list.get(position).getPicture()).into(holder.mStoreView);
@@ -57,9 +60,11 @@ public class SelectedStoreCategoryAdapter extends RecyclerView.Adapter<SelectedS
             }
         } else */if (lastPosition == position) {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+            clickInterface.interfaceOnClick(holder.getView(), position);
         } else {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
         }
+
 
          /*position = position - 1;
         position = position % storesName.length;
