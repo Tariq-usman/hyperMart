@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -76,8 +77,12 @@ public class OrderDetailsFragment extends Fragment {
         tvTime = view.findViewById(R.id.tv_time_order_details);
         tvStatus = view.findViewById(R.id.tv_status_order_details);
         tvOrderCode = view.findViewById(R.id.tv_order_code_order_details);
-
-        getOrdersDetails();
+        String order_id = String.valueOf(bundle.getInt("order_id"));
+        if (order_id != null || !order_id.isEmpty()) {
+            getOrdersDetails(order_id);
+        } else {
+            Toast.makeText(getContext(), "No order id..", Toast.LENGTH_SHORT).show();
+        }
 
         recyclerViewFavourite = view.findViewById(R.id.recycler_view_order_details);
         recyclerViewFavourite.setHasFixedSize(true);
@@ -87,8 +92,7 @@ public class OrderDetailsFragment extends Fragment {
         return view;
     }
 
-    private void getOrdersDetails() {
-        int order_id = bundle.getInt("order_id");
+    private void getOrdersDetails(String order_id) {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
