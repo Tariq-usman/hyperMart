@@ -68,17 +68,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/recycler_view_delivery_time"
                 tools:listitem="@layout/row_items_delivery_time"/>
-<!--
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_email_pass"
-                android:gravity="center"
-                android:hint="5:30 pm"
-                android:inputType="time"
-                android:textColor="@color/whiteColor"
-                android:textColorHint="@color/whiteColor" />
--->
+
         </LinearLayout>
 
 

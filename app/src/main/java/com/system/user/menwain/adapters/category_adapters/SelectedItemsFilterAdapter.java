@@ -7,22 +7,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.responses.ProductDetailsResponse;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class SelectedItemsFilterAdapter extends RecyclerView.Adapter<SelectedItemsFilterAdapter.SelectedItemsFilterViewHolder> {
-    private String[] productsName;
-    private String [] storeName;
-    int [] items;
+    private List<ProductDetailsResponse.Data.Productpic> related_items_list;
     Context context;
 
-    public SelectedItemsFilterAdapter(Context applicationContext, String[] storeName, int[] items, String[] productsName) {
-        this.productsName = productsName;
-        this.storeName = storeName;
-        this.context = applicationContext;
-        this.items = items;
+    public SelectedItemsFilterAdapter(Context context, List<ProductDetailsResponse.Data.Productpic> related_items_list) {
+        this.related_items_list = related_items_list;
+        this.context = context;
     }
 
     @NonNull
@@ -35,9 +35,10 @@ public class SelectedItemsFilterAdapter extends RecyclerView.Adapter<SelectedIte
 
     @Override
     public void onBindViewHolder(@NonNull SelectedItemsFilterViewHolder holder, int position) {
-        holder.mProductNameView.setText(productsName[position]);
-        holder.mStoreName.setText(storeName[position]);
-        holder.mProductView.setImageResource(items[position]);
+        holder.mProductNameView.setText(related_items_list.get(position).getImageName());
+        Glide.with(holder.mProductView.getContext()).load(related_items_list.get(position).getImageUrl()).into(holder.mProductView);
+       /* holder.mStoreName.setText(storeName[position]);
+        holder.mProductView.setImageResource(items[position]);*/
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +58,7 @@ public class SelectedItemsFilterAdapter extends RecyclerView.Adapter<SelectedIte
 
     @Override
     public int getItemCount() {
-        return productsName.length;
+        return related_items_list.size();
     }
 
     public static class SelectedItemsFilterViewHolder extends RecyclerView.ViewHolder {

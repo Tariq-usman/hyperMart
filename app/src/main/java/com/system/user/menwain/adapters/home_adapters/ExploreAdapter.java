@@ -9,10 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.responses.home.HomeExploreAndShop;
 
@@ -45,7 +48,7 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
         Glide.with(holder.mExploreShopImage.getContext()).load(exploreList.get(position).getImage()).into(holder.mExploreShopImage);
 
         holder.mExploreShopStatus.setText(exploreList.get(position).getName());
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prefrences.setHomeFragStatus(4);
@@ -53,7 +56,9 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle.putString("status", "1");
-                if (position == items.length - 1) {
+                bundle.putInt("product_id",exploreList.get(position).getId());
+
+              /*  if (position == items.length - 1) {
                     bundle.putString("image_url", String.valueOf(items[position]));
                     bundle.putString("image_url1", String.valueOf(items[position - 1]));
                     bundle.putString("image_url2", String.valueOf(items[position - 2]));
@@ -69,11 +74,11 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
                     bundle.putString("image_url", String.valueOf(items[position]));
                     bundle.putString("image_url1", String.valueOf(items[position + 1]));
                     bundle.putString("image_url2", String.valueOf(items[position + 2]));
-                }
+                }*/
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).commit();
             }
-        });*/
+        });
     }
 
     @Override

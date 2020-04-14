@@ -17,11 +17,15 @@ import com.system.user.menwain.fragments.cart.CartFragment;
 import com.system.user.menwain.fragments.more.orders.OrdersFragment;
 import com.system.user.menwain.fragments.my_list.AllListsFragment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import org.json.JSONArray;
 
 public class DialogFragmentSaveList extends DialogFragment implements View.OnClickListener {
     TextView mConfirm, mTitleView, tvDateInStorePurchase;
@@ -29,6 +33,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
 
     private ImageView mCart, mFavourite, mHome, mCategory, mMore,mCloseBtn, mBackBtnPay;
     private TextView totalCartQuantity, mActionBarTitle, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
+    List<String> list = new ArrayList<>();
 
     private int mYear, mMonth, mDay;
     Prefrences prefrences;

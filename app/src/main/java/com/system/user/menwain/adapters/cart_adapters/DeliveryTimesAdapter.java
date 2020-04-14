@@ -8,17 +8,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.responses.cart.StoreTimeSLotsResponse;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class DeliveryTimesAdapter extends RecyclerView.Adapter<DeliveryTimesAdapter.ViewHolder> {
     Context context;
-    private String[] delivery_times;
+    private List<StoreTimeSLotsResponse.List> delivery_times_list;
     private int last_position=-1;
-    public DeliveryTimesAdapter(Context context, String[] delivery_times) {
+    private RecyclerClickInterface clickInterface;
+    public DeliveryTimesAdapter(Context context, List<StoreTimeSLotsResponse.List> delivery_times_list,RecyclerClickInterface clickInterface) {
         this.context = context;
-        this.delivery_times = delivery_times;
+        this.clickInterface = clickInterface;
+        this.delivery_times_list = delivery_times_list;
     }
 
     @NonNull
@@ -31,9 +37,10 @@ public class DeliveryTimesAdapter extends RecyclerView.Adapter<DeliveryTimesAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvTime.setText(delivery_times[position]);
+        holder.tvTime.setText(delivery_times_list.get(position).getFrom()+" - " +delivery_times_list.get(position).getTo());
         if (last_position == position){
             holder.tvTime.setTextColor(Color.parseColor("#00c1bd"));
+            clickInterface.interfaceOnClick(holder.itemView,position);
         }else {
             holder.tvTime.setTextColor(Color.parseColor("#004040"));
         }
@@ -41,7 +48,7 @@ public class DeliveryTimesAdapter extends RecyclerView.Adapter<DeliveryTimesAdap
 
     @Override
     public int getItemCount() {
-        return delivery_times.length;
+        return delivery_times_list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

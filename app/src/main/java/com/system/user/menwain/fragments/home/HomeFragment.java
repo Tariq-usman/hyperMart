@@ -82,8 +82,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private List<HomeExploreAndShop.Dymmy1> exploreShopList = new ArrayList<>();
     private List<HomeExploreAndShop.Dummy2> exploreList = new ArrayList<>();
+    private List<HomeExploreAndShop.Dummy3> shopList = new ArrayList<>();
     private ExploreAndShopAdapter exploreAndShopAdapter;
     private ExploreAdapter exploreAdapter;
+    private ShopAdapter shopAdapter;
 
     @Nullable
     @Override
@@ -91,7 +93,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragmet_home, container, false);
         prefrences = new Prefrences(getContext());
         prefrences.setBottomNavStatus(1);
-
         customProgressDialog(getContext());
 
         getExploreAndShop();
@@ -116,15 +117,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         tvSeeAllExploreShop = view.findViewById(R.id.tv_see_all_explore_shop);
         tvSeeAllExploreShop.setOnClickListener(this);
-
         tvSeeAllExplore = view.findViewById(R.id.tv_see_all_explore);
         tvSeeAllExplore.setOnClickListener(this);
-
         tvSeeAllShop = view.findViewById(R.id.tv_see_all_shop);
         tvSeeAllShop.setOnClickListener(this);
 
+        /*-------------Adapter of banner----------*/
         banner_slidingImages_adapter = new Banner_SlidingImages_Adapter(getContext(), bannersList);
 
+        /*-------------recyclerview of Explore and shop----------*/
         recyclerViewExploreAndShop = view.findViewById(R.id.recycler_view_explore_shop);
         recyclerViewExploreAndShop.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
@@ -132,7 +133,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         exploreAndShopAdapter = new ExploreAndShopAdapter(getContext(), exploreShopList);
         recyclerViewExploreAndShop.setAdapter(exploreAndShopAdapter);
 
-
+        /*-------------recyclerview of Explore ----------*/
         recyclerViewExplore = view.findViewById(R.id.recycler_view_explore);
         recyclerViewExplore.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
@@ -140,12 +141,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         exploreAdapter = new ExploreAdapter(getContext(),exploreList);
         recyclerViewExplore.setAdapter(exploreAdapter);
 
-
+        /*-------------recyclerview of shop----------*/
         recyclerViewShop = view.findViewById(R.id.recycler_view_shop);
         recyclerViewShop.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerViewShop.setLayoutManager(linearLayoutManager);
-        recyclerViewShop.setAdapter(new ShopAdapter(getContext(), productsName, items));
+        shopAdapter = new ShopAdapter(getContext(),shopList);
+        recyclerViewShop.setAdapter(shopAdapter);
 
         /* ----Banner ---*/
         init();
@@ -272,12 +274,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 exploreShopList.clear();
                 for (int i=0;i<exploreAndShop.getDymmy1().size();i++){
                     exploreShopList.add(exploreAndShop.getDymmy1().get(i));
-                    exploreAndShopAdapter.notifyDataSetChanged();
                 }
+                exploreAndShopAdapter.notifyDataSetChanged();
+
+                exploreList.clear();
                 for (int i=0;i<exploreAndShop.getDummy2().size();i++){
                     exploreList.add(exploreAndShop.getDummy2().get(i));
-                    exploreAdapter.notifyDataSetChanged();
                 }
+                exploreAdapter.notifyDataSetChanged();
+
+                shopList.clear();
+                for (int i=0;i<exploreAndShop.getDummy3().size();i++){
+                    shopList.add(exploreAndShop.getDummy3().get(i));
+                }
+                shopAdapter.notifyDataSetChanged();
                 Log.e( "Response",(String.valueOf(exploreShopList.size())));
                 progressDialog.dismiss();
             }

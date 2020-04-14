@@ -13,13 +13,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:justificationMode="inter_word"
-
             android:text="Name of user"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/sixteen_sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_date_product_reviews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
@@ -35,7 +35,7 @@
         android:orientation="horizontal">
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/ratingBar_product_reviews"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,6 +60,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tv_rating_product_reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -81,6 +82,7 @@
 
     </LinearLayout>
     <TextView
+        android:id="@+id/tv_reviews_product_reviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:justificationMode="inter_word"

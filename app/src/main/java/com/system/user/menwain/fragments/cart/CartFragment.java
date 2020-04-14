@@ -27,8 +27,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+
 public class CartFragment extends Fragment implements View.OnClickListener {
-    private String[] productsName = {"Produce", "Meat & Poultry", "Milk & Cheese", "Produce", "Meat & Poultry", "Milk & Cheese", "Produce", "Meat & Poultry", "Milk & Cheese"};
 
     private CartViewModel cartViewModel;
     RecyclerView recyclerViewCartItems;
@@ -109,10 +110,16 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 getActivity().startActivity(logInIntnet);
             } else {
                 prefrences.setCartFragStatus(1);
-                /*editor.putInt("frag_status",1);
-                editor.apply();*/
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,fragment).addToBackStack(null).commit();
-
+                /*cartViewModel.getCartDataList().observe(CartFragment.this, new Observer<List<Cart>>() {
+                    @Override
+                    public void onChanged(List<Cart> carts) {
+                        JSONArray jsonArray = new JSONArray();
+                        for (int i=0;i<carts.size();i++){
+                            jsonArray.put(carts.get(i));
+                        }
+                    }
+                });*/
 //                startActivity(new Intent(getContext(), DeliveryAddressFragment.class));
             }
         }

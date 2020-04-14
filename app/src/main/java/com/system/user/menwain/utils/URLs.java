@@ -27,4 +27,7 @@ public class URLs {
     public static String get_cancelled_orders_url = base_url + "cancelledorders";
     public static String get_orders_details_url = base_url + "openorder/";
     public static String submit_product_review_url = base_url +"orderProductreviews";
+    public static String get_store_time_slots_url = base_url +"storeslotslist/";
+    public static String submit_delivery_date_url = base_url +"preferreddeliverydate/";
+    public static String get_product_details_url = base_url +"productById/";
 }

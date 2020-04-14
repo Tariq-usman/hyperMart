@@ -89,9 +89,10 @@ public class ItemReviewFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, URLs.submit_product_review_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
+                Toast.makeText(getContext(), "Rating has been added", Toast.LENGTH_SHORT).show();
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllOrdersFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.INVISIBLE);
-                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {

@@ -222,6 +222,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onCameraIdle() {
                 center = mMap.getCameraPosition().target;
+                Log.e("lat,long",center.latitude+" , "+center.longitude+"");
                 Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.ENGLISH);
                 List<Address> addresses;
 
