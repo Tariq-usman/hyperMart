@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +12,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -34,6 +40,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.ItemReviewsAdapter;
+import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
@@ -46,6 +53,11 @@ import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.responses.ProductDetailsResponse;
 import com.system.user.menwain.utils.URLs;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,13 +75,15 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private List<ProductDetailsResponse.Data.Reviews> reviews_list = new ArrayList<>();
     private RecyclerView recyclerViewItemReviews;
     private ItemReviewsAdapter itemReviewsAdapter;
+    private CartViewModel cartViewModel;
 
     TextView mDescription, mSpecification, mReviews, tvDescription;
     private TextView tvPrice, tvStoreName, tvTitle, tvReviewsCount, tvQuantity, mAddToCart;
     private ImageView mBack, mBarCodeScanner, ivIncreaseItem, ivDecreaseItem;
     private RatingBar ratingBar;
     Bundle bundle;
-    String status;
+    private String status,productName,imagePath,storeName, price, quantity;
+    private int productId,intQuantity;
     private static ViewPager mPager;
     private LinearLayout layoutSpecifications;
     private TabLayout tabLayout;
@@ -82,7 +96,9 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private Prefrences prefrences;
     private ProgressDialog progressDialog;
     private int product_id;
-
+    final int[] count = {1};
+    private Bitmap bitmap;
+    private float totalPrice, unitPrice;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -120,6 +136,27 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         tvQuantity = view.findViewById(R.id.quantity_item_details);
         ratingBar = view.findViewById(R.id.ratingBar_item_details);
 
+        ivDecreaseItem = view.findViewById(R.id.decrees_count_item_details);
+        ivDecreaseItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String num = tvQuantity.getText().toString();
+                if (Integer.valueOf(num) > 1) {
+                    count[0] = count[0] - 1;
+                    tvQuantity.setText("" + count[0]);
+                } else if (tvQuantity.getText().toString().length() == 0) {
+                    tvQuantity.setText(0);
+                }
+            }
+        });
+        ivIncreaseItem = view.findViewById(R.id.increase_count_item_details);
+        ivIncreaseItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count[0] = count[0] + 1;
+                tvQuantity.setText("" + count[0]);
+            }
+        });
         mDescription = view.findViewById(R.id.description_btn);
         mDescription.setOnClickListener(this);
         mSpecification = view.findViewById(R.id.specificatin_btn);
@@ -158,6 +195,13 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             @Override
             public void onResponse(String response) {
                 ProductDetailsResponse detailsResponse = gson.fromJson(response, ProductDetailsResponse.class);
+                productId =detailsResponse.getData().getId();
+                try {
+                    URL url = new URL(detailsResponse.getData().getImage());
+                    bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                } catch(IOException e) {
+                    System.out.println(e);
+                }
                 tvPrice.setText(detailsResponse.getData().getAvgPrice().toString());
                 tvTitle.setText(detailsResponse.getData().getName());
 //                tvReviewsCount.setText(det);
@@ -243,8 +287,24 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
             mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.add_to_cart_item_details) {
-            CartViewModel cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-//            Cart cart = new Cart(productId, productName, storeName, totalPrice, unitPrice, intQuantit)
+//            Drawable drawable = holder.mFilteProduct.getDrawable();
+//            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            productName = tvTitle.getText().toString();
+            storeName = tvStoreName.getText().toString();
+            price =tvPrice.getText().toString();
+            quantity = tvQuantity.getText().toString();
+            // strTotalPrice = price;
+            totalPrice = Float.parseFloat(price);
+            intQuantity = Integer.parseInt(quantity);
+            unitPrice = totalPrice * intQuantity;
+            saveToInternalStorage(bitmap);
+
+            cartViewModel = ViewModelProviders.of((FragmentActivity) getContext()).get(CartViewModel.class);
+            Cart cart = new Cart(productId, imagePath,productName, storeName, totalPrice, unitPrice, intQuantity);
+            //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
+            cartViewModel.insertCart(cart);
+            //cartViewModel.insertAllCart(cart, updateCartQuantity);
+            Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.iv_back) {
             if (status == "1") {
@@ -269,6 +329,29 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         // Fetching max value
         progressDialog.getMax();
+    }
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory, productName + ".jpg");
+        imagePath = String.valueOf(mypath);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
     }
 
 }

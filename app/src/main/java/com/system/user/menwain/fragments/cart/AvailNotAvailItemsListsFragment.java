@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,9 +25,7 @@ import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
-import com.system.user.menwain.fragments.category.AvailableItemsFragment;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentDeliveryTime;
-import com.system.user.menwain.fragments.category.NotAvailableItemsFragment;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
 public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
@@ -53,7 +52,11 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         bundle = this.getArguments();
         prefrences = new Prefrences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
-
+        float lat1 = (float) 33.29868671102771;
+        float long1 = (float) 71.10277701169252;
+        float lat2 = (float) 33.288126707444405;
+        float long2 = (float) 71.16980742663145;
+        getKmFromLatLong(lat1,long1,lat2,long2);
         mSearchView = getActivity().findViewById(R.id.search_view);
         mSearchView.setVisibility(View.VISIBLE);
         mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
@@ -143,5 +146,16 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
             mBackBtn.setVisibility(View.GONE);
         }
+    }
+    public static float getKmFromLatLong(float lat1, float lng1, float lat2, float lng2){
+        Location loc1 = new Location("");
+        loc1.setLatitude(lat1);
+        loc1.setLongitude(lng1);
+        Location loc2 = new Location("");
+        loc2.setLatitude(lat2);
+        loc2.setLongitude(lng2);
+        float distanceInMeters = loc1.distanceTo(loc2);
+        Log.e("distance" , distanceInMeters/1000 +" km");
+        return distanceInMeters/1000;
     }
 }

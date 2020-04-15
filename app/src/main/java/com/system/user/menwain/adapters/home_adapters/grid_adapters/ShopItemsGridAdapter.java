@@ -1,11 +1,10 @@
-package com.system.user.menwain.adapters.category_adapters;
+package com.system.user.menwain.adapters.home_adapters.grid_adapters;
 
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,58 +12,48 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.system.user.menwain.others.Prefrences;
-import com.system.user.menwain.fragments.others.ItemDetailsFragment;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
-import com.system.user.menwain.responses.category.CategoryResponse;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
-public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.FilterItemViewHolder> {
+public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdapter.AllItemsGridViewHolder> {
     Context context;
-    String imagePath;
-    List<CategoryResponse.Product> subCatergoryList;
+    private String[] productsName1;
+    private int[] items;
     private CartViewModel cartViewModel;
-    Bundle bundle;
-    Prefrences prefrences;
     int productId, intQuantity;
-    String productName, storeName, price, quantity, strTotalPrice;
+    String imagePath,productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
-
-    public SubCategoryAdapter(Context context, List<CategoryResponse.Product> subCatergoryList) {
-        this.context = context;
-        this.subCatergoryList = subCatergoryList;
-        prefrences = new Prefrences(context);
+    public ShopItemsGridAdapter(Context applicationContext, String[] productsName1, int[] items) {
+        this.context = applicationContext;
+        this.productsName1 = productsName1;
+        this.items = items;
     }
+
 
     @NonNull
     @Override
-    public FilterItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_filter_items, parent, false);
-        FilterItemViewHolder categoryViewHolder = new FilterItemViewHolder(view);
-        return categoryViewHolder;
+    public AllItemsGridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_filter_items,parent,false);
+        AllItemsGridViewHolder viewHolder = new AllItemsGridViewHolder(view);
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final AllItemsGridViewHolder holder, int position) {
+        holder.mFilteProduct.setImageResource(items[position]);
+        holder.mProductNameView.setText(productsName1[position]);
 
-        holder.mProductNameView.setText(subCatergoryList.get(position).getName());
-        Glide.with(holder.mFilteProduct.getContext()).load(subCatergoryList.get(position).getImage()).into(holder.mFilteProduct);
-//        holder.mStoreName.setText(storesName[position]);
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,42 +75,10 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             }
         });
 
-        holder.mFilteProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                bundle = new Bundle();
-                prefrences.setCategoryFragStatus(2);
-                ItemDetailsFragment fragment = new ItemDetailsFragment();
-                FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                bundle.putString("status", "2");
-                bundle.putInt("product_id",subCatergoryList.get(position).getId());
-              /*  if (position == items.length - 1) {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position - 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position - 2]));
-                } else if (position == items.length - 2) {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position + 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position - 2]));
-                } else if (position == items.length - 3) {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position + 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position + 2]));
-                } else {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position + 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position + 2]));
-                }*/
-                fragment.setArguments(bundle);
-                transaction.replace(R.id.nav_host_fragment, fragment).commit();
-            }
-        });
-
         holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productId = subCatergoryList.get(position).getId();
+                productId = 12;
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 productName = holder.mProductNameView.getText().toString();
@@ -146,16 +103,14 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
     @Override
     public int getItemCount() {
-        return subCatergoryList.size();
+        return items.length;
     }
 
-    public static class FilterItemViewHolder extends RecyclerView.ViewHolder {
+    public class AllItemsGridViewHolder extends RecyclerView.ViewHolder{
         private TextView mProductNameView, mStoreName, mItemCounter, mPriceFilterItem;
         private CardView mAddToCart;
         private ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
-        int count = 0;
-
-        public FilterItemViewHolder(@NonNull View itemView) {
+        public AllItemsGridViewHolder(@NonNull View itemView) {
             super(itemView);
             mFilteProduct = itemView.findViewById(R.id.view_filter_product);
             mProductNameView = itemView.findViewById(R.id.filter_product_name_view);
@@ -165,10 +120,8 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             mItemCounter = itemView.findViewById(R.id.items_counter);
             mAddToCart = itemView.findViewById(R.id.add_to_cart_filter_wrapper);
             mPriceFilterItem = itemView.findViewById(R.id.price_view_filter_item);
-
         }
     }
-
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(context);
         // path to /data/data/yourapp/app_data/imageDir
@@ -192,4 +145,5 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         }
         return directory.getAbsolutePath();
     }
+
 }

@@ -19,12 +19,14 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system.user.menwain.adapters.home_adapters.grid_adapters.ShopItemsGridAdapter;
+import com.system.user.menwain.adapters.home_adapters.list_adapters.ShopItemsListAdapter;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.adapters.home_adapters.ExploreItemsGridAdapter;
-import com.system.user.menwain.adapters.home_adapters.ExploreItemsListAdapter;
-import com.system.user.menwain.adapters.home_adapters.ExploreShopItemsGridAdapter;
-import com.system.user.menwain.adapters.home_adapters.ExploreShopItemsListAdapter;
+import com.system.user.menwain.adapters.home_adapters.grid_adapters.ExploreItemsGridAdapter;
+import com.system.user.menwain.adapters.home_adapters.list_adapters.ExploreItemsListAdapter;
+import com.system.user.menwain.adapters.home_adapters.grid_adapters.ExploreShopItemsGridAdapter;
+import com.system.user.menwain.adapters.home_adapters.list_adapters.ExploreShopItemsListAdapter;
 
 public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private String[] productsName = {"Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallaxy S8", "Samsung", "BlockBuster", "Gallexy M30",
@@ -85,7 +87,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
             recyclerViewAllitem.setAdapter(new ExploreItemsGridAdapter(getContext(), productsName1, items));
         } else if (val.equals("3")) {
             recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            recyclerViewAllitem.setAdapter(new ExploreShopItemsGridAdapter(getContext(), productsName, products));
+            recyclerViewAllitem.setAdapter(new ShopItemsGridAdapter(getContext(), productsName, products));
         }
         return view;
     }
@@ -145,7 +147,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         linearLayoutManager = new LinearLayoutManager(getContext());
                         recyclerViewAllitem.setLayoutManager(linearLayoutManager);
                         recyclerViewAllitem.setAdapter(null);
-                        recyclerViewAllitem.setAdapter(new ExploreShopItemsListAdapter(getContext(), productsName, products));
+                        recyclerViewAllitem.setAdapter(new ShopItemsListAdapter(getContext(), productsName, products));
 
                     } else {
                         isList = false;
@@ -153,7 +155,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         recyclerViewAllitem.setHasFixedSize(true);
                         recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
                         recyclerViewAllitem.setAdapter(null);
-                        recyclerViewAllitem.setAdapter(new ExploreShopItemsGridAdapter(getContext(), productsName, products));
+                        recyclerViewAllitem.setAdapter(new ShopItemsGridAdapter(getContext(), productsName, products));
                     }
                 }
                 break;
