@@ -111,16 +111,6 @@ public class CartFragment extends Fragment implements View.OnClickListener {
             } else {
                 prefrences.setCartFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,fragment).addToBackStack(null).commit();
-                /*cartViewModel.getCartDataList().observe(CartFragment.this, new Observer<List<Cart>>() {
-                    @Override
-                    public void onChanged(List<Cart> carts) {
-                        JSONArray jsonArray = new JSONArray();
-                        for (int i=0;i<carts.size();i++){
-                            jsonArray.put(carts.get(i));
-                        }
-                    }
-                });*/
-//                startActivity(new Intent(getContext(), DeliveryAddressFragment.class));
             }
         }
 

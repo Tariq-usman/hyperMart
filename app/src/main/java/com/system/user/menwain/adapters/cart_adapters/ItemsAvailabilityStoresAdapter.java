@@ -2,16 +2,20 @@ package com.system.user.menwain.adapters.cart_adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.R;
+import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 
 import java.util.List;
 
@@ -21,20 +25,18 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAvailabilityStoresAdapter.ItemViewHolder> {
-    private int[] marts;
+    private List<AvailNotAvailResponse.Datum> stores_list;
+    private double lat, lang;
     Context context;
-    List<Double> distance;
-    List<Integer> price;
-    List<Integer> availItems;
     Bundle bundle;
     Prefrences prefrences;
+    private float distanceTo;
 
-    public ItemsAvailabilityStoresAdapter(int[] marts, List<Double> distance, List<Integer> availItems, List<Integer> price, Context context) {
-        this.marts = marts;
+    public ItemsAvailabilityStoresAdapter(Context context, List<AvailNotAvailResponse.Datum> stores_list, double lat, double lang) {
+        this.stores_list = stores_list;
+        this.lat = lat;
+        this.lang = lang;
         this.context = context;
-        this.distance = distance;
-        this.price = price;
-        this.availItems = availItems;
         prefrences = new Prefrences(context);
     }
 
@@ -49,24 +51,25 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
 
-        holder.mMartImageView.setImageResource(marts[position]);
-        holder.mDistanceView.setText(distance.get(position).toString());
-        holder.mSortByPrice.setText(String.valueOf(price.get(position)));
-        holder.mAvailableItems.setText(String.valueOf(availItems.get(position)));
+        Glide.with(holder.mMartImageView.getContext()).load(stores_list.get(position).getImage()).into(holder.mMartImageView);
+
+        getKmFromLatLong(lat, lang, Double.valueOf(stores_list.get(position).getLatitude()), Double.valueOf(stores_list.get(position).getLongitude()));
+        String dist = distanceTo+"";
+        String [] split_date = dist.split(".");
+//        String first = split_date[0];
+        holder.mDistanceView.setText(distanceTo+" km");
+//        holder.mSortByPrice.setText(String.valueOf(price.get(position)));
+        holder.mAvailableItems.setText(stores_list.get(position).getAvailable().size()+"");
         String pos = holder.mDistanceView.getText().toString();
-        int total = marts.length;
-        holder.mTotalItems.setText("" + total);
+//        int total = marts.length;
+        holder.mTotalItems.setText("" + stores_list.get(position).getAvailable().size()+stores_list.get(position).getNotavailable().size());
 
-        Double abc = distance.get(position);
-        for (int i = 0; i < marts.length; i++) {
-            if (Double.valueOf(abc) <= 10) {
-                holder.mStatusColorView.setBackgroundColor(Color.parseColor("#00c1bd"));
-            } else if (Double.valueOf(abc) > 10 && Double.valueOf(abc) <= 15) {
-                holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFFFEB3B"));
-            } else {
-                holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFF44336"));
-
-            }
+        if (distanceTo <= 10) {
+            holder.mStatusColorView.setBackgroundColor(Color.parseColor("#00c1bd"));
+        } else if (distanceTo > 10 && distanceTo <= 15) {
+            holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFFFEB3B"));
+        } else {
+            holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFF44336"));
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +82,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
                 bundle = new Bundle();
                 bundle.putString("price", holder.mSortByPrice.getText().toString());
                 bundle.putString("distance", holder.mDistanceView.getText().toString());
-                bundle.putString("image_url", String.valueOf(marts[position]));
+                bundle.putString("image_url", String.valueOf(stores_list.get(position).getImage()));
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }
@@ -88,7 +91,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
 
     @Override
     public int getItemCount() {
-        return marts.length;
+        return stores_list.size();
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -105,6 +108,19 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
             mAvailableItems = itemView.findViewById(R.id.available_items_view);
             mTotalItems = itemView.findViewById(R.id.total_items);
         }
+    }
+
+    public float getKmFromLatLong(double lat1, double lng1, double lat2, double lng2) {
+        Location loc1 = new Location("");
+        loc1.setLatitude(lat1);
+        loc1.setLongitude(lng1);
+        Location loc2 = new Location("");
+        loc2.setLatitude(lat2);
+        loc2.setLongitude(lng2);
+        float distanceInMeters = loc1.distanceTo(loc2);
+        distanceTo = distanceInMeters / 1000;
+        Log.e("distance", distanceInMeters / 1000 + " km");
+        return distanceInMeters / 1000;
     }
 
 }

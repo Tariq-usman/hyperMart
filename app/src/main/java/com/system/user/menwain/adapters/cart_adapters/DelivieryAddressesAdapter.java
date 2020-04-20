@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.MapsActivity;
+import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.responses.cart.UserAddressListResponse;
 
 import androidx.annotation.NonNull;
@@ -25,10 +26,12 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
 
     List<UserAddressListResponse.Addresslist> addressList;
     Context context;
+    private RecyclerClickInterface clickInterface;
     private int lastPositon = 0;
 
-    public DelivieryAddressesAdapter(Context applicationContext, List<UserAddressListResponse.Addresslist> addressList) {
+    public DelivieryAddressesAdapter(Context applicationContext, List<UserAddressListResponse.Addresslist> addressList, RecyclerClickInterface clickInterface) {
         this.addressList = addressList;
+        this.clickInterface = clickInterface;
         this.context = applicationContext;
         //texts = new String[address.length];
     }
@@ -50,6 +53,7 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
                 holder.mAddressesView.setBackgroundColor(Color.parseColor("#004040"));
                 holder.mMainAddress.setTextColor(Color.parseColor("#FFFFFF"));
                 holder.mEditBtn.setImageResource(R.drawable.ic_edit_white);
+                clickInterface.interfaceOnClick(holder.itemView,position);
                 holder.mEditBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

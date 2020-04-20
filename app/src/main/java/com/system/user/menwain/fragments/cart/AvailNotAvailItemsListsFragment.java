@@ -147,7 +147,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             mBackBtn.setVisibility(View.GONE);
         }
     }
-    public static float getKmFromLatLong(float lat1, float lng1, float lat2, float lng2){
+    public float getKmFromLatLong(float lat1, float lng1, float lat2, float lng2){
         Location loc1 = new Location("");
         loc1.setLatitude(lat1);
         loc1.setLongitude(lng1);

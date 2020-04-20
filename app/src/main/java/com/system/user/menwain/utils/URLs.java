@@ -30,4 +30,5 @@ public class URLs {
     public static String get_store_time_slots_url = base_url +"storeslotslist/";
     public static String submit_delivery_date_url = base_url +"preferreddeliverydate/";
     public static String get_product_details_url = base_url +"productById/";
+    public static String heighest_availability = base_url +"heighestAvailability";
 }

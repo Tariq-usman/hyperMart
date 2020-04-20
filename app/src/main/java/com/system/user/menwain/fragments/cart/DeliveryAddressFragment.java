@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +34,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.activities.MapsActivity;
+import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.DelivieryAddressesAdapter;
@@ -44,16 +46,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliveryAddressFragment extends Fragment implements View.OnClickListener {
+public class DeliveryAddressFragment extends Fragment implements View.OnClickListener , RecyclerClickInterface {
 
     private TextView mTitleView, mConfirmBtn, mPayNow, mPayLater;
     private ImageView mBackView, mAddNewAddress;
     private String[] address;
+    private Double latitude,longitude;
     RecyclerView recyclerViewAddress;
     DelivieryAddressesAdapter delivieryAddressesAdapter;
     private CardView mSearchViewAddress,addNewAddress;
     private SharedPreferences.Editor editor;
     Prefrences prefrences;
+    private Bundle bundle;
     private RadioButton rbDeliverToAddress, rbPreparePickUp, rbCashOnDelivery, rbPreparePickFromStore, rbWalkInStore;
     private RadioGroup rgPayNow, rgPayLater;
     private int rBtnPaymentStatus;
@@ -116,7 +120,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         recyclerViewAddress.setHasFixedSize(true);
         recyclerViewAddress.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        delivieryAddressesAdapter = new DelivieryAddressesAdapter(getContext(), addressList);
+        delivieryAddressesAdapter = new DelivieryAddressesAdapter(getContext(), addressList,this);
         recyclerViewAddress.setAdapter(delivieryAddressesAdapter);
         return view;
     }
@@ -144,7 +148,11 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             rbCashOnDelivery.setChecked(false);
         }
     }
-
+    @Override
+    public void interfaceOnClick(View view, int position) {
+        latitude = Double.valueOf(addressList.get(position).getLatitude());
+        longitude= Double.valueOf(addressList.get(position).getLongitude());
+    }
     @Override
     public void onClick(View view) {
         ItemsAvailabilityStoresFragment itemsAvailabilityStoresFragment = new ItemsAvailabilityStoresFragment();
@@ -195,7 +203,12 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         } else if (id == R.id.confirm_btn) {
             prefrences.setCartFragStatus(2);
             ItemsAvailabilityStoresFragment storesFragment = new ItemsAvailabilityStoresFragment();
-            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, storesFragment).addToBackStack(null).commit();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            bundle = new Bundle();
+            bundle.putDouble("lat",Double.valueOf(latitude));
+            bundle.putDouble("long",Double.valueOf(longitude));
+            storesFragment.setArguments(bundle);
+            transaction.replace(R.id.nav_host_fragment, storesFragment).addToBackStack(null).commit();
         } else if (id == R.id.iv_back) {
             prefrences.setCartFragStatus(0);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
@@ -249,5 +262,6 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         // Fetching max value
         progressDialog.getMax();
     }
+
 
 }

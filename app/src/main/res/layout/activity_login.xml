@@ -45,7 +45,7 @@
                 android:gravity="center"
                 android:hint="phone no"
                 android:inputType="phone"
-                android:text="03439801420"
+                android:text="03416500099"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor"
                 android:textSize="@dimen/fourteen_sp" />
