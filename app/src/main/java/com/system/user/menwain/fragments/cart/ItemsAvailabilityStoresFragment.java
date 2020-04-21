@@ -48,18 +48,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ItemsAvailabilityStoresFragment extends Fragment implements View.OnClickListener {
-    List<Double> distance;
-    List<Integer> price;
-    List<Integer> availItems;
-    private int[] marts = {R.drawable.mart_logo, R.drawable.martlogo, R.drawable.mart_logo, R.drawable.martlogo, R.drawable.mart_logo, R.drawable.martlogo};
     private RecyclerView recyclerViewAvailableItemsStore;
-    ItemsAvailabilityStoresAdapter itemsAvailabilityStoresAdapter;
-
-    private TextView mTitleView, mPayNow, mPayLater, mSortByDistance, mSortByPrice, mSortByAvailability;
-    private ImageView mBackBtn, mMenu;
-    private Boolean pay_now, pay_later = false;
-    public static Boolean isCheck = false;
-    private SharedPreferences.Editor editor;
+    private ItemsAvailabilityStoresAdapter itemsAvailabilityStoresAdapter;
+    private TextView mSortByDistance, mSortByPrice, mSortByAvailability;
+    private ImageView mBackBtn;
     Prefrences prefrences;
     private int pay_status;
     private CardView mSearchView;
@@ -67,7 +59,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private ProgressDialog progressDialog;
     List<Integer> cartList = new ArrayList<>();
     CartViewModel cartViewModel;
-    private double lat,lang;
+    private double lat, lang;
     private List<AvailNotAvailResponse.Datum> stores_list = new ArrayList<>();
 
     @Nullable
@@ -79,12 +71,12 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         prefrences = new Prefrences(getContext());
         pay_status = prefrences.getPaymentStatus();
         bundle = this.getArguments();
-        if (bundle!=null){
+        if (bundle != null) {
             lat = bundle.getDouble("lat");
             lang = bundle.getDouble("long");
-        }else {
+        } else {
             lat = 33.564545445;
-            lang=27.4545454545;
+            lang = 27.4545454545;
         }
 
         customProgressDialog(getContext());
@@ -93,38 +85,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         cartViewModel.getCartDataList().observe(ItemsAvailabilityStoresFragment.this, new Observer<List<Cart>>() {
             @Override
             public void onChanged(List<Cart> carts) {
-                for (int i = 0 ; i<carts.size();i++){
+                for (int i = 0; i < carts.size(); i++) {
                     cartList.add(carts.get(i).getP_id());
                 }
             }
         });
-
-
-        distance = new ArrayList<>();
-        distance.add(11.3);
-        distance.add(9.);
-        distance.add(17.0);
-        distance.add(11.3);
-        distance.add(9.0);
-        distance.add(17.3);
-
-        price = new ArrayList<>();
-        price.add(23);
-        price.add(54);
-        price.add(67);
-        price.add(32);
-        price.add(43);
-        price.add(22);
-
-        availItems = new ArrayList<>();
-        availItems.add(6);
-        availItems.add(5);
-        availItems.add(3);
-        availItems.add(7);
-        availItems.add(8);
-        availItems.add(4);
-
-        Log.e("sort", distance.toString());
 
         mSortByPrice = view.findViewById(R.id.sort_by_price_view);
         mSortByDistance = view.findViewById(R.id.sort_by_distance);
@@ -135,79 +100,45 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         mSortByDistance.setOnClickListener(this);
         mSortByPrice.setOnClickListener(this);
         mSortByAvailability.setOnClickListener(this);
+        lowestPrice();
 
         recyclerViewAvailableItemsStore = view.findViewById(R.id.recycler_view_available_item_store);
         recyclerViewAvailableItemsStore.setHasFixedSize(true);
         recyclerViewAvailableItemsStore.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(),stores_list,lat,lang);
+        itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), stores_list, lat, lang);
         recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
-
         return view;
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.sort_by_price_view:
+                mSortByPrice.setBackgroundResource(R.drawable.bg_store_btn_colored);
+                mSortByPrice.setTextColor(Color.parseColor("#FFFFFF"));
+                mSortByDistance.setBackgroundResource(0);
+                mSortByDistance.setTextColor(Color.parseColor("#004040"));
+                mSortByAvailability.setBackgroundResource(0);
+                mSortByAvailability.setTextColor(Color.parseColor("#004040"));
+                lowestPrice();
+                break;
+            case R.id.sort_by_availability:
+                mSortByAvailability.setBackgroundResource(R.drawable.bg_store_btn_colored);
+                mSortByAvailability.setTextColor(Color.parseColor("#FFFFFF"));
+                mSortByDistance.setBackgroundResource(0);
+                mSortByDistance.setTextColor(Color.parseColor("#004040"));
+                mSortByPrice.setBackgroundResource(0);
+                mSortByPrice.setTextColor(Color.parseColor("#004040"));
+                highestAvailabilityData();
+                break;
             case R.id.sort_by_distance:
                 mSortByDistance.setBackgroundResource(R.drawable.bg_store_btn_colored);
                 mSortByDistance.setTextColor(Color.parseColor("#FFFFFF"));
                 mSortByPrice.setBackgroundResource(0);
                 mSortByPrice.setTextColor(Color.parseColor("#004040"));
-
                 mSortByAvailability.setBackgroundResource(0);
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
-                distance.clear();
-                distance.add(11.3);
-                distance.add(9.);
-                distance.add(17.0);
-                distance.add(11.3);
-                distance.add(9.0);
-                distance.add(17.3);
-                Collections.sort(distance);
-                itemsAvailabilityStoresAdapter.notifyDataSetChanged();
-                break;
-
-            case R.id.sort_by_availability:
-                mSortByAvailability.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                mSortByAvailability.setTextColor(Color.parseColor("#FFFFFF"));
-
-                mSortByDistance.setBackgroundResource(0);
-                mSortByDistance.setTextColor(Color.parseColor("#004040"));
-
-                mSortByPrice.setBackgroundResource(0);
-                mSortByPrice.setTextColor(Color.parseColor("#004040"));
-                
-                highestAvailabilityData();
-                
-                availItems.clear();
-                availItems.add(6);
-                availItems.add(5);
-                availItems.add(3);
-                availItems.add(7);
-                availItems.add(8);
-                availItems.add(4);
-                Collections.sort(availItems);
-                itemsAvailabilityStoresAdapter.notifyDataSetChanged();
-                break;
-            case R.id.sort_by_price_view:
-                mSortByPrice.setBackgroundResource(R.drawable.bg_store_btn_colored);
-                mSortByPrice.setTextColor(Color.parseColor("#FFFFFF"));
-
-                mSortByDistance.setBackgroundResource(0);
-                mSortByDistance.setTextColor(Color.parseColor("#004040"));
-
-                mSortByAvailability.setBackgroundResource(0);
-                mSortByAvailability.setTextColor(Color.parseColor("#004040"));
-                price.clear();
-                price.add(23);
-                price.add(54);
-                price.add(67);
-                price.add(32);
-                price.add(43);
-                price.add(22);
-                Collections.sort(price);
-                itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                nearestDistance();
                 break;
             case R.id.iv_back:
                 prefrences.setCartFragStatus(1);
@@ -217,16 +148,16 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         }
     }
 
-    private void highestAvailabilityData() {
+    private void lowestPrice() {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("latitude",33.29868671102771);
-            jsonObj.put("longitude",71.10277701169252);
+            jsonObj.put("latitude", 33.29868671102771);
+            jsonObj.put("longitude", 71.10277701169252);
             JSONArray jsonArray = new JSONArray();
-            for ( int i = 0;i<cartList.size();i++){
+            for (int i = 0; i < cartList.size(); i++) {
                 jsonArray.put(cartList.get(i));
             }
             jsonObj.put("products", jsonArray);
@@ -239,7 +170,62 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             public void onResponse(JSONObject response) {
                 AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
                 stores_list.clear();
-                for (int i = 0; i<availNotAvailResponse.getData().size();i++){
+                for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
+                    stores_list.add(availNotAvailResponse.getData().get(i));
+                }
+                itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("avail_error", error.toString());
+                progressDialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
+    private void highestAvailabilityData() {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("latitude", 33.29868671102771);
+            jsonObj.put("longitude", 71.10277701169252);
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < cartList.size(); i++) {
+                jsonArray.put(cartList.get(i));
+            }
+            jsonObj.put("products", jsonArray);
+            Log.e("hello",jsonArray.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.heighest_availability, jsonObj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
+                stores_list.clear();
+                for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
                     stores_list.add(availNotAvailResponse.getData().get(i));
                 }
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
@@ -249,11 +235,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("avail_error",error.toString());
-
-//                String str = new String(error.networkResponse.data);
-
-//                Log.e("avail_error",error.networkResponse.data.toString());
+                Log.e("avail_error", error.toString());
                 progressDialog.dismiss();
             }
         });
@@ -276,6 +258,62 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         });
     }
+
+    private void nearestDistance() {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("latitude", 33.29868671102771);
+            jsonObj.put("longitude", 71.10277701169252);
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < cartList.size(); i++) {
+                jsonArray.put(cartList.get(i));
+            }
+            jsonObj.put("products", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.heighest_availability, jsonObj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
+                stores_list.clear();
+                for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
+                    stores_list.add(availNotAvailResponse.getData().get(i));
+                }
+                itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("avail_error", error.toString());
+                progressDialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
     public void customProgressDialog(Context context) {
         progressDialog = new ProgressDialog(context);
         // Setting Message

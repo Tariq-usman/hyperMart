@@ -44,10 +44,11 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class DialogFragmentDeliveryTime extends DialogFragment implements View.OnClickListener , RecyclerClickInterface {
-    private int mYear, mMonth, mDay,time_slot;
+public class DialogFragmentDeliveryTime extends DialogFragment implements View.OnClickListener, RecyclerClickInterface {
+    private int mYear, mMonth, mDay, time_slot;
     TextView mConfirm, mTitleView, tvDate, tvDeliveryPickUp;
     ImageView mCloseBtn;
+    private String date_time;
     private RecyclerView recyclerView;
     private DeliveryTimesAdapter timesAdapter;
     private List<StoreTimeSLotsResponse.List> delivery_times_list = new ArrayList<>();
@@ -74,7 +75,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
             tvDeliveryPickUp.setText("Please tell us your preferred pickup time");
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        timesAdapter = new DeliveryTimesAdapter(getContext(), delivery_times_list,this);
+        timesAdapter = new DeliveryTimesAdapter(getContext(), delivery_times_list, this);
         recyclerView.setAdapter(timesAdapter);
         getStoreTimeSlots();
         return view;
@@ -94,12 +95,15 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                 break;
         }
     }
+
     @Override
     public void interfaceOnClick(View view, int position) {
-         time_slot = delivery_times_list.get(position).getId();
-        Log.e("time_slot",time_slot+"");
+        time_slot = delivery_times_list.get(position).getId();
+        date_time = tvDate.getText().toString().trim() + " " + delivery_times_list.get(position).getFrom() + ":" + delivery_times_list.get(position).getTo();
+        Log.e("time_slot", time_slot + "");
 
     }
+
     private void getStoreTimeSlots() {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -118,7 +122,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         });
@@ -131,6 +135,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         StringRequest request = new StringRequest(Request.Method.POST, URLs.submit_delivery_date_url + 1, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                prefrences.setDateTime(date_time);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
                 dismiss();
                 Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
@@ -139,22 +144,22 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("time_error",error.toString());
+                Log.e("time_error", error.toString());
                 progressDialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headerMap = new HashMap<>();
-                headerMap.put("Authorization" , "Bearer " + prefrences.getToken());
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Bearer " + prefrences.getToken());
                 return headerMap;
             }
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("slot_id",String.valueOf(time_slot));
-                map.put("preferred_delivery_date",tvDate.getText().toString().trim());
+                Map<String, String> map = new HashMap<>();
+                map.put("slot_id", String.valueOf(time_slot));
+                map.put("preferred_delivery_date", tvDate.getText().toString().trim());
                 return map;
             }
         };

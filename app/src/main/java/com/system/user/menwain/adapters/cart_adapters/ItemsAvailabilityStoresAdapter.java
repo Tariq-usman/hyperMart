@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -27,10 +30,13 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAvailabilityStoresAdapter.ItemViewHolder> {
     private List<AvailNotAvailResponse.Datum> stores_list;
     private double lat, lang;
+    private int total_amount = 0;
     Context context;
     Bundle bundle;
     Prefrences prefrences;
     private float distanceTo;
+    public static List<AvailNotAvailResponse.Datum.Available> available_list;
+    public static List<AvailNotAvailResponse.Datum.Notavailable> not_available_list;
 
     public ItemsAvailabilityStoresAdapter(Context context, List<AvailNotAvailResponse.Datum> stores_list, double lat, double lang) {
         this.stores_list = stores_list;
@@ -38,6 +44,8 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         this.lang = lang;
         this.context = context;
         prefrences = new Prefrences(context);
+        available_list = new ArrayList<>();
+        not_available_list = new ArrayList<>();
     }
 
     @NonNull
@@ -52,17 +60,18 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
 
         Glide.with(holder.mMartImageView.getContext()).load(stores_list.get(position).getImage()).into(holder.mMartImageView);
-
         getKmFromLatLong(lat, lang, Double.valueOf(stores_list.get(position).getLatitude()), Double.valueOf(stores_list.get(position).getLongitude()));
-        String dist = distanceTo+"";
-        String [] split_date = dist.split(".");
+        String dist = distanceTo + "";
+        String[] split_date = dist.split(".");
 //        String first = split_date[0];
-        holder.mDistanceView.setText(distanceTo+" km");
-//        holder.mSortByPrice.setText(String.valueOf(price.get(position)));
-        holder.mAvailableItems.setText(stores_list.get(position).getAvailable().size()+"");
+        holder.mDistanceView.setText(distanceTo + " km");
+        for (int i = 0; i < stores_list.get(position).getAvailable().size(); i++) {
+            total_amount =  stores_list.get(position).getAvailable().get(i).getAvgPrice();
+        }
+        holder.mSortByPrice.setText(String.valueOf(total_amount));
+        holder.mAvailableItems.setText(stores_list.get(position).getAvailable().size() + "");
         String pos = holder.mDistanceView.getText().toString();
-//        int total = marts.length;
-        holder.mTotalItems.setText("" + stores_list.get(position).getAvailable().size()+stores_list.get(position).getNotavailable().size());
+        holder.mTotalItems.setText("" + stores_list.get(position).getAvailable().size() + stores_list.get(position).getNotavailable().size());
 
         if (distanceTo <= 10) {
             holder.mStatusColorView.setBackgroundColor(Color.parseColor("#00c1bd"));
@@ -71,18 +80,28 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         } else {
             holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFF44336"));
         }
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*editor.apply();
-                editor.putInt("frag_status",2);*/
                 prefrences.setCartFragStatus(3);
+                prefrences.setStoreId(stores_list.get(position).getId());
+                prefrences.setTotalPrice(total_amount);
                 AvailNotAvailItemsListsFragment fragment = new AvailNotAvailItemsListsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle = new Bundle();
                 bundle.putString("price", holder.mSortByPrice.getText().toString());
+                bundle.putString("available",stores_list.get(position).getAvailable().size()+"");
+                bundle.putString("not_available",stores_list.get(position).getNotavailable().size()+"");
                 bundle.putString("distance", holder.mDistanceView.getText().toString());
                 bundle.putString("image_url", String.valueOf(stores_list.get(position).getImage()));
+                for (int i = 0; i < stores_list.get(position).getAvailable().size(); i++) {
+                    available_list.add(stores_list.get(position).getAvailable().get(i));
+                }
+                for (int i = 0; i < stores_list.get(position).getNotavailable().size(); i++) {
+                    not_available_list.add(stores_list.get(position).getNotavailable().get(i));
+                }
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }

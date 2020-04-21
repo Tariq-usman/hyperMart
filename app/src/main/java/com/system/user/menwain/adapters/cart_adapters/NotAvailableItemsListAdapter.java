@@ -4,18 +4,24 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class NotAvailableItemsListAdapter extends RecyclerView.Adapter<NotAvailableItemsListAdapter.NotAvailableItemsListViewHolder> {
-    private String[] productsName;
+    private List<AvailNotAvailResponse.Datum.Notavailable> not_avail_items_list;
     Context context;
-    public NotAvailableItemsListAdapter(String[] productsName, Context context) {
-        this.productsName = productsName;
+
+    public NotAvailableItemsListAdapter(Context context, List<AvailNotAvailResponse.Datum.Notavailable> not_avail_items_list) {
+        this.not_avail_items_list = not_avail_items_list;
         this.context = context;
     }
 
@@ -28,11 +34,14 @@ public class NotAvailableItemsListAdapter extends RecyclerView.Adapter<NotAvaila
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotAvailableItemsListViewHolder holder, int position) {
-        if(productsName[position] != null) {
-
-            holder.mProductNameView.setText(productsName[position]);
+    public void onBindViewHolder(@NonNull final NotAvailableItemsListViewHolder holder, int position) {
+        if (!not_avail_items_list.isEmpty()) {
+            Glide.with(holder.ivProduct.getContext()).load(not_avail_items_list.get(position).getImage()).into(holder.ivProduct);
+            holder.mProductNameView.setText(not_avail_items_list.get(position).getBrand());
+            holder.mStoreName.setText(not_avail_items_list.get(position).getName());
+            holder.mAmount.setText(not_avail_items_list.get(position).getAvgPrice().toString());
         }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,15 +55,20 @@ public class NotAvailableItemsListAdapter extends RecyclerView.Adapter<NotAvaila
 
     @Override
     public int getItemCount() {
-        return productsName.length;
+        return not_avail_items_list.size();
     }
 
     public static class NotAvailableItemsListViewHolder extends RecyclerView.ViewHolder {
-        TextView mProductNameView;
+        private TextView mProductNameView, mStoreName, mAmount, mAvilNotAvailItemsView;
+        private ImageView mIncreaseAvailItems, mDecreaseAvailItems, ivProduct;
 
         public NotAvailableItemsListViewHolder(@NonNull View itemView) {
             super(itemView);
-            mProductNameView = (TextView) itemView.findViewById(R.id.available_items_list_product_name_view);
+            ivProduct = itemView.findViewById(R.id.iv_product_not_avail);
+            mProductNameView = itemView.findViewById(R.id.tv_product_name_not_avail);
+            mStoreName = itemView.findViewById(R.id.iv_store_name_not_avail);
+            mAmount = itemView.findViewById(R.id.tv_amount_not_avail);
+
         }
     }
 }

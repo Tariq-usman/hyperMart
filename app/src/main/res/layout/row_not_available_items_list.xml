@@ -21,6 +21,7 @@
             app:cardCornerRadius="15dp">
 
             <ImageView
+                android:id="@+id/iv_product_not_avail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -36,13 +37,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/available_items_list_product_name_view"
+                android:id="@+id/tv_product_name_not_avail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Boneless Mutton 1 kg"
                 android:textColor="@color/blackColor" />
 
             <TextView
+                android:id="@+id/iv_store_name_not_avail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="By MeatOne"
@@ -74,6 +76,7 @@
                     android:textSize="12sp"
                     android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tv_amount_not_avail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="2dp"

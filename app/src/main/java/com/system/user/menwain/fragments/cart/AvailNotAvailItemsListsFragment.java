@@ -21,12 +21,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentDeliveryTime;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
     private CartViewModel cartViewModel;
@@ -34,8 +39,8 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     private View mShowStatusColor;
     private ImageView mBackBtn, mBarCodeScanner, mMartLogoView;
     private LinearLayout mConfirmBtn;
-    private String dist;
-    public String available_items, not_available_items;
+    private int avail, not_avial;
+    public String price;
     SharedPreferences availPreferences, notAvailPrefrences;
     Bundle bundle;
     private Boolean pay_now, pay_later = false;
@@ -50,13 +55,18 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avail_not_avial_items_lists, container, false);
         bundle = this.getArguments();
+        if (bundle!=null) {
+            avail = Integer.parseInt(bundle.getString("available"));
+            not_avial = Integer.parseInt(bundle.getString("not_available"));
+            price = bundle.getString("price");
+        } else {
+            avail = 0;
+            not_avial = 0;
+            price="0";
+        }
         prefrences = new Prefrences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
-        float lat1 = (float) 33.29868671102771;
-        float long1 = (float) 71.10277701169252;
-        float lat2 = (float) 33.288126707444405;
-        float long2 = (float) 71.16980742663145;
-        getKmFromLatLong(lat1,long1,lat2,long2);
+
         mSearchView = getActivity().findViewById(R.id.search_view);
         mSearchView.setVisibility(View.VISIBLE);
         mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
@@ -69,7 +79,8 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         });
 
         mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
-        cartViewModel = ViewModelProviders.of(AvailNotAvailItemsListsFragment.this).get(CartViewModel.class);
+        mTotalAmount.setText(price);
+        /*cartViewModel = ViewModelProviders.of(AvailNotAvailItemsListsFragment.this).get(CartViewModel.class);
         cartViewModel.getTotalCartPrice().observe(this, new Observer<Float>() {
             @Override
             public void onChanged(Float aFloat) {
@@ -79,13 +90,16 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
                     mTotalAmount.setText(00.0 + "");
                 }
             }
-        });
+        });*/
+
         mAvailable = view.findViewById(R.id.available_items);
         mNotAvailable = view.findViewById(R.id.not_available_items);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mConfirmBtn = view.findViewById(R.id.confirm_btn_items_list);
         mAvailItems = view.findViewById(R.id.count_avail_items);
+        mAvailItems.setText(avail+"");
         mNotAvailItmes = view.findViewById(R.id.count_not_avail_items);
+        mNotAvailItmes.setText(not_avial+"");
 
         mAvailable.setOnClickListener(this);
         mNotAvailable.setOnClickListener(this);
@@ -93,7 +107,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         mBackBtn.setOnClickListener(this);
         mBackBtn.setVisibility(View.VISIBLE);
 
-        availPreferences = getActivity().getSharedPreferences("avail_length", Activity.MODE_PRIVATE);
+        /*availPreferences = getActivity().getSharedPreferences("avail_length", Activity.MODE_PRIVATE);
         notAvailPrefrences = getActivity().getSharedPreferences("not_avail_items", Activity.MODE_PRIVATE);
         available_items = availPreferences.getString("available", "");
         not_available_items = notAvailPrefrences.getString("not_available", "");
@@ -102,7 +116,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         if (!available_items.isEmpty()) {
             mAvailItems.setText(String.valueOf(available_items));
             mNotAvailItmes.setText(String.valueOf(not_available_items));
-        }
+        }*/
         return view;
     }
 
@@ -146,16 +160,5 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
             mBackBtn.setVisibility(View.GONE);
         }
-    }
-    public float getKmFromLatLong(float lat1, float lng1, float lat2, float lng2){
-        Location loc1 = new Location("");
-        loc1.setLatitude(lat1);
-        loc1.setLongitude(lng1);
-        Location loc2 = new Location("");
-        loc2.setLatitude(lat2);
-        loc2.setLongitude(lng2);
-        float distanceInMeters = loc1.distanceTo(loc2);
-        Log.e("distance" , distanceInMeters/1000 +" km");
-        return distanceInMeters/1000;
     }
 }

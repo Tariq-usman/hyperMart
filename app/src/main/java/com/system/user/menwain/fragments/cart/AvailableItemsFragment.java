@@ -10,12 +10,16 @@ import android.view.ViewGroup;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListAdapter;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
+import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class AvailableItemsFragment extends Fragment {
     private String [] productsName={"Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese","Produce","Meat & Poultry","Milk & Cheese"};
@@ -24,6 +28,8 @@ public class AvailableItemsFragment extends Fragment {
     AvailableItemsListAdapter availableItemsListAdapter;
     public static int avai_items;
     SharedPreferences.Editor editor;
+    List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,7 +37,7 @@ public class AvailableItemsFragment extends Fragment {
         recyclerViewItemsList = view.findViewById(R.id.recycler_view_available_items_list);
         recyclerViewItemsList.setHasFixedSize(true);
         recyclerViewItemsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        availableItemsListAdapter = new AvailableItemsListAdapter(productsName,getContext());
+        availableItemsListAdapter = new AvailableItemsListAdapter(getContext(),avail_items_list);
         recyclerViewItemsList.setAdapter(availableItemsListAdapter);
 
          avai_items = productsName.length;

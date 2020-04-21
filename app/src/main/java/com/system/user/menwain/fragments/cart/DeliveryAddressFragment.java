@@ -60,7 +60,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     private Bundle bundle;
     private RadioButton rbDeliverToAddress, rbPreparePickUp, rbCashOnDelivery, rbPreparePickFromStore, rbWalkInStore;
     private RadioGroup rgPayNow, rgPayLater;
-    private int rBtnPaymentStatus;
+    private int rBtnPaymentStatus,delivery_address_id;
     private ProgressDialog progressDialog;
     private List<UserAddressListResponse.Addresslist> addressList = new ArrayList<UserAddressListResponse.Addresslist>();
 
@@ -152,6 +152,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     public void interfaceOnClick(View view, int position) {
         latitude = Double.valueOf(addressList.get(position).getLatitude());
         longitude= Double.valueOf(addressList.get(position).getLongitude());
+        delivery_address_id = addressList.get(position).getId();
     }
     @Override
     public void onClick(View view) {
@@ -202,6 +203,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             rbCashOnDelivery.setChecked(false);
         } else if (id == R.id.confirm_btn) {
             prefrences.setCartFragStatus(2);
+            prefrences.setDeliveryAddressId(delivery_address_id);
             ItemsAvailabilityStoresFragment storesFragment = new ItemsAvailabilityStoresFragment();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             bundle = new Bundle();

@@ -134,4 +134,45 @@ public class Prefrences {
     public int getProfileFragStatus() {
         return sharedPreferences.getInt("profile_frag_status", 0);
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    public void setDeliveryAddressId(int address_id) {
+        editor.putInt("address_id", address_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getDeliveryAddressId() {
+        return sharedPreferences.getInt("address_id", 0);
+    }
+
+    public void setStoreId(int store_id) {
+        editor.putInt("store_id", store_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getStoreId() {
+        return sharedPreferences.getInt("store_id", 0);
+    }
+
+    public void setTotalPrice(int total_price) {
+        editor.putInt("total_price", total_price);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getTotalPrice() {
+        return sharedPreferences.getInt("total_price", 0);
+    }
+
+    public void setDateTime(String date_time) {
+        editor.putString("date_time", date_time);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getDateTime() {
+        return sharedPreferences.getString("date_time", "");
+    }
 }

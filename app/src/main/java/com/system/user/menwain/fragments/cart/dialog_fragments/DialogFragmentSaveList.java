@@ -1,51 +1,76 @@
 package com.system.user.menwain.fragments.cart.dialog_fragments;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.cart.CartFragment;
 import com.system.user.menwain.fragments.more.orders.OrdersFragment;
 import com.system.user.menwain.fragments.my_list.AllListsFragment;
+import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
+import com.system.user.menwain.utils.URLs;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DialogFragmentSaveList extends DialogFragment implements View.OnClickListener {
-    TextView mConfirm, mTitleView, tvDateInStorePurchase;
-
-
+    private EditText etListName;
     private ImageView mCart, mFavourite, mHome, mCategory, mMore,mCloseBtn, mBackBtnPay;
-    private TextView totalCartQuantity, mActionBarTitle, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
-    List<String> list = new ArrayList<>();
+    private TextView mConfirm, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
+    private List<Integer> list = new ArrayList<>();
 
     private int mYear, mMonth, mDay;
-    Prefrences prefrences;
+    private Prefrences prefrences;
     private int pay_status;
+    private ProgressDialog progressDialog;
+    List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_purchasing_method, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        customProgressDialog(getContext());
         prefrences = new Prefrences(getContext());
         mConfirm = view.findViewById(R.id.confirm_btn_purchasing_method);
+        etListName = view.findViewById(R.id.tv_date_in_store_purchase);
         mCloseBtn = view.findViewById(R.id.close_back_view);
         mBackBtnPay = getActivity().findViewById(R.id.iv_back);
         mBackBtnPay.setVisibility(View.VISIBLE);
@@ -66,6 +91,14 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
 
         mCloseBtn.setOnClickListener(this);
         mConfirm.setOnClickListener(this);
+
+
+        for (int i = 0; i<avail_items_list.size();i++){
+            list.add(avail_items_list.get(i).getAvgPrice());
+            list.add(2);
+            list.add(avail_items_list.get(i).getId());
+            list.add(2);
+        }
         return view;
     }
 
@@ -75,7 +108,8 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         int id = view.getId();
         if (id == R.id.confirm_btn_purchasing_method) {
             pay_status = prefrences.getPayRBtnStatus();
-            if (pay_status == 5) {
+            placeOrderAndAddToWishList();
+            /*if (pay_status == 5) {
                 prefrences.setCartFragStatus(0);
                 prefrences.setBottomNavStatus(4);
                 mHome.setImageResource(R.drawable.ic_housewhite);
@@ -107,7 +141,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
                 tvMore.setTextColor(Color.parseColor("#00c1bd"));
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
                 mBackBtnPay.setVisibility(View.INVISIBLE);
-            }
+            }*/
             dismiss();
 
         } else if (id == R.id.close_back_view) {
@@ -118,8 +152,85 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         }
 
     }
+    private void placeOrderAndAddToWishList() {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("total_price", prefrences.getTotalPrice());
+            jsonObj.put("discount", 1);
+            jsonObj.put("store_id", prefrences.getStoreId());
+            jsonObj.put("address_id", prefrences.getDeliveryAddressId());
+            jsonObj.put("promotion_id", 123);
+            jsonObj.put("shipping_method_id", prefrences.getPayRBtnStatus());
+            jsonObj.put("shipping_cost", 12);
+            jsonObj.put("secret_code", 21);
+            jsonObj.put("date_time", "2020-04-14 00:00:00");
+            jsonObj.put("delivery_man_id", 1);
+            jsonObj.put("order_status", "pending");
+            jsonObj.put("order_dispatch_id", 1);
+            jsonObj.put("payment_method_id", prefrences.getPayRBtnStatus());
+            jsonObj.put("wishlist_name", etListName.getText().toString().trim());
+            jsonObj.put("other", "hello");
 
-    private void pickDate() {
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < avail_items_list.size(); i++) {
+                JSONObject object = new JSONObject();
+                try {
+
+                    object.put("price",avail_items_list.get(i).getAvgPrice());
+                    object.put("quantity",avail_items_list.get(i).getId());
+                    object.put("product_id",avail_items_list.get(i).getId());
+                    object.put("discount",avail_items_list.get(i).getId());
+                    jsonArray.put(object);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            jsonObj.put("prodct", jsonArray);
+            Log.e("json",jsonArray.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.place_order_add_wish_list, jsonObj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.e("add_response","response");
+                //Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("order_error",error.networkResponse.data.toString());
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> headerMap = new HashMap<>();
+                headerMap.put("Authorization","Bearer " + prefrences.getToken());
+                return headerMap;
+            }
+        };
+
+        requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+    public void customProgressDialog(Context context) {
+        progressDialog = new ProgressDialog(context);
+        // Setting Message
+        progressDialog.setMessage("Loading...");
+        // Progress Dialog Style Spinner
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        // Fetching max value
+        progressDialog.getMax();
+    }
+
+
+   /* private void pickDate() {
         Calendar calendar = Calendar.getInstance();
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
         mMonth = calendar.get(Calendar.MONTH);
@@ -133,5 +244,5 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
                 }, mYear, mMonth, mYear);
         datePickerDialog.setTitle("Select Date..");
         datePickerDialog.show();
-    }
+    }*/
 }

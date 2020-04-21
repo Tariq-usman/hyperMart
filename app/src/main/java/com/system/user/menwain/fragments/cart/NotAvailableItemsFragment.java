@@ -8,13 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.adapters.cart_adapters.NotAvailableItemsListAdapter;
+import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class NotAvailableItemsFragment extends Fragment {
     private String [] productsName={"Produce","Meat & Poultry","Milk & Cheese"};
@@ -23,6 +27,8 @@ public class NotAvailableItemsFragment extends Fragment {
     NotAvailableItemsListAdapter notAvailableItemsListAdapter;
     SharedPreferences.Editor editor;
     public static int not_avail_items;
+    List<AvailNotAvailResponse.Datum.Notavailable> not_avail_items_list = ItemsAvailabilityStoresAdapter.not_available_list;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,7 +37,7 @@ public class NotAvailableItemsFragment extends Fragment {
         recyclerViewItemsList.setHasFixedSize(true);
         recyclerViewItemsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        notAvailableItemsListAdapter= new NotAvailableItemsListAdapter(productsName,getContext());
+        notAvailableItemsListAdapter= new NotAvailableItemsListAdapter(getContext(),not_avail_items_list);
         recyclerViewItemsList.setAdapter(notAvailableItemsListAdapter);
 
         not_avail_items = productsName.length;
