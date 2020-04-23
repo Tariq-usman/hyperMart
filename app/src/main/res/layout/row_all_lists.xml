@@ -37,6 +37,7 @@
                     android:textSize="@dimen/twelve_sp" />
 
                 <TextView
+                    android:id="@+id/tv_date_my_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12/11/2019"
@@ -58,6 +59,7 @@
                     android:textSize="@dimen/twelve_sp" />
 
                 <TextView
+                    android:id="@+id/tv_price_my_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="450"
@@ -100,6 +102,7 @@
                 android:src="@drawable/ic_share"/>
 
             <ImageView
+                android:id="@+id/iv_delete_my_list"
                 android:layout_width="25dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_dlt"/>

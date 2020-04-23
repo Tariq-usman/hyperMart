@@ -28,7 +28,7 @@ public class SelectedStoreCategoryAdapter extends RecyclerView.Adapter<SelectedS
     private boolean check = false;
     private RecyclerClickInterface clickInterface;
 
-    public SelectedStoreCategoryAdapter(Context context, List<SelectedStoreResponse.Category> category_list,RecyclerClickInterface clickInterface) {
+    public SelectedStoreCategoryAdapter(Context context, List<SelectedStoreResponse.Category> category_list, RecyclerClickInterface clickInterface) {
         this.context = context;
         this.clickInterface = clickInterface;
         this.category_list = category_list;
@@ -48,38 +48,13 @@ public class SelectedStoreCategoryAdapter extends RecyclerView.Adapter<SelectedS
         holder.mStoreNameView.setText(category_list.get(position).getDescription());
         Glide.with(holder.mStoreView.getContext()).load(category_list.get(position).getPicture()).into(holder.mStoreView);
         holder.setIsRecyclable(true);
-
-
-       /* if (check == false) {
-            if (abc == position) {
-                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
-                check = true;
-                holder.setIsRecyclable(true);
-            } else {
-                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
-            }
-        } else */if (lastPosition == position) {
+        if (lastPosition == position) {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
             clickInterface.interfaceOnClick(holder.getView(), position);
         } else {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
         }
 
-
-         /*position = position - 1;
-        position = position % storesName.length;
-
-      if (position == -1) {
-            holder.mStoreNameView.setText("");
-            holder.mStoreView.setVisibility(View.INVISIBLE);
-            position++;
-        } else if (position >= 0) {
-         if (position == abc){
-                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
-            }else if (abc !=position){
-                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
-            }
-        }*/
     }
 
     @Override
@@ -100,8 +75,6 @@ public class SelectedStoreCategoryAdapter extends RecyclerView.Adapter<SelectedS
                 @Override
                 public void onClick(View view) {
                     lastPosition = getAdapterPosition();
-//                    abc = lastPosition;
-//                    getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
                     notifyDataSetChanged();
                 }
             });

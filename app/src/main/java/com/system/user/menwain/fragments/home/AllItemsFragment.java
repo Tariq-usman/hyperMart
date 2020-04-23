@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.home_adapters.grid_adapters.ShopItemsGridAdapter;
 import com.system.user.menwain.adapters.home_adapters.list_adapters.ShopItemsListAdapter;
 import com.system.user.menwain.others.Prefrences;
@@ -27,6 +38,15 @@ import com.system.user.menwain.adapters.home_adapters.grid_adapters.ExploreItems
 import com.system.user.menwain.adapters.home_adapters.list_adapters.ExploreItemsListAdapter;
 import com.system.user.menwain.adapters.home_adapters.grid_adapters.ExploreShopItemsGridAdapter;
 import com.system.user.menwain.adapters.home_adapters.list_adapters.ExploreShopItemsListAdapter;
+import com.system.user.menwain.responses.home.ExploreSellAllResponse;
+import com.system.user.menwain.responses.home.ExploreShopeSeeAllResponse;
+import com.system.user.menwain.responses.home.ShopSeeAllResponse;
+import com.system.user.menwain.utils.URLs;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private String[] productsName = {"Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallaxy S8", "Samsung", "BlockBuster", "Gallexy M30",
@@ -53,12 +73,20 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private TextView fragTitle;
     private CardView searchViewAllItems;
     Prefrences prefrences;
+    private ExploreShopItemsGridAdapter exploreShopItemsGridAdapter;
+    private ExploreItemsGridAdapter exploreItemsGridAdapter;
+    private ShopItemsGridAdapter shopItemsGridAdapter;
+    private ProgressDialog progressDialog;
+    private List<ExploreShopeSeeAllResponse.Datum> explore_shop_grid_list = new ArrayList<>();
+    private List<ExploreSellAllResponse.Datum> explore_list = new ArrayList<>();
+    private List<ShopSeeAllResponse.Datum> shop_list = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_items, container, false);
         prefrences = new Prefrences(getContext());
+        customProgressDialog(getContext());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         searchViewAllItems = getActivity().findViewById(R.id.search_view);
@@ -79,18 +107,27 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         Log.i("val1", String.valueOf(val1));
         recyclerViewAllitem = view.findViewById(R.id.recycler_view_grid_items);
         if (val.equals("1")) {
+            getExploreAndShopeSeeAllData();
             recyclerViewAllitem.setHasFixedSize(true);
             recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            recyclerViewAllitem.setAdapter(new ExploreShopItemsGridAdapter(getContext(), productsName, products));
+            exploreShopItemsGridAdapter=new ExploreShopItemsGridAdapter(getContext(), explore_shop_grid_list);
+            recyclerViewAllitem.setAdapter(exploreShopItemsGridAdapter);
         } else if (val.equals("2")) {
+            getExploreSeeAllData();
             recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            recyclerViewAllitem.setAdapter(new ExploreItemsGridAdapter(getContext(), productsName1, items));
+            exploreItemsGridAdapter = new ExploreItemsGridAdapter(getContext(), explore_list);
+            recyclerViewAllitem.setAdapter(exploreItemsGridAdapter);
         } else if (val.equals("3")) {
+            getShopSeeAllData();
             recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            recyclerViewAllitem.setAdapter(new ShopItemsGridAdapter(getContext(), productsName, products));
+            shopItemsGridAdapter=new ShopItemsGridAdapter(getContext(),shop_list);
+            recyclerViewAllitem.setAdapter(shopItemsGridAdapter);
         }
         return view;
     }
+
+
+
 
     @Override
     public void onClick(View view) {
@@ -111,7 +148,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         linearLayoutManager = new LinearLayoutManager(getContext());
                         recyclerViewAllitem.setLayoutManager(linearLayoutManager);
                         recyclerViewAllitem.setAdapter(null);
-                        recyclerViewAllitem.setAdapter(new ExploreShopItemsListAdapter(getContext(), productsName, products));
+                        recyclerViewAllitem.setAdapter(new ExploreShopItemsListAdapter(getContext(), explore_shop_grid_list));
 
                     } else {
                         isList = false;
@@ -119,7 +156,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         recyclerViewAllitem.setHasFixedSize(true);
                         recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
                         recyclerViewAllitem.setAdapter(null);
-                        recyclerViewAllitem.setAdapter(new ExploreShopItemsGridAdapter(getContext(), productsName, products));
+                        recyclerViewAllitem.setAdapter(new ExploreShopItemsGridAdapter(getContext(), explore_shop_grid_list));
                     }
                 } else if (val.equals("2")) {
                     if (isList == false) {
@@ -129,7 +166,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         linearLayoutManager = new LinearLayoutManager(getContext());
                         recyclerViewAllitem.setLayoutManager(linearLayoutManager);
                         recyclerViewAllitem.setAdapter(null);
-                        recyclerViewAllitem.setAdapter(new ExploreItemsListAdapter(getContext(), productsName1, items));
+                        recyclerViewAllitem.setAdapter(new ExploreItemsListAdapter(getContext(), explore_list));
 
                     } else {
                         isList = false;
@@ -137,7 +174,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         recyclerViewAllitem.setHasFixedSize(true);
                         recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
                         recyclerViewAllitem.setAdapter(null);
-                        recyclerViewAllitem.setAdapter(new ExploreItemsGridAdapter(getContext(), productsName1, items));
+                        recyclerViewAllitem.setAdapter(new ExploreItemsGridAdapter(getContext(), explore_list));
                     }
                 } else if (val.equals("3")) {
                     if (isList == false) {
@@ -147,7 +184,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         linearLayoutManager = new LinearLayoutManager(getContext());
                         recyclerViewAllitem.setLayoutManager(linearLayoutManager);
                         recyclerViewAllitem.setAdapter(null);
-                        recyclerViewAllitem.setAdapter(new ShopItemsListAdapter(getContext(), productsName, products));
+                        recyclerViewAllitem.setAdapter(new ShopItemsListAdapter(getContext(),shop_list));
 
                     } else {
                         isList = false;
@@ -155,7 +192,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         recyclerViewAllitem.setHasFixedSize(true);
                         recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
                         recyclerViewAllitem.setAdapter(null);
-                        recyclerViewAllitem.setAdapter(new ShopItemsGridAdapter(getContext(), productsName, products));
+                        recyclerViewAllitem.setAdapter(new ShopItemsGridAdapter(getContext(), shop_list));
                     }
                 }
                 break;
@@ -163,4 +200,110 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+    private void getExploreAndShopeSeeAllData() {
+            progressDialog.show();
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+            final Gson gson = new GsonBuilder().create();
+            StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_explore_shop, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    ExploreShopeSeeAllResponse seeAllResponse = gson.fromJson(response,ExploreShopeSeeAllResponse.class);
+                    explore_shop_grid_list.clear();
+                    for (int i = 0; i< seeAllResponse.getData().size();i++){
+                        explore_shop_grid_list.add(seeAllResponse.getData().get(i));
+                    }
+                    exploreShopItemsGridAdapter.notifyDataSetChanged();
+//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("wishError",error.toString());
+                    progressDialog.dismiss();
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String,String> headerMap = new HashMap<>();
+                    headerMap.put("Authorization","Bearer " + prefrences.getToken());
+                    return headerMap;
+                }
+            };
+            requestQueue.add(request);
+        }
+
+    private void getExploreSeeAllData() {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_explore, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ExploreSellAllResponse seeAllResponse = gson.fromJson(response,ExploreSellAllResponse.class);
+                explore_list.clear();
+                for (int i = 0; i< seeAllResponse.getData().size();i++){
+                    explore_list.add(seeAllResponse.getData().get(i));
+                }
+                exploreItemsGridAdapter.notifyDataSetChanged();
+//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("wishError",error.toString());
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> headerMap = new HashMap<>();
+                headerMap.put("Authorization","Bearer " + prefrences.getToken());
+                return headerMap;
+            }
+        };
+        requestQueue.add(request);
+    }
+    private void getShopSeeAllData() {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_shop, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ShopSeeAllResponse shopSeeAllResponse = gson.fromJson(response,ShopSeeAllResponse.class);
+                shop_list.clear();
+                for (int i = 0; i< shopSeeAllResponse.getData().size();i++){
+                    shop_list.add(shopSeeAllResponse.getData().get(i));
+                }
+                shopItemsGridAdapter.notifyDataSetChanged();
+//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("wishError",error.toString());
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> headerMap = new HashMap<>();
+                headerMap.put("Authorization","Bearer " + prefrences.getToken());
+                return headerMap;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+        public void customProgressDialog(Context context){
+            progressDialog = new ProgressDialog(context);
+            // Setting Message
+            progressDialog.setMessage("Loading...");
+            // Progress Dialog Style Spinner
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            // Fetching max value
+        }
 }

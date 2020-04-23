@@ -18,26 +18,27 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.responses.home.ShopSeeAllResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdapter.AllItemsGridViewHolder> {
     Context context;
-    private String[] productsName1;
-    private int[] items;
+    private  List<ShopSeeAllResponse.Datum> shop_list;
     private CartViewModel cartViewModel;
     int productId, intQuantity;
     String imagePath,productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
-    public ShopItemsGridAdapter(Context applicationContext, String[] productsName1, int[] items) {
+    public ShopItemsGridAdapter(Context applicationContext, List<ShopSeeAllResponse.Datum> shop_list) {
         this.context = applicationContext;
-        this.productsName1 = productsName1;
-        this.items = items;
+        this.shop_list = shop_list;
     }
 
 
@@ -51,8 +52,8 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
 
     @Override
     public void onBindViewHolder(@NonNull final AllItemsGridViewHolder holder, int position) {
-        holder.mFilteProduct.setImageResource(items[position]);
-        holder.mProductNameView.setText(productsName1[position]);
+        Glide.with(holder.mFilteProduct.getContext()).load(shop_list.get(position).getImage()).into(holder.mFilteProduct);
+        holder.mProductNameView.setText(shop_list.get(position).getName());
 
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +104,7 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
 
     @Override
     public int getItemCount() {
-        return items.length;
+        return shop_list.size();
     }
 
     public class AllItemsGridViewHolder extends RecyclerView.ViewHolder{

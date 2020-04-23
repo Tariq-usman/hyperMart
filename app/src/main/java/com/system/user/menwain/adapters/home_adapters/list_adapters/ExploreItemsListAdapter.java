@@ -12,9 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.responses.home.ExploreSellAllResponse;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -25,19 +27,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class ExploreItemsListAdapter extends RecyclerView.Adapter<ExploreItemsListAdapter.ItemsListViewHolder> {
     Context context;
-    private String[] productsName;
-    private int[] products;
+    private List<ExploreSellAllResponse.Datum> explore_list;
     int productId, intQuantity;
     String imagePath,productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
     private CartViewModel cartViewModel;
-    public ExploreItemsListAdapter(Context context, String[] productsName, int[] products) {
+    public ExploreItemsListAdapter(Context context, List<ExploreSellAllResponse.Datum> explore_list) {
         this.context = context;
-        this.productsName = productsName;
-        this.products = products;
+        this.explore_list = explore_list;
     }
 
     @NonNull
@@ -50,8 +51,8 @@ public class ExploreItemsListAdapter extends RecyclerView.Adapter<ExploreItemsLi
 
     @Override
     public void onBindViewHolder(@NonNull final ItemsListViewHolder holder, int position) {
-        holder.ivAllItemsList.setImageResource(products[position]);
-        holder.tvAllItemsList.setText(productsName[position]);
+        Glide.with(holder.ivAllItemsList.getContext()).load(explore_list.get(position).getImage()).into(holder.ivAllItemsList);
+        holder.tvAllItemsList.setText(explore_list.get(position).getName());
 
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +102,7 @@ public class ExploreItemsListAdapter extends RecyclerView.Adapter<ExploreItemsLi
 
     @Override
     public int getItemCount() {
-        return products.length;
+        return explore_list.size();
     }
 
     public class ItemsListViewHolder extends RecyclerView.ViewHolder{

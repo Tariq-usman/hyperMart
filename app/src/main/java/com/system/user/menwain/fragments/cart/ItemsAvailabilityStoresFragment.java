@@ -71,13 +71,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         prefrences = new Prefrences(getContext());
         pay_status = prefrences.getPaymentStatus();
         bundle = this.getArguments();
-        if (bundle != null) {
-            lat = bundle.getDouble("lat");
-            lang = bundle.getDouble("long");
-        } else {
-            lat = 33.564545445;
-            lang = 27.4545454545;
-        }
+        String address = prefrences.getDeliveryAddress();
+        String  [] split_address = address.split(" ");
+        lat = Double.parseDouble(split_address[0]);
+        lang = Double.parseDouble(split_address[1]);
+
 
         customProgressDialog(getContext());
         cartViewModel = ViewModelProviders.of(ItemsAvailabilityStoresFragment.this).get(CartViewModel.class);
@@ -88,6 +86,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 for (int i = 0; i < carts.size(); i++) {
                     cartList.add(carts.get(i).getP_id());
                 }
+                lowestPrice();
             }
         });
 
@@ -100,13 +99,13 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         mSortByDistance.setOnClickListener(this);
         mSortByPrice.setOnClickListener(this);
         mSortByAvailability.setOnClickListener(this);
-        lowestPrice();
 
         recyclerViewAvailableItemsStore = view.findViewById(R.id.recycler_view_available_item_store);
         recyclerViewAvailableItemsStore.setHasFixedSize(true);
         recyclerViewAvailableItemsStore.setLayoutManager(new LinearLayoutManager(getContext()));
         itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), stores_list, lat, lang);
         recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
+
         return view;
     }
 
@@ -154,8 +153,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("latitude", 33.29868671102771);
-            jsonObj.put("longitude", 71.10277701169252);
+            jsonObj.put("latitude", lat/*33.29868671102771*/);
+            jsonObj.put("longitude", lang/*71.10277701169252*/);
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < cartList.size(); i++) {
                 jsonArray.put(cartList.get(i));
@@ -229,7 +228,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     stores_list.add(availNotAvailResponse.getData().get(i));
                 }
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
-                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -285,7 +284,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     stores_list.add(availNotAvailResponse.getData().get(i));
                 }
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
-                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {

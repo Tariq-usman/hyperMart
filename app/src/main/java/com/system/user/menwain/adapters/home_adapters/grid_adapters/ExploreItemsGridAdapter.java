@@ -12,9 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.responses.home.ExploreSellAllResponse;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -25,19 +27,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class ExploreItemsGridAdapter extends RecyclerView.Adapter<ExploreItemsGridAdapter.AllItemsGridViewHolder> {
     Context context;
-    private String[] productsName1;
-    private int[] items;
+    private List<ExploreSellAllResponse.Datum> explore_list;
     private CartViewModel cartViewModel;
     int productId, intQuantity;
     String imagePath,productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
-    public ExploreItemsGridAdapter(Context applicationContext, String[] productsName1, int[] items) {
+    public ExploreItemsGridAdapter(Context applicationContext, List<ExploreSellAllResponse.Datum> explore_list) {
         this.context = applicationContext;
-        this.productsName1 = productsName1;
-        this.items = items;
+        this.explore_list = explore_list;
     }
 
 
@@ -51,8 +52,8 @@ public class ExploreItemsGridAdapter extends RecyclerView.Adapter<ExploreItemsGr
 
     @Override
     public void onBindViewHolder(@NonNull final AllItemsGridViewHolder holder, int position) {
-        holder.mFilteProduct.setImageResource(items[position]);
-        holder.mProductNameView.setText(productsName1[position]);
+        Glide.with(holder.mFilteProduct.getContext()).load(explore_list.get(position).getImage()).into(holder.mFilteProduct);
+        holder.mProductNameView.setText(explore_list.get(position).getName());
 
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +104,7 @@ public class ExploreItemsGridAdapter extends RecyclerView.Adapter<ExploreItemsGr
 
     @Override
     public int getItemCount() {
-        return items.length;
+        return explore_list.size();
     }
 
     public class AllItemsGridViewHolder extends RecyclerView.ViewHolder{

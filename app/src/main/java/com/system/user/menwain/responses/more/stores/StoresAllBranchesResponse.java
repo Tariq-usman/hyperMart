@@ -8,282 +8,420 @@ import java.util.List;
 public class StoresAllBranchesResponse {
     @SerializedName("storelist")
     @Expose
-    private List<Storelist> storelist = null;
+    private Storelist storelist;
 
-    public List<Storelist> getStorelist() {
+    public Storelist getStorelist() {
         return storelist;
     }
 
-    public void setStorelist(List<Storelist> storelist) {
+    public void setStorelist(Storelist storelist) {
         this.storelist = storelist;
     }
 
     public class Storelist {
 
-        @SerializedName("id")
+        @SerializedName("current_page")
         @Expose
-        private Integer id;
-        @SerializedName("name")
+        private Integer currentPage;
+        @SerializedName("data")
         @Expose
-        private String name;
-        @SerializedName("address")
+        private List<Datum> data = null;
+        @SerializedName("first_page_url")
         @Expose
-        private String address;
-        @SerializedName("image")
+        private String firstPageUrl;
+        @SerializedName("from")
         @Expose
-        private String image;
-        @SerializedName("latitude")
+        private Integer from;
+        @SerializedName("last_page")
         @Expose
-        private String latitude;
-        @SerializedName("longitude")
+        private Integer lastPage;
+        @SerializedName("last_page_url")
         @Expose
-        private String longitude;
-        @SerializedName("active_status")
+        private String lastPageUrl;
+        @SerializedName("next_page_url")
         @Expose
-        private String activeStatus;
-        @SerializedName("parent_store_id")
+        private Object nextPageUrl;
+        @SerializedName("path")
         @Expose
-        private Integer parentStoreId;
-        @SerializedName("commercial_reg")
+        private String path;
+        @SerializedName("per_page")
         @Expose
-        private Integer commercialReg;
-        @SerializedName("vat")
+        private Integer perPage;
+        @SerializedName("prev_page_url")
         @Expose
-        private Integer vat;
-        @SerializedName("shipping_cost")
+        private Object prevPageUrl;
+        @SerializedName("to")
         @Expose
-        private Integer shippingCost;
-        @SerializedName("secret_code")
+        private Integer to;
+        @SerializedName("total")
         @Expose
-        private Integer secretCode;
-        @SerializedName("date_time")
-        @Expose
-        private String dateTime;
-        @SerializedName("store_type")
-        @Expose
-        private String storeType;
-        @SerializedName("details")
-        @Expose
-        private String details;
-        @SerializedName("shipping_cost_method")
-        @Expose
-        private String shippingCostMethod;
-        @SerializedName("cash_on_delivery")
-        @Expose
-        private Integer cashOnDelivery;
-        @SerializedName("pay_n_delivery")
-        @Expose
-        private Integer payNDelivery;
-        @SerializedName("pay_n_pickup")
-        @Expose
-        private Integer payNPickup;
-        @SerializedName("has_delivery")
-        @Expose
-        private Integer hasDelivery;
-        @SerializedName("created_at")
-        @Expose
-        private Object createdAt;
-        @SerializedName("updated_at")
-        @Expose
-        private Object updatedAt;
-        @SerializedName("deleted_at")
-        @Expose
-        private Object deletedAt;
-        @SerializedName("average-rating")
-        @Expose
-        private Integer averageRating;
+        private Integer total;
 
-        public Integer getId() {
-            return id;
+        public Integer getCurrentPage() {
+            return currentPage;
         }
 
-        public void setId(Integer id) {
-            this.id = id;
+        public void setCurrentPage(Integer currentPage) {
+            this.currentPage = currentPage;
         }
 
-        public String getName() {
-            return name;
+        public List<Datum> getData() {
+            return data;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setData(List<Datum> data) {
+            this.data = data;
         }
 
-        public String getAddress() {
-            return address;
+        public String getFirstPageUrl() {
+            return firstPageUrl;
         }
 
-        public void setAddress(String address) {
-            this.address = address;
+        public void setFirstPageUrl(String firstPageUrl) {
+            this.firstPageUrl = firstPageUrl;
         }
 
-        public String getImage() {
-            return image;
+        public Integer getFrom() {
+            return from;
         }
 
-        public void setImage(String image) {
-            this.image = image;
+        public void setFrom(Integer from) {
+            this.from = from;
         }
 
-        public String getLatitude() {
-            return latitude;
+        public Integer getLastPage() {
+            return lastPage;
         }
 
-        public void setLatitude(String latitude) {
-            this.latitude = latitude;
+        public void setLastPage(Integer lastPage) {
+            this.lastPage = lastPage;
         }
 
-        public String getLongitude() {
-            return longitude;
+        public String getLastPageUrl() {
+            return lastPageUrl;
         }
 
-        public void setLongitude(String longitude) {
-            this.longitude = longitude;
+        public void setLastPageUrl(String lastPageUrl) {
+            this.lastPageUrl = lastPageUrl;
         }
 
-        public String getActiveStatus() {
-            return activeStatus;
+        public Object getNextPageUrl() {
+            return nextPageUrl;
         }
 
-        public void setActiveStatus(String activeStatus) {
-            this.activeStatus = activeStatus;
+        public void setNextPageUrl(Object nextPageUrl) {
+            this.nextPageUrl = nextPageUrl;
         }
 
-        public Integer getParentStoreId() {
-            return parentStoreId;
+        public String getPath() {
+            return path;
         }
 
-        public void setParentStoreId(Integer parentStoreId) {
-            this.parentStoreId = parentStoreId;
+        public void setPath(String path) {
+            this.path = path;
         }
 
-        public Integer getCommercialReg() {
-            return commercialReg;
+        public Integer getPerPage() {
+            return perPage;
         }
 
-        public void setCommercialReg(Integer commercialReg) {
-            this.commercialReg = commercialReg;
+        public void setPerPage(Integer perPage) {
+            this.perPage = perPage;
         }
 
-        public Integer getVat() {
-            return vat;
+        public Object getPrevPageUrl() {
+            return prevPageUrl;
         }
 
-        public void setVat(Integer vat) {
-            this.vat = vat;
+        public void setPrevPageUrl(Object prevPageUrl) {
+            this.prevPageUrl = prevPageUrl;
         }
 
-        public Integer getShippingCost() {
-            return shippingCost;
+        public Integer getTo() {
+            return to;
         }
 
-        public void setShippingCost(Integer shippingCost) {
-            this.shippingCost = shippingCost;
+        public void setTo(Integer to) {
+            this.to = to;
         }
 
-        public Integer getSecretCode() {
-            return secretCode;
+        public Integer getTotal() {
+            return total;
         }
 
-        public void setSecretCode(Integer secretCode) {
-            this.secretCode = secretCode;
+        public void setTotal(Integer total) {
+            this.total = total;
         }
 
-        public String getDateTime() {
-            return dateTime;
-        }
+        public class Datum {
 
-        public void setDateTime(String dateTime) {
-            this.dateTime = dateTime;
-        }
+            @SerializedName("id")
+            @Expose
+            private Integer id;
+            @SerializedName("name")
+            @Expose
+            private String name;
+            @SerializedName("address")
+            @Expose
+            private String address;
+            @SerializedName("image")
+            @Expose
+            private String image;
+            @SerializedName("latitude")
+            @Expose
+            private String latitude;
+            @SerializedName("longitude")
+            @Expose
+            private String longitude;
+            @SerializedName("active_status")
+            @Expose
+            private String activeStatus;
+            @SerializedName("parent_store_id")
+            @Expose
+            private Integer parentStoreId;
+            @SerializedName("commercial_reg")
+            @Expose
+            private Integer commercialReg;
+            @SerializedName("vat")
+            @Expose
+            private Integer vat;
+            @SerializedName("shipping_cost")
+            @Expose
+            private Integer shippingCost;
+            @SerializedName("secret_code")
+            @Expose
+            private Integer secretCode;
+            @SerializedName("date_time")
+            @Expose
+            private String dateTime;
+            @SerializedName("store_type")
+            @Expose
+            private String storeType;
+            @SerializedName("details")
+            @Expose
+            private String details;
+            @SerializedName("shipping_cost_method")
+            @Expose
+            private String shippingCostMethod;
+            @SerializedName("cash_on_delivery")
+            @Expose
+            private Integer cashOnDelivery;
+            @SerializedName("pay_n_delivery")
+            @Expose
+            private Integer payNDelivery;
+            @SerializedName("pay_n_pickup")
+            @Expose
+            private Integer payNPickup;
+            @SerializedName("has_delivery")
+            @Expose
+            private Integer hasDelivery;
+            @SerializedName("created_at")
+            @Expose
+            private Object createdAt;
+            @SerializedName("updated_at")
+            @Expose
+            private Object updatedAt;
+            @SerializedName("deleted_at")
+            @Expose
+            private Object deletedAt;
+            @SerializedName("average-rating")
+            @Expose
+            private Integer averageRating;
 
-        public String getStoreType() {
-            return storeType;
-        }
+            public Integer getId() {
+                return id;
+            }
 
-        public void setStoreType(String storeType) {
-            this.storeType = storeType;
-        }
+            public void setId(Integer id) {
+                this.id = id;
+            }
 
-        public String getDetails() {
-            return details;
-        }
+            public String getName() {
+                return name;
+            }
 
-        public void setDetails(String details) {
-            this.details = details;
-        }
+            public void setName(String name) {
+                this.name = name;
+            }
 
-        public String getShippingCostMethod() {
-            return shippingCostMethod;
-        }
+            public String getAddress() {
+                return address;
+            }
 
-        public void setShippingCostMethod(String shippingCostMethod) {
-            this.shippingCostMethod = shippingCostMethod;
-        }
+            public void setAddress(String address) {
+                this.address = address;
+            }
 
-        public Integer getCashOnDelivery() {
-            return cashOnDelivery;
-        }
+            public String getImage() {
+                return image;
+            }
 
-        public void setCashOnDelivery(Integer cashOnDelivery) {
-            this.cashOnDelivery = cashOnDelivery;
-        }
+            public void setImage(String image) {
+                this.image = image;
+            }
 
-        public Integer getPayNDelivery() {
-            return payNDelivery;
-        }
+            public String getLatitude() {
+                return latitude;
+            }
 
-        public void setPayNDelivery(Integer payNDelivery) {
-            this.payNDelivery = payNDelivery;
-        }
+            public void setLatitude(String latitude) {
+                this.latitude = latitude;
+            }
 
-        public Integer getPayNPickup() {
-            return payNPickup;
-        }
+            public String getLongitude() {
+                return longitude;
+            }
 
-        public void setPayNPickup(Integer payNPickup) {
-            this.payNPickup = payNPickup;
-        }
+            public void setLongitude(String longitude) {
+                this.longitude = longitude;
+            }
 
-        public Integer getHasDelivery() {
-            return hasDelivery;
-        }
+            public String getActiveStatus() {
+                return activeStatus;
+            }
 
-        public void setHasDelivery(Integer hasDelivery) {
-            this.hasDelivery = hasDelivery;
-        }
+            public void setActiveStatus(String activeStatus) {
+                this.activeStatus = activeStatus;
+            }
 
-        public Object getCreatedAt() {
-            return createdAt;
-        }
+            public Integer getParentStoreId() {
+                return parentStoreId;
+            }
 
-        public void setCreatedAt(Object createdAt) {
-            this.createdAt = createdAt;
-        }
+            public void setParentStoreId(Integer parentStoreId) {
+                this.parentStoreId = parentStoreId;
+            }
 
-        public Object getUpdatedAt() {
-            return updatedAt;
-        }
+            public Integer getCommercialReg() {
+                return commercialReg;
+            }
 
-        public void setUpdatedAt(Object updatedAt) {
-            this.updatedAt = updatedAt;
-        }
+            public void setCommercialReg(Integer commercialReg) {
+                this.commercialReg = commercialReg;
+            }
 
-        public Object getDeletedAt() {
-            return deletedAt;
-        }
+            public Integer getVat() {
+                return vat;
+            }
 
-        public void setDeletedAt(Object deletedAt) {
-            this.deletedAt = deletedAt;
-        }
+            public void setVat(Integer vat) {
+                this.vat = vat;
+            }
 
-        public Integer getAverageRating() {
-            return averageRating;
-        }
+            public Integer getShippingCost() {
+                return shippingCost;
+            }
 
-        public void setAverageRating(Integer averageRating) {
-            this.averageRating = averageRating;
+            public void setShippingCost(Integer shippingCost) {
+                this.shippingCost = shippingCost;
+            }
+
+            public Integer getSecretCode() {
+                return secretCode;
+            }
+
+            public void setSecretCode(Integer secretCode) {
+                this.secretCode = secretCode;
+            }
+
+            public String getDateTime() {
+                return dateTime;
+            }
+
+            public void setDateTime(String dateTime) {
+                this.dateTime = dateTime;
+            }
+
+            public String getStoreType() {
+                return storeType;
+            }
+
+            public void setStoreType(String storeType) {
+                this.storeType = storeType;
+            }
+
+            public String getDetails() {
+                return details;
+            }
+
+            public void setDetails(String details) {
+                this.details = details;
+            }
+
+            public String getShippingCostMethod() {
+                return shippingCostMethod;
+            }
+
+            public void setShippingCostMethod(String shippingCostMethod) {
+                this.shippingCostMethod = shippingCostMethod;
+            }
+
+            public Integer getCashOnDelivery() {
+                return cashOnDelivery;
+            }
+
+            public void setCashOnDelivery(Integer cashOnDelivery) {
+                this.cashOnDelivery = cashOnDelivery;
+            }
+
+            public Integer getPayNDelivery() {
+                return payNDelivery;
+            }
+
+            public void setPayNDelivery(Integer payNDelivery) {
+                this.payNDelivery = payNDelivery;
+            }
+
+            public Integer getPayNPickup() {
+                return payNPickup;
+            }
+
+            public void setPayNPickup(Integer payNPickup) {
+                this.payNPickup = payNPickup;
+            }
+
+            public Integer getHasDelivery() {
+                return hasDelivery;
+            }
+
+            public void setHasDelivery(Integer hasDelivery) {
+                this.hasDelivery = hasDelivery;
+            }
+
+            public Object getCreatedAt() {
+                return createdAt;
+            }
+
+            public void setCreatedAt(Object createdAt) {
+                this.createdAt = createdAt;
+            }
+
+            public Object getUpdatedAt() {
+                return updatedAt;
+            }
+
+            public void setUpdatedAt(Object updatedAt) {
+                this.updatedAt = updatedAt;
+            }
+
+            public Object getDeletedAt() {
+                return deletedAt;
+            }
+
+            public void setDeletedAt(Object deletedAt) {
+                this.deletedAt = deletedAt;
+            }
+
+            public Integer getAverageRating() {
+                return averageRating;
+            }
+
+            public void setAverageRating(Integer averageRating) {
+                this.averageRating = averageRating;
+            }
+
         }
 
     }
+
 }

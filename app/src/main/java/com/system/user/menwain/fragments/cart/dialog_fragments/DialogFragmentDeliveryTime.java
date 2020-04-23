@@ -136,7 +136,12 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
             @Override
             public void onResponse(String response) {
                 prefrences.setDateTime(date_time);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
+               // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
+                DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
+                dialogFragmentSaveList.show(getFragmentManager(),"Purchasing Method");
+                /*getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
+                        .addToBackStack(null).commit();*/
+                prefrences.setCartFragStatus(0);
                 dismiss();
                 Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();

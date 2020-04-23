@@ -21,11 +21,12 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.activities.ScanActivity;
-import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
+import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryAdapter;
-import com.system.user.menwain.adapters.category_adapters.SelectedItemAdapter;
+import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
 import com.system.user.menwain.responses.category.CategoryResponse;
+import com.system.user.menwain.responses.category.SubCategoryResponse;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -42,20 +43,20 @@ import java.util.List;
 
 public class CategoryItemsFragment extends Fragment implements RecyclerClickInterface {
 
-    private int category_id;
-    private RecyclerView recyclerViewProductCategory, recyclerViewItemNames, recyclerViewFilterItems;
+    private int sub_cat_id, cat_id;
+    private RecyclerView recyclerViewCategory, recyclerViewItemNames, recyclerViewSubCategory;
     private LinearLayoutManager linearLayoutManager;
-    private int getPreviousId = CategoryAdapter.passId;
+    private int getPreviousId = SuperCategoryAdapter.passId;
     private ImageView mBackBtn, mBarCodeScanner;
 
     private CardView mSearchViewItemsFragment;
     private Prefrences prefrences;
     private ProgressDialog progressDialog;
-    private SelectedItemAdapter selectedItemAdapter;
+    private CategoryAdapter categoryAdapter;
     private SubCategoryAdapter subCategoryAdapter;
     Bundle bundle;
-    private List<SuperCategoryResponse.SuperCategory.Datum> catergoryList = new ArrayList<SuperCategoryResponse.SuperCategory.Datum>();
-    private List<CategoryResponse.Product> subCatergoryList = new ArrayList<CategoryResponse.Product>();
+    private List<CategoryResponse.Category.Datum> catergoryList = new ArrayList<CategoryResponse.Category.Datum>();
+    private List<SubCategoryResponse.Product> subCatergoryList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -64,6 +65,11 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
         prefrences = new Prefrences(getContext());
         customProgressDialog(getContext());
         bundle = this.getArguments();
+        if (bundle != null) {
+            cat_id = Integer.parseInt(bundle.getString("id"));
+        } else {
+            cat_id = 0;
+        }
         mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
         //mSearchViewItemsFragment.setVisibility(View.INVISIBLE);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
@@ -72,7 +78,7 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
             @Override
             public void onClick(View view) {
                 prefrences.setCategoryFragStatus(0);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
             }
         });
@@ -86,33 +92,34 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
             }
         });
 
-        getSuperCategoryData();
-        getCategory();
+//        getSuperCategoryData();
+        getCategory(cat_id);
 
-        recyclerViewProductCategory = view.findViewById(R.id.recycler_view_selected_items);
-        recyclerViewProductCategory.setHasFixedSize(true);
+        recyclerViewCategory = view.findViewById(R.id.recycler_view_selected_items);
+        recyclerViewCategory.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewProductCategory.setLayoutManager(linearLayoutManager);
-        selectedItemAdapter = new SelectedItemAdapter(getContext(), catergoryList,CategoryItemsFragment.this);
-        recyclerViewProductCategory.setAdapter(selectedItemAdapter);
-        recyclerViewProductCategory.smoothScrollToPosition(getPreviousId + 1);
+        recyclerViewCategory.setLayoutManager(linearLayoutManager);
+        categoryAdapter = new CategoryAdapter(getContext(), catergoryList, CategoryItemsFragment.this);
+        recyclerViewCategory.setAdapter(categoryAdapter);
+        recyclerViewCategory.smoothScrollToPosition(getPreviousId + 1);
 
-        recyclerViewFilterItems = view.findViewById(R.id.recycler_view_filter_items);
-        recyclerViewFilterItems.setHasFixedSize(true);
-        recyclerViewFilterItems.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        recyclerViewSubCategory = view.findViewById(R.id.recycler_view_filter_items);
+        recyclerViewSubCategory.setHasFixedSize(true);
+        recyclerViewSubCategory.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
         subCategoryAdapter = new SubCategoryAdapter(getContext(), subCatergoryList);
-        recyclerViewFilterItems.setAdapter(subCategoryAdapter);
+        recyclerViewSubCategory.setAdapter(subCategoryAdapter);
 
         return view;
     }
 
     @Override
     public void interfaceOnClick(View view, int position) {
-        category_id = catergoryList.get(position).getId();
-        getSubCategory();
+        sub_cat_id = catergoryList.get(position).getId();
+        getSubCategory(sub_cat_id);
 
     }
 
+/*
     private void getSuperCategoryData() {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -123,9 +130,10 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
                 SuperCategoryResponse categoryResponse = gson.fromJson(response, SuperCategoryResponse.class);
                 catergoryList.clear();
                 for (int i = 0; i < categoryResponse.getSuperCategory().getData().size(); i++) {
-                    catergoryList.add(categoryResponse.getSuperCategory().getData().get(i));
+                   // catergoryList.add(categoryResponse.getSuperCategory().getData().get(i));
                 }
-                selectedItemAdapter.notifyDataSetChanged();
+                categoryAdapter.notifyDataSetChanged();
+                getCategory();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -137,27 +145,22 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
         });
         requestQueue.add(request);
     }
+*/
 
 
-    private void getCategory() {
+    private void getCategory(int cat_id) {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_category_url + bundle.getString("id"), new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_category_url + cat_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 CategoryResponse categoryResponse = gson.fromJson(response, CategoryResponse.class);
-               /* catergoryList.clear();
-                for (int i=0;i<categoryResponse.getCategory().getData().size();i++){
+                catergoryList.clear();
+                for (int i = 0; i < categoryResponse.getCategory().getData().size(); i++) {
                     catergoryList.add(categoryResponse.getCategory().getData().get(i));
                 }
-                selectedItemAdapter.notifyDataSetChanged();*/
-
-                subCatergoryList.clear();
-                for (int i = 0; i < categoryResponse.getProducts().size(); i++) {
-                    subCatergoryList.add(categoryResponse.getProducts().get(i));
-                }
-                subCategoryAdapter.notifyDataSetChanged();
+                categoryAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -170,23 +173,17 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
         requestQueue.add(request);
     }
 
-    private void getSubCategory() {
+    private void getSubCategory(int sub_cat_id) {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_category_url + category_id, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_sub_category_url + sub_cat_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                CategoryResponse categoryResponse = gson.fromJson(response, CategoryResponse.class);
-               /* catergoryList.clear();
-                for (int i=0;i<categoryResponse.getCategory().getData().size();i++){
-                    catergoryList.add(categoryResponse.getCategory().getData().get(i));
-                }
-                selectedItemAdapter.notifyDataSetChanged();*/
-
+                SubCategoryResponse subCategoryResponse = gson.fromJson(response, SubCategoryResponse.class);
                 subCatergoryList.clear();
-                for (int i = 0; i < categoryResponse.getProducts().size(); i++) {
-                    subCatergoryList.add(categoryResponse.getProducts().get(i));
+                for (int i = 0; i < subCategoryResponse.getProducts().size(); i++) {
+                    subCatergoryList.add(subCategoryResponse.getProducts().get(i));
                 }
                 subCategoryAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();

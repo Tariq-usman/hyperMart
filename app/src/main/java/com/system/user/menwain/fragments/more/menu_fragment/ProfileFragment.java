@@ -221,7 +221,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("profiel_error", error.toString());
-                Toast.makeText(getContext(), "" + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "You need to Login First!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }) {

@@ -6,29 +6,29 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class SubCategoryResponse {
-    @SerializedName("subCategory")
-    @Expose
-    private SubCategory subCategory;
-    @SerializedName("products")
-    @Expose
-    private List<Product> products = null;
 
-    public SubCategory getSubCategory() {
-        return subCategory;
-    }
+        @SerializedName("subCategory")
+        @Expose
+        private SubCategory subCategory;
+        @SerializedName("products")
+        @Expose
+        private List<Product> products = null;
 
-    public void setSubCategory(SubCategory subCategory) {
-        this.subCategory = subCategory;
-    }
+        public SubCategory getSubCategory() {
+            return subCategory;
+        }
 
-    public List<Product> getProducts() {
-        return products;
-    }
+        public void setSubCategory(SubCategory subCategory) {
+            this.subCategory = subCategory;
+        }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+        public List<Product> getProducts() {
+            return products;
+        }
 
+        public void setProducts(List<Product> products) {
+            this.products = products;
+        }
     public class SubCategory {
 
         @SerializedName("current_page")
@@ -163,7 +163,6 @@ public class SubCategoryResponse {
         public void setTotal(Integer total) {
             this.total = total;
         }
-
         public class Datum {
 
             @SerializedName("id")
@@ -536,7 +535,6 @@ public class SubCategoryResponse {
         public void setProductpic(List<Productpic> productpic) {
             this.productpic = productpic;
         }
-
         public class Productpic {
 
             @SerializedName("id")
@@ -620,8 +618,5 @@ public class SubCategoryResponse {
         }
 
     }
+
 }
-
-
-
-

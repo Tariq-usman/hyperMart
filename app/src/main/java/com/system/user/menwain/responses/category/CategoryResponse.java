@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class CategoryResponse {
+
         @SerializedName("category")
         @Expose
         private Category category;
@@ -340,7 +341,7 @@ public class CategoryResponse {
         private Object deletedAt;
         @SerializedName("productpic")
         @Expose
-        private List<Object> productpic = null;
+        private List<Productpic> productpic = null;
 
         public Integer getId() {
             return id;
@@ -526,18 +527,95 @@ public class CategoryResponse {
             this.deletedAt = deletedAt;
         }
 
-        public List<Object> getProductpic() {
+        public List<Productpic> getProductpic() {
             return productpic;
         }
 
-        public void setProductpic(List<Object> productpic) {
+        public void setProductpic(List<Productpic> productpic) {
             this.productpic = productpic;
+        }
+        public class Productpic {
+
+            @SerializedName("id")
+            @Expose
+            private Integer id;
+            @SerializedName("product_id")
+            @Expose
+            private Integer productId;
+            @SerializedName("image_name")
+            @Expose
+            private String imageName;
+            @SerializedName("image_url")
+            @Expose
+            private String imageUrl;
+            @SerializedName("other")
+            @Expose
+            private String other;
+            @SerializedName("created_at")
+            @Expose
+            private Object createdAt;
+            @SerializedName("updated_at")
+            @Expose
+            private Object updatedAt;
+
+            public Integer getId() {
+                return id;
+            }
+
+            public void setId(Integer id) {
+                this.id = id;
+            }
+
+            public Integer getProductId() {
+                return productId;
+            }
+
+            public void setProductId(Integer productId) {
+                this.productId = productId;
+            }
+
+            public String getImageName() {
+                return imageName;
+            }
+
+            public void setImageName(String imageName) {
+                this.imageName = imageName;
+            }
+
+            public String getImageUrl() {
+                return imageUrl;
+            }
+
+            public void setImageUrl(String imageUrl) {
+                this.imageUrl = imageUrl;
+            }
+
+            public String getOther() {
+                return other;
+            }
+
+            public void setOther(String other) {
+                this.other = other;
+            }
+
+            public Object getCreatedAt() {
+                return createdAt;
+            }
+
+            public void setCreatedAt(Object createdAt) {
+                this.createdAt = createdAt;
+            }
+
+            public Object getUpdatedAt() {
+                return updatedAt;
+            }
+
+            public void setUpdatedAt(Object updatedAt) {
+                this.updatedAt = updatedAt;
+            }
+
         }
 
     }
 
-    }
-
-
-
-
+}

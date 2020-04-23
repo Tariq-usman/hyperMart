@@ -7,6 +7,7 @@ import com.system.user.menwain.local_db.dao.CartDao;
 import com.system.user.menwain.local_db.database.HyperMart;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
+import com.system.user.menwain.local_db.model.UpdateProductQuantity;
 
 import java.util.List;
 

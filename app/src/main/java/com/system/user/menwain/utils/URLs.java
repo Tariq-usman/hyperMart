@@ -32,4 +32,14 @@ public class URLs {
     public static String get_product_details_url = base_url + "productById/";
     public static String heighest_availability = base_url + "heighestAvailability";
     public static String place_order_add_wish_list = base_url + "placeorder";
+    public static String calcualte_shipping_cost = base_url + "calculateshipping";
+    public static String get_user_wish_list = base_url + "getUserWishlistProducts";
+    public static String get_user_wish_list_by_id = base_url + "WishlistProducts/";
+    public static String delete_wish_list = base_url + "deletewishlist/";
+    public static String see_all_explore_shop = base_url +"productsseeall";
+    public static String see_all_explore = base_url + "exploreProductsSeeAll";
+    public static String see_all_shop = base_url + "exploreProductsSeeAll";
+    public static String search_product_by_name_url = base_url+"searchproductbyname";
+    public static String reviews_list_url = base_url+"reviewslist/";
+    public static String get_sub_category_url = base_url+"getsubcats/";
 }

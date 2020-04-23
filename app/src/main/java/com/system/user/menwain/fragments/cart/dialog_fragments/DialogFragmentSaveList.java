@@ -29,12 +29,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
+import com.system.user.menwain.fragments.category.CategoryItemsFragment;
+import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.cart.CartFragment;
 import com.system.user.menwain.fragments.more.orders.OrdersFragment;
 import com.system.user.menwain.fragments.my_list.AllListsFragment;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
+import com.system.user.menwain.responses.cart.SaveListResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.ArrayList;
@@ -45,7 +48,11 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +69,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     private int pay_status;
     private ProgressDialog progressDialog;
     List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
+    CartViewModel cartViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,6 +77,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         customProgressDialog(getContext());
         prefrences = new Prefrences(getContext());
+        cartViewModel = ViewModelProviders.of(DialogFragmentSaveList.this).get(CartViewModel.class);
         mConfirm = view.findViewById(R.id.confirm_btn_purchasing_method);
         etListName = view.findViewById(R.id.tv_date_in_store_purchase);
         mCloseBtn = view.findViewById(R.id.close_back_view);
@@ -109,7 +118,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         if (id == R.id.confirm_btn_purchasing_method) {
             pay_status = prefrences.getPayRBtnStatus();
             placeOrderAndAddToWishList();
-            /*if (pay_status == 5) {
+           /* if (pay_status == 5) {
                 prefrences.setCartFragStatus(0);
                 prefrences.setBottomNavStatus(4);
                 mHome.setImageResource(R.drawable.ic_housewhite);
@@ -164,15 +173,15 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             jsonObj.put("address_id", prefrences.getDeliveryAddressId());
             jsonObj.put("promotion_id", 123);
             jsonObj.put("shipping_method_id", prefrences.getPayRBtnStatus());
-            jsonObj.put("shipping_cost", 12);
+            jsonObj.put("shipping_cost", prefrences.getShippingCost());
             jsonObj.put("secret_code", 21);
-            jsonObj.put("date_time", "2020-04-14 00:00:00");
+            jsonObj.put("date_time", prefrences.getDateTime());
             jsonObj.put("delivery_man_id", 1);
             jsonObj.put("order_status", "pending");
             jsonObj.put("order_dispatch_id", 1);
             jsonObj.put("payment_method_id", prefrences.getPayRBtnStatus());
             jsonObj.put("wishlist_name", etListName.getText().toString().trim());
-            jsonObj.put("other", "hello");
+            jsonObj.put("other", "next");
 
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < avail_items_list.size(); i++) {
@@ -194,11 +203,44 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.place_order_add_wish_list, jsonObj, new Response.Listener<JSONObject>() {
+        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.place_order_add_wish_list, jsonObj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.e("add_response","response");
-                //Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                cartViewModel.deleteAllCartRecords();
+//                Toast.makeText(getActivity(), "Resopnse", Toast.LENGTH_SHORT).show();
+               /* if (pay_status == 5) {
+                    prefrences.setCartFragStatus(0);
+                    prefrences.setBottomNavStatus(4);
+                    mHome.setImageResource(R.drawable.ic_housewhite);
+                    tvHome.setTextColor(Color.parseColor("#004040"));
+                    mCategory.setImageResource(R.drawable.ic_searchwhite);
+                    tvCategory.setTextColor(Color.parseColor("#004040"));
+                    mFavourite.setImageResource(R.drawable.ic_likeblue);
+                    tvFavourite.setTextColor(Color.parseColor("#00c1bd"));
+                    mCart.setImageResource(R.drawable.ic_cart_white);
+                    tvCart.setTextColor(Color.parseColor("#004040"));
+                    mMore.setImageResource(R.drawable.ic_morewhite);
+                    tvMore.setTextColor(Color.parseColor("#004040"));
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
+                    mBackBtnPay.setVisibility(View.INVISIBLE);
+                } else {
+                    prefrences.setCartFragStatus(0);
+                    prefrences.setBottomNavStatus(5);
+                    prefrences.setMorFragStatus(2);
+                    prefrences.setMoreOrdersFragStatus(1);
+                    mHome.setImageResource(R.drawable.ic_housewhite);
+                    tvHome.setTextColor(Color.parseColor("#004040"));
+                    mCategory.setImageResource(R.drawable.ic_searchwhite);
+                    tvCategory.setTextColor(Color.parseColor("#004040"));
+                    mFavourite.setImageResource(R.drawable.ic_likewhite);
+                    tvFavourite.setTextColor(Color.parseColor("#004040"));
+                    mCart.setImageResource(R.drawable.ic_cart_white);
+                    tvCart.setTextColor(Color.parseColor("#004040"));
+                    mMore.setImageResource(R.drawable.ic_moreblue);
+                    tvMore.setTextColor(Color.parseColor("#00c1bd"));
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
+                    mBackBtnPay.setVisibility(View.INVISIBLE);
+                }*/
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {

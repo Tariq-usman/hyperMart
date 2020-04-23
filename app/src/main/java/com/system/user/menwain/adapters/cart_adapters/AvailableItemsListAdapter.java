@@ -1,6 +1,7 @@
 package com.system.user.menwain.adapters.cart_adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list;
     Context context;
     Prefrences prefrences;
+    private Bundle bundle;
 
     public AvailableItemsListAdapter(Context context, List<AvailNotAvailResponse.Datum.Available> avail_items_list) {
         this.avail_items_list = avail_items_list;
@@ -41,7 +43,7 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ItemsListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ItemsListViewHolder holder, final int position) {
         if (!avail_items_list.isEmpty()) {
             Glide.with(holder.ivProduct.getContext()).load(avail_items_list.get(position).getImage()).into(holder.ivProduct);
             holder.mProductNameView.setText(avail_items_list.get(position).getBrand());
@@ -73,9 +75,12 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
         holder.ivProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bundle = new Bundle();
                 prefrences.setBottomNavStatus(6);
                 CategoryItemsFragment fragment = new CategoryItemsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                bundle.putInt("product_id",avail_items_list.get(position).getId());
+                fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }
         });

@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="1dp"
+            android:foreground="@drawable/bg_avail_items_store"
             android:background="@drawable/bg_avail_items_store"
             android:orientation="horizontal">
 
@@ -115,7 +116,13 @@
                             android:text="15.4 "
                             android:textColor="@color/darkGreenColor"
                             android:textSize="10sp" />
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text=" km"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="10sp" />
 
                         <ImageView
                             android:layout_width="20dp"
@@ -134,7 +141,7 @@
             </LinearLayout>
             <ImageView
                 android:id="@+id/mart_logo_view"
-                android:layout_width="85dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/mart_logo" />
 

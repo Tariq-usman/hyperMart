@@ -16,10 +16,9 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +32,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -51,41 +51,36 @@ import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.responses.ProductDetailsResponse;
+import com.system.user.menwain.responses.ReviewsResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDetailsFragment extends Fragment implements View.OnClickListener {
     private int[] IMAGES = {R.drawable.dis, R.drawable.disc, R.drawable.disco};
-    private String[] storesName = {"Madina c carry", "Metro c carry", "Makro c carry", "Pak c carry", "Alrasheed c carry", "ARY c carry",
-            "Meezan c carry", "Lahore c carry", "ARY c carry", "Meezan c carry"};
-    private String[] productsName = {"Cooking oil", "Chicken", "Meat", "Butter", "Eggs", "Chocolate", "Frouts", "Carrot", "Mango", "Vegetables"};
-    private int[] items = {R.drawable.coocking_oil, R.drawable.chikken, R.drawable.meat, R.drawable.butter, R.drawable.eggs, R.drawable.choclate, R.drawable.frouts,
-            R.drawable.carrot, R.drawable.mango, R.drawable.vagitables};
-    private List<ProductDetailsResponse.Data.Productpic> related_items_list = new ArrayList<>();
+    private List<ProductDetailsResponse.Data.Productpic> related_items_list = new ArrayList<ProductDetailsResponse.Data.Productpic>();
     private RecyclerView recyclerViewRelateItems;
     private SelectedItemsFilterAdapter selectedItemsFilterAdapter;
 
-    private List<ProductDetailsResponse.Data.Reviews> reviews_list = new ArrayList<>();
+    private List<ReviewsResponse.Dataa.Datum> reviews_list = new ArrayList<ReviewsResponse.Dataa.Datum>();
     private RecyclerView recyclerViewItemReviews;
     private ItemReviewsAdapter itemReviewsAdapter;
     private CartViewModel cartViewModel;
 
-    TextView mDescription, mSpecification, mReviews, tvDescription;
+    TextView mDescription, mSpecification, mReviews, tvDescription, tvSpecifications;
     private TextView tvPrice, tvStoreName, tvTitle, tvReviewsCount, tvQuantity, mAddToCart;
     private ImageView mBack, mBarCodeScanner, ivIncreaseItem, ivDecreaseItem;
     private RatingBar ratingBar;
     Bundle bundle;
-    private String status,productName,imagePath,storeName, price, quantity;
-    private int productId,intQuantity;
-    private static ViewPager mPager;
+    private String status, productName, imagePath, storeName, price, quantity;
     private LinearLayout layoutSpecifications;
+    private int productId, intQuantity;
+    private static ViewPager mPager;
     private TabLayout tabLayout;
     private static int NUM_PAGES = 0;
     final long PERIOD_MS = 3000;
@@ -99,6 +94,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     final int[] count = {1};
     private Bitmap bitmap;
     private float totalPrice, unitPrice;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,9 +103,14 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         customProgressDialog(getContext());
 
         bundle = this.getArguments();
-        product_id = bundle.getInt("product_id");
-        status = bundle.getString("status", "");
-        getProductDetails(product_id);
+        if (bundle != null) {
+            product_id = bundle.getInt("product_id");
+            status = bundle.getString("status", "");
+            getProductDetails(product_id);
+            getProductReviews(product_id);
+        } else {
+            Toast.makeText(getContext(), "No product selected", Toast.LENGTH_SHORT).show();
+        }
         /*IMAGES = new int[]{(Integer.parseInt(bundle.getString("image_url", ""))),
                 (Integer.parseInt(bundle.getString("image_url1", ""))),
                 (Integer.parseInt(bundle.getString("image_url2", "")))};*/
@@ -118,7 +119,8 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         mPager = view.findViewById(R.id.item_detail_pager);
         tabLayout = view.findViewById(R.id.tab_layout_item_details);
         tvDescription = view.findViewById(R.id.tv_description);
-        layoutSpecifications = view.findViewById(R.id.layout_specification);
+        tvSpecifications = view.findViewById(R.id.tv_specifications);
+        //layoutSpecifications = view.findViewById(R.id.layout_specification);
 
         mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
         mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
@@ -187,38 +189,20 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         return view;
     }
 
-    private void getProductDetails(int product_id) {
+    private void getProductReviews(int product_id) {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_product_details_url + product_id, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.reviews_list_url + product_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                ProductDetailsResponse detailsResponse = gson.fromJson(response, ProductDetailsResponse.class);
-                productId =detailsResponse.getData().getId();
-                try {
-                    URL url = new URL(detailsResponse.getData().getImage());
-                    bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                } catch(IOException e) {
-                    System.out.println(e);
-                }
-                tvPrice.setText(detailsResponse.getData().getAvgPrice().toString());
-                tvTitle.setText(detailsResponse.getData().getName());
-//                tvReviewsCount.setText(det);
-                tvDescription.setText(detailsResponse.getData().getDescription());
-                ratingBar.setRating(Float.valueOf(detailsResponse.getRating().toString()));
+                ReviewsResponse reviewsResponse = gson.fromJson(response, ReviewsResponse.class);
 
                 reviews_list.clear();
-                for (int i=0;i<detailsResponse.getData().getReviewss().size();i++){
-                    reviews_list.add(detailsResponse.getData().getReviewss().get(i));
+                for (int i = 0; i < reviewsResponse.getDataa().getData().size(); i++) {
+                    reviews_list.add(reviewsResponse.getDataa().getData().get(i));
                 }
                 itemReviewsAdapter.notifyDataSetChanged();
-
-                related_items_list.clear();
-                for (int i=0;i<detailsResponse.getData().getProductpic().size();i++){
-                    related_items_list.add(detailsResponse.getData().getProductpic().get(i));
-                }
-                selectedItemsFilterAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -229,6 +213,70 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             }
         });
         requestQueue.add(request);
+    }
+
+    private void getProductDetails(int product_id) {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_product_details_url + product_id, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ProductDetailsResponse detailsResponse = gson.fromJson(response, ProductDetailsResponse.class);
+                productId = detailsResponse.getData().getId();
+                try {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                    URL url = new URL(detailsResponse.getData().getImage());
+                    bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    Log.e("bitmap", bitmap.toString());
+
+                    tvPrice.setText(detailsResponse.getData().getAvgPrice().toString());
+                    tvTitle.setText(detailsResponse.getData().getName());
+                    tvDescription.setText(detailsResponse.getData().getDescription());
+                    tvSpecifications.setText(detailsResponse.getData().getSpecification());
+                    if (detailsResponse.getRating() == null || detailsResponse.getRating()=="") {
+                        ratingBar.setRating(0);
+                    } else {
+                        ratingBar.setRating(Float.valueOf(detailsResponse.getRating()));
+                    }
+                    int review_count = reviews_list.size();
+                    tvReviewsCount.setText("(" + review_count + " Reviews)");
+
+                    related_items_list.clear();
+                    for (int i = 0; i < detailsResponse.getData().getProductpic().size(); i++) {
+                        related_items_list.add(detailsResponse.getData().getProductpic().get(i));
+                    }
+                    selectedItemsFilterAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("details_error", error.toString());
+                progressDialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
     }
 
     private void init() {
@@ -267,21 +315,21 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         int id = view.getId();
         if (id == R.id.description_btn) {
             tvDescription.setVisibility(View.VISIBLE);
-            layoutSpecifications.setVisibility(View.GONE);
+            tvSpecifications.setVisibility(View.GONE);
             recyclerViewItemReviews.setVisibility(View.GONE);
             mDescription.setTextColor(getResources().getColor(R.color.lightBlueColor));
             mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
             mReviews.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.specificatin_btn) {
             tvDescription.setVisibility(View.GONE);
-            layoutSpecifications.setVisibility(View.VISIBLE);
+            tvSpecifications.setVisibility(View.VISIBLE);
             recyclerViewItemReviews.setVisibility(View.GONE);
             mSpecification.setTextColor(getResources().getColor(R.color.lightBlueColor));
             mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
             mReviews.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.reviews_btn) {
             tvDescription.setVisibility(View.GONE);
-            layoutSpecifications.setVisibility(View.GONE);
+            tvSpecifications.setVisibility(View.GONE);
             recyclerViewItemReviews.setVisibility(View.VISIBLE);
             mReviews.setTextColor(getResources().getColor(R.color.lightBlueColor));
             mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
@@ -291,7 +339,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
 //            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             productName = tvTitle.getText().toString();
             storeName = tvStoreName.getText().toString();
-            price =tvPrice.getText().toString();
+            price = tvPrice.getText().toString();
             quantity = tvQuantity.getText().toString();
             // strTotalPrice = price;
             totalPrice = Float.parseFloat(price);
@@ -300,7 +348,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             saveToInternalStorage(bitmap);
 
             cartViewModel = ViewModelProviders.of((FragmentActivity) getContext()).get(CartViewModel.class);
-            Cart cart = new Cart(productId, imagePath,productName, storeName, totalPrice, unitPrice, intQuantity);
+            Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
             //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
             cartViewModel.insertCart(cart);
             //cartViewModel.insertAllCart(cart, updateCartQuantity);
@@ -330,6 +378,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         // Fetching max value
         progressDialog.getMax();
     }
+
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getContext());
         // path to /data/data/yourapp/app_data/imageDir

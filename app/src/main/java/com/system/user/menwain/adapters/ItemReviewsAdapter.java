@@ -1,6 +1,7 @@
 package com.system.user.menwain.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.responses.ProductDetailsResponse;
+import com.system.user.menwain.responses.ReviewsResponse;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ItemReviewsAdapter extends RecyclerView.Adapter<ItemReviewsAdapter.ItemReviewsViewHolder> {
-    private List<ProductDetailsResponse.Data.Reviews> reviewsList;
+    private List<ReviewsResponse.Dataa.Datum> reviewsList;
 
-    public ItemReviewsAdapter(List<ProductDetailsResponse.Data.Reviews> reviewsList) {
+    public ItemReviewsAdapter(List<ReviewsResponse.Dataa.Datum> reviewsList) {
         this.reviewsList = reviewsList;
     }
 
@@ -32,29 +34,24 @@ public class ItemReviewsAdapter extends RecyclerView.Adapter<ItemReviewsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ItemReviewsViewHolder holder, int position) {
-        String date = reviewsList.get(position).getCreatedAt();
-        String [] split_date = date.split(":");
-        holder.tvDate.setText(split_date[0]);
-        holder.tvRating.setText(reviewsList.get(position).getRating().toString());
+
+        holder.mUserName.setText(reviewsList.get(position).getCustomerreview().getFirstName());
+        String date_time = reviewsList.get(position).getTime();;
+        String[] split_date_time = date_time.split(" ");
+        String date = split_date_time[0];
+        holder.tvDate.setText(date);
+        holder.tvRating.setText("("+reviewsList.get(position).getRating().toString()+")");
         holder.ratingBar.setRating(Float.valueOf(reviewsList.get(position).getRating()));
         holder.tvReview.setText(reviewsList.get(position).getReview());
-       /* holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                             FragmentManager fragmentManager =   ((AppCompatActivity)context).getSupportFragmentManager();
-                             fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new ItemsFragment()).addToBackStack(null).commit();
-//                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-//                Fragment myFragment = new ItemsFragment();
-//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, myFragment).addToBackStack(null).commit();
-
-
-            }
-        });*/
     }
 
     @Override
     public int getItemCount() {
-        return reviewsList.size();
+        if (reviewsList.size() > 0) {
+            return reviewsList.size();
+        } else {
+            return 0;
+        }
     }
 
     public static class ItemReviewsViewHolder extends RecyclerView.ViewHolder {

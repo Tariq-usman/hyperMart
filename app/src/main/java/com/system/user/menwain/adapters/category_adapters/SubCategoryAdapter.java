@@ -14,38 +14,45 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.system.user.menwain.local_db.model.UpdateCartQuantity;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.responses.category.CategoryResponse;
+import com.system.user.menwain.responses.category.SubCategoryResponse;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.FilterItemViewHolder> {
     Context context;
     String imagePath;
-    List<CategoryResponse.Product> subCatergoryList;
+    List<SubCategoryResponse.Product> subCatergoryList;
     private CartViewModel cartViewModel;
     Bundle bundle;
     Prefrences prefrences;
     int productId, intQuantity;
     String productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
-
-    public SubCategoryAdapter(Context context, List<CategoryResponse.Product> subCatergoryList) {
+    private List<Integer> p_id_list = new ArrayList<Integer>();
+    UpdateCartQuantity updateCartQuantity;
+    int id;
+    public SubCategoryAdapter(Context context, List<SubCategoryResponse.Product> subCatergoryList) {
         this.context = context;
         this.subCatergoryList = subCatergoryList;
         prefrences = new Prefrences(context);
@@ -62,9 +69,10 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     @Override
     public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
 
-        holder.mProductNameView.setText(subCatergoryList.get(position).getName());
         Glide.with(holder.mFilteProduct.getContext()).load(subCatergoryList.get(position).getImage()).into(holder.mFilteProduct);
-//        holder.mStoreName.setText(storesName[position]);
+        holder.mProductNameView.setText(subCatergoryList.get(position).getName());
+        //  holder.mStoreName.setText(subCatergoryList.get(position).getBrand());
+        holder.mPriceFilterItem.setText(subCatergoryList.get(position).getAvgPrice().toString());
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,24 +103,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle.putString("status", "2");
-                bundle.putInt("product_id",subCatergoryList.get(position).getId());
-              /*  if (position == items.length - 1) {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position - 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position - 2]));
-                } else if (position == items.length - 2) {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position + 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position - 2]));
-                } else if (position == items.length - 3) {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position + 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position + 2]));
-                } else {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position + 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position + 2]));
-                }*/
+                bundle.putInt("product_id", subCatergoryList.get(position).getId());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).commit();
             }
@@ -124,9 +115,9 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                 productId = subCatergoryList.get(position).getId();
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                productName = holder.mProductNameView.getText().toString();
-                storeName = holder.mStoreName.getText().toString();
-                price = holder.mPriceFilterItem.getText().toString();
+                productName = subCatergoryList.get(position).getName();
+              //  storeName = holder.mStoreName.getText().toString();
+                price = subCatergoryList.get(position).getAvgPrice().toString();
                 quantity = holder.mItemCounter.getText().toString();
                 // strTotalPrice = price;
                 totalPrice = Float.parseFloat(price);
@@ -135,11 +126,37 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                 saveToInternalStorage(bitmap);
 
                 cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
-                Cart cart = new Cart(productId, imagePath,productName, storeName, totalPrice, unitPrice, intQuantity);
-                //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
-                cartViewModel.insertCart(cart);
-                //cartViewModel.insertAllCart(cart, updateCartQuantity);
-                Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                final Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
+                updateCartQuantity = new UpdateCartQuantity(productId, intQuantity+1, unitPrice);
+                cartViewModel.getCartDataList().observe((FragmentActivity) context, new Observer<List<Cart>>() {
+                    @Override
+                    public void onChanged(List<Cart> carts) {
+
+                        for (int i = 0; i < carts.size(); i++) {
+                            p_id_list.add(carts.get(i).getP_id());
+                        }
+                    }
+                });
+                if (p_id_list.size() == 0) {
+                    cartViewModel.insertCart(cart);
+                } else {
+
+                    for (int i = 0; i < p_id_list.size(); i++) {
+                        if (p_id_list.get(i) == productId) {
+                            id = p_id_list.get(i);
+                        }
+                    }
+                    if (id == productId){
+                        cartViewModel.updateCartQuantity(updateCartQuantity);
+                        Toast.makeText(context, "Update Successfully", Toast.LENGTH_SHORT).show();
+                    }else {
+                        cartViewModel.insertCart(cart);
+                        Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+//                UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity,unitPrice);
+//                cartViewModel.insertAllCart(cart, updateCartQuantity);
             }
         });
     }
@@ -161,7 +178,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             mProductNameView = itemView.findViewById(R.id.filter_product_name_view);
             mIncreaseItems = itemView.findViewById(R.id.increase_items);
             mDecreaseItems = itemView.findViewById(R.id.decrees_item);
-            mStoreName = itemView.findViewById(R.id.filter_store_name);
+           // mStoreName = itemView.findViewById(R.id.filter_store_name);
             mItemCounter = itemView.findViewById(R.id.items_counter);
             mAddToCart = itemView.findViewById(R.id.add_to_cart_filter_wrapper);
             mPriceFilterItem = itemView.findViewById(R.id.price_view_filter_item);

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -50,7 +51,7 @@ import java.util.Locale;
 
 public class SelectedStoreFragment extends Fragment implements RecyclerClickInterface {
 
-    private RecyclerView recyclerViewSelectedStore, recyclerViewFilterStores,recyclerViewCategoryProducts;
+    private RecyclerView recyclerViewSelectedStore, recyclerViewFilterStores, recyclerViewCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
     private ImageView ivBackBtnSelectedStore, ivSelectedStore;
     private TextView tvStoreName, tvStoreLocation, tvStoreRating;
@@ -73,7 +74,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_store, container, false);
         prefrences = new Prefrences(getContext());
-        geocoder= new Geocoder(getContext(), Locale.ENGLISH);
+        geocoder = new Geocoder(getContext(), Locale.ENGLISH);
         bundle = this.getArguments();
         customProgressDialog(getContext());
         ivSelectedStore = view.findViewById(R.id.iv_store_iamge);
@@ -104,38 +105,29 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         recyclerViewSelectedStore.setLayoutManager(linearLayoutManager);
         storeCategoryAdapter = new SelectedStoreCategoryAdapter(getContext(), category_list, this);
         recyclerViewSelectedStore.setAdapter(storeCategoryAdapter);
-        int position = StoresAdapter.pos;
-        //recyclerViewSelectedStore.smoothScrollToPosition(position + 1);
-
-        /*recyclerViewFilterStores = view.findViewById(R.id.recycler_view_filter_filtered);
-        recyclerViewFilterStores.setHasFixedSize(true);
-        recyclerViewFilterStores.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
-        selectedStorecategoryProductsAdapter = new SelectedStoresCategoryProductsAdapter(getContext(), selected_store_category_products_list);
-        recyclerViewFilterStores.setAdapter(selectedStorecategoryProductsAdapter);*/
 
         recyclerViewCategoryProducts = view.findViewById(R.id.recycler_view_category_products);
-        recyclerViewCategoryProducts.setVisibility(View.GONE);
         recyclerViewCategoryProducts.setHasFixedSize(true);
         recyclerViewCategoryProducts.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
         categoryProductsAdapter = new CategoryProductsAdapter(getContext(), category_products_list);
         recyclerViewCategoryProducts.setAdapter(categoryProductsAdapter);
 
-        getSelectedStoreData();
+        int store_id = prefrences.getMoreStoreId();
+        getSelectedStoreData(store_id);
+
         return view;
     }
+
     @Override
     public void interfaceOnClick(View view, int position) {
-//        recyclerViewFilterStores.setVisibility(View.GONE);
         recyclerViewCategoryProducts.setVisibility(View.VISIBLE);
         int category_id = category_list.get(position).getId();
-        getCategoryProducts( category_id);
+        getCategoryProducts(category_id);
     }
 
 
-
-    private void getSelectedStoreData() {
+    private void getSelectedStoreData(int store_id) {
         progressDialog.show();
-        int store_id = bundle.getInt("store_id", 0);
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_selected_store_data_url + store_id, new Response.Listener<String>() {
@@ -179,12 +171,13 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         });
         requestQueue.add(request);
     }
-    private void getCategoryProducts( int category_id) {
+
+    private void getCategoryProducts(int category_id) {
         progressDialog.show();
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_category_products_data_url + category_id, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_selected_store_data_url + category_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 SelectedStoreCategoryProductsResponse categoryProductsResponse = gson.fromJson(response, SelectedStoreCategoryProductsResponse.class);
@@ -192,6 +185,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 for (int i = 0; i < categoryProductsResponse.getProduct().getData().size(); i++) {
                     category_products_list.add(categoryProductsResponse.getProduct().getData().get(i));
                 }
+                category_products_list.size();
                 categoryProductsAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
@@ -204,6 +198,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         });
         requestQueue.add(request);
     }
+
     public void customProgressDialog(Context context) {
         progressDialog = new ProgressDialog(context);
         // Setting Message

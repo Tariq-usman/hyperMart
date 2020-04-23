@@ -18,26 +18,27 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.responses.home.ShopSeeAllResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class ShopItemsListAdapter extends RecyclerView.Adapter<ShopItemsListAdapter.ItemsListViewHolder> {
     Context context;
-    private String[] productsName;
-    private int[] products;
+    private List<ShopSeeAllResponse.Datum> shop_list;
     int productId, intQuantity;
     String imagePath,productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
     private CartViewModel cartViewModel;
-    public ShopItemsListAdapter(Context context, String[] productsName, int[] products) {
+    public ShopItemsListAdapter(Context context, List<ShopSeeAllResponse.Datum> shop_list) {
         this.context = context;
-        this.productsName = productsName;
-        this.products = products;
+        this.shop_list = shop_list;
     }
 
     @NonNull
@@ -50,8 +51,8 @@ public class ShopItemsListAdapter extends RecyclerView.Adapter<ShopItemsListAdap
 
     @Override
     public void onBindViewHolder(@NonNull final ItemsListViewHolder holder, int position) {
-        holder.ivAllItemsList.setImageResource(products[position]);
-        holder.tvAllItemsList.setText(productsName[position]);
+       Glide.with(holder.ivAllItemsList.getContext()).load(shop_list.get(position).getImage()).into(holder.ivAllItemsList);
+        holder.tvAllItemsList.setText(shop_list.get(position).getName());
 
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +102,7 @@ public class ShopItemsListAdapter extends RecyclerView.Adapter<ShopItemsListAdap
 
     @Override
     public int getItemCount() {
-        return products.length;
+        return shop_list.size();
     }
 
     public class ItemsListViewHolder extends RecyclerView.ViewHolder{

@@ -48,18 +48,27 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         if (details_list.isEmpty() || details_list.size() == 0) {
             Toast.makeText(context, "No data..", Toast.LENGTH_SHORT).show();
         } else {
-            Glide.with(holder.mProduct.getContext()).load(details_list.get(position).getProductss().get(position).getImage()).into(holder.mProduct);
-            holder.tvName.setText(details_list.get(position).getProductss().get(position).getName());
-            holder.tvStoreName.setText(details_list.get(position).getStore().getName());
-            holder.tvAmount.setText(details_list.get(position).getProductss().get(position).getPivot().getPrice().toString());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            try {
+                Glide.with(holder.mProduct.getContext()).load(details_list.get(position).getProductss().get(position).getImage()).into(holder.mProduct);
+                holder.tvName.setText(details_list.get(position).getProductss().get(position).getName());
+                holder.tvStoreName.setText(details_list.get(position).getStore().getName());
+                holder.tvAmount.setText(details_list.get(position).getProductss().get(position).getPivot().getPrice().toString());
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     prefrences.setMoreOrdersFragStatus(3);
                     ItemReviewFragment fragment = new ItemReviewFragment();
                     FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                     bundle = new Bundle();
-                    bundle.putInt("product_id", details_list.get(position).getProductss().get(position).getProductId());
+                    try {
+                        bundle.putInt("product_id", details_list.get(position).getProductss().get(position).getProductId());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.nav_host_fragment, fragment).commit();
                 }

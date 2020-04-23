@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -44,7 +43,7 @@ public class StoresFragment extends Fragment {
     private CardView mSearchStores;
     private Prefrences prefrences;
     private ProgressDialog progressDialog;
-    private List<StoresAllBranchesResponse.Storelist> stores_list = new ArrayList<>();
+    private List<StoresAllBranchesResponse.Storelist.Datum> stores_list = new ArrayList<StoresAllBranchesResponse.Storelist.Datum>();
 
     @Nullable
     @Override
@@ -83,8 +82,8 @@ public class StoresFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 StoresAllBranchesResponse branchesResponse = gson.fromJson(response, StoresAllBranchesResponse.class);
-                for (int i = 0; i < branchesResponse.getStorelist().size(); i++) {
-                    stores_list.add(branchesResponse.getStorelist().get(i));
+                for (int i = 0; i < branchesResponse.getStorelist().getData().size(); i++) {
+                    stores_list.add(branchesResponse.getStorelist().getData().get(i));
                 }
                 storesAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();

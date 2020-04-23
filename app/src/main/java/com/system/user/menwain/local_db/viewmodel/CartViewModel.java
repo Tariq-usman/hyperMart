@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
+import com.system.user.menwain.local_db.model.UpdateProductQuantity;
 import com.system.user.menwain.local_db.repository.CartRep;
 
 import java.util.List;
@@ -37,6 +38,10 @@ public class CartViewModel extends AndroidViewModel
     public void deleteCart( Cart cart) {
         cartRep.deleteCart(cart);
     }
+
+    public void deleteAllRecord(Cart cart){
+        cartRep.deleteAllRecords();
+    }
     public LiveData<List<Cart>> getCartDataList() {
         return cartDataList;
     }
@@ -48,6 +53,7 @@ public class CartViewModel extends AndroidViewModel
     public void updateCartQuantityByPid(UpdateCartQuantity updateCartQuantity, Cart cart) {
         cartRep.UpdateCartQuantiyByPid(updateCartQuantity, cart);
     }
+
 
     public void deleteAllCartRecords() {
         cartRep.deleteAllRecords();

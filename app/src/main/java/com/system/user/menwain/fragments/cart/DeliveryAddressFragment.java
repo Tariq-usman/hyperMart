@@ -122,9 +122,15 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
 
         delivieryAddressesAdapter = new DelivieryAddressesAdapter(getContext(), addressList,this);
         recyclerViewAddress.setAdapter(delivieryAddressesAdapter);
+
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserAddress();
+    }
 
     private void setRadioButtonChecked() {
 
@@ -207,8 +213,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             ItemsAvailabilityStoresFragment storesFragment = new ItemsAvailabilityStoresFragment();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             bundle = new Bundle();
-            bundle.putDouble("lat",Double.valueOf(latitude));
-            bundle.putDouble("long",Double.valueOf(longitude));
+            prefrences.setDeliverAddress(Double.valueOf(latitude)+" "+Double.valueOf(longitude));
             storesFragment.setArguments(bundle);
             transaction.replace(R.id.nav_host_fragment, storesFragment).addToBackStack(null).commit();
         } else if (id == R.id.iv_back) {

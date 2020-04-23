@@ -166,6 +166,16 @@ public class Prefrences {
         return sharedPreferences.getInt("total_price", 0);
     }
 
+    public void setShippingCost(int shipping_cost) {
+        editor.putInt("shipping_cost", shipping_cost);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getShippingCost() {
+        return sharedPreferences.getInt("shipping_cost", 0);
+    }
+
     public void setDateTime(String date_time) {
         editor.putString("date_time", date_time);
         editor.apply();
@@ -174,5 +184,24 @@ public class Prefrences {
 
     public String getDateTime() {
         return sharedPreferences.getString("date_time", "");
+    }
+
+    public void setMoreStoreId(int more_store_id) {
+        editor.putInt("more_store_id", more_store_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getMoreStoreId() {
+        return sharedPreferences.getInt("more_store_id", 0);
+    }
+
+    public void setDeliverAddress(String delivery_address) {
+        editor.putString("delivery_address", delivery_address);
+        editor.apply();
+        editor.commit();
+    }
+    public String getDeliveryAddress(){
+        return sharedPreferences.getString("delivery_address","");
     }
 }

@@ -18,7 +18,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.ui.AppBarConfiguration;
 
-import com.system.user.menwain.fragments.category.CategoryFragment;
+import com.system.user.menwain.fragments.category.SuperCategoryFragment;
+import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.custom_languages.LocaleManager;
@@ -42,19 +43,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public AppBarConfiguration mAppBarConfiguration;
-    private ImageView mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
+    private ImageView ivSearch, mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
     private LinearLayout home_layout, category_layout, my_list_layout, more_layout;
     private RelativeLayout cart_layout;
     private CartViewModel cartViewModel;
     private TextView totalCartQuantity, mActionBarTitle, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
+    private EditText etSearch;
     private String langauge;
     SharedPreferences preferences;
     SharedPreferences.Editor editor, editor1;
@@ -147,6 +151,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         ivBack = findViewById(R.id.iv_back);
         ivBack.setOnClickListener(this);
+        ivSearch = findViewById(R.id.iv_search);
+        ivSearch.setOnClickListener(this);
+        etSearch = findViewById(R.id.et_search);
         home_layout = findViewById(R.id.home_layout);
         mHome = findViewById(R.id.home_view);
         tvHome = findViewById(R.id.tv_home_view);
@@ -217,7 +224,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.home_layout) {
+        if (id == R.id.iv_search) {
+            Bundle bundle = new Bundle();
+            SearchFragment fragment = new SearchFragment();
+            if (etSearch.getText().toString().trim().isEmpty()||etSearch.getText().toString().trim()==null) {
+                Toast.makeText(getApplicationContext(), "Enter Your desire search..", Toast.LENGTH_SHORT).show();
+            }else {
+                bundle.putString("search", etSearch.getText().toString().trim());
+                fragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+            }
+        } else if (id == R.id.home_layout) {
             //  mActionBarTitle.setText("Home");
             prefrences.setBottomNavStatus(1);
             ivListGridView.setVisibility(View.INVISIBLE);
@@ -247,7 +264,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             tvCart.setTextColor(Color.parseColor("#004040"));
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#004040"));
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).addToBackStack(null).commit();
         } else if (id == R.id.cart_layout) {
             prefrences.setBottomNavStatus(3);
             frag_status = prefrences.getCartFragStatus();
@@ -355,7 +372,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryItemsFragment()).addToBackStack(null).commit();
             } else if (category_fragment_status == 1) {
                 prefrences.setCategoryFragStatus(0);
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).addToBackStack(null).commit();
             } else if (category_fragment_status == 0) {
                 prefrences.setBottomNavStatus(1);
                 setFragment(new HomeFragment(), "Home");
@@ -495,7 +512,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     tvMore.setTextColor(Color.parseColor("#004040"));
                 }
             }
-        }else if (prefrences.getBottomNavStatus() == 6){
+        } else if (prefrences.getBottomNavStatus() == 6) {
             prefrences.setBottomNavStatus(3);
             if (cart_fragment_status == 0) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
@@ -520,7 +537,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               MainActivity.this.finish();
+                MainActivity.this.finish();
             }
         });
         btnNo.setOnClickListener(new View.OnClickListener() {

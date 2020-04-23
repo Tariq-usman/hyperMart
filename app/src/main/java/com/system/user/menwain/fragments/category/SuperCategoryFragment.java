@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
-import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
+import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -35,12 +34,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryFragment extends Fragment {
+public class SuperCategoryFragment extends Fragment {
     RecyclerView recyclerViewProductCategory;
     private ImageView mBarCodeScanner;
     private CardView mSearchViewCategory;
-    private List<SuperCategoryResponse.SuperCategory.Datum> categoryList  = new ArrayList<>();
-    private CategoryAdapter categoryAdapter;
+    private List<SuperCategoryResponse.SuperCategory.Datum> superCategoryList = new ArrayList<>();
+    private SuperCategoryAdapter superCategoryAdapter;
 
     private ProgressDialog progressDialog;
 
@@ -65,8 +64,8 @@ public class CategoryFragment extends Fragment {
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_category);
         recyclerViewProductCategory.setHasFixedSize(true);
         recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(),3, GridLayoutManager.VERTICAL,false));
-        categoryAdapter = new CategoryAdapter(getContext(),categoryList);
-        recyclerViewProductCategory.setAdapter(categoryAdapter);
+        superCategoryAdapter = new SuperCategoryAdapter(getContext(), superCategoryList);
+        recyclerViewProductCategory.setAdapter(superCategoryAdapter);
 
         return view;
     }
@@ -79,11 +78,11 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 SuperCategoryResponse categoryResponse = gson.fromJson(response,SuperCategoryResponse.class);
-                categoryList.clear();
+                superCategoryList.clear();
                 for (int i = 0; i<categoryResponse.getSuperCategory().getData().size();i++){
-                    categoryList.add(categoryResponse.getSuperCategory().getData().get(i));
+                    superCategoryList.add(categoryResponse.getSuperCategory().getData().get(i));
                 }
-                categoryAdapter.notifyDataSetChanged();
+                superCategoryAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {

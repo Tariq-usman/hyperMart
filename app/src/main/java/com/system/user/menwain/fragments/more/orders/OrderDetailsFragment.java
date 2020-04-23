@@ -49,6 +49,7 @@ public class OrderDetailsFragment extends Fragment {
     private Prefrences prefrences;
     private ProgressDialog progressDialog;
     Bundle bundle;
+    private int order_id;
 
     @Nullable
     @Override
@@ -57,6 +58,12 @@ public class OrderDetailsFragment extends Fragment {
         prefrences = new Prefrences(getContext());
         customProgressDialog(getContext());
         bundle = this.getArguments();
+        if (bundle != null) {
+            order_id = bundle.getInt("order_id");
+            getOrdersDetails(String.valueOf(order_id));
+        } else {
+            Toast.makeText(getContext(), "No order id..", Toast.LENGTH_SHORT).show();
+        }
 
         mBack = getActivity().findViewById(R.id.iv_back);
         mBack.setVisibility(View.VISIBLE);
@@ -77,12 +84,7 @@ public class OrderDetailsFragment extends Fragment {
         tvTime = view.findViewById(R.id.tv_time_order_details);
         tvStatus = view.findViewById(R.id.tv_status_order_details);
         tvOrderCode = view.findViewById(R.id.tv_order_code_order_details);
-        String order_id = String.valueOf(bundle.getInt("order_id"));
-        if (order_id != null || !order_id.isEmpty()) {
-            getOrdersDetails(order_id);
-        } else {
-            Toast.makeText(getContext(), "No order id..", Toast.LENGTH_SHORT).show();
-        }
+
 
         recyclerViewFavourite = view.findViewById(R.id.recycler_view_order_details);
         recyclerViewFavourite.setHasFixedSize(true);

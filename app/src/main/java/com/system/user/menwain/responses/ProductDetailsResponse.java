@@ -11,7 +11,7 @@ public class ProductDetailsResponse {
     private Data data;
     @SerializedName("rating")
     @Expose
-    private Double rating;
+    private String rating;
 
     public Data getData() {
         return data;
@@ -21,11 +21,11 @@ public class ProductDetailsResponse {
         this.data = data;
     }
 
-    public Double getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -729,12 +729,9 @@ public class ProductDetailsResponse {
             @SerializedName("review")
             @Expose
             private String review;
-            @SerializedName("created_at")
+            @SerializedName("time")
             @Expose
-            private String createdAt;
-            @SerializedName("updated_at")
-            @Expose
-            private String updatedAt;
+            private String time;
 
             public Integer getId() {
                 return id;
@@ -776,30 +773,16 @@ public class ProductDetailsResponse {
                 this.review = review;
             }
 
-            public String getCreatedAt() {
-                return createdAt;
+            public String getTime() {
+                return time;
             }
 
-            public void setCreatedAt(String createdAt) {
-                this.createdAt = createdAt;
-            }
-
-            public String getUpdatedAt() {
-                return updatedAt;
-            }
-
-            public void setUpdatedAt(String updatedAt) {
-                this.updatedAt = updatedAt;
+            public void setTime(String time) {
+                this.time = time;
             }
 
         }
-
     }
 
 }
-
-
-
-
-
 

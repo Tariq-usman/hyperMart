@@ -19,6 +19,8 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 
 import java.io.Serializable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     private float distanceTo;
     public static List<AvailNotAvailResponse.Datum.Available> available_list;
     public static List<AvailNotAvailResponse.Datum.Notavailable> not_available_list;
-
+    private static DecimalFormat df2;
     public ItemsAvailabilityStoresAdapter(Context context, List<AvailNotAvailResponse.Datum> stores_list, double lat, double lang) {
         this.stores_list = stores_list;
         this.lat = lat;
@@ -64,14 +66,16 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         String dist = distanceTo + "";
         String[] split_date = dist.split(".");
 //        String first = split_date[0];
-        holder.mDistanceView.setText(distanceTo + " km");
+         df2 = new DecimalFormat("#.##");
+        df2.setRoundingMode(RoundingMode.UP);
+        holder.mDistanceView.setText(String.valueOf(df2.format(distanceTo)));
         for (int i = 0; i < stores_list.get(position).getAvailable().size(); i++) {
             total_amount =  stores_list.get(position).getAvailable().get(i).getAvgPrice();
         }
         holder.mSortByPrice.setText(String.valueOf(total_amount));
         holder.mAvailableItems.setText(stores_list.get(position).getAvailable().size() + "");
         String pos = holder.mDistanceView.getText().toString();
-        holder.mTotalItems.setText("" + stores_list.get(position).getAvailable().size() + stores_list.get(position).getNotavailable().size());
+        holder.mTotalItems.setText(stores_list.get(position).getAvailable().size() + stores_list.get(position).getNotavailable().size()+"");
 
         if (distanceTo <= 10) {
             holder.mStatusColorView.setBackgroundColor(Color.parseColor("#00c1bd"));
@@ -91,6 +95,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
                 AvailNotAvailItemsListsFragment fragment = new AvailNotAvailItemsListsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle = new Bundle();
+                bundle.putInt("store_id",stores_list.get(position).getId());
                 bundle.putString("price", holder.mSortByPrice.getText().toString());
                 bundle.putString("available",stores_list.get(position).getAvailable().size()+"");
                 bundle.putString("not_available",stores_list.get(position).getNotavailable().size()+"");

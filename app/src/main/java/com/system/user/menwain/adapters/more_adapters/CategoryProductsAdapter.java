@@ -55,17 +55,20 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
     @NonNull
     @Override
     public FilterStoresViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_filter_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_store_items, parent, false);
         FilterStoresViewHolder categoryViewHolder = new FilterStoresViewHolder(view);
         return categoryViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final FilterStoresViewHolder holder, final int position) {
-        Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getProducts().get(position).getImage()).into(holder.mFilteProduct);
+        if (category_products_list.size() > 0) {
+            Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getProducts().get(position).getImage()).into(holder.mFilteProduct);
+        }
         holder.mProductNameView.setText(category_products_list.get(position).getProducts().get(position).getName());
         holder.mStoreName.setText(category_products_list.get(position).getName());
         holder.mPriceFilterItem.setText(category_products_list.get(position).getProducts().get(position).getAvgPrice().toString());
+
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,23 +98,7 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle.putString("status", "3");
-               /* if (position == items.length - 1) {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position - 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position - 2]));
-                } else if (position==items.length-2){
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position + 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position - 2]));
-                }else if (position==items.length-3){
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position + 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position + 2]));
-                }else {
-                    bundle.putString("image_url", String.valueOf(items[position]));
-                    bundle.putString("image_url1", String.valueOf(items[position + 1]));
-                    bundle.putString("image_url2", String.valueOf(items[position + 2]));
-                }*/
+                bundle.putInt("product_id", category_products_list.get(position).getId());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).commit();
             }
@@ -174,7 +161,11 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
 
     @Override
     public int getItemCount() {
-        return category_products_list.size();
+        if (category_products_list.size() > 0) {
+            return category_products_list.size();
+        } else {
+            return 0;
+        }
     }
 
     public static class FilterStoresViewHolder extends RecyclerView.ViewHolder {

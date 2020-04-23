@@ -26,13 +26,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoresViewHolder> {
-    List<StoresAllBranchesResponse.Storelist> stores_list;
+    List<StoresAllBranchesResponse.Storelist.Datum> stores_list;
     static Context context;
     public static int pos;
     private Prefrences prefrences;
     private Bundle bundle;
 
-    public StoresAdapter(Context context, List<StoresAllBranchesResponse.Storelist> stores_list) {
+    public StoresAdapter(Context context, List<StoresAllBranchesResponse.Storelist.Datum> stores_list) {
         this.stores_list = stores_list;
         this.context = context;
         prefrences = new Prefrences(context);
@@ -59,11 +59,11 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoresView
             public void onClick(View view) {
                 pos = holder.getAdapterPosition();
                 prefrences.setMoreStoresFragStatus(2);
-
                 bundle = new Bundle();
                 Fragment myFragment = new SelectedStoreFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                bundle.putInt("store_id", stores_list.get(position).getId());
+//                bundle.putInt("store_id", stores_list.get(position).getId());
+                prefrences.setMoreStoreId(stores_list.get(position).getId());
                 myFragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, myFragment).commit();
             }

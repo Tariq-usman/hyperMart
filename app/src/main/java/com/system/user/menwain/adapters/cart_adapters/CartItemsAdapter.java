@@ -1,10 +1,8 @@
 package com.system.user.menwain.adapters.cart_adapters;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,22 +15,23 @@ import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.SelectedItemsFilterAdapter> {
 
     private CartViewModel cartViewModel;
     private List<Cart> cartList = new ArrayList<>();
+    private List<Float> unit_price = new ArrayList<Float>();
     private Context context;
     byte[] bytArrayImage;
     String path;
+    float unitPrice;
     public void setCartData(List<Cart> cartList, CartViewModel cartViewModel) {
         this.cartList = cartList;
         this.cartViewModel = cartViewModel;
@@ -60,7 +59,14 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
 
         String initail_val =holder.mCartQuantity.getText().toString();
         final int[] count = {Integer.valueOf(initail_val)};
-
+        cartViewModel.getCartDataList().observe((FragmentActivity) context, new Observer<List<Cart>>() {
+            @Override
+            public void onChanged(List<Cart> carts) {
+                for (int i = 0; i < carts.size(); i++) {
+                    unit_price.add(carts.get(i).getPer_unit_price());
+                }
+            }
+        });
         holder.mIncreaseCartQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +77,11 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
                 String price = holder.mCartPrice.getText().toString();
                 String strTotalPrice = price.substring(1,price.length());
                 float fTotalPrice = Float.parseFloat(strTotalPrice);
-                float unitPrice = 150;
+
+                for (int i=0;i<unit_price.size();i++){
+                     unitPrice = unit_price.get(position);
+                }
+//                float unitPrice = Float.parseFloat(holder.mCartPrice.getText().toString().substring(1));
 
                 float finalPrice = unitPrice + fTotalPrice;
 
@@ -91,8 +101,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
                     String price = holder.mCartPrice.getText().toString();
                     String strTotalPrice = price.substring(1,price.length());
                     float fTotalPrice = Float.parseFloat(strTotalPrice);
-                    float unitPrice = 150;
-
+                    for (int i=0;i<unit_price.size();i++){
+                        unitPrice = unit_price.get(position);
+                    }
                     float finalPrice = fTotalPrice - unitPrice ;
 
                     UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(cartList.get(position).getId(), quant, finalPrice);

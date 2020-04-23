@@ -3,47 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="4dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginHorizontal="10dp"
         android:gravity="center"
+        android:layout_marginHorizontal="10dp"
         android:orientation="vertical">
-
         <androidx.cardview.widget.CardView
             android:layout_width="80dp"
-            android:layout_height="80dp"
             android:layout_gravity="center"
+            android:layout_height="80dp"
             android:layout_margin="4dp"
             android:elevation="3dp"
             app:cardCornerRadius="15dp">
-
             <ImageView
-                android:id="@+id/product_image_view"
+                android:id="@+id/view_filter_product"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/category" />
+                android:layout_height="match_parent"
+                android:src="@drawable/category"/>
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/tv_name_my_list"
+            android:id="@+id/filter_product_name_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="Boneless Mutton 1 kg"
+            android:gravity="center"
             android:textColor="@color/blackColor" />
 
         <TextView
-            android:id="@+id/tv_store_name_my_list"
+            android:id="@+id/filter_store_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Smart Mobiles"
             android:gravity="center"
-            android:text="By MeatOne"
             android:textColor="@color/darkGreenColor"
             android:textSize="12sp" />
 
@@ -57,18 +55,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SAR"
-                android:textColor="@color/darkGreenColor"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textColor="@color/darkGreenColor" />
 
             <TextView
-                android:id="@+id/tv_price_my_list"
+                android:id="@+id/price_view_filter_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="2dp"
                 android:text="150"
-                android:textColor="@color/darkGreenColor"
+                android:layout_marginHorizontal="2dp"
+                android:textStyle="bold"
                 android:textSize="10sp"
-                android:textStyle="bold" />
+                android:textColor="@color/darkGreenColor"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
@@ -80,49 +78,44 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/bgColorPMBtn"
                     android:gravity="center"
+                    android:background="@color/bgColorPMBtn"
                     android:orientation="horizontal">
-
                     <ImageView
                         android:id="@+id/decrees_item"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/ic_minus" />
-
+                        android:src="@drawable/ic_minus"/>
                     <TextView
                         android:id="@+id/items_counter"
+                        android:gravity="center"
                         android:layout_width="12dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="1"
-                        android:textSize="@dimen/twelve_sp" />
-
+                        android:textSize="@dimen/twelve_sp"
+                        android:text="1"/>
                     <ImageView
                         android:id="@+id/increase_items"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/ic_plusbtn" />
+                        android:src="@drawable/ic_plusbtn"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/add_to_cart_filter_wrapper"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_marginVertical="5dp"
+            android:layout_marginVertical="2dp"
             app:cardCornerRadius="10dp">
-
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_selected"
-                android:gravity="center"
+                android:layout_height="match_parent"
                 android:text="Add to Cart"
+                android:gravity="center"
+                android:textSize="@dimen/twelve_sp"
                 android:textColor="@color/whiteColor"
-                android:textSize="@dimen/fourteen_sp" />
+                android:background="@drawable/bg_selected"/>
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>

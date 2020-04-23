@@ -4,14 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +18,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.others.Prefrences;
 import com.system.user.menwain.R;
@@ -29,9 +37,12 @@ import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSav
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentDeliveryTime;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
+import com.system.user.menwain.responses.cart.CalculateShippingCostResponse;
+import com.system.user.menwain.utils.URLs;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
     private CartViewModel cartViewModel;
@@ -39,8 +50,9 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     private View mShowStatusColor;
     private ImageView mBackBtn, mBarCodeScanner, mMartLogoView;
     private LinearLayout mConfirmBtn;
-    private int avail, not_avial;
-    public String price;
+    private int store_id, avail, not_avial;
+    public String price, distance, final_dist;
+    String[] split_dist, dist;
     SharedPreferences availPreferences, notAvailPrefrences;
     Bundle bundle;
     private Boolean pay_now, pay_later = false;
@@ -48,21 +60,31 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     Prefrences prefrences;
     private int pay_status;
     private CardView mSearchView;
+    private ProgressDialog progressDialog;
+    private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avail_not_avial_items_lists, container, false);
+        customProgressDialog(getContext());
         bundle = this.getArguments();
-        if (bundle!=null) {
-            avail = Integer.parseInt(bundle.getString("available"));
-            not_avial = Integer.parseInt(bundle.getString("not_available"));
-            price = bundle.getString("price");
+        if (bundle != null) {
+            store_id = bundle.getInt("store_id", 0);
+            avail = Integer.parseInt(bundle.getString("available", ""));
+            not_avial = Integer.parseInt(bundle.getString("not_available", ""));
+            price = bundle.getString("price", "");
+            distance = bundle.getString("distance", "");
+            split_dist = distance.split(" ");
+            final_dist = split_dist[0];
+            dist = final_dist.split(".");
         } else {
+            store_id = 0;
             avail = 0;
             not_avial = 0;
-            price="0";
+            price = "0";
+            distance = "0";
         }
         prefrences = new Prefrences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
@@ -97,9 +119,9 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mConfirmBtn = view.findViewById(R.id.confirm_btn_items_list);
         mAvailItems = view.findViewById(R.id.count_avail_items);
-        mAvailItems.setText(avail+"");
+        mAvailItems.setText(avail + "");
         mNotAvailItmes = view.findViewById(R.id.count_not_avail_items);
-        mNotAvailItmes.setText(not_avial+"");
+        mNotAvailItmes.setText(not_avial + "");
 
         mAvailable.setOnClickListener(this);
         mNotAvailable.setOnClickListener(this);
@@ -147,13 +169,10 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             getFragmentManager().beginTransaction().replace(R.id.container_items_list, new NotAvailableItemsFragment()).commit();
         } else if (id == R.id.confirm_btn_items_list) {
             pay_status = prefrences.getPayRBtnStatus();
-            if (pay_status == 5) {
-                DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
-                dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
-            } else {
-                //if (pay_status == 2){
-                DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
-                deliveryTime.show(getFragmentManager(), "Select Method");
+            if (avail_items_list.size()>0){
+
+            calculateShippingCost();}else {
+                Toast.makeText(getContext(), "There is no avialable items!", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.iv_back) {
             prefrences.setCartFragStatus(2);
@@ -161,4 +180,53 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             mBackBtn.setVisibility(View.GONE);
         }
     }
+
+    private void calculateShippingCost() {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.POST, URLs.calcualte_shipping_cost, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                CalculateShippingCostResponse shippingCostResponse = gson.fromJson(response,CalculateShippingCostResponse.class);
+                prefrences.setShippingCost(shippingCostResponse.getShippingcost());
+                if (pay_status == 5) {
+                    DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
+                    dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
+                } else {
+                    //if (pay_status == 2){
+                    DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
+                    deliveryTime.show(getFragmentManager(), "Select Method");
+                }
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("AvailNotAvailError", error.toString());
+                progressDialog.dismiss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("storeid", String.valueOf(prefrences.getStoreId()));
+                map.put("distance", distance);
+                map.put("totalprice", price);
+                return map;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    public void customProgressDialog(Context context) {
+        progressDialog = new ProgressDialog(context);
+        // Setting Message
+        progressDialog.setMessage("Loading...");
+        // Progress Dialog Style Spinner
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        // Fetching max value
+        progressDialog.getMax();
+    }
+
 }
