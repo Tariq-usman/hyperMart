@@ -27,7 +27,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.MoreFragment;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.OverAllRatingResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -40,14 +40,14 @@ public class RateUsFragment extends Fragment {
     private TextView mConfirmBtn, mTitle;
     private ImageView mBackBtn;
     private RatingBar ratingBarStore,ratingBarDeliveryBo,ratingBarServices;
-    private Prefrences prefrences;
+    private Preferences prefrences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rate_us,container,false);
         customProgressDialog(getContext());
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         mConfirmBtn = view.findViewById(R.id.submit);
         ratingBarStore = view.findViewById(R.id.rating_bar_store);
         ratingBarDeliveryBo = view.findViewById(R.id.rating_bar_delivery_boy);

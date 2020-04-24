@@ -26,9 +26,8 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.stores.SelectedStoreCategoryProductsResponse;
-import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,12 +42,12 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
     String productName, storeName, price, quantity, strTotalPrice, imagePath;
     private CartViewModel cartViewModel;
     Bundle bundle;
-    private Prefrences prefrences;
+    private Preferences prefrences;
 
     public CategoryProductsAdapter(Context context, List<SelectedStoreCategoryProductsResponse.Product.Datum> category_products_list) {
         this.category_products_list = category_products_list;
         this.context = context;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
 
     }
 

@@ -30,7 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
@@ -57,7 +57,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     Bundle bundle;
     private Boolean pay_now, pay_later = false;
     public static Boolean isCheck = false;
-    Prefrences prefrences;
+    Preferences prefrences;
     private int pay_status;
     private CardView mSearchView;
     private ProgressDialog progressDialog;
@@ -86,7 +86,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             price = "0";
             distance = "0";
         }
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
         mSearchView = getActivity().findViewById(R.id.search_view);

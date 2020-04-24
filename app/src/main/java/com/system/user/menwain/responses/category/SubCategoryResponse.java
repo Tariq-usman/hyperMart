@@ -7,19 +7,19 @@ import java.util.List;
 
 public class SubCategoryResponse {
 
-        @SerializedName("subCategory")
+        @SerializedName("category")
         @Expose
-        private SubCategory subCategory;
+        private Category category;
         @SerializedName("products")
         @Expose
         private List<Product> products = null;
 
-        public SubCategory getSubCategory() {
-            return subCategory;
+        public Category getCategory() {
+            return category;
         }
 
-        public void setSubCategory(SubCategory subCategory) {
-            this.subCategory = subCategory;
+        public void setCategory(Category category) {
+            this.category = category;
         }
 
         public List<Product> getProducts() {
@@ -29,7 +29,8 @@ public class SubCategoryResponse {
         public void setProducts(List<Product> products) {
             this.products = products;
         }
-    public class SubCategory {
+
+    public class Category {
 
         @SerializedName("current_page")
         @Expose
@@ -168,9 +169,9 @@ public class SubCategoryResponse {
             @SerializedName("id")
             @Expose
             private Integer id;
-            @SerializedName("category_id")
+            @SerializedName("sup_category_id")
             @Expose
-            private Integer categoryId;
+            private Integer supCategoryId;
             @SerializedName("description")
             @Expose
             private String description;
@@ -201,12 +202,12 @@ public class SubCategoryResponse {
                 this.id = id;
             }
 
-            public Integer getCategoryId() {
-                return categoryId;
+            public Integer getSupCategoryId() {
+                return supCategoryId;
             }
 
-            public void setCategoryId(Integer categoryId) {
-                this.categoryId = categoryId;
+            public void setSupCategoryId(Integer supCategoryId) {
+                this.supCategoryId = supCategoryId;
             }
 
             public String getDescription() {
@@ -268,7 +269,6 @@ public class SubCategoryResponse {
         }
 
     }
-
     public class Product {
 
         @SerializedName("id")
@@ -342,7 +342,7 @@ public class SubCategoryResponse {
         private Object deletedAt;
         @SerializedName("productpic")
         @Expose
-        private List<Productpic> productpic = null;
+        private List<Object> productpic = null;
 
         public Integer getId() {
             return id;
@@ -528,95 +528,18 @@ public class SubCategoryResponse {
             this.deletedAt = deletedAt;
         }
 
-        public List<Productpic> getProductpic() {
+        public List<Object> getProductpic() {
             return productpic;
         }
 
-        public void setProductpic(List<Productpic> productpic) {
+        public void setProductpic(List<Object> productpic) {
             this.productpic = productpic;
-        }
-        public class Productpic {
-
-            @SerializedName("id")
-            @Expose
-            private Integer id;
-            @SerializedName("product_id")
-            @Expose
-            private Integer productId;
-            @SerializedName("image_name")
-            @Expose
-            private String imageName;
-            @SerializedName("image_url")
-            @Expose
-            private String imageUrl;
-            @SerializedName("other")
-            @Expose
-            private String other;
-            @SerializedName("created_at")
-            @Expose
-            private Object createdAt;
-            @SerializedName("updated_at")
-            @Expose
-            private Object updatedAt;
-
-            public Integer getId() {
-                return id;
-            }
-
-            public void setId(Integer id) {
-                this.id = id;
-            }
-
-            public Integer getProductId() {
-                return productId;
-            }
-
-            public void setProductId(Integer productId) {
-                this.productId = productId;
-            }
-
-            public String getImageName() {
-                return imageName;
-            }
-
-            public void setImageName(String imageName) {
-                this.imageName = imageName;
-            }
-
-            public String getImageUrl() {
-                return imageUrl;
-            }
-
-            public void setImageUrl(String imageUrl) {
-                this.imageUrl = imageUrl;
-            }
-
-            public String getOther() {
-                return other;
-            }
-
-            public void setOther(String other) {
-                this.other = other;
-            }
-
-            public Object getCreatedAt() {
-                return createdAt;
-            }
-
-            public void setCreatedAt(Object createdAt) {
-                this.createdAt = createdAt;
-            }
-
-            public Object getUpdatedAt() {
-                return updatedAt;
-            }
-
-            public void setUpdatedAt(Object updatedAt) {
-                this.updatedAt = updatedAt;
-            }
-
         }
 
     }
 
 }
+
+
+
+

@@ -1,12 +1,10 @@
 package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,10 +22,9 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.LogInResponse;
 import com.system.user.menwain.utils.URLs;
-import com.system.user.menwain.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     TextView mLogingBtn, mForgetPass, mCreateAccount;
     EditText mPhoneNo, mPassword;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     ProgressDialog progressDialog;
     boolean isLogin = false;
 
@@ -44,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        prefrences = new Prefrences(this);
+        prefrences = new Preferences(this);
         customProgressDialog(LoginActivity.this);
         mLogingBtn = findViewById(R.id.login_btn);
         mForgetPass = findViewById(R.id.forget_pass);

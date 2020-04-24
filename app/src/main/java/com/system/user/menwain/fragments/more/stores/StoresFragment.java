@@ -18,7 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.StoresAdapter;
 import com.system.user.menwain.fragments.more.MoreFragment;
@@ -41,7 +41,7 @@ public class StoresFragment extends Fragment {
     private ImageView ivBackStores;
     private TextView tvTitleStores;
     private CardView mSearchStores;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private ProgressDialog progressDialog;
     private List<StoresAllBranchesResponse.Storelist.Datum> stores_list = new ArrayList<StoresAllBranchesResponse.Storelist.Datum>();
 
@@ -49,7 +49,7 @@ public class StoresFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stores, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
         ivBackStores = getActivity().findViewById(R.id.iv_back);
         ivBackStores.setVisibility(View.VISIBLE);

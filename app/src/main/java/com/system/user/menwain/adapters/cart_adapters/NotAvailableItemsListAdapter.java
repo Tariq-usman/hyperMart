@@ -37,8 +37,8 @@ public class NotAvailableItemsListAdapter extends RecyclerView.Adapter<NotAvaila
     public void onBindViewHolder(@NonNull final NotAvailableItemsListViewHolder holder, int position) {
         if (!not_avail_items_list.isEmpty()) {
             Glide.with(holder.ivProduct.getContext()).load(not_avail_items_list.get(position).getImage()).into(holder.ivProduct);
-            holder.mProductNameView.setText(not_avail_items_list.get(position).getBrand());
-            holder.mStoreName.setText(not_avail_items_list.get(position).getName());
+            holder.mProductNameView.setText(not_avail_items_list.get(position).getName());
+            holder.mStoreName.setText(not_avail_items_list.get(position).getBrand());
             holder.mAmount.setText(not_avail_items_list.get(position).getAvgPrice().toString());
         }
 

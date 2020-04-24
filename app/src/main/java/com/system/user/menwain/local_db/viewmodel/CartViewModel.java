@@ -53,7 +53,7 @@ public class CartViewModel extends AndroidViewModel
     public void updateCartQuantityByPid(UpdateCartQuantity updateCartQuantity, Cart cart) {
         cartRep.UpdateCartQuantiyByPid(updateCartQuantity, cart);
     }
-
+    
 
     public void deleteAllCartRecords() {
         cartRep.deleteAllRecords();

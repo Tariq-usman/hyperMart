@@ -42,6 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Boneless Mutton 1 kg"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/blackColor" />
 
             <TextView

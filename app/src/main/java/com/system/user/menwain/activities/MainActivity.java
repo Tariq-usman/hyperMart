@@ -20,7 +20,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 import com.system.user.menwain.fragments.category.SuperCategoryFragment;
 import com.system.user.menwain.fragments.others.SearchFragment;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.custom_languages.LocaleManager;
 import com.system.user.menwain.R;
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     boolean isLogin, isSignUp = false;
     private SharedPreferences fragment_status_pref;
     private int frag_status;
-    Prefrences prefrences;
+    Preferences prefrences;
     private Dialog MyDialog;
     private Button btnYes, btnNo;
 
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        prefrences = new Prefrences(this);
+        prefrences = new Preferences(this);
         frag_status = prefrences.getCartFragStatus();
         Intent intent = getIntent();
         Log.e("IS LOGIN", String.valueOf(isLogin));

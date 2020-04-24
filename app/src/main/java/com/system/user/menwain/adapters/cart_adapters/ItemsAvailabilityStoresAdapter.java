@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 
-import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     private int total_amount = 0;
     Context context;
     Bundle bundle;
-    Prefrences prefrences;
+    Preferences prefrences;
     private float distanceTo;
     public static List<AvailNotAvailResponse.Datum.Available> available_list;
     public static List<AvailNotAvailResponse.Datum.Notavailable> not_available_list;
@@ -45,7 +43,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         this.lat = lat;
         this.lang = lang;
         this.context = context;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
         available_list = new ArrayList<>();
         not_available_list = new ArrayList<>();
     }
@@ -95,6 +93,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
                 AvailNotAvailItemsListsFragment fragment = new AvailNotAvailItemsListsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle = new Bundle();
+                prefrences.setSelectedStoreId(stores_list.get(position).getId());
                 bundle.putInt("store_id",stores_list.get(position).getId());
                 bundle.putString("price", holder.mSortByPrice.getText().toString());
                 bundle.putString("available",stores_list.get(position).getAvailable().size()+"");

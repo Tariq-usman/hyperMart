@@ -41,6 +41,8 @@
                 android:text="Date"
                 android:textColor="@color/darkGreenColor" />
 
+
+
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="match_parent"

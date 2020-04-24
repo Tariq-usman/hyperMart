@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.home.HomeExploreAndShop;
 
 import java.util.List;
@@ -26,12 +26,12 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     private List<HomeExploreAndShop.Dummy3> shopList;
     public boolean status = false;
     Bundle bundle;
-    Prefrences prefrences;
+    Preferences prefrences;
 
     public ShopAdapter(Context context, List<HomeExploreAndShop.Dummy3> shopList) {
         this.context = context;
         this.shopList = shopList;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
     }
 
     @NonNull

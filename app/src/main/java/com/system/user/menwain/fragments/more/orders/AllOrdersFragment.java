@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.AllOrdersAdapter;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.orders.AllOrdersResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -39,14 +39,14 @@ public class AllOrdersFragment extends Fragment {
     private List<AllOrdersResponse.Allorders.Datum> all_orders_list = new ArrayList<>();
     private RecyclerView recyclerViewOrders;
     private AllOrdersAdapter allOrdersAdapter;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private ProgressDialog progressDialog;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_orders, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
 
         getAllOrdersData();

@@ -60,13 +60,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="2dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:text="ONLINE DEALS"
                             android:textSize="@dimen/fourteen_sp" />
 
                         <TextView
-                                android:id="@+id/tv_store_name_list_view"
+                            android:id="@+id/tv_store_name_list_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:text="Store Name "
                             android:textSize="@dimen/fourteen_sp" />
 

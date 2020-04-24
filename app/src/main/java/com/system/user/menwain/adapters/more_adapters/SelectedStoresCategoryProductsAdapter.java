@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
@@ -42,12 +42,12 @@ public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<
     String productName, storeName, price, quantity, strTotalPrice, imagePath;
     private CartViewModel cartViewModel;
     Bundle bundle;
-    private Prefrences prefrences;
+    private Preferences prefrences;
 
     public SelectedStoresCategoryProductsAdapter(Context context, List<SelectedStoreResponse.Product.Datum> category_products_list) {
         this.category_products_list = category_products_list;
         this.context = context;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
 
     }
 

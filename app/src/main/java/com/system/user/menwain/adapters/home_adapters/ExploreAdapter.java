@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.home.HomeExploreAndShop;
 
 import java.util.List;
@@ -27,12 +27,12 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
     List<HomeExploreAndShop.Dummy2> exploreList;
     public boolean status = false;
     Bundle bundle;
-    Prefrences prefrences;
+    Preferences prefrences;
 
     public ExploreAdapter(Context context, List<HomeExploreAndShop.Dummy2> exploreList) {
         this.context = context;
         this.exploreList = exploreList;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
     }
 
     @NonNull

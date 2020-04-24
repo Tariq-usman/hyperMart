@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.my_lists_adapters.AllListsAdapter;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.my_list.UserWishlistProductsResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -43,14 +42,14 @@ public class AllListsFragment extends Fragment {
     AllListsAdapter allListsAdapter;
     private CardView mSearchViewAllLists;
     ImageView mBackBtn;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private ProgressDialog progressDialog;
     private List<UserWishlistProductsResponse.Product.Datum> orders_list = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_lists,container,false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setVisibility(View.INVISIBLE);

@@ -24,16 +24,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.fragments.cart.PaymentFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.DeliveryTimesAdapter;
-import com.system.user.menwain.fragments.cart.PaymentFragment;
 import com.system.user.menwain.responses.cart.StoreTimeSLotsResponse;
 import com.system.user.menwain.utils.URLs;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +54,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
     private RecyclerView recyclerView;
     private DeliveryTimesAdapter timesAdapter;
     private List<StoreTimeSLotsResponse.List> delivery_times_list = new ArrayList<>();
-    Prefrences prefrences;
+    Preferences prefrences;
     private ProgressDialog progressDialog;
 
     @Nullable
@@ -60,13 +62,19 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_delivery_time, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
         tvDeliveryPickUp = view.findViewById(R.id.tv_delivery_pickup);
         mConfirm = view.findViewById(R.id.confirm_btn_delivery_time);
         mCloseBtn = view.findViewById(R.id.close_back_view);
         recyclerView = view.findViewById(R.id.recycler_view_delivery_time);
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        String formattedDate = df.format(c);
         tvDate = view.findViewById(R.id.tv_date);
+        tvDate.setText(formattedDate);
 
         mConfirm.setOnClickListener(this);
         mCloseBtn.setOnClickListener(this);
@@ -77,7 +85,6 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         timesAdapter = new DeliveryTimesAdapter(getContext(), delivery_times_list, this);
         recyclerView.setAdapter(timesAdapter);
-        getStoreTimeSlots();
         return view;
     }
 
@@ -104,31 +111,6 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
 
     }
 
-    private void getStoreTimeSlots() {
-        progressDialog.show();
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_store_time_slots_url + 1, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                StoreTimeSLotsResponse timeSLotsResponse = gson.fromJson(response, StoreTimeSLotsResponse.class);
-                delivery_times_list.clear();
-                for (int i = 0; i < timeSLotsResponse.getList().size(); i++) {
-                    delivery_times_list.add(timeSLotsResponse.getList().get(i));
-                }
-                timesAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        });
-        requestQueue.add(request);
-    }
-
     private void submitPreferredDeliveryDate() {
         progressDialog.show();
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -136,9 +118,14 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
             @Override
             public void onResponse(String response) {
                 prefrences.setDateTime(date_time);
-               // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
-                DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
-                dialogFragmentSaveList.show(getFragmentManager(),"Purchasing Method");
+                prefrences.setTimeSlotId(time_slot);
+
+                if (prefrences.getPaymentStatus() == 1) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
+                } else {
+                    DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
+                    dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
+                }
                 /*getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
                         .addToBackStack(null).commit();*/
                 prefrences.setCartFragStatus(0);
@@ -185,11 +172,51 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         tvDate.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
-
+                        getStoreTimeSlots(prefrences.getSelectedStoreId());
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.setTitle("Select Date..");
         datePickerDialog.show();
+    }
+
+    private void getStoreTimeSlots(int selectedStoreId) {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.POST, URLs.post_preffered_date_url + selectedStoreId, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                StoreTimeSLotsResponse timeSLotsResponse = gson.fromJson(response, StoreTimeSLotsResponse.class);
+                delivery_times_list.clear();
+                for (int i = 0; i < timeSLotsResponse.getList().size(); i++) {
+                    delivery_times_list.add(timeSLotsResponse.getList().get(i));
+                }
+                timesAdapter.notifyDataSetChanged();
+                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("time_error", error.toString());
+                progressDialog.dismiss();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                return headerMap;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("date", tvDate.getText().toString().trim());
+                return map;
+            }
+        };
+        requestQueue.add(request);
     }
 
     public void customProgressDialog(Context context) {

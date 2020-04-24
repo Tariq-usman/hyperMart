@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.home_adapters.ExploreAdapter;
 import com.system.user.menwain.adapters.home_adapters.ShopAdapter;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.home_adapters.ExploreAndShopAdapter;
@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private TextView tvSeeAllExploreShop, tvSeeAllExplore, tvSeeAllShop;
     private TabLayout tabLayout;
     private CardView mSearchView;
-    Prefrences prefrences;
+    Preferences prefrences;
     private int frag_status;
     private Context context;
 
@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmet_home, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         prefrences.setBottomNavStatus(1);
         customProgressDialog(getContext());
 

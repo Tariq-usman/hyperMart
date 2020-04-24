@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.orders.OrderDetailsFragment;
 import com.system.user.menwain.responses.more.orders.AllOrdersResponse;
@@ -22,13 +22,13 @@ import java.util.List;
 public class AllOrdersAdapter extends RecyclerView.Adapter<AllOrdersAdapter.OrdersItemViewHolder>{
     List<AllOrdersResponse.Allorders.Datum> all_orders_list;
     Context context;
-    Prefrences prefrences;
+    Preferences prefrences;
     Bundle bundle;
 
     public AllOrdersAdapter(Context context, List<AllOrdersResponse.Allorders.Datum> all_orders_list) {
         this.all_orders_list = all_orders_list;
         this.context = context;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
     }
 
     @NonNull
@@ -55,8 +55,7 @@ public class AllOrdersAdapter extends RecyclerView.Adapter<AllOrdersAdapter.Orde
                 prefrences.setMoreOrdersFragStatus(2);
                 OrderDetailsFragment fragment = new OrderDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
-                bundle = new Bundle();
-                bundle.putInt("order_id",all_orders_list.get(position).getId());
+                prefrences.setMoreOrderId(all_orders_list.get(position).getId());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment,fragment).commit();
             }

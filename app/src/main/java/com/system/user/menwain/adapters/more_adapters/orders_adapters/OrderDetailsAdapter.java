@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.fragments.more.orders.ItemReviewFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.responses.more.orders.OrderDetailsResponse;
@@ -26,13 +26,13 @@ import java.util.List;
 public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.OrderDetailsItemViewHolder> {
     private List<OrderDetailsResponse.Datum> details_list;
     Context context;
-    Prefrences prefrences;
+    Preferences prefrences;
     private Bundle bundle;
 
     public OrderDetailsAdapter(Context context, List<OrderDetailsResponse.Datum> details_list) {
         this.details_list = details_list;
         this.context = context;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
     }
 
     @NonNull

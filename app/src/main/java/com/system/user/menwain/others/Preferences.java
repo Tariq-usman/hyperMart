@@ -3,7 +3,7 @@ package com.system.user.menwain.others;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class Prefrences {
+public class Preferences {
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -12,7 +12,7 @@ public class Prefrences {
     Object o;
 
     // Constructor
-    public Prefrences(Context context) {
+    public Preferences(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences("fragment_status", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -156,6 +156,16 @@ public class Prefrences {
         return sharedPreferences.getInt("store_id", 0);
     }
 
+    public void setSelectedStoreId(int selectedstore_id) {
+        editor.putInt("selectedstore_id", selectedstore_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getSelectedStoreId() {
+        return sharedPreferences.getInt("selectedstore_id", 0);
+    }
+
     public void setTotalPrice(int total_price) {
         editor.putInt("total_price", total_price);
         editor.apply();
@@ -185,6 +195,15 @@ public class Prefrences {
     public String getDateTime() {
         return sharedPreferences.getString("date_time", "");
     }
+    public void setTimeSlotId(int time_slot_id) {
+        editor.putInt("time_slot_id", time_slot_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getTimeSlotId() {
+        return sharedPreferences.getInt("time_slot_id", 0);
+    }
 
     public void setMoreStoreId(int more_store_id) {
         editor.putInt("more_store_id", more_store_id);
@@ -194,6 +213,26 @@ public class Prefrences {
 
     public int getMoreStoreId() {
         return sharedPreferences.getInt("more_store_id", 0);
+    }
+
+    public void setMoreOrderId(int more_order_id) {
+        editor.putInt("more_order_id", more_order_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getMoreOrderId() {
+        return sharedPreferences.getInt("more_order_id", 0);
+    }
+
+    public void setOrderStatus(int order_status) {
+        editor.putInt("order_status", order_status);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getOrderStatus() {
+        return sharedPreferences.getInt("order_status", 0);
     }
 
     public void setDeliverAddress(String delivery_address) {

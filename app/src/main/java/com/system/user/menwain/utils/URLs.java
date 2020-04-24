@@ -1,7 +1,7 @@
 package com.system.user.menwain.utils;
 
 public class URLs {
-    public static final String base_url = "http://oranje-tech.com/demo/hypermart/api/";
+    public static final String base_url = "https://oranje-tech.com/demo/hypermart/api/";
     public static String user_log_in_url = base_url + "customerlogin";
     public static String user_register_url = base_url + "registerCustomer";
     public static String pass_recover_through_num_url = base_url + "customerRecvPassNumb";
@@ -42,4 +42,6 @@ public class URLs {
     public static String search_product_by_name_url = base_url+"searchproductbyname";
     public static String reviews_list_url = base_url+"reviewslist/";
     public static String get_sub_category_url = base_url+"getsubcats/";
+    public static String post_preffered_date_url = base_url+"storeslotslist/";
+    public static String payments_ypes_url = base_url+"PaymentsTypes";
 }

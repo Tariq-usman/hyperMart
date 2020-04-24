@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
@@ -22,7 +22,7 @@ public class PaymentFragment extends Fragment {
 
     TextView mConfirm,mPaymentTitle;
     private ImageView mBackBtnPay,mBarCodeScanner;
-    Prefrences prefrences;
+    Preferences prefrences;
     private CardView mSearchView;
 
     @Nullable
@@ -39,7 +39,7 @@ public class PaymentFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        prefrences =new Prefrences(getContext());
+        prefrences =new Preferences(getContext());
         mConfirm = view.findViewById(R.id.proceed_btn_payment);
 
         mBackBtnPay = getActivity().findViewById(R.id.iv_back);

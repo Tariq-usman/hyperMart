@@ -47,7 +47,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.cart.AddAddressResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -71,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double currentLng;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private ProgressDialog progressDialog;
     private int address_id;
 
@@ -80,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        prefrences = new Prefrences(this);
+        prefrences = new Preferences(this);
         customProgressDialog(MapsActivity.this);
         address_id = getIntent().getIntExtra("address_id",0);
 

@@ -32,7 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.home_adapters.grid_adapters.ShopItemsGridAdapter;
 import com.system.user.menwain.adapters.home_adapters.list_adapters.ShopItemsListAdapter;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.home_adapters.grid_adapters.ExploreItemsGridAdapter;
 import com.system.user.menwain.adapters.home_adapters.list_adapters.ExploreItemsListAdapter;
@@ -72,7 +72,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     Toolbar toolbar;
     private TextView fragTitle;
     private CardView searchViewAllItems;
-    Prefrences prefrences;
+    Preferences prefrences;
     private ExploreShopItemsGridAdapter exploreShopItemsGridAdapter;
     private ExploreItemsGridAdapter exploreItemsGridAdapter;
     private ShopItemsGridAdapter shopItemsGridAdapter;
@@ -85,7 +85,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_items, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 

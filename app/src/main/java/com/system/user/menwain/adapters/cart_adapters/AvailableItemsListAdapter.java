@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.category.CategoryItemsFragment;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
@@ -24,13 +24,13 @@ import java.util.List;
 public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableItemsListAdapter.ItemsListViewHolder> {
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list;
     Context context;
-    Prefrences prefrences;
+    Preferences prefrences;
     private Bundle bundle;
 
     public AvailableItemsListAdapter(Context context, List<AvailNotAvailResponse.Datum.Available> avail_items_list) {
         this.avail_items_list = avail_items_list;
         this.context = context;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
     }
 
 
@@ -46,8 +46,8 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
     public void onBindViewHolder(@NonNull final ItemsListViewHolder holder, final int position) {
         if (!avail_items_list.isEmpty()) {
             Glide.with(holder.ivProduct.getContext()).load(avail_items_list.get(position).getImage()).into(holder.ivProduct);
-            holder.mProductNameView.setText(avail_items_list.get(position).getBrand());
-            holder.mStoreName.setText(avail_items_list.get(position).getName());
+            holder.mProductNameView.setText(avail_items_list.get(position).getName());
+            holder.mStoreName.setText(avail_items_list.get(position).getBrand());
             holder.mAmount.setText(avail_items_list.get(position).getAvgPrice().toString());
         }
         final String currentItems = holder.mAvilNotAvailItemsView.getText().toString();

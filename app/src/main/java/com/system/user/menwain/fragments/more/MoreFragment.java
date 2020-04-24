@@ -1,7 +1,5 @@
 package com.system.user.menwain.fragments.more;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.menu_fragment.ProfileFragment;
 import com.system.user.menwain.fragments.more.menu_fragment.RateUsFragment;
@@ -29,12 +27,12 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private TextView tvTitle,tvOrderHistory, tvProfile, tvSettings, tvHelp, tvAbout, tvRateApp, tvLogout;
     private CardView mSearchViewMore;
     private LinearLayout ivStores,ivOrder;
-    Prefrences prefrences;
+    Preferences prefrences;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         mSearchViewMore = getActivity().findViewById(R.id.search_view);
         mSearchViewMore.setVisibility(View.INVISIBLE);
         ivBack = getActivity().findViewById(R.id.iv_back);

@@ -26,7 +26,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.utils.URLs;
 
@@ -39,7 +39,7 @@ public class ItemReviewFragment extends Fragment {
     private RatingBar ratingBar;
     private EditText etReview;
     private ImageView mBackBtn;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private Bundle bundle;
     private ProgressDialog progressDialog;
 
@@ -47,7 +47,7 @@ public class ItemReviewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_review, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
         bundle = this.getArguments();
         mSubmitReview = view.findViewById(R.id.submit_review);

@@ -12,7 +12,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 import com.system.user.menwain.responses.more.stores.StoresAllBranchesResponse;
@@ -29,13 +29,13 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoresView
     List<StoresAllBranchesResponse.Storelist.Datum> stores_list;
     static Context context;
     public static int pos;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private Bundle bundle;
 
     public StoresAdapter(Context context, List<StoresAllBranchesResponse.Storelist.Datum> stores_list) {
         this.stores_list = stores_list;
         this.context = context;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
     }
 
     @NonNull

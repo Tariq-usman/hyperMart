@@ -26,9 +26,8 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.SearchProductByNameResponse;
-import com.system.user.menwain.responses.category.CategoryResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +40,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.FilterItem
     List<SearchProductByNameResponse.Data.Datum> search_list;
     private CartViewModel cartViewModel;
     Bundle bundle;
-    Prefrences prefrences;
+    Preferences prefrences;
     int productId, intQuantity;
     String productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
@@ -49,7 +48,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.FilterItem
     public SearchAdapter(Context context, List<SearchProductByNameResponse.Data.Datum> search_list) {
         this.context = context;
         this.search_list = search_list;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
     }
 
     @NonNull

@@ -2,7 +2,6 @@ package com.system.user.menwain.adapters.my_lists_adapters;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.fragments.my_list.ListDetailsFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.responses.my_list.UserWishlistProductsResponse;
@@ -40,14 +39,14 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
 
     private List<UserWishlistProductsResponse.Product.Datum> orders_list;
     Context context;
-    Prefrences prefrences;
+    Preferences prefrences;
     private Bundle bundle;
     private ProgressDialog progressDialog;
 
     public AllListsAdapter(Context context, List<UserWishlistProductsResponse.Product.Datum> orders_list) {
         this.orders_list = orders_list;
         this.context = context;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
         customProgressDialog(context);
     }
 
@@ -74,6 +73,7 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
                 ListDetailsFragment fragment = new ListDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle.putInt("list_id", orders_list.get(position).getId());
+                bundle.putString("list_name", orders_list.get(position).getWishlistName());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }
@@ -113,9 +113,11 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
         StringRequest request = new StringRequest(Request.Method.GET, URLs.delete_wish_list + list_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(context, "Response", Toast.LENGTH_SHORT).show();
+                orders_list.remove(pos);
                 notifyItemRemoved(pos);
+                notifyItemRangeChanged(pos, orders_list.size());
                 notifyDataSetChanged();
+                Toast.makeText(context, "List Delete Successfully.", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {

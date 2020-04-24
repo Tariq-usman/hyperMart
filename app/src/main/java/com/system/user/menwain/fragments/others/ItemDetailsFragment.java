@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.ItemReviewsAdapter;
 import com.system.user.menwain.local_db.entity.Cart;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.local_db.model.UpdateCartQuantity;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.Item_details_SlidingImages_Adapter;
@@ -88,18 +90,20 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private Runnable runnable;
     private int currentPage = 0;
     private CardView mSearchView;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private ProgressDialog progressDialog;
     private int product_id;
     final int[] count = {1};
     private Bitmap bitmap;
     private float totalPrice, unitPrice;
+    private List<Integer> p_id_list = new ArrayList<Integer>();
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_details, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
 
         bundle = this.getArguments();
@@ -235,7 +239,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                     tvTitle.setText(detailsResponse.getData().getName());
                     tvDescription.setText(detailsResponse.getData().getDescription());
                     tvSpecifications.setText(detailsResponse.getData().getSpecification());
-                    if (detailsResponse.getRating() == null || detailsResponse.getRating()=="") {
+                    if (detailsResponse.getRating() == null || detailsResponse.getRating()=="" || detailsResponse.getRating().isEmpty()) {
                         ratingBar.setRating(0);
                     } else {
                         ratingBar.setRating(Float.valueOf(detailsResponse.getRating()));
@@ -346,13 +350,36 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             intQuantity = Integer.parseInt(quantity);
             unitPrice = totalPrice * intQuantity;
             saveToInternalStorage(bitmap);
-
             cartViewModel = ViewModelProviders.of((FragmentActivity) getContext()).get(CartViewModel.class);
             Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
-            //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
-            cartViewModel.insertCart(cart);
-            //cartViewModel.insertAllCart(cart, updateCartQuantity);
-            Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+            UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity+1, unitPrice);
+            cartViewModel.getCartDataList().observe((FragmentActivity) getContext(), new Observer<List<Cart>>() {
+                @Override
+                public void onChanged(List<Cart> carts) {
+
+                    for (int i = 0; i < carts.size(); i++) {
+                        p_id_list.add(carts.get(i).getP_id());
+                    }
+                }
+            });
+            if (p_id_list.size() == 0) {
+                cartViewModel.insertCart(cart);
+                Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+            } else {
+
+                for (int i = 0; i < p_id_list.size(); i++) {
+                    if (p_id_list.get(i) == productId) {
+                        id = p_id_list.get(i);
+                    }
+                }
+                if (id == productId){
+                    cartViewModel.updateCartQuantity(updateCartQuantity);
+                    Toast.makeText(getContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
+                }else {
+                    cartViewModel.insertCart(cart);
+                    Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                }
+            }
 
         } else if (id == R.id.iv_back) {
             if (status == "1") {

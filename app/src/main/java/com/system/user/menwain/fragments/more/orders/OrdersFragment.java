@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.ViewPagerAdapter;
 import com.system.user.menwain.fragments.more.MoreFragment;
@@ -23,13 +23,13 @@ public class OrdersFragment extends Fragment {
     private ViewPager viewPager;
     private ImageView mBackBtnOrders;
     private TextView mTitleOrder;
-    private Prefrences prefrences;
+    private Preferences prefrences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         mBackBtnOrders = getActivity().findViewById(R.id.iv_back);
         mBackBtnOrders.setVisibility(View.VISIBLE);
         viewPager = view.findViewById(R.id.vp_orders_container);

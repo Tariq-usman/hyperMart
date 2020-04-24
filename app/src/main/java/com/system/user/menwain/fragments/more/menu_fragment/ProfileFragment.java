@@ -27,12 +27,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.system.user.menwain.activities.ForgetPasswordActivity;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.MoreFragment;
 import com.system.user.menwain.responses.GetUserProfileDetailsResponse;
-import com.system.user.menwain.responses.PassRecoverThroughNum;
 import com.system.user.menwain.responses.UpdateProfileResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -40,9 +38,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -53,7 +49,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private RadioButton rbMale, rbFemale;
     private String gender;
     private Button btnRegister;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private ProgressDialog progressDialog;
     private boolean profile_status = false;
 
@@ -61,7 +57,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
 
         etFname = view.findViewById(R.id.et_f_name_profile);

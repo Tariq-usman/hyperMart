@@ -15,12 +15,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
-import com.system.user.menwain.responses.category.CategoryResponse;
 import com.system.user.menwain.responses.category.SubCategoryResponse;
 
 import androidx.annotation.NonNull;
@@ -28,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,17 +43,20 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     List<SubCategoryResponse.Product> subCatergoryList;
     private CartViewModel cartViewModel;
     Bundle bundle;
-    Prefrences prefrences;
+    Preferences prefrences;
     int productId, intQuantity;
     String productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
     private List<Integer> p_id_list = new ArrayList<Integer>();
+    List<Integer> quantity_list = new ArrayList<Integer>();
+
     UpdateCartQuantity updateCartQuantity;
-    int id;
+    int id, pro_quantity;
+
     public SubCategoryAdapter(Context context, List<SubCategoryResponse.Product> subCatergoryList) {
         this.context = context;
         this.subCatergoryList = subCatergoryList;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
     }
 
     @NonNull
@@ -116,7 +117,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 productName = subCatergoryList.get(position).getName();
-              //  storeName = holder.mStoreName.getText().toString();
+                //  storeName = holder.mStoreName.getText().toString();
                 price = subCatergoryList.get(position).getAvgPrice().toString();
                 quantity = holder.mItemCounter.getText().toString();
                 // strTotalPrice = price;
@@ -127,29 +128,34 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
                 cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
                 final Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
-                updateCartQuantity = new UpdateCartQuantity(productId, intQuantity+1, unitPrice);
                 cartViewModel.getCartDataList().observe((FragmentActivity) context, new Observer<List<Cart>>() {
                     @Override
                     public void onChanged(List<Cart> carts) {
 
                         for (int i = 0; i < carts.size(); i++) {
                             p_id_list.add(carts.get(i).getP_id());
+                            quantity_list.add(carts.get(i).getQuantity());
                         }
                     }
                 });
                 if (p_id_list.size() == 0) {
                     cartViewModel.insertCart(cart);
+                    Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
                 } else {
 
                     for (int i = 0; i < p_id_list.size(); i++) {
                         if (p_id_list.get(i) == productId) {
                             id = p_id_list.get(i);
+                            pro_quantity= quantity_list.get(i);
                         }
                     }
-                    if (id == productId){
+
+                    if (id == productId) {
+                        int final_quantity = intQuantity+pro_quantity;
+                        updateCartQuantity = new UpdateCartQuantity(productId, intQuantity, unitPrice);
                         cartViewModel.updateCartQuantity(updateCartQuantity);
                         Toast.makeText(context, "Update Successfully", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         cartViewModel.insertCart(cart);
                         Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
                     }
@@ -178,7 +184,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             mProductNameView = itemView.findViewById(R.id.filter_product_name_view);
             mIncreaseItems = itemView.findViewById(R.id.increase_items);
             mDecreaseItems = itemView.findViewById(R.id.decrees_item);
-           // mStoreName = itemView.findViewById(R.id.filter_store_name);
+            // mStoreName = itemView.findViewById(R.id.filter_store_name);
             mItemCounter = itemView.findViewById(R.id.items_counter);
             mAddToCart = itemView.findViewById(R.id.add_to_cart_filter_wrapper);
             mPriceFilterItem = itemView.findViewById(R.id.price_view_filter_item);

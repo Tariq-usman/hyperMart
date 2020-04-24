@@ -19,13 +19,12 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryAdapter;
 import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
-import com.system.user.menwain.responses.category.CategoryResponse;
 import com.system.user.menwain.responses.category.SubCategoryResponse;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
 import com.system.user.menwain.utils.URLs;
@@ -50,19 +49,19 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
     private ImageView mBackBtn, mBarCodeScanner;
 
     private CardView mSearchViewItemsFragment;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private ProgressDialog progressDialog;
     private CategoryAdapter categoryAdapter;
     private SubCategoryAdapter subCategoryAdapter;
     Bundle bundle;
-    private List<CategoryResponse.Category.Datum> catergoryList = new ArrayList<CategoryResponse.Category.Datum>();
+    private List<SuperCategoryResponse.SuperCategory.Datum> catergoryList = new ArrayList<SuperCategoryResponse.SuperCategory.Datum>();
     private List<SubCategoryResponse.Product> subCatergoryList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_items, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
         bundle = this.getArguments();
         if (bundle != null) {
@@ -92,8 +91,8 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
             }
         });
 
-//        getSuperCategoryData();
-        getCategory(cat_id);
+        getSuperCategoryData();
+       // getCategory(cat_id);
 
         recyclerViewCategory = view.findViewById(R.id.recycler_view_selected_items);
         recyclerViewCategory.setHasFixedSize(true);
@@ -114,12 +113,12 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
 
     @Override
     public void interfaceOnClick(View view, int position) {
+        recyclerViewSubCategory.setVisibility(View.VISIBLE);
         sub_cat_id = catergoryList.get(position).getId();
-        getSubCategory(sub_cat_id);
+        getSubCategory();
 
     }
 
-/*
     private void getSuperCategoryData() {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -130,10 +129,10 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
                 SuperCategoryResponse categoryResponse = gson.fromJson(response, SuperCategoryResponse.class);
                 catergoryList.clear();
                 for (int i = 0; i < categoryResponse.getSuperCategory().getData().size(); i++) {
-                   // catergoryList.add(categoryResponse.getSuperCategory().getData().get(i));
+                    catergoryList.add(categoryResponse.getSuperCategory().getData().get(i));
                 }
                 categoryAdapter.notifyDataSetChanged();
-                getCategory();
+                getSubCategory();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -145,9 +144,9 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
         });
         requestQueue.add(request);
     }
-*/
 
 
+/*
     private void getCategory(int cat_id) {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -172,12 +171,13 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
         });
         requestQueue.add(request);
     }
+*/
 
-    private void getSubCategory(int sub_cat_id) {
+    private void getSubCategory() {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_sub_category_url + sub_cat_id, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_category_url + sub_cat_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 SubCategoryResponse subCategoryResponse = gson.fromJson(response, SubCategoryResponse.class);

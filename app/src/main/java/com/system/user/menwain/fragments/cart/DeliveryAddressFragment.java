@@ -34,10 +34,12 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.activities.MapsActivity;
+import com.system.user.menwain.adapters.cart_adapters.PayNaoAdapter;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.DelivieryAddressesAdapter;
+import com.system.user.menwain.responses.cart.PaymentTypesResponse;
 import com.system.user.menwain.responses.cart.UserAddressListResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -52,28 +54,31 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     private ImageView mBackView, mAddNewAddress;
     private String[] address;
     private Double latitude,longitude;
-    RecyclerView recyclerViewAddress;
+    private RecyclerView recyclerViewAddress, recyclerViewPayNow,recyclerViewPayLater;
     DelivieryAddressesAdapter delivieryAddressesAdapter;
+    private PayNaoAdapter payNaoAdapter;
     private CardView mSearchViewAddress,addNewAddress;
     private SharedPreferences.Editor editor;
-    Prefrences prefrences;
+    Preferences prefrences;
     private Bundle bundle;
     private RadioButton rbDeliverToAddress, rbPreparePickUp, rbCashOnDelivery, rbPreparePickFromStore, rbWalkInStore;
     private RadioGroup rgPayNow, rgPayLater;
     private int rBtnPaymentStatus,delivery_address_id;
     private ProgressDialog progressDialog;
     private List<UserAddressListResponse.Addresslist> addressList = new ArrayList<UserAddressListResponse.Addresslist>();
+    private List<PaymentTypesResponse.DataPayNow> pay_now_list = new ArrayList<PaymentTypesResponse.DataPayNow>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_delivey_address, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         prefrences.setPaymentStatus(1);
         customProgressDialog(getContext());
         rBtnPaymentStatus = prefrences.getPayRBtnStatus();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+//        setRadioButtonChecked();
         getUserAddress();
 
         mSearchViewAddress = getActivity().findViewById(R.id.search_view);
@@ -115,6 +120,8 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         mPayNow.setOnClickListener(this);
         mPayLater.setOnClickListener(this);
         mAddNewAddress.setOnClickListener(this);
+
+
 
         recyclerViewAddress = view.findViewById(R.id.recycler_view_delivery_address);
         recyclerViewAddress.setHasFixedSize(true);
@@ -166,7 +173,6 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         String backStateName = itemsAvailabilityStoresFragment.getClass().getName();
         int id = view.getId();
         if (id == R.id.pay_now_delivery_adr) {
-            setRadioButtonChecked();
             rgPayNow.setVisibility(View.VISIBLE);
             rgPayLater.setVisibility(View.GONE);
             prefrences.setPaymentStatus(1);
@@ -175,7 +181,6 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
             mPayLater.setTextColor(Color.parseColor("#004040"));
         } else if (id == R.id.pay_later_delivery_adr) {
-            setRadioButtonChecked();
             rgPayNow.setVisibility(View.GONE);
             rgPayLater.setVisibility(View.VISIBLE);
             prefrences.setPaymentStatus(2);
@@ -234,10 +239,18 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_address_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+              /*  PaymentTypesResponse paymentTypesResponse = gson.fromJson(response,PaymentTypesResponse.class);
+                for (int i = 0;i<paymentTypesResponse.getDataPayNow().size();i++){
+                    pay_now_list.add(paymentTypesResponse.getDataPayNow().get(i));
+                }*/
+
+
+
+
                 UserAddressListResponse addressListResponse = gson.fromJson(response,UserAddressListResponse.class);
                 addressList.clear();
-                for (int i=0;i<addressListResponse.getAddresslist().size();i++){
-                    addressList.add(addressListResponse.getAddresslist().get(i));
+                for (int i=0;i<addressListResponse .getAddresslist().size();i++){
+                    addressList.add(addressListResponse .getAddresslist().get(i));
                 }
                 addressList.size();
                 delivieryAddressesAdapter.notifyDataSetChanged();

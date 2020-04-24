@@ -2,7 +2,6 @@ package com.system.user.menwain.fragments.cart;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,16 +20,16 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.fragments.my_list.ListDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -52,7 +50,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private ItemsAvailabilityStoresAdapter itemsAvailabilityStoresAdapter;
     private TextView mSortByDistance, mSortByPrice, mSortByAvailability;
     private ImageView mBackBtn;
-    Prefrences prefrences;
+    Preferences prefrences;
     private int pay_status;
     private CardView mSearchView;
     private Bundle bundle;
@@ -61,6 +59,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     CartViewModel cartViewModel;
     private double lat, lang;
     private List<AvailNotAvailResponse.Datum> stores_list = new ArrayList<>();
+    List<Integer> reorder_list=  ListDetailsFragment.reorder_list;
 
     @Nullable
     @Override
@@ -68,11 +67,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         View view = inflater.inflate(R.layout.fragment_items_availability_stores, container, false);
         mSearchView = getActivity().findViewById(R.id.search_view);
         mSearchView.setVisibility(View.INVISIBLE);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         pay_status = prefrences.getPaymentStatus();
         bundle = this.getArguments();
         String address = prefrences.getDeliveryAddress();
-        String  [] split_address = address.split(" ");
+        String[] split_address = address.split(" ");
         lat = Double.parseDouble(split_address[0]);
         lang = Double.parseDouble(split_address[1]);
 
@@ -80,15 +79,22 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         customProgressDialog(getContext());
         cartViewModel = ViewModelProviders.of(ItemsAvailabilityStoresFragment.this).get(CartViewModel.class);
 
-        cartViewModel.getCartDataList().observe(ItemsAvailabilityStoresFragment.this, new Observer<List<Cart>>() {
-            @Override
-            public void onChanged(List<Cart> carts) {
-                for (int i = 0; i < carts.size(); i++) {
-                    cartList.add(carts.get(i).getP_id());
+        if (prefrences.getOrderStatus() == 1) {
+            cartViewModel.getCartDataList().observe(ItemsAvailabilityStoresFragment.this, new Observer<List<Cart>>() {
+                @Override
+                public void onChanged(List<Cart> carts) {
+                    for (int i = 0; i < carts.size(); i++) {
+                        cartList.add(carts.get(i).getP_id());
+                    }
+                    lowestPrice();
                 }
-                lowestPrice();
+            });
+        }else if (prefrences.getOrderStatus()==2){
+            for (int i=0;i<reorder_list.size();i++){
+                cartList.add(reorder_list.get(i));
             }
-        });
+            lowestPrice();
+        }
 
         mSortByPrice = view.findViewById(R.id.sort_by_price_view);
         mSortByDistance = view.findViewById(R.id.sort_by_distance);
@@ -214,7 +220,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 jsonArray.put(cartList.get(i));
             }
             jsonObj.put("products", jsonArray);
-            Log.e("hello",jsonArray.toString());
+            Log.e("hello", jsonArray.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

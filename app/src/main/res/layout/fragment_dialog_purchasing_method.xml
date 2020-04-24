@@ -45,7 +45,7 @@
                 android:layout_height="35dp"
                 android:background="@drawable/bg_order_details"
                 android:gravity="center"
-                android:hint="List 1"
+                android:hint="List name"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColorHint="@color/darkGreenColor"

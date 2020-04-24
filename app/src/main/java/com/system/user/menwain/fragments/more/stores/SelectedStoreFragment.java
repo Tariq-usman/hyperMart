@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,11 +26,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.more_adapters.CategoryProductsAdapter;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.SelectedStoresCategoryProductsAdapter;
 import com.system.user.menwain.adapters.more_adapters.SelectedStoreCategoryAdapter;
-import com.system.user.menwain.adapters.more_adapters.StoresAdapter;
 import com.system.user.menwain.responses.more.stores.SelectedStoreCategoryProductsResponse;
 import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
 import com.system.user.menwain.utils.URLs;
@@ -57,7 +55,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private TextView tvStoreName, tvStoreLocation, tvStoreRating;
     private CardView mSearchViewSelecredStore;
     private RatingBar ratingBar;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private Bundle bundle;
     private ProgressDialog progressDialog;
     private Geocoder geocoder;
@@ -73,7 +71,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selected_store, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         geocoder = new Geocoder(getContext(), Locale.ENGLISH);
         bundle = this.getArguments();
         customProgressDialog(getContext());
@@ -113,7 +111,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         recyclerViewCategoryProducts.setAdapter(categoryProductsAdapter);
 
         int store_id = prefrences.getMoreStoreId();
-        getSelectedStoreData(store_id);
+        getSelectedStoreCategory(store_id);
 
         return view;
     }
@@ -126,11 +124,11 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     }
 
 
-    private void getSelectedStoreData(int store_id) {
+    private void getSelectedStoreCategory(int store_id) {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_selected_store_data_url + store_id, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_category_products_data_url + store_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 SelectedStoreResponse storeResponse = gson.fromJson(response, SelectedStoreResponse.class);

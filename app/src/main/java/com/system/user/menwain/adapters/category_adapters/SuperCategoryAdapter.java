@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.category.CategoryItemsFragment;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
@@ -26,13 +26,13 @@ public class SuperCategoryAdapter extends RecyclerView.Adapter<SuperCategoryAdap
     List<SuperCategoryResponse.SuperCategory.Datum> categoryList;
     public static int passId;
     Context context;
-    Prefrences prefrences;
+    Preferences prefrences;
     Bundle bundle;
 
     public SuperCategoryAdapter(Context context, List<SuperCategoryResponse.SuperCategory.Datum> categoryList) {
         this.categoryList = categoryList;
         this.context = context;
-        prefrences = new Prefrences(context);
+        prefrences = new Preferences(context);
     }
 
     @NonNull
@@ -51,7 +51,7 @@ public class SuperCategoryAdapter extends RecyclerView.Adapter<SuperCategoryAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // passId = holder.getAdapterPosition();
+                passId = holder.getAdapterPosition();
 
                 bundle = new Bundle();
                 CategoryItemsFragment fragment = new CategoryItemsFragment();

@@ -27,7 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.system.user.menwain.others.Prefrences;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.OrderDetailsAdapter;
 import com.system.user.menwain.responses.more.orders.OrderDetailsResponse;
@@ -46,7 +46,7 @@ public class OrderDetailsFragment extends Fragment {
     OrderDetailsAdapter orderDetailsAdapter;
     private ImageView mBack, ivStoreImage;
     private TextView tvStoreName, tvOrderNo, tvPrice, tvDate, tvTime, tvStatus, tvOrderCode;
-    private Prefrences prefrences;
+    private Preferences prefrences;
     private ProgressDialog progressDialog;
     Bundle bundle;
     private int order_id;
@@ -55,11 +55,11 @@ public class OrderDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_details, container, false);
-        prefrences = new Prefrences(getContext());
+        prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
         bundle = this.getArguments();
         if (bundle != null) {
-            order_id = bundle.getInt("order_id");
+            order_id = prefrences.getMoreOrderId();
             getOrdersDetails(String.valueOf(order_id));
         } else {
             Toast.makeText(getContext(), "No order id..", Toast.LENGTH_SHORT).show();
