@@ -2,6 +2,7 @@ package com.system.user.menwain.fragments.more.menu_fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.MoreFragment;
@@ -72,6 +74,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         rbFemale.setOnClickListener(this);
         btnRegister = view.findViewById(R.id.register);
         btnRegister.setOnClickListener(this);
+        if (prefrences.getToken().isEmpty()||prefrences.getToken()==null){
+            btnRegister.setClickable(false);
+            btnRegister.setEnabled(false);
+        }else {
+            btnRegister.setClickable(true);
+            btnRegister.setEnabled(true);
+
+        }
+
 
         ivBackProfile = getActivity().findViewById(R.id.iv_back);
         ivBackProfile.setVisibility(View.VISIBLE);
@@ -216,8 +227,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("profiel_error", error.toString());
                 Toast.makeText(getContext(), "You need to Login First!", Toast.LENGTH_SHORT).show();
+                Log.e("profiel_error", error.toString());
+                Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getActivity().startActivity(logInIntnet);
                 progressDialog.dismiss();
             }
         }) {

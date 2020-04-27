@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,11 +24,13 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -48,22 +51,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliveryAddressFragment extends Fragment implements View.OnClickListener , RecyclerClickInterface {
+public class DeliveryAddressFragment extends Fragment implements View.OnClickListener, RecyclerClickInterface {
 
     private TextView mTitleView, mConfirmBtn, mPayNow, mPayLater;
     private ImageView mBackView, mAddNewAddress;
     private String[] address;
-    private Double latitude,longitude;
-    private RecyclerView recyclerViewAddress, recyclerViewPayNow,recyclerViewPayLater;
+    private Double latitude, longitude;
+    private RecyclerView recyclerViewAddress, recyclerViewPayNow, recyclerViewPayLater;
     DelivieryAddressesAdapter delivieryAddressesAdapter;
     private PayNaoAdapter payNaoAdapter;
-    private CardView mSearchViewAddress,addNewAddress;
+    private CardView mSearchViewAddress, addNewAddress;
     private SharedPreferences.Editor editor;
     Preferences prefrences;
     private Bundle bundle;
     private RadioButton rbDeliverToAddress, rbPreparePickUp, rbCashOnDelivery, rbPreparePickFromStore, rbWalkInStore;
     private RadioGroup rgPayNow, rgPayLater;
-    private int rBtnPaymentStatus,delivery_address_id;
+    private int rBtnPaymentStatus, delivery_address_id;
     private ProgressDialog progressDialog;
     private List<UserAddressListResponse.Addresslist> addressList = new ArrayList<UserAddressListResponse.Addresslist>();
     private List<PaymentTypesResponse.DataPayNow> pay_now_list = new ArrayList<PaymentTypesResponse.DataPayNow>();
@@ -122,15 +125,83 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         mAddNewAddress.setOnClickListener(this);
 
 
-
         recyclerViewAddress = view.findViewById(R.id.recycler_view_delivery_address);
         recyclerViewAddress.setHasFixedSize(true);
         recyclerViewAddress.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        delivieryAddressesAdapter = new DelivieryAddressesAdapter(getContext(), addressList,this);
+        delivieryAddressesAdapter = new DelivieryAddressesAdapter(getContext(), addressList, this);
         recyclerViewAddress.setAdapter(delivieryAddressesAdapter);
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                int address_id = addressList.get(position).getId();
+                deleteAddress(position, address_id);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerViewAddress);
 
         return view;
+    }
+
+    private void deleteAddress(final int position, final int address_id) {
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        StringRequest request = new StringRequest(Request.Method.DELETE, URLs.delete_address_url + address_id, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getContext(), "Address has been deleted.", Toast.LENGTH_SHORT).show();
+                //Remove swiped item from list and notify the RecyclerView
+                addressList.remove(position);
+                delivieryAddressesAdapter.notifyItemRemoved(position);
+                delivieryAddressesAdapter.notifyItemRangeChanged(position, addressList.size());
+                delivieryAddressesAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("address_error", error.toString());
+                progressDialog.dismiss();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                return headerMap;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("id", address_id + "");
+                return map;
+            }
+        };
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
     }
 
     @Override
@@ -161,12 +232,14 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             rbCashOnDelivery.setChecked(false);
         }
     }
+
     @Override
     public void interfaceOnClick(View view, int position) {
         latitude = Double.valueOf(addressList.get(position).getLatitude());
-        longitude= Double.valueOf(addressList.get(position).getLongitude());
+        longitude = Double.valueOf(addressList.get(position).getLongitude());
         delivery_address_id = addressList.get(position).getId();
     }
+
     @Override
     public void onClick(View view) {
         ItemsAvailabilityStoresFragment itemsAvailabilityStoresFragment = new ItemsAvailabilityStoresFragment();
@@ -218,20 +291,21 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             ItemsAvailabilityStoresFragment storesFragment = new ItemsAvailabilityStoresFragment();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             bundle = new Bundle();
-            prefrences.setDeliverAddress(Double.valueOf(latitude)+" "+Double.valueOf(longitude));
+            prefrences.setDeliverAddress(Double.valueOf(latitude) + " " + Double.valueOf(longitude));
             storesFragment.setArguments(bundle);
             transaction.replace(R.id.nav_host_fragment, storesFragment).addToBackStack(null).commit();
         } else if (id == R.id.iv_back) {
             prefrences.setCartFragStatus(0);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
             mBackView.setVisibility(View.GONE);
-        }else if (id == R.id.add_address_card_view){
+        } else if (id == R.id.add_address_card_view) {
             Intent intent = new Intent(getContext(), MapsActivity.class);
-            intent.putExtra("address_id",-1);
+            intent.putExtra("address_id", -1);
             startActivity(intent);
         }
 
     }
+
     private void getUserAddress() {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -245,12 +319,10 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
                 }*/
 
 
-
-
-                UserAddressListResponse addressListResponse = gson.fromJson(response,UserAddressListResponse.class);
+                UserAddressListResponse addressListResponse = gson.fromJson(response, UserAddressListResponse.class);
                 addressList.clear();
-                for (int i=0;i<addressListResponse .getAddresslist().size();i++){
-                    addressList.add(addressListResponse .getAddresslist().get(i));
+                for (int i = 0; i < addressListResponse.getAddresslist().size(); i++) {
+                    addressList.add(addressListResponse.getAddresslist().get(i));
                 }
                 addressList.size();
                 delivieryAddressesAdapter.notifyDataSetChanged();
@@ -263,16 +335,17 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
                 Log.e("Address_error", error.toString());
                 progressDialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
-                headerMap.put("Authorization","Bearer "+ prefrences.getToken());
+                headerMap.put("Authorization", "Bearer " + prefrences.getToken());
                 return headerMap;
             }
         };
         requestQueue.add(request);
     }
+
     public void customProgressDialog(Context context) {
         progressDialog = new ProgressDialog(context);
         // Setting Message

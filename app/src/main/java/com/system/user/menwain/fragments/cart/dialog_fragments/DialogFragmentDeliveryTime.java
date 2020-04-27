@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -56,7 +57,8 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
     private List<StoreTimeSLotsResponse.List> delivery_times_list = new ArrayList<>();
     Preferences prefrences;
     private ProgressDialog progressDialog;
-
+    String current_date;
+    long daysDiff;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,10 +73,13 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-        String formattedDate = df.format(c);
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        current_date = df.format(date);
+        //String due_date = jobsResponse.getDueDate();
+
         tvDate = view.findViewById(R.id.tv_date);
-        tvDate.setText(formattedDate);
+        tvDate.setText(current_date);
 
         mConfirm.setOnClickListener(this);
         mCloseBtn.setOnClickListener(this);
@@ -87,6 +92,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         recyclerView.setAdapter(timesAdapter);
         return view;
     }
+
 
     @Override
     public void onClick(View view) {
@@ -171,14 +177,31 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        tvDate.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
-                        getStoreTimeSlots(prefrences.getSelectedStoreId());
+                        String due_date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                        daybetween(current_date/*"25/02/2020"*/, due_date /*"28/02/2020"*/, "yyyy-MM-dd");
+                        if (daysDiff < 0) {
+                            Toast.makeText(getContext(), "Please select a valid date!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            tvDate.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
+                            getStoreTimeSlots(prefrences.getSelectedStoreId());
+                        }
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.setTitle("Select Date..");
         datePickerDialog.show();
     }
-
+    public long daybetween(String date1, String date2, String pattern) {
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.ENGLISH);
+        Date Date1 = null, Date2 = null;
+        try {
+            Date1 = sdf.parse(date1);
+            Date2 = sdf.parse(date2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        daysDiff = (Date2.getTime() - Date1.getTime()) / (24 * 60 * 60 * 1000);
+        return (Date2.getTime() - Date1.getTime()) / (24 * 60 * 60 * 1000);
+    }
     private void getStoreTimeSlots(int selectedStoreId) {
         progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -192,7 +215,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                     delivery_times_list.add(timeSLotsResponse.getList().get(i));
                 }
                 timesAdapter.notifyDataSetChanged();
-                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {

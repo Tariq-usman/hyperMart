@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,10 +36,10 @@ import java.util.Map;
 
 public class ItemReviewFragment extends Fragment {
 
-    private TextView mSubmitReview, mTitle;
+    private TextView mSubmitReview, tvTitle, tvPrice, tvDate, tvTime, tvDescription;
     private RatingBar ratingBar;
     private EditText etReview;
-    private ImageView mBackBtn;
+    private ImageView mBackBtn, ivProduct;
     private Preferences prefrences;
     private Bundle bundle;
     private ProgressDialog progressDialog;
@@ -50,8 +51,30 @@ public class ItemReviewFragment extends Fragment {
         prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
         bundle = this.getArguments();
+
+
         mSubmitReview = view.findViewById(R.id.submit_review);
-        etReview= view.findViewById(R.id.et_product_review);
+        etReview = view.findViewById(R.id.et_product_review);
+
+        ivProduct = view.findViewById(R.id.iv_product_selected_product);
+        tvTitle = view.findViewById(R.id.tv_title_selected_product);
+        tvPrice = view.findViewById(R.id.tv_price_selected_product);
+        tvDate = view.findViewById(R.id.tv_date_selected_product);
+        tvTime = view.findViewById(R.id.tv_time_selected_product);
+        tvDescription = view.findViewById(R.id.iv_description_selected_product);
+
+        if (bundle != null) {
+            ivProduct.setImageBitmap((Bitmap) bundle.getParcelable("image"));
+            tvTitle.setText(bundle.getString("product_name"));
+            tvPrice.setText(bundle.getString("price"));
+           /* String date_time = bundle.getString("date");
+            String[] split_date = date_time.split(" ");
+            tvDate.setText(split_date[0]);
+            tvTime.setText(split_date[1]);*/
+            tvDescription.setText(bundle.getString("description"));
+
+        }
+
         ratingBar = view.findViewById(R.id.rb_product);
 //        mTitle = getActivity().findViewById(R.id.title_view);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
@@ -111,10 +134,10 @@ public class ItemReviewFragment extends Fragment {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("product_id",String.valueOf(product_id));
-                map.put("rating",String.valueOf(ratingBar.getRating()));
-                map.put("review",etReview.getText().toString().trim());
+                Map<String, String> map = new HashMap<>();
+                map.put("product_id", String.valueOf(product_id));
+                map.put("rating", String.valueOf(ratingBar.getRating()));
+                map.put("review", etReview.getText().toString().trim());
                 return map;
             }
         };

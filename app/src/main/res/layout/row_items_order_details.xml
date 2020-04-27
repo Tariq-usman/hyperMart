@@ -41,6 +41,8 @@
                 android:id="@+id/order_details_name_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="Boneless Mutton 1 kg"
                 android:textColor="@color/blackColor" />
 

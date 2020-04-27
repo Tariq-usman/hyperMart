@@ -9,11 +9,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.category.CategoryItemsFragment;
+import com.system.user.menwain.fragments.category.SubCategoryItemsFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.category.CategoryResponse;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -22,15 +27,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.SelectedItemViewHolder> {
     Context context;
-    List<SuperCategoryResponse.SuperCategory.Datum> catergoryList;
+    List<CategoryResponse.Category.Datum> catergoryList;
     public int lastPosition = -1;
     private boolean check = false;
     private int passedPosition = SuperCategoryAdapter.passId;
     RecyclerClickInterface clickInterface;
+    Preferences preferences;
 
-    public CategoryAdapter(Context context, List<SuperCategoryResponse.SuperCategory.Datum> catergoryList, RecyclerClickInterface clickInterface) {
+    public CategoryAdapter(Context context, List<CategoryResponse.Category.Datum> catergoryList, RecyclerClickInterface clickInterface) {
         this.catergoryList = catergoryList;
         this.context = context;
+        preferences = new Preferences(context);
         this.clickInterface = clickInterface;
 
     }
@@ -58,23 +65,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Select
             }
         } else if (lastPosition == position) {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
-            clickInterface.interfaceOnClick(holder.getView(), position);
+            //clickInterface.interfaceOnClick(holder.getView(), position);
+            preferences.setCatsId(catergoryList.get(position).getId());
+            preferences.setCategoryFragStatus(2);
+            SubCategoryItemsFragment fragment = new SubCategoryItemsFragment();
+            FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.nav_host_fragment, fragment).commit();
         } else {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
         }
 
-
-       /* position = position - 1;
-        position = position % productsName.length;
-
-        if (position == -1) {
-            holder.mProductNameView.setText("");
-            holder.mProduct.setVisibility(View.INVISIBLE);
-            position++;
-        } else if (position >= 0) {
-            holder.mProductNameView.setText(productsName[position]);
-            holder.mProduct.setImageResource(items[position]);
-        }*/
 
     }
 

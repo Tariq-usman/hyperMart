@@ -207,6 +207,8 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                     reviews_list.add(reviewsResponse.getDataa().getData().get(i));
                 }
                 itemReviewsAdapter.notifyDataSetChanged();
+                int review_count = reviews_list.size();
+                tvReviewsCount.setText("(" + review_count + " Reviews)");
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -244,8 +246,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                     } else {
                         ratingBar.setRating(Float.valueOf(detailsResponse.getRating()));
                     }
-                    int review_count = reviews_list.size();
-                    tvReviewsCount.setText("(" + review_count + " Reviews)");
+
 
                     related_items_list.clear();
                     for (int i = 0; i < detailsResponse.getData().getProductpic().size(); i++) {

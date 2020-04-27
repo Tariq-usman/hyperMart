@@ -76,6 +76,25 @@ public class Preferences {
         return sharedPreferences.getInt("category_frag_status", 0);
     }
 
+    public void setSuperCatId(int super_cat_id) {
+        editor.putInt("super_cat_id", super_cat_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getSuperCatId() {
+        return sharedPreferences.getInt("super_cat_id", 0);
+    }
+
+    public void setCatsId(int cat_id) {
+        editor.putInt("cat_id", cat_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getCatsId() {
+        return sharedPreferences.getInt("cat_id", 0);
+    }
     public void setCartFragStatus(int fragStatus) {
         editor.putInt("cart_frag_status", fragStatus);
         editor.apply();

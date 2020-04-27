@@ -1,5 +1,6 @@
 package com.system.user.menwain.fragments.more;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.menu_fragment.ProfileFragment;
@@ -25,7 +27,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
     private ImageView  ivCustomerServices,ivBack,mSettingsIcon;
     private TextView tvTitle,tvOrderHistory, tvProfile, tvSettings, tvHelp, tvAbout, tvRateApp, tvLogout;
-    private CardView mSearchViewMore;
+    private ImageView mCart, mFavourite, mHome, mCategory, mMore,mCloseBtn, mBackBtnPay;
+    private TextView mConfirm, tvHome, tvCategory, tvCart, tvMore, tvFavourite;  private CardView mSearchViewMore;
     private LinearLayout ivStores,ivOrder;
     Preferences prefrences;
     @Nullable
@@ -55,6 +58,20 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         tvAbout.setOnClickListener(this);
         tvRateApp.setOnClickListener(this);
         tvLogout.setOnClickListener(this);
+
+        mHome = getActivity().findViewById(R.id.home_view);
+        tvHome = getActivity().findViewById(R.id.tv_home_view);
+        mCategory = getActivity().findViewById(R.id.category_view);
+        tvCategory = getActivity().findViewById(R.id.tv_category_view);
+
+        mCart = getActivity().findViewById(R.id.cart);
+        tvCart = getActivity().findViewById(R.id.tv_cart);
+
+        mFavourite = getActivity().findViewById(R.id.favourite_view);
+        tvFavourite = getActivity().findViewById(R.id.tv_favourite_view);
+
+        mMore = getActivity().findViewById(R.id.more);
+        tvMore = getActivity().findViewById(R.id.tv_more);
         return view;
     }
 
@@ -85,8 +102,23 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_log_out:
-                prefrences.setToken("");
-                Toast.makeText(getContext(), "Logout Successfully..", Toast.LENGTH_SHORT).show();
+                if (prefrences.getToken().isEmpty()||prefrences.getToken()==null){
+                    Toast.makeText(getContext(), "Already Logout!", Toast.LENGTH_SHORT).show();
+                }else {
+                    prefrences.setToken("");
+                    Toast.makeText(getContext(), "Logout Successfully..", Toast.LENGTH_SHORT).show();
+                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).addToBackStack(null).commit();
+                    mHome.setImageResource(R.drawable.ic_houseblue);
+                    tvHome.setTextColor(Color.parseColor("#00c1bd"));
+                    mCategory.setImageResource(R.drawable.ic_searchwhite);
+                    tvCategory.setTextColor(Color.parseColor("#004040"));
+                    mFavourite.setImageResource(R.drawable.ic_likewhite);
+                    tvFavourite.setTextColor(Color.parseColor("#004040"));
+                    mCart.setImageResource(R.drawable.ic_cart_white);
+                    tvCart.setTextColor(Color.parseColor("#004040"));
+                    mMore.setImageResource(R.drawable.ic_morewhite);
+                    tvMore.setTextColor(Color.parseColor("#004040"));
+                }
                 break;
         }
 

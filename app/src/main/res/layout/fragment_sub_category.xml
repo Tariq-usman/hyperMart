@@ -8,13 +8,14 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_selected_items"
+        android:id="@+id/recycler_view_sub_caterory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="2dp"
         android:orientation="horizontal"
         android:overScrollMode="never"
+        android:visibility="visible"
         tools:listitem="@layout/row_selected_items"/>
 
 <!--
@@ -35,12 +36,22 @@
 -->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_filter_items"
+        android:id="@+id/recycler_view_sub_category_roducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:gravity="center"
         android:layout_marginTop="6dp"
+        android:visibility="visible"
+        android:overScrollMode="never" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_sub_category_roducts_final"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:gravity="center"
+        android:layout_marginTop="6dp"
+        android:visibility="gone"
         android:overScrollMode="never" />
 
 </LinearLayout>

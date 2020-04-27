@@ -1,6 +1,8 @@
 package com.system.user.menwain.adapters.more_adapters.orders_adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,12 +26,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.OrderDetailsItemViewHolder> {
-    private List<OrderDetailsResponse.Datum> details_list;
+    private List<OrderDetailsResponse.Data.Products> details_list;
     Context context;
     Preferences prefrences;
     private Bundle bundle;
 
-    public OrderDetailsAdapter(Context context, List<OrderDetailsResponse.Datum> details_list) {
+    public OrderDetailsAdapter(Context context, List<OrderDetailsResponse.Data.Products> details_list) {
         this.details_list = details_list;
         this.context = context;
         prefrences = new Preferences(context);
@@ -49,10 +51,10 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             Toast.makeText(context, "No data..", Toast.LENGTH_SHORT).show();
         } else {
             try {
-                Glide.with(holder.mProduct.getContext()).load(details_list.get(position).getProductss().get(position).getImage()).into(holder.mProduct);
-                holder.tvName.setText(details_list.get(position).getProductss().get(position).getName());
-                holder.tvStoreName.setText(details_list.get(position).getStore().getName());
-                holder.tvAmount.setText(details_list.get(position).getProductss().get(position).getPivot().getPrice().toString());
+                Glide.with(holder.mProduct.getContext()).load(details_list.get(position).getImage()).into(holder.mProduct);
+                holder.tvName.setText(details_list.get(position).getName());
+                holder.tvStoreName.setText(details_list.get(position).getName());
+                holder.tvAmount.setText(details_list.get(position).getPivot().getPrice().toString());
             }catch (Exception e)
             {
                 e.printStackTrace();
@@ -65,7 +67,13 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                     FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                     bundle = new Bundle();
                     try {
-                        bundle.putInt("product_id", details_list.get(position).getProductss().get(position).getProductId());
+                        bundle.putInt("product_id", details_list.get(position).getProductId());
+                        Bitmap bitmap = BitmapFactory.decodeFile(details_list.get(position).getImage());
+                        bundle.putParcelable("image",bitmap);
+                        bundle.putString("product_name",details_list.get(position).getName());
+                        bundle.putString("price",details_list.get(position).getPivot().getPrice().toString());
+                        bundle.putString("description",details_list.get(position).getBrand());
+//                        bundle.putString("date", details_list.get(position).getDateTime());
                     }catch (Exception e){
                         e.printStackTrace();
                     }

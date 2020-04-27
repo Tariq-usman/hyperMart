@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -41,7 +40,7 @@ import java.util.Map;
 public class OrderDetailsFragment extends Fragment {
     // private int[] products = {R.drawable.productpic, R.drawable.productdisplay, R.drawable.productpic, R.drawable.productdisplay, R.drawable.productpic, R.drawable.productdisplay};
 
-    private List<OrderDetailsResponse.Datum> details_list = new ArrayList<OrderDetailsResponse.Datum>();
+    private List<OrderDetailsResponse.Data.Products> details_list = new ArrayList<OrderDetailsResponse.Data.Products>();
     RecyclerView recyclerViewFavourite;
     OrderDetailsAdapter orderDetailsAdapter;
     private ImageView mBack, ivStoreImage;
@@ -58,12 +57,8 @@ public class OrderDetailsFragment extends Fragment {
         prefrences = new Preferences(getContext());
         customProgressDialog(getContext());
         bundle = this.getArguments();
-        if (bundle != null) {
             order_id = prefrences.getMoreOrderId();
             getOrdersDetails(String.valueOf(order_id));
-        } else {
-            Toast.makeText(getContext(), "No order id..", Toast.LENGTH_SHORT).show();
-        }
 
         mBack = getActivity().findViewById(R.id.iv_back);
         mBack.setVisibility(View.VISIBLE);
@@ -103,18 +98,18 @@ public class OrderDetailsFragment extends Fragment {
             public void onResponse(String response) {
                 OrderDetailsResponse detailsResponse = gson.fromJson(response, OrderDetailsResponse.class);
 
-                Glide.with(ivStoreImage.getContext()).load(detailsResponse.getData().get(0).getStore().getImage()).into(ivStoreImage);
-                tvStoreName.setText(detailsResponse.getData().get(0).getStore().getName());
-                tvOrderNo.setText(detailsResponse.getData().get(0).getId().toString());
-                tvPrice.setText(detailsResponse.getData().get(0).getTotalPrice().toString());
-                String date_time = detailsResponse.getData().get(0).getDateTime();
+                Glide.with(ivStoreImage.getContext()).load(detailsResponse.getData().getStore().getImage()).into(ivStoreImage);
+                tvStoreName.setText(detailsResponse.getData().getStore().getName());
+                tvOrderNo.setText(detailsResponse.getData().getId().toString());
+                tvPrice.setText(detailsResponse.getData().getTotalPrice().toString());
+                String date_time = detailsResponse.getData().getDateTime();
                 String[] split_date_time = date_time.split(" ");
                 tvDate.setText(split_date_time[0]);
                 tvTime.setText(split_date_time[1]);
-                tvStatus.setText(detailsResponse.getData().get(0).getOrderStatus());
+                tvStatus.setText(detailsResponse.getData().getOrderStatus());
                 details_list.clear();
-                for (int i = 0; i < detailsResponse.getData().size(); i++) {
-                    details_list.add(detailsResponse.getData().get(i));
+                for (int i = 0; i < detailsResponse.getData().getProductss().size(); i++) {
+                    details_list.add(detailsResponse.getData().getProductss().get(i));
                 }
                 orderDetailsAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();

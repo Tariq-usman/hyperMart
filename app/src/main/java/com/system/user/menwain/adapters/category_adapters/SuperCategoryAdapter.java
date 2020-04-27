@@ -57,7 +57,7 @@ public class SuperCategoryAdapter extends RecyclerView.Adapter<SuperCategoryAdap
                 CategoryItemsFragment fragment = new CategoryItemsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
 
-                bundle.putString("id", categoryList.get(position).getId().toString());
+                prefrences.setSuperCatId(categoryList.get(position).getId());
                 prefrences.setCategoryFragStatus(1);
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).commit();

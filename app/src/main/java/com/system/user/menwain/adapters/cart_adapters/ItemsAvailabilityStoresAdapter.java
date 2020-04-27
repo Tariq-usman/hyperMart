@@ -71,6 +71,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
             total_amount =  stores_list.get(position).getAvailable().get(i).getAvgPrice();
         }
         holder.mSortByPrice.setText(String.valueOf(total_amount));
+
         holder.mAvailableItems.setText(stores_list.get(position).getAvailable().size() + "");
         String pos = holder.mDistanceView.getText().toString();
         holder.mTotalItems.setText(stores_list.get(position).getAvailable().size() + stores_list.get(position).getNotavailable().size()+"");

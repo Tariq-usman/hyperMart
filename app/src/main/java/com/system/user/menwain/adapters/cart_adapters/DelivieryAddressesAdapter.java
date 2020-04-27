@@ -1,15 +1,18 @@
 package com.system.user.menwain.adapters.cart_adapters;
 
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.MapsActivity;
@@ -19,9 +22,12 @@ import com.system.user.menwain.responses.cart.UserAddressListResponse;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import static androidx.recyclerview.widget.ItemTouchHelper.LEFT;
 
 public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAddressesAdapter.DeliveryAddressViewHolder> {
 
@@ -49,7 +55,6 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
     public void onBindViewHolder(@NonNull final DeliveryAddressViewHolder holder, final int position) {
 
         if (addressList.size() > 0) {
-
             if (lastPositon == position) {
                 holder.mAddressesView.setBackgroundColor(Color.parseColor("#004040"));
                 holder.mMainAddress.setTextColor(Color.parseColor("#FFFFFF"));
@@ -70,25 +75,11 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
                 holder.mEditBtn.setImageResource(R.drawable.ic_edit);
             }
         }
-      /*  if (addressList.size() == position) {
-            holder.mMainAddress.setText("Add New");
-            holder.mEditBtn.setVisibility(View.INVISIBLE);
-            holder.mAddNewBtn.setVisibility(View.VISIBLE);
-            holder.mAddNewBtn.setImageResource(R.drawable.ic_add_new_address);
-            holder.mAddressesView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //  if (holder.mMainAddress.getText().toString().equalsIgnoreCase("Add New")) {
-                    Intent mapIntent = new Intent(context, MapsActivity.class);
-                    mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(mapIntent);
-                    //}
-                }
-            });
-            return;
-        }*/
         holder.mMainAddress.setText(addressList.get(position).getAddressLine1());
     }
+
+
+
 
     @Override
     public int getItemCount() {

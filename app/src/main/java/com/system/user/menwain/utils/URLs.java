@@ -36,12 +36,16 @@ public class URLs {
     public static String get_user_wish_list = base_url + "getUserWishlistProducts";
     public static String get_user_wish_list_by_id = base_url + "WishlistProducts/";
     public static String delete_wish_list = base_url + "deletewishlist/";
-    public static String see_all_explore_shop = base_url +"productsseeall";
+    public static String see_all_explore_shop = base_url + "productsseeall";
     public static String see_all_explore = base_url + "exploreProductsSeeAll";
     public static String see_all_shop = base_url + "exploreProductsSeeAll";
-    public static String search_product_by_name_url = base_url+"searchproductbyname";
-    public static String reviews_list_url = base_url+"reviewslist/";
-    public static String get_sub_category_url = base_url+"getsubcats/";
-    public static String post_preffered_date_url = base_url+"storeslotslist/";
-    public static String payments_ypes_url = base_url+"PaymentsTypes";
+    public static String search_product_by_name_url = base_url + "searchproductbyname";
+    public static String reviews_list_url = base_url + "reviewslist/";
+    public static String post_preffered_date_url = base_url + "storeslotslist/";
+    public static String payments_ypes_url = base_url + "PaymentsTypes";
+    public static String get_super_category_products_url = base_url + "subcategoryProducts/";
+    public static String get_sub_category_and_products_url = base_url + "getcatwiseproduct/";
+    public static String get_sub_category_products_url = base_url + "subcategoryProducts/";
+    public static String add_card_url = base_url + "addcustomerCard";
+    public static String delete_address_url = base_url + "deladress/";
 }

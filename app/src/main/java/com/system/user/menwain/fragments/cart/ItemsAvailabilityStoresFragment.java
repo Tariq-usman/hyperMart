@@ -30,6 +30,9 @@ import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -178,6 +181,12 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
                     stores_list.add(availNotAvailResponse.getData().get(i));
                 }
+               /* Collections.sort(stores_list, new Comparator<AvailNotAvailResponse.Datum>() {
+                    @Override
+                    public int compare(AvailNotAvailResponse.Datum o1, AvailNotAvailResponse.Datum o2) {
+                        return Integer.valueOf(o2.getAvailable().get(1).getAvgPrice()).compareTo(o1.getAvailable().get(1).getAvgPrice());
+                    }
+                });*/
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
@@ -213,8 +222,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("latitude", 33.29868671102771);
-            jsonObj.put("longitude", 71.10277701169252);
+            jsonObj.put("latitude", lat);
+            jsonObj.put("longitude", lang);
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < cartList.size(); i++) {
                 jsonArray.put(cartList.get(i));
@@ -233,6 +242,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
                     stores_list.add(availNotAvailResponse.getData().get(i));
                 }
+                Collections.sort(stores_list, new Comparator<AvailNotAvailResponse.Datum>() {
+                    @Override
+                    public int compare(AvailNotAvailResponse.Datum o1, AvailNotAvailResponse.Datum o2) {
+                        return Integer.valueOf(o2.getAvailable().size()).compareTo(o1.getAvailable().size());
+                    }
+                });
+
+                //recyclerViewLiveHome.setAdapter(new LiveHomeAdapter(getContext(),productList));
+
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
@@ -270,8 +288,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("latitude", 33.29868671102771);
-            jsonObj.put("longitude", 71.10277701169252);
+            jsonObj.put("latitude", lat);
+            jsonObj.put("longitude", lang);
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < cartList.size(); i++) {
                 jsonArray.put(cartList.get(i));

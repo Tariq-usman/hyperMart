@@ -6,19 +6,21 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class OrderDetailsResponse {
-    @SerializedName("data")
-    @Expose
-    private List<Datum> data = null;
 
-    public List<Datum> getData() {
-        return data;
-    }
+        @SerializedName("data")
+        @Expose
+        private Data data;
 
-    public void setData(List<Datum> data) {
-        this.data = data;
-    }
+        public Data getData() {
+            return data;
+        }
 
-    public class Datum {
+        public void setData(Data data) {
+            this.data = data;
+        }
+
+
+    public class Data {
 
         @SerializedName("id")
         @Expose
@@ -38,6 +40,15 @@ public class OrderDetailsResponse {
         @SerializedName("customer_id")
         @Expose
         private Integer customerId;
+        @SerializedName("slot_id")
+        @Expose
+        private Integer slotId;
+        @SerializedName("discount")
+        @Expose
+        private Integer discount;
+        @SerializedName("preferred_delivery_date")
+        @Expose
+        private String preferredDeliveryDate;
         @SerializedName("store")
         @Expose
         private Store store;
@@ -93,6 +104,30 @@ public class OrderDetailsResponse {
             this.customerId = customerId;
         }
 
+        public Integer getSlotId() {
+            return slotId;
+        }
+
+        public void setSlotId(Integer slotId) {
+            this.slotId = slotId;
+        }
+
+        public Integer getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(Integer discount) {
+            this.discount = discount;
+        }
+
+        public String getPreferredDeliveryDate() {
+            return preferredDeliveryDate;
+        }
+
+        public void setPreferredDeliveryDate(String preferredDeliveryDate) {
+            this.preferredDeliveryDate = preferredDeliveryDate;
+        }
+
         public Store getStore() {
             return store;
         }
@@ -108,7 +143,6 @@ public class OrderDetailsResponse {
         public void setProductss(List<Products> productss) {
             this.productss = productss;
         }
-
         public class Store {
 
             @SerializedName("id")
@@ -157,7 +191,6 @@ public class OrderDetailsResponse {
             }
 
         }
-
         public class Products {
 
             @SerializedName("product_id")
@@ -172,6 +205,9 @@ public class OrderDetailsResponse {
             @SerializedName("brand")
             @Expose
             private String brand;
+            @SerializedName("storeprice")
+            @Expose
+            private Integer storeprice;
             @SerializedName("pivot")
             @Expose
             private Pivot pivot;
@@ -208,6 +244,14 @@ public class OrderDetailsResponse {
                 this.brand = brand;
             }
 
+            public Integer getStoreprice() {
+                return storeprice;
+            }
+
+            public void setStoreprice(Integer storeprice) {
+                this.storeprice = storeprice;
+            }
+
             public Pivot getPivot() {
                 return pivot;
             }
@@ -215,7 +259,6 @@ public class OrderDetailsResponse {
             public void setPivot(Pivot pivot) {
                 this.pivot = pivot;
             }
-
             public class Pivot {
 
                 @SerializedName("order_num")
@@ -299,5 +342,12 @@ public class OrderDetailsResponse {
             }
 
         }
+
     }
+
 }
+
+
+
+
+

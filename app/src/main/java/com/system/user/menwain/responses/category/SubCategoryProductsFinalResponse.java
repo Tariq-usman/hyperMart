@@ -5,21 +5,21 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class CategoryResponse {
+public class SubCategoryProductsFinalResponse {
 
-        @SerializedName("category")
+        @SerializedName("subCategory")
         @Expose
-        private Category category;
+        private SubCategory subCategory;
         @SerializedName("products")
         @Expose
         private Products products;
 
-        public Category getCategory() {
-            return category;
+        public SubCategory getSubCategory() {
+            return subCategory;
         }
 
-        public void setCategory(Category category) {
-            this.category = category;
+        public void setSubCategory(SubCategory subCategory) {
+            this.subCategory = subCategory;
         }
 
         public Products getProducts() {
@@ -30,7 +30,7 @@ public class CategoryResponse {
             this.products = products;
         }
 
-    public class Category {
+    public class SubCategory {
 
         @SerializedName("current_page")
         @Expose
@@ -169,9 +169,9 @@ public class CategoryResponse {
             @SerializedName("id")
             @Expose
             private Integer id;
-            @SerializedName("sup_category_id")
+            @SerializedName("category_id")
             @Expose
-            private Integer supCategoryId;
+            private Integer categoryId;
             @SerializedName("description")
             @Expose
             private String description;
@@ -202,12 +202,12 @@ public class CategoryResponse {
                 this.id = id;
             }
 
-            public Integer getSupCategoryId() {
-                return supCategoryId;
+            public Integer getCategoryId() {
+                return categoryId;
             }
 
-            public void setSupCategoryId(Integer supCategoryId) {
-                this.supCategoryId = supCategoryId;
+            public void setCategoryId(Integer categoryId) {
+                this.categoryId = categoryId;
             }
 
             public String getDescription() {
@@ -757,6 +757,8 @@ public class CategoryResponse {
 
 
 }
+
+
 
 
 
