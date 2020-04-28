@@ -6,18 +6,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class AvailNotAvailResponse {
-    @SerializedName("data")
-    @Expose
-    private List<Datum> data = null;
+        @SerializedName("data")
+        @Expose
+        private List<Datum> data = null;
 
-    public List<Datum> getData() {
-        return data;
-    }
+        public List<Datum> getData() {
+            return data;
+        }
 
-    public void setData(List<Datum> data) {
-        this.data = data;
-    }
-
+        public void setData(List<Datum> data) {
+            this.data = data;
+        }
     public class Datum {
 
         @SerializedName("id")
@@ -119,7 +118,6 @@ public class AvailNotAvailResponse {
         public void setAverageRating(Integer averageRating) {
             this.averageRating = averageRating;
         }
-
         public class Available {
 
             @SerializedName("id")
@@ -191,6 +189,12 @@ public class AvailNotAvailResponse {
             @SerializedName("deleted_at")
             @Expose
             private Object deletedAt;
+            @SerializedName("storeprice")
+            @Expose
+            private Integer storeprice;
+            @SerializedName("StoreAvailableStock")
+            @Expose
+            private Integer storeAvailableStock;
 
             public Integer getId() {
                 return id;
@@ -376,8 +380,23 @@ public class AvailNotAvailResponse {
                 this.deletedAt = deletedAt;
             }
 
-        }
+            public Integer getStoreprice() {
+                return storeprice;
+            }
 
+            public void setStoreprice(Integer storeprice) {
+                this.storeprice = storeprice;
+            }
+
+            public Integer getStoreAvailableStock() {
+                return storeAvailableStock;
+            }
+
+            public void setStoreAvailableStock(Integer storeAvailableStock) {
+                this.storeAvailableStock = storeAvailableStock;
+            }
+
+        }
         public class Notavailable {
 
             @SerializedName("id")
@@ -449,6 +468,12 @@ public class AvailNotAvailResponse {
             @SerializedName("deleted_at")
             @Expose
             private Object deletedAt;
+            @SerializedName("storeprice")
+            @Expose
+            private Integer storeprice;
+            @SerializedName("StoreAvailableStock")
+            @Expose
+            private Integer storeAvailableStock;
 
             public Integer getId() {
                 return id;
@@ -634,9 +659,27 @@ public class AvailNotAvailResponse {
                 this.deletedAt = deletedAt;
             }
 
+            public Integer getStoreprice() {
+                return storeprice;
+            }
+
+            public void setStoreprice(Integer storeprice) {
+                this.storeprice = storeprice;
+            }
+
+            public Integer getStoreAvailableStock() {
+                return storeAvailableStock;
+            }
+
+            public void setStoreAvailableStock(Integer storeAvailableStock) {
+                this.storeAvailableStock = storeAvailableStock;
+            }
+
         }
 
     }
+
+
 
 }
 

@@ -71,6 +71,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="1"
+                            android:visibility="gone"
                             android:text="Store Name "
                             android:textSize="@dimen/fourteen_sp" />
 

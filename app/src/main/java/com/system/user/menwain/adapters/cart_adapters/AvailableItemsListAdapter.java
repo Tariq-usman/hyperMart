@@ -48,7 +48,7 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
             Glide.with(holder.ivProduct.getContext()).load(avail_items_list.get(position).getImage()).into(holder.ivProduct);
             holder.mProductNameView.setText(avail_items_list.get(position).getName());
             holder.mStoreName.setText(avail_items_list.get(position).getBrand());
-            holder.mAmount.setText(avail_items_list.get(position).getAvgPrice().toString());
+            holder.mAmount.setText(avail_items_list.get(position).getStoreprice().toString());
         }
         final String currentItems = holder.mAvilNotAvailItemsView.getText().toString();
         final int[] count = {Integer.parseInt(currentItems)};

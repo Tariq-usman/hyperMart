@@ -85,7 +85,15 @@ public class Preferences {
     public int getSuperCatId() {
         return sharedPreferences.getInt("super_cat_id", 0);
     }
+    public void setTotalAmount(int total_amount) {
+        editor.putInt("total_amount", total_amount);
+        editor.apply();
+        editor.commit();
+    }
 
+    public int getTotalAmount() {
+        return sharedPreferences.getInt("total_amount", 0);
+    }
     public void setCatsId(int cat_id) {
         editor.putInt("cat_id", cat_id);
         editor.apply();

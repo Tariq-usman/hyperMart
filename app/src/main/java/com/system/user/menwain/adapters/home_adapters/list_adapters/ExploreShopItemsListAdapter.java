@@ -82,7 +82,7 @@ public class ExploreShopItemsListAdapter extends RecyclerView.Adapter<ExploreSho
                 Drawable drawable = holder.ivAllItemsList.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 productName = holder.tvAllItemsList.getText().toString();
-                storeName = holder.mStoreName.getText().toString();
+                //storeName = holder.mStoreName.getText().toString();
                 price = holder.mPriceFilterItem.getText().toString();
                 quantity = holder.mItemCounter.getText().toString();
                 // strTotalPrice = price;

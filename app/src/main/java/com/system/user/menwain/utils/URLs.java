@@ -48,4 +48,6 @@ public class URLs {
     public static String get_sub_category_products_url = base_url + "subcategoryProducts/";
     public static String add_card_url = base_url + "addcustomerCard";
     public static String delete_address_url = base_url + "deladress/";
+    public static String user_card_url = base_url + "customerCardlist";
+    public static String delete_card_url = base_url + "deletecustomerCard/";
 }

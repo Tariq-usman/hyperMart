@@ -24,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.fragments.cart.AddCardFragment;
 import com.system.user.menwain.fragments.cart.PaymentFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
@@ -127,7 +128,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                 prefrences.setTimeSlotId(time_slot);
 
                 if (prefrences.getPaymentStatus() == 1) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new PaymentFragment()).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AddCardFragment()).commit();
                 } else {
                     DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
                     dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
@@ -136,7 +137,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                         .addToBackStack(null).commit();*/
                 prefrences.setCartFragStatus(0);
                 dismiss();
-                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {

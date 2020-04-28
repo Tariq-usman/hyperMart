@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_custom_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="20dp"
+    android:background="@color/colorPrimary"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/header_item_details" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:text="Card Information"
+                android:textSize="@dimen/sixteen_sp" />
+
+            <EditText
+                android:id="@+id/et_card_holder_name_add_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/bg_email_pass"
+                android:hint="Card Holder Name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <EditText
+                android:id="@+id/et_card_number_add_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/bg_email_pass"
+                android:hint="Card Number"
+                android:inputType="number"
+                android:maxLines="1"
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_cvc_add_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_email_pass"
+                    android:hint="CVC"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
+
+                <EditText
+                    android:id="@+id/et_expairy_add_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_email_pass"
+                    android:hint="Expairy"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_zip_code_add_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/bg_email_pass"
+                android:hint="Zip Code"
+                android:inputType="number"
+                android:maxLines="1"
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <EditText
+                android:id="@+id/et_billing_address_add_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/bg_email_pass"
+                android:hint="Billing Address"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/confirm_btn_add_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/bg_submit_btn"
+            android:gravity="center"
+            android:text="Add"
+            android:textColor="@color/whiteColor" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

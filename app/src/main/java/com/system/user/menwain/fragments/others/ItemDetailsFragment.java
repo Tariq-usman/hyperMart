@@ -431,4 +431,5 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         return directory.getAbsolutePath();
     }
 
+
 }

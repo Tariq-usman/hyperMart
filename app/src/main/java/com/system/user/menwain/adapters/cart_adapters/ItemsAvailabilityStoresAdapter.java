@@ -38,6 +38,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     public static List<AvailNotAvailResponse.Datum.Available> available_list;
     public static List<AvailNotAvailResponse.Datum.Notavailable> not_available_list;
     private static DecimalFormat df2;
+
     public ItemsAvailabilityStoresAdapter(Context context, List<AvailNotAvailResponse.Datum> stores_list, double lat, double lang) {
         this.stores_list = stores_list;
         this.lat = lat;
@@ -64,17 +65,18 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         String dist = distanceTo + "";
         String[] split_date = dist.split(".");
 //        String first = split_date[0];
-         df2 = new DecimalFormat("#.##");
+        df2 = new DecimalFormat("#.##");
         df2.setRoundingMode(RoundingMode.UP);
         holder.mDistanceView.setText(String.valueOf(df2.format(distanceTo)));
         for (int i = 0; i < stores_list.get(position).getAvailable().size(); i++) {
-            total_amount =  stores_list.get(position).getAvailable().get(i).getAvgPrice();
+            total_amount = total_amount + stores_list.get(position).getAvailable().get(i).getStoreprice();
         }
         holder.mSortByPrice.setText(String.valueOf(total_amount));
+        total_amount = 0;
 
         holder.mAvailableItems.setText(stores_list.get(position).getAvailable().size() + "");
         String pos = holder.mDistanceView.getText().toString();
-        holder.mTotalItems.setText(stores_list.get(position).getAvailable().size() + stores_list.get(position).getNotavailable().size()+"");
+        holder.mTotalItems.setText(stores_list.get(position).getAvailable().size() + stores_list.get(position).getNotavailable().size() + "");
 
         if (distanceTo <= 10) {
             holder.mStatusColorView.setBackgroundColor(Color.parseColor("#00c1bd"));
@@ -95,10 +97,10 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle = new Bundle();
                 prefrences.setSelectedStoreId(stores_list.get(position).getId());
-                bundle.putInt("store_id",stores_list.get(position).getId());
+                bundle.putInt("store_id", stores_list.get(position).getId());
                 bundle.putString("price", holder.mSortByPrice.getText().toString());
-                bundle.putString("available",stores_list.get(position).getAvailable().size()+"");
-                bundle.putString("not_available",stores_list.get(position).getNotavailable().size()+"");
+                bundle.putString("available", stores_list.get(position).getAvailable().size() + "");
+                bundle.putString("not_available", stores_list.get(position).getNotavailable().size() + "");
                 bundle.putString("distance", holder.mDistanceView.getText().toString());
                 bundle.putString("image_url", String.valueOf(stores_list.get(position).getImage()));
                 for (int i = 0; i < stores_list.get(position).getAvailable().size(); i++) {

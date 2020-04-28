@@ -83,7 +83,7 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 productName = holder.mProductNameView.getText().toString();
-                storeName = holder.mStoreName.getText().toString();
+               // storeName = holder.mStoreName.getText().toString();
                 price = holder.mPriceFilterItem.getText().toString();
                 quantity = holder.mItemCounter.getText().toString();
                 // strTotalPrice = price;

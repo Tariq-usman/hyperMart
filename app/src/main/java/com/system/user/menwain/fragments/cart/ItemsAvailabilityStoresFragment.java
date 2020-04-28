@@ -169,6 +169,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 jsonArray.put(cartList.get(i));
             }
             jsonObj.put("products", jsonArray);
+            Log.e("products",jsonArray.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -176,17 +177,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.heighest_availability, jsonObj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
+                final AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
                 stores_list.clear();
                 for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
                     stores_list.add(availNotAvailResponse.getData().get(i));
                 }
-               /* Collections.sort(stores_list, new Comparator<AvailNotAvailResponse.Datum>() {
-                    @Override
-                    public int compare(AvailNotAvailResponse.Datum o1, AvailNotAvailResponse.Datum o2) {
-                        return Integer.valueOf(o2.getAvailable().get(1).getAvgPrice()).compareTo(o1.getAvailable().get(1).getAvgPrice());
-                    }
-                });*/
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }

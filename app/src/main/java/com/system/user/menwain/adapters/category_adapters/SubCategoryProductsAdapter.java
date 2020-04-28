@@ -117,7 +117,7 @@ public class SubCategoryProductsAdapter extends RecyclerView.Adapter<SubCategory
                 productId = subCatergoryList.get(position).getId();
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                productName = subCatergoryList.get(position).getDescription();
+                productName = subCatergoryList.get(position).getName();
                 //  storeName = holder.mStoreName.getText().toString();
                 price = subCatergoryList.get(position).getLowestPrice().toString();
                 quantity = holder.mItemCounter.getText().toString();
@@ -205,6 +205,7 @@ public class SubCategoryProductsAdapter extends RecyclerView.Adapter<SubCategory
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

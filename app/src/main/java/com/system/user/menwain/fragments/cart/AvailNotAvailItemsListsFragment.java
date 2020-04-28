@@ -169,9 +169,10 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             getFragmentManager().beginTransaction().replace(R.id.container_items_list, new NotAvailableItemsFragment()).commit();
         } else if (id == R.id.confirm_btn_items_list) {
             pay_status = prefrences.getPayRBtnStatus();
-            if (avail_items_list.size()>0){
-
-            calculateShippingCost();}else {
+            if (avail_items_list.size() > 0) {
+                prefrences.setTotalAmount(Integer.parseInt(price));
+                calculateShippingCost();
+            } else {
                 Toast.makeText(getContext(), "There is no avialable items!", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.iv_back) {
@@ -188,8 +189,9 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         StringRequest request = new StringRequest(Request.Method.POST, URLs.calcualte_shipping_cost, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                CalculateShippingCostResponse shippingCostResponse = gson.fromJson(response,CalculateShippingCostResponse.class);
+                CalculateShippingCostResponse shippingCostResponse = gson.fromJson(response, CalculateShippingCostResponse.class);
                 prefrences.setShippingCost(shippingCostResponse.getShippingcost());
+
                 if (pay_status == 5) {
                     DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
                     dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");

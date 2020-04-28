@@ -1,218 +1,119 @@
 package com.system.user.menwain.adapters.category_adapters;
 
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.system.user.menwain.local_db.model.UpdateCartQuantity;
-import com.system.user.menwain.others.Preferences;
-import com.system.user.menwain.fragments.others.ItemDetailsFragment;
-import com.system.user.menwain.R;
-import com.system.user.menwain.local_db.entity.Cart;
-import com.system.user.menwain.local_db.viewmodel.CartViewModel;
-import com.system.user.menwain.responses.category.SubCategoryResponse;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.bumptech.glide.Glide;
+import com.system.user.menwain.R;
+import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.responses.category.CategoryResponse;
+import com.system.user.menwain.responses.category.SubCategoryResponse;
+
 import java.util.List;
 
-public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.FilterItemViewHolder> {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.SelectedItemViewHolder> {
     Context context;
-    String imagePath;
-    List<SubCategoryResponse.Product> subCatergoryList;
-    private CartViewModel cartViewModel;
-    Bundle bundle;
-    Preferences prefrences;
-    int productId, intQuantity;
-    String productName, storeName, price, quantity, strTotalPrice;
-    float totalPrice, unitPrice;
-    private List<Integer> p_id_list = new ArrayList<Integer>();
-    List<Integer> quantity_list = new ArrayList<Integer>();
+    List<SubCategoryResponse.Category.Datum> catergoryList;
+    public int lastPosition = -1;
+    private boolean check = false;
+    private int passedPosition = SuperCategoryAdapter.passId;
+    RecyclerClickInterface clickInterface;
 
-    UpdateCartQuantity updateCartQuantity;
-    int id, pro_quantity;
-
-    public SubCategoryAdapter(Context context, List<SubCategoryResponse.Product> subCatergoryList) {
+    public SubCategoryAdapter(Context context, List<SubCategoryResponse.Category.Datum> catergoryList, RecyclerClickInterface clickInterface) {
+        this.catergoryList = catergoryList;
         this.context = context;
-        this.subCatergoryList = subCatergoryList;
-        prefrences = new Preferences(context);
+        this.clickInterface = clickInterface;
+
     }
 
     @NonNull
     @Override
-    public FilterItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_filter_items, parent, false);
-        FilterItemViewHolder categoryViewHolder = new FilterItemViewHolder(view);
+    public SelectedItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_selected_items, parent, false);
+        SelectedItemViewHolder categoryViewHolder = new SelectedItemViewHolder(view);
         return categoryViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
-
-        Glide.with(holder.mFilteProduct.getContext()).load(subCatergoryList.get(position).getImage()).into(holder.mFilteProduct);
-        holder.mProductNameView.setText(subCatergoryList.get(position).getName());
-        //  holder.mStoreName.setText(subCatergoryList.get(position).getBrand());
-        holder.mPriceFilterItem.setText(subCatergoryList.get(position).getAvgPrice().toString());
-        final int[] count = {1};
-        holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                count[0] = count[0] + 1;
-                holder.mItemCounter.setText("" + count[0]);
+    public void onBindViewHolder(@NonNull SelectedItemViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
+        holder.mProductNameView.setText(catergoryList.get(position).getDescription());
+        Glide.with(holder.mProduct.getContext()).load(catergoryList.get(position).getPicture()).into(holder.mProduct);
+        if (check == false) {
+            if (passedPosition == position) {
+                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+                check = true;
+                holder.setIsRecyclable(true);
+            } else {
+                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
             }
-        });
-        holder.mDecreaseItems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String num = holder.mItemCounter.getText().toString();
-                if (Integer.valueOf(num) > 1) {
-                    count[0] = count[0] - 1;
-                    holder.mItemCounter.setText("" + count[0]);
-                } else if (holder.mItemCounter.getText().toString().length() == 0) {
-                    holder.mItemCounter.setText(0);
-                }
-            }
-        });
+        } else if (lastPosition == position) {
+            holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+            clickInterface.interfaceOnClick(holder.getView(), position);
+        } else {
+            holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
+        }
 
-        holder.mFilteProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                bundle = new Bundle();
-                prefrences.setCategoryFragStatus(2);
-                ItemDetailsFragment fragment = new ItemDetailsFragment();
-                FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                bundle.putString("status", "2");
-                bundle.putInt("product_id", subCatergoryList.get(position).getId());
-                fragment.setArguments(bundle);
-                transaction.replace(R.id.nav_host_fragment, fragment).commit();
-            }
-        });
+       /* position = position - 1;
+        position = position % productsName.length;
 
-        holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                productId = subCatergoryList.get(position).getId();
-                Drawable drawable = holder.mFilteProduct.getDrawable();
-                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                productName = subCatergoryList.get(position).getName();
-                //  storeName = holder.mStoreName.getText().toString();
-                price = subCatergoryList.get(position).getAvgPrice().toString();
-                quantity = holder.mItemCounter.getText().toString();
-                // strTotalPrice = price;
-                totalPrice = Float.parseFloat(price);
-                intQuantity = Integer.parseInt(quantity);
-                unitPrice = totalPrice * intQuantity;
-                saveToInternalStorage(bitmap);
+        if (position == -1) {
+            holder.mProductNameView.setText("");
+            holder.mProduct.setVisibility(View.INVISIBLE);
+            position++;
+        } else if (position >= 0) {
+            holder.mProductNameView.setText(productsName[position]);
+            holder.mProduct.setImageResource(items[position]);
+        }*/
 
-                cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
-                final Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
-                cartViewModel.getCartDataList().observe((FragmentActivity) context, new Observer<List<Cart>>() {
-                    @Override
-                    public void onChanged(List<Cart> carts) {
-
-                        for (int i = 0; i < carts.size(); i++) {
-                            p_id_list.add(carts.get(i).getP_id());
-                            quantity_list.add(carts.get(i).getQuantity());
-                        }
-                    }
-                });
-                if (p_id_list.size() == 0) {
-                    cartViewModel.insertCart(cart);
-                    Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    for (int i = 0; i < p_id_list.size(); i++) {
-                        if (p_id_list.get(i) == productId) {
-                            id = p_id_list.get(i);
-                            pro_quantity= quantity_list.get(i);
-                        }
-                    }
-
-                    if (id == productId) {
-                        int final_quantity = intQuantity+pro_quantity;
-                        updateCartQuantity = new UpdateCartQuantity(productId, intQuantity, unitPrice);
-                        cartViewModel.updateCartQuantity(updateCartQuantity);
-                        Toast.makeText(context, "Update Successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        cartViewModel.insertCart(cart);
-                        Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-//                UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity,unitPrice);
-//                cartViewModel.insertAllCart(cart, updateCartQuantity);
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return subCatergoryList.size();
+        return catergoryList.size();
+//        return Integer.MAX_VALUE;
     }
 
-    public static class FilterItemViewHolder extends RecyclerView.ViewHolder {
-        private TextView mProductNameView, mStoreName, mItemCounter, mPriceFilterItem;
-        private CardView mAddToCart;
-        private ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
-        int count = 0;
+    public class SelectedItemViewHolder extends RecyclerView.ViewHolder {
+        TextView mProductNameView;
+        CircleImageView mProduct;
 
-        public FilterItemViewHolder(@NonNull View itemView) {
+        public SelectedItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            mFilteProduct = itemView.findViewById(R.id.view_filter_product);
-            mProductNameView = itemView.findViewById(R.id.filter_product_name_view);
-            mIncreaseItems = itemView.findViewById(R.id.increase_items);
-            mDecreaseItems = itemView.findViewById(R.id.decrees_item);
-            // mStoreName = itemView.findViewById(R.id.filter_store_name);
-            mItemCounter = itemView.findViewById(R.id.items_counter);
-            mAddToCart = itemView.findViewById(R.id.add_to_cart_filter_wrapper);
-            mPriceFilterItem = itemView.findViewById(R.id.price_view_filter_item);
+            mProduct = itemView.findViewById(R.id.selected_product_view);
+            mProductNameView = itemView.findViewById(R.id.product_name_view);
+            mProduct.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    lastPosition = getAdapterPosition();
+                    notifyDataSetChanged();
+                }
+            });
 
+        }
+
+        public View getView() {
+            return itemView;
         }
     }
 
-    private String saveToInternalStorage(Bitmap bitmapImage) {
-        ContextWrapper cw = new ContextWrapper(context);
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath = new File(directory, productName + ".jpg");
-        imagePath = String.valueOf(mypath);
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return directory.getAbsolutePath();
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }

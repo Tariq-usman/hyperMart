@@ -81,7 +81,7 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prefrences.setCategoryFragStatus(1);
+                prefrences.setCategoryFragStatus(0);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
             }

@@ -95,8 +95,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error_response", error.toString());
-                Toast.makeText(LoginActivity.this, ""+error.toString(), Toast.LENGTH_SHORT).show();
+                Log.e("login_error", error.toString());
+                Toast.makeText(LoginActivity.this, "Login Credentials were wrong", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }) {

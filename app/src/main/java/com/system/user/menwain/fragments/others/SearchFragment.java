@@ -71,6 +71,9 @@ public class SearchFragment extends Fragment {
                 for (int i = 0 ; i <nameResponse.getData().getData().size();i++){
                     search_list.add(nameResponse.getData().getData().get(i));
                 }
+                if (search_list.size()==0){
+                    Toast.makeText(getContext(), "No such data found!", Toast.LENGTH_SHORT).show();
+                }
                 searchAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response.", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
