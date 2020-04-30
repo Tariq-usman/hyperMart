@@ -1,11 +1,15 @@
 package com.system.user.menwain.fragments.cart;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +37,9 @@ import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSav
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.utils.URLs;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,14 +50,15 @@ public class DialogFragmentAddCard extends DialogFragment {
     private ImageView mBackBtnPay, mBarCodeScanner;
     private Preferences prefrences;
     private CardView mSearchView;
-    private ProgressDialog progressDialog;
-
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+    int count = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_add_card, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        customProgressDialog(getContext());
+        customDialog(getContext());
 
         etCardHolderName = view.findViewById(R.id.et_card_holder_name_add_card);
         etCardNumber = view.findViewById(R.id.et_card_number_add_card);
@@ -84,6 +92,87 @@ public class DialogFragmentAddCard extends DialogFragment {
             }
         });
 
+
+
+        etCardNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int inputlength = etCardNumber.getText().toString().length();
+                if (count <= inputlength && inputlength == 4 ||
+                        inputlength == 9 || inputlength == 14){
+                    etCardNumber.setText(etCardNumber.getText().toString() + " ");
+
+                    int pos = etCardNumber.getText().length();
+                    etCardNumber.setSelection(pos);
+                }else if (count >= inputlength && (inputlength == 4 ||
+                        inputlength == 9 || inputlength == 14)) {
+                    etCardNumber.setText(etCardNumber.getText().toString()
+                            .substring(0, etCardNumber.getText()
+                                    .toString().length() - 1));
+
+                    int pos = etCardNumber.getText().length();
+                    etCardNumber.setSelection(pos);
+                }
+                count = etCardNumber.getText().toString().length();
+            }
+        });
+
+        etExpiry.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String working = s.toString();
+                boolean isValid = true;
+                etExpiry.setError(null);
+                if (working.length() == 2 && before == 0) {
+                    if (Integer.parseInt(working) < 1 || Integer.parseInt(working) > 12) {
+                        isValid = false;
+                    } else {
+                        working += "/";
+                        etExpiry.setText(working);
+                        etExpiry.setSelection(working.length());
+                    }
+                } else if (working.length() == 5 && before == 0) {
+                    String enteredYear = working.substring(3);
+
+                    DateFormat df = new SimpleDateFormat("yy"); // Just the year, with 2 digits
+                    String formattedDate = df.format(Calendar.getInstance().getTime());
+                    int currentYear = Integer.parseInt(formattedDate);
+                    if (Integer.parseInt(enteredYear) < currentYear) {
+                        isValid = false;
+                    }
+                } else if (working.length() != 5) {
+                    isValid = false;
+                } else
+                    isValid = true;
+
+                if (!isValid) {
+                    etExpiry.setError("Enter a valid date: MM/YY");
+                } else {
+                    etExpiry.setError(null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,27 +193,27 @@ public class DialogFragmentAddCard extends DialogFragment {
                 }
                 /*getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
                         .addToBackStack(null).commit();*/
-                prefrences.setCartFragStatus(0);
+//                prefrences.setCartFragStatus(0);
             }
         });
         return view;
     }
 
     private void addCard() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest request = new StringRequest(Request.Method.POST, URLs.add_card_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AddCardFragment()).commit();
                 dismiss();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("pay_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }) {
             @Override
@@ -152,14 +241,13 @@ public class DialogFragmentAddCard extends DialogFragment {
         requestQueue.add(request);
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 }

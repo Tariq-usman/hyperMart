@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +38,8 @@ import java.util.Map;
 
 public class RateUsFragment extends Fragment {
 
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private TextView mConfirmBtn, mTitle;
     private ImageView mBackBtn;
     private RatingBar ratingBarStore,ratingBarDeliveryBo,ratingBarServices;
@@ -46,7 +49,7 @@ public class RateUsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rate_us,container,false);
-        customProgressDialog(getContext());
+        customDialog(getContext());
         prefrences = new Preferences(getContext());
         mConfirmBtn = view.findViewById(R.id.submit);
         ratingBarStore = view.findViewById(R.id.rating_bar_store);
@@ -79,7 +82,7 @@ public class RateUsFragment extends Fragment {
     }
 
     public void postRating() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.POST, URLs.over_all_rating_url, new Response.Listener<String>() {
@@ -87,13 +90,13 @@ public class RateUsFragment extends Fragment {
             public void onResponse(String response) {
                 OverAllRatingResponse ratingResponse = gson.fromJson(response, OverAllRatingResponse.class);
                 Toast.makeText(getContext(), ""+ ratingResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e( "rating_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }){
             @Override
@@ -114,14 +117,13 @@ public class RateUsFragment extends Fragment {
         };
         requestQueue.add(request);
     }
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 }

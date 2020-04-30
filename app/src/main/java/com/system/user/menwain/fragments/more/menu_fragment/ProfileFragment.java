@@ -1,8 +1,10 @@
 package com.system.user.menwain.fragments.more.menu_fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,7 +54,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private String gender;
     private Button btnRegister;
     private Preferences prefrences;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private boolean profile_status = false;
 
     @Nullable
@@ -60,7 +63,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         prefrences = new Preferences(getContext());
-        customProgressDialog(getContext());
+        customDialog(getContext());
 
         etFname = view.findViewById(R.id.et_f_name_profile);
         etLname = view.findViewById(R.id.et_l_name_profile);
@@ -203,7 +206,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getUserProfileDetails() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_current_user_profile_url, new Response.Listener<String>() {
@@ -222,7 +225,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     rbMale.setChecked(false);
                     rbFemale.setChecked(true);
                 }
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -232,7 +235,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
                 logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(logInIntnet);
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }) {
             @Override
@@ -246,7 +249,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateProfileDetails() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.POST, URLs.update_current_user_profile_url, new Response.Listener<String>() {
@@ -254,14 +257,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             public void onResponse(String response) {
                 UpdateProfileResponse updateProfileResponse = gson.fromJson(response, UpdateProfileResponse.class);
                 Toast.makeText(getContext(), "" + updateProfileResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("profiel_error", error.toString());
                 Toast.makeText(getContext(), "" + error.toString(), Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }) {
             @Override
@@ -306,13 +309,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 }

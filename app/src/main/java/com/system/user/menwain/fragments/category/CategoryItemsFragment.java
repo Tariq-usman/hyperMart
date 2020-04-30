@@ -1,8 +1,10 @@
 package com.system.user.menwain.fragments.category;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,7 +57,8 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
 
     private CardView mSearchViewItemsFragment;
     private Preferences prefrences;
-    private ProgressDialog progressDialog;
+    AlertDialog.Builder builder;
+    AlertDialog dialog;
     private CategoryAdapter categoryAdapter;
     private SubCategoryAdapter subCategoryAdapter;
     private CategoryProductsAdapter categoryProductsAdapter;
@@ -71,7 +74,7 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         prefrences = new Preferences(getContext());
-        customProgressDialog(getContext());
+        customDialog(getContext());
             super_cat_id = prefrences.getSuperCatId();
 
         mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
@@ -120,7 +123,7 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
     public void interfaceOnClick(View view, int position) {
     }
     private void getCategory(int superCatId) {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_category_url + superCatId, new Response.Listener<String>() {
@@ -137,26 +140,25 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
                     category_products_list.add(categoryResponse.getProducts().getData().get(i));
                 }
                 categoryProductsAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("erroe", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         });
         requestQueue.add(request);
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 

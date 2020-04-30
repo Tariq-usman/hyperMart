@@ -3,6 +3,7 @@ package com.system.user.menwain.adapters.cart_adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.system.user.menwain.activities.MapsActivity;
 import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.fragments.cart.PaymentFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.cart.UserAddressListResponse;
 import com.system.user.menwain.responses.cart.UserCardsResponse;
 
@@ -32,10 +34,13 @@ public class UserCardsAdapter extends RecyclerView.Adapter<UserCardsAdapter.Card
     List<UserCardsResponse.Cards.Datum> card_list;
     Context context;
     private String sub_string, card_num;
+    private Bundle bundle;
+    private Preferences preferences;
 
     public UserCardsAdapter(Context applicationContext, List<UserCardsResponse.Cards.Datum> card_list) {
         this.card_list = card_list;
         this.context = applicationContext;
+        preferences = new Preferences(context);
         //texts = new String[address.length];
     }
 
@@ -62,8 +67,17 @@ public class UserCardsAdapter extends RecyclerView.Adapter<UserCardsAdapter.Card
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                preferences.setCartFragStatus(5);
+                bundle = new Bundle();
                 PaymentFragment fragment = new PaymentFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                bundle.putString("card_holder_name",card_list.get(position).getHolderName());
+                bundle.putString("card_number",card_list.get(position).getCardNumber());
+                bundle.putString("card_cvc",card_list.get(position).getCvv().toString());
+                bundle.putString("card_expiry",card_list.get(position).getExpiry());
+                bundle.putString("zip_code",card_list.get(position).getZipCode());
+                bundle.putString("billing_address",card_list.get(position).getCardBillAddress());
+                fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }
         });

@@ -1,8 +1,10 @@
 package com.system.user.menwain.fragments.category;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,7 +57,8 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
 
     private CardView mSearchViewItemsFragment;
     private Preferences prefrences;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private SubCategoryAdapter subCategoryAdapter;
     private SubCategoryProductsAdapter subCategoryProductsAdapter;
     private SubCategoryProductsFinalAdapter subCategoryProductsFinalAdapter;
@@ -69,7 +72,7 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sub_category, container, false);
         prefrences = new Preferences(getContext());
-        customProgressDialog(getContext());
+        customDialog(getContext());
 
         mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
         //mSearchViewItemsFragment.setVisibility(View.INVISIBLE);
@@ -125,7 +128,7 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
     }
 
     private void getSubCategory(int cat_id) {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.POST, URLs.get_sub_category_and_products_url + cat_id, new Response.Listener<String>() {
@@ -145,13 +148,13 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
                 if (subCategory_products_list.size()==0){
                     Toast.makeText(getContext(), "No Such Products!", Toast.LENGTH_SHORT).show();
                 }
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("erroe", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }){
             @Override
@@ -165,7 +168,7 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
     }
 
     private void getFinalProducts(int sub_cat_id) {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.POST, URLs.get_sub_category_products_url + sub_cat_id, new Response.Listener<String>() {
@@ -182,13 +185,13 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
                 if (subCategory_products_final_list.size()==0){
                     Toast.makeText(getContext(), "No Such Products!", Toast.LENGTH_SHORT).show();
                 }
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("erroe", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }){
             @Override
@@ -201,14 +204,13 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
         requestQueue.add(request);
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 

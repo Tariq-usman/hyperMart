@@ -1,7 +1,9 @@
 package com.system.user.menwain.fragments.more.stores;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +44,8 @@ public class StoresFragment extends Fragment {
     private TextView tvTitleStores;
     private CardView mSearchStores;
     private Preferences prefrences;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private List<StoresAllBranchesResponse.Storelist.Datum> stores_list = new ArrayList<StoresAllBranchesResponse.Storelist.Datum>();
 
     @Nullable
@@ -50,7 +53,7 @@ public class StoresFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stores, container, false);
         prefrences = new Preferences(getContext());
-        customProgressDialog(getContext());
+        customDialog(getContext());
         ivBackStores = getActivity().findViewById(R.id.iv_back);
         ivBackStores.setVisibility(View.VISIBLE);
         mSearchStores = getActivity().findViewById(R.id.search_view);
@@ -75,7 +78,7 @@ public class StoresFragment extends Fragment {
     }
 
     private void getAllStoreData() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLs.get_all_stores_data_url, new Response.Listener<String>() {
@@ -86,27 +89,26 @@ public class StoresFragment extends Fragment {
                     stores_list.add(branchesResponse.getStorelist().getData().get(i));
                 }
                 storesAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                dialog.dismiss();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                dialog.dismiss();
                 Log.e("Stores_error", error.toString());
             }
         });
         requestQueue.add(stringRequest);
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 }

@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,7 +78,8 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private ExploreShopItemsGridAdapter exploreShopItemsGridAdapter;
     private ExploreItemsGridAdapter exploreItemsGridAdapter;
     private ShopItemsGridAdapter shopItemsGridAdapter;
-    private ProgressDialog progressDialog;
+    AlertDialog.Builder builder;
+    AlertDialog dialog;
     private List<ExploreShopeSeeAllResponse.Datum> explore_shop_grid_list = new ArrayList<>();
     private List<ExploreSellAllResponse.Datum> explore_list = new ArrayList<>();
     private List<ShopSeeAllResponse.Datum> shop_list = new ArrayList<>();
@@ -86,7 +89,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_items, container, false);
         prefrences = new Preferences(getContext());
-        customProgressDialog(getContext());
+        customDialog(getContext());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         searchViewAllItems = getActivity().findViewById(R.id.search_view);
@@ -201,7 +204,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
 
     }
     private void getExploreAndShopeSeeAllData() {
-            progressDialog.show();
+            dialog.show();
             RequestQueue requestQueue = Volley.newRequestQueue(getContext());
             final Gson gson = new GsonBuilder().create();
             StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_explore_shop, new Response.Listener<String>() {
@@ -214,13 +217,13 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                     }
                     exploreShopItemsGridAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
+                    dialog.dismiss();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("wishError",error.toString());
-                    progressDialog.dismiss();
+                    dialog.dismiss();
                 }
             }){
                 @Override
@@ -234,7 +237,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         }
 
     private void getExploreSeeAllData() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_explore, new Response.Listener<String>() {
@@ -247,13 +250,13 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                 }
                 exploreItemsGridAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("wishError",error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }){
             @Override
@@ -266,7 +269,8 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         requestQueue.add(request);
     }
     private void getShopSeeAllData() {
-        progressDialog.show();
+
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_shop, new Response.Listener<String>() {
@@ -279,13 +283,13 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                 }
                 shopItemsGridAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("wishError",error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }){
             @Override
@@ -298,12 +302,12 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         requestQueue.add(request);
     }
 
-        public void customProgressDialog(Context context){
-            progressDialog = new ProgressDialog(context);
-            // Setting Message
-            progressDialog.setMessage("Loading...");
-            // Progress Dialog Style Spinner
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            // Fetching max value
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
         }
+        dialog = builder.create();
+    }
 }

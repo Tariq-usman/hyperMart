@@ -1,8 +1,10 @@
 package com.system.user.menwain.fragments.category;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +43,8 @@ public class SuperCategoryFragment extends Fragment {
     private List<SuperCategoryResponse.SuperCategory.Datum> superCategoryList = new ArrayList<>();
     private SuperCategoryAdapter superCategoryAdapter;
 
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
 
     @Nullable
     @Override
@@ -49,7 +52,7 @@ public class SuperCategoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_items_category,container,false);
         mSearchViewCategory = getActivity().findViewById(R.id.search_view);
         mSearchViewCategory.setVisibility(View.VISIBLE);
-        customProgressDialog(getContext());
+        customDialog(getContext());
         getSuperCategoryData();
 
         mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
@@ -71,7 +74,7 @@ public class SuperCategoryFragment extends Fragment {
     }
 
     private void getSuperCategoryData() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_super_category_url, new Response.Listener<String>() {
@@ -83,26 +86,25 @@ public class SuperCategoryFragment extends Fragment {
                     superCategoryList.add(categoryResponse.getSuperCategory().getData().get(i));
                 }
                 superCategoryAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("category_erroe",error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         });
         requestQueue.add(request);
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 }

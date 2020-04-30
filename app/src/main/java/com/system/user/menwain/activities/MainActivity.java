@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.system.user.menwain.fragments.cart.AddCardFragment;
 import com.system.user.menwain.fragments.category.SuperCategoryFragment;
 import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.others.Preferences;
@@ -288,6 +289,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
             } else if (frag_status == 3) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).addToBackStack(null).commit();
+            }else if (frag_status == 4) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AddCardFragment()).addToBackStack(null).commit();
             }
         } else if (id == R.id.my_list_layout) {
             prefrences.setBottomNavStatus(4);

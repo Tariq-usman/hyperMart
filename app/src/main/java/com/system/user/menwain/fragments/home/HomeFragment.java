@@ -1,8 +1,10 @@
 package com.system.user.menwain.fragments.home;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -75,7 +77,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     Preferences prefrences;
     private int frag_status;
     private Context context;
-
+    AlertDialog.Builder builder;
+    AlertDialog dialog;
     // List for banner images
     private List<HomeBannerResponse.Datum> bannersList = new ArrayList<>();
     private Banner_SlidingImages_Adapter banner_slidingImages_adapter;
@@ -93,7 +96,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragmet_home, container, false);
         prefrences = new Preferences(getContext());
         prefrences.setBottomNavStatus(1);
-        customProgressDialog(getContext());
+        customDialog(getContext());
 
         getExploreAndShop();
         getBannerData();
@@ -222,7 +225,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
     private void getBannerData() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_banner_url, new Response.Listener<String>() {
@@ -234,13 +237,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     bannersList.add(bannerResponse.getData().get(i));
                 }
                 banner_slidingImages_adapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e( "erroe", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         });
         requestQueue.add(request);
@@ -264,7 +267,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
     public void getExploreAndShop() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_explore_and_shop_url, new Response.Listener<String>() {
@@ -289,13 +292,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
                 shopAdapter.notifyDataSetChanged();
                 Log.e( "Response",(String.valueOf(exploreShopList.size())));
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e( "erroe", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         });
         requestQueue.add(request);
@@ -355,15 +358,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+         builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+         dialog = builder.create();
     }
+
 
 }

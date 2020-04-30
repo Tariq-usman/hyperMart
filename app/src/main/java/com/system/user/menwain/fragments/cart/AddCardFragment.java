@@ -1,12 +1,15 @@
 package com.system.user.menwain.fragments.cart;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,23 +48,36 @@ public class AddCardFragment extends Fragment {
     private UserCardsAdapter userCardsAdapter;
     private List<UserCardsResponse.Cards.Datum> card_list = new ArrayList<UserCardsResponse.Cards.Datum>();
     private Preferences preferences;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private CardView addCard;
     private TextView tvOrderTotla,tvShippingCost,tvTotal;
+    private ImageView mBackBtn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_card,container,false);
         preferences = new Preferences(getContext());
-        customProgressDialog(getContext());
+        preferences=new Preferences(getContext());
+        customDialog(getContext());
         getUserCards();
 
+        mBackBtn = getActivity().findViewById(R.id.iv_back);
+        mBackBtn.setVisibility(View.VISIBLE);
         tvOrderTotla = view.findViewById(R.id.tv_order_total_add_card);
         tvOrderTotla.setText(preferences.getTotalAmount()+"");
         tvShippingCost = view.findViewById(R.id.tv_shipping_cost_add_card);
         tvShippingCost.setText(preferences.getShippingCost()+"");
         tvTotal = view.findViewById(R.id.tv_total_add_card);
         tvTotal.setText(preferences.getTotalAmount()+preferences.getShippingCost()+"");
+        mBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                preferences.setCartFragStatus(3);
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).addToBackStack(null).commit();
+                mBackBtn.setVisibility(View.GONE);
+            }
+        });
 
         addCard = view.findViewById(R.id.add_card);
         addCard.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +112,7 @@ public class AddCardFragment extends Fragment {
     }
 
     private void getUserCards() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.user_card_url, new Response.Listener<String>() {
@@ -109,13 +125,13 @@ public class AddCardFragment extends Fragment {
                     card_list.add(userCardsResponse.getCards().getData().get(i));
                 }
                 userCardsAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("card_error",error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }){
             @Override
@@ -130,7 +146,7 @@ public class AddCardFragment extends Fragment {
     }
 
     private void deleteAddress(final int position, final int card_id) {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest request = new StringRequest(Request.Method.POST, URLs.delete_card_url + card_id, new Response.Listener<String>() {
             @Override
@@ -141,13 +157,13 @@ public class AddCardFragment extends Fragment {
                 userCardsAdapter.notifyItemRemoved(position);
                 userCardsAdapter.notifyItemRangeChanged(position, card_list.size());
                 userCardsAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("card_delete_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }) {
             @Override
@@ -176,14 +192,13 @@ public class AddCardFragment extends Fragment {
         });
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 }

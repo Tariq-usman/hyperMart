@@ -114,52 +114,56 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
         holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productId = subCatergoryList.get(position).getId();
-                Drawable drawable = holder.mFilteProduct.getDrawable();
-                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                productName = subCatergoryList.get(position).getName();
-                //  storeName = holder.mStoreName.getText().toString();
-                price = subCatergoryList.get(position).getLowestPrice().toString();
-                quantity = holder.mItemCounter.getText().toString();
-                // strTotalPrice = price;
-                totalPrice = Float.parseFloat(price);
-                intQuantity = Integer.parseInt(quantity);
-                unitPrice = totalPrice * intQuantity;
-                saveToInternalStorage(bitmap);
+                try {
+                    productId = subCatergoryList.get(position).getId();
+                    Drawable drawable = holder.mFilteProduct.getDrawable();
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    productName = subCatergoryList.get(position).getName();
+                    //  storeName = holder.mStoreName.getText().toString();
+                    price = subCatergoryList.get(position).getLowestPrice().toString();
+                    quantity = holder.mItemCounter.getText().toString();
+                    // strTotalPrice = price;
+                    totalPrice = Float.parseFloat(price);
+                    intQuantity = Integer.parseInt(quantity);
+                    unitPrice = totalPrice * intQuantity;
+                    saveToInternalStorage(bitmap);
 
-                cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
-                final Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
-                cartViewModel.getCartDataList().observe((FragmentActivity) context, new Observer<List<Cart>>() {
-                    @Override
-                    public void onChanged(List<Cart> carts) {
+                    cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
+                    final Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
+                    cartViewModel.getCartDataList().observe((FragmentActivity) context, new Observer<List<Cart>>() {
+                        @Override
+                        public void onChanged(List<Cart> carts) {
 
-                        for (int i = 0; i < carts.size(); i++) {
-                            p_id_list.add(carts.get(i).getP_id());
-                            quantity_list.add(carts.get(i).getQuantity());
+                            for (int i = 0; i < carts.size(); i++) {
+                                p_id_list.add(carts.get(i).getP_id());
+                                quantity_list.add(carts.get(i).getQuantity());
+                            }
                         }
-                    }
-                });
-                if (p_id_list.size() == 0) {
-                    cartViewModel.insertCart(cart);
-                    Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    for (int i = 0; i < p_id_list.size(); i++) {
-                        if (p_id_list.get(i) == productId) {
-                            id = p_id_list.get(i);
-                            pro_quantity= quantity_list.get(i);
-                        }
-                    }
-
-                    if (id == productId) {
-                        int final_quantity = intQuantity+pro_quantity;
-                        updateCartQuantity = new UpdateCartQuantity(productId, intQuantity, unitPrice);
-                        cartViewModel.updateCartQuantity(updateCartQuantity);
-                        Toast.makeText(context, "Update Successfully", Toast.LENGTH_SHORT).show();
-                    } else {
+                    });
+                    if (p_id_list.size() == 0) {
                         cartViewModel.insertCart(cart);
                         Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        for (int i = 0; i < p_id_list.size(); i++) {
+                            if (p_id_list.get(i) == productId) {
+                                id = p_id_list.get(i);
+                                pro_quantity = quantity_list.get(i);
+                            }
+                        }
+
+                        if (id == productId) {
+                            int final_quantity = intQuantity + pro_quantity;
+                            updateCartQuantity = new UpdateCartQuantity(productId, intQuantity, unitPrice);
+                            cartViewModel.updateCartQuantity(updateCartQuantity);
+                            Toast.makeText(context, "Update Successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            cartViewModel.insertCart(cart);
+                            Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
 //                UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity,unitPrice);

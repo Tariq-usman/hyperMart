@@ -5,11 +5,13 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,7 +62,8 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     Preferences prefrences;
     private int pay_status;
     private CardView mSearchView;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
 
 
@@ -68,7 +71,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avail_not_avial_items_lists, container, false);
-        customProgressDialog(getContext());
+        customDialog(getContext());
         bundle = this.getArguments();
         if (bundle != null) {
             store_id = bundle.getInt("store_id", 0);
@@ -129,16 +132,6 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         mBackBtn.setOnClickListener(this);
         mBackBtn.setVisibility(View.VISIBLE);
 
-        /*availPreferences = getActivity().getSharedPreferences("avail_length", Activity.MODE_PRIVATE);
-        notAvailPrefrences = getActivity().getSharedPreferences("not_avail_items", Activity.MODE_PRIVATE);
-        available_items = availPreferences.getString("available", "");
-        not_available_items = notAvailPrefrences.getString("not_available", "");
-        Log.i("available", String.valueOf(available_items));
-
-        if (!available_items.isEmpty()) {
-            mAvailItems.setText(String.valueOf(available_items));
-            mNotAvailItmes.setText(String.valueOf(not_available_items));
-        }*/
         return view;
     }
 
@@ -183,7 +176,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     }
 
     private void calculateShippingCost() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.POST, URLs.calcualte_shipping_cost, new Response.Listener<String>() {
@@ -200,13 +193,13 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
                     DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
                     deliveryTime.show(getFragmentManager(), "Select Method");
                 }
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("AvailNotAvailError", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }) {
             @Override
@@ -221,14 +214,13 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         requestQueue.add(request);
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 }

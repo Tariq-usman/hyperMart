@@ -1,10 +1,12 @@
 package com.system.user.menwain.fragments.cart.dialog_fragments;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,7 +59,8 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
     private DeliveryTimesAdapter timesAdapter;
     private List<StoreTimeSLotsResponse.List> delivery_times_list = new ArrayList<>();
     Preferences prefrences;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     String current_date;
     long daysDiff;
     @Nullable
@@ -66,7 +69,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         View view = inflater.inflate(R.layout.fragment_dialog_delivery_time, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         prefrences = new Preferences(getContext());
-        customProgressDialog(getContext());
+        customDialog(getContext());
         tvDeliveryPickUp = view.findViewById(R.id.tv_delivery_pickup);
         mConfirm = view.findViewById(R.id.confirm_btn_delivery_time);
         mCloseBtn = view.findViewById(R.id.close_back_view);
@@ -77,6 +80,8 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         current_date = df.format(date);
+        getStoreTimeSlots(prefrences.getSelectedStoreId());
+
         //String due_date = jobsResponse.getDueDate();
 
         tvDate = view.findViewById(R.id.tv_date);
@@ -119,11 +124,12 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
     }
 
     private void submitPreferredDeliveryDate() {
-        progressDialog.show();
+        dialog.show();
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        StringRequest request = new StringRequest(Request.Method.POST, URLs.submit_delivery_date_url + 1, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, URLs.submit_delivery_date_url + time_slot, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                prefrences.setCartFragStatus(4);
                 prefrences.setDateTime(date_time);
                 prefrences.setTimeSlotId(time_slot);
 
@@ -135,16 +141,16 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                 }
                 /*getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
                         .addToBackStack(null).commit();*/
-                prefrences.setCartFragStatus(0);
+                //prefrences.setCartFragStatus(0);
                 dismiss();
                // Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("time_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }) {
             @Override
@@ -204,7 +210,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         return (Date2.getTime() - Date1.getTime()) / (24 * 60 * 60 * 1000);
     }
     private void getStoreTimeSlots(int selectedStoreId) {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.POST, URLs.post_preffered_date_url + selectedStoreId, new Response.Listener<String>() {
@@ -217,13 +223,13 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                 }
                 timesAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("time_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }) {
             @Override
@@ -243,14 +249,13 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         requestQueue.add(request);
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 

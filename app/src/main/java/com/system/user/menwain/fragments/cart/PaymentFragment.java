@@ -5,9 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,27 +39,38 @@ import java.util.Map;
 public class PaymentFragment extends Fragment {
 
     TextView mConfirm, tvPayableAmount;
-    private EditText etCardHolderName, etCardNumber, etCVC, etExpiry, etZipCode, etBillingAddress;
+    private TextView etCardHolderName, etCardNumber, etCVC, etExpiry, etZipCode, etBillingAddress;
     private ImageView mBackBtnPay, mBarCodeScanner;
     private Preferences prefrences;
     private CardView mSearchView;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+    private Bundle bundle;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_payment, container, false);
-        customProgressDialog(getContext());
+        customDialog(getContext());
         prefrences = new Preferences(getContext());
+        bundle=this.getArguments();
 
         tvPayableAmount = view.findViewById(R.id.tv_payable_amount);
-        tvPayableAmount.setText(prefrences.getTotalAmount()+prefrences.getShippingCost()+"");
+        tvPayableAmount.setText(prefrences.getTotalAmount() + prefrences.getShippingCost() + "");
         etCardHolderName = view.findViewById(R.id.et_card_holder_name);
         etCardNumber = view.findViewById(R.id.et_card_number);
         etCVC = view.findViewById(R.id.et_cvc);
         etExpiry = view.findViewById(R.id.et_expairy);
         etZipCode = view.findViewById(R.id.et_zip_code);
         etBillingAddress = view.findViewById(R.id.et_billing_address);
+        if (bundle!=null){
+            etCardHolderName.setText(bundle.getString("card_holder_name"));
+            etCardNumber.setText(bundle.getString("card_number"));
+            etCVC.setText(bundle.getString("card_cvc"));
+            etExpiry.setText(bundle.getString("card_expiry"));
+            etZipCode.setText(bundle.getString("zip_code"));
+            etBillingAddress.setText(bundle.getString("billing_address"));
+        }
 
         mSearchView = getActivity().findViewById(R.id.search_view);
         mSearchView.setVisibility(View.INVISIBLE);
@@ -77,8 +90,8 @@ public class PaymentFragment extends Fragment {
         mBackBtnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prefrences.setCartFragStatus(3);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment())
+//                prefrences.setCartFragStatus(4);
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AddCardFragment())
                         .addToBackStack(null).commit();
 
             }
@@ -89,64 +102,19 @@ public class PaymentFragment extends Fragment {
             public void onClick(View view) {
                 DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
                 dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
-//                addCard();
-                /*getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
-                        .addToBackStack(null).commit();*/
                 prefrences.setCartFragStatus(0);
             }
         });
         return view;
     }
 
-    private void addCard() {
-        progressDialog.show();
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        StringRequest request = new StringRequest(Request.Method.POST, URLs.add_card_url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
-                dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
-                progressDialog.dismiss();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("pay_error",error.toString());
-                progressDialog.dismiss();
-            }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headerMap = new HashMap<>();
-                headerMap.put("Authorization","Bearer "+prefrences.getToken());
-                return headerMap;
-            }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("holder_name",etCardHolderName.getText().toString().trim());
-                map.put("card_number",etCardNumber.getText().toString().trim());
-                map.put("zip_code",etZipCode.getText().toString().trim());
-                map.put("cvv",etCVC.getText().toString().trim());
-                map.put("expiry",etExpiry.getText().toString().trim());
-                map.put("is_favorite",0+"");
-                map.put("issuing_company","null");
-                map.put("card_bill_address",etBillingAddress.getText().toString().trim());
-                return map;
-
-            }
-        };
-        requestQueue.add(request);
-    }
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 }

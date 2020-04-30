@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,7 +69,8 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     private RadioButton rbDeliverToAddress, rbPreparePickUp, rbCashOnDelivery, rbPreparePickFromStore, rbWalkInStore;
     private RadioGroup rgPayNow, rgPayLater;
     private int rBtnPaymentStatus, delivery_address_id;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private List<UserAddressListResponse.Addresslist> addressList = new ArrayList<UserAddressListResponse.Addresslist>();
     private List<PaymentTypesResponse.DataPayNow> pay_now_list = new ArrayList<PaymentTypesResponse.DataPayNow>();
 
@@ -77,7 +80,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_delivey_address, container, false);
         prefrences = new Preferences(getContext());
         prefrences.setPaymentStatus(1);
-        customProgressDialog(getContext());
+        customDialog(getContext());
         rBtnPaymentStatus = prefrences.getPayRBtnStatus();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -151,7 +154,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     }
 
     private void deleteAddress(final int position, final int address_id) {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest request = new StringRequest(Request.Method.DELETE, URLs.delete_address_url + address_id, new Response.Listener<String>() {
             @Override
@@ -162,13 +165,13 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
                 delivieryAddressesAdapter.notifyItemRemoved(position);
                 delivieryAddressesAdapter.notifyItemRangeChanged(position, addressList.size());
                 delivieryAddressesAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("address_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }) {
             @Override
@@ -307,7 +310,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     }
 
     private void getUserAddress() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_address_url, new Response.Listener<String>() {
@@ -327,13 +330,13 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
                 addressList.size();
                 delivieryAddressesAdapter.notifyDataSetChanged();
                 Log.i("Address_response", response);
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Address_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }) {
             @Override
@@ -346,14 +349,13 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         requestQueue.add(request);
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 

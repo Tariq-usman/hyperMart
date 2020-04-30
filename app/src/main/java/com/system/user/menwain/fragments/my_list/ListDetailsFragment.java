@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,7 +52,8 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
     private ImageView mBackBtn;
     private Preferences prefrences;
     private Bundle bundle;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private List<WistListByIdResopnse.Datum> products_list = new ArrayList<>();
     private String list_name;
     public  static List<Integer> reorder_list = new ArrayList<Integer>();
@@ -61,7 +64,7 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_list_details, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         prefrences = new Preferences(getContext());
-        customProgressDialog(getContext());
+        customDialog(getContext());
         bundle = this.getArguments();
         if (bundle!=null){
             int list_id = bundle.getInt("list_id",0);
@@ -103,7 +106,7 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
     }
 
     private void getProductList(int list_id) {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_wish_list_by_id + list_id, new Response.Listener<String>() {
@@ -115,13 +118,13 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
                     products_list.add(listByIdResopnse.getData().get(i));
                 }
                 listDetailsAdapter.notifyDataSetChanged();;
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("wishError",error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }){
             @Override
@@ -132,15 +135,6 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
             }
         };
         requestQueue.add(request);
-    }
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
     }
     @Override
     public void onClick(View view) {
@@ -170,4 +164,13 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         }
 
     }
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
+    }
+
 }

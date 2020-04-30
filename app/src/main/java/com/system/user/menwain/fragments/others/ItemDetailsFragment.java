@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -91,7 +93,8 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private int currentPage = 0;
     private CardView mSearchView;
     private Preferences prefrences;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private int product_id;
     final int[] count = {1};
     private Bitmap bitmap;
@@ -104,7 +107,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_details, container, false);
         prefrences = new Preferences(getContext());
-        customProgressDialog(getContext());
+        customDialog(getContext());
 
         bundle = this.getArguments();
         if (bundle != null) {
@@ -194,7 +197,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     }
 
     private void getProductReviews(int product_id) {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.reviews_list_url + product_id, new Response.Listener<String>() {
@@ -209,20 +212,20 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 itemReviewsAdapter.notifyDataSetChanged();
                 int review_count = reviews_list.size();
                 tvReviewsCount.setText("(" + review_count + " Reviews)");
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("details_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         });
         requestQueue.add(request);
     }
 
     private void getProductDetails(int product_id) {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_product_details_url + product_id, new Response.Listener<String>() {
@@ -241,7 +244,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                     tvTitle.setText(detailsResponse.getData().getName());
                     tvDescription.setText(detailsResponse.getData().getDescription());
                     tvSpecifications.setText(detailsResponse.getData().getSpecification());
-                    if (detailsResponse.getRating() == null || detailsResponse.getRating()=="" || detailsResponse.getRating().isEmpty()) {
+                    if (detailsResponse.getRating() == null || detailsResponse.getRating() == "" || detailsResponse.getRating().isEmpty()) {
                         ratingBar.setRating(0);
                     } else {
                         ratingBar.setRating(Float.valueOf(detailsResponse.getRating()));
@@ -253,7 +256,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                         related_items_list.add(detailsResponse.getData().getProductpic().get(i));
                     }
                     selectedItemsFilterAdapter.notifyDataSetChanged();
-                    progressDialog.dismiss();
+                    dialog.dismiss();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -262,7 +265,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("details_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         });
         requestQueue.add(request);
@@ -353,7 +356,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             saveToInternalStorage(bitmap);
             cartViewModel = ViewModelProviders.of((FragmentActivity) getContext()).get(CartViewModel.class);
             Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
-            UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity+1, unitPrice);
+            UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity + 1, unitPrice);
             cartViewModel.getCartDataList().observe((FragmentActivity) getContext(), new Observer<List<Cart>>() {
                 @Override
                 public void onChanged(List<Cart> carts) {
@@ -373,10 +376,10 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                         id = p_id_list.get(i);
                     }
                 }
-                if (id == productId){
+                if (id == productId) {
                     cartViewModel.updateCartQuantity(updateCartQuantity);
                     Toast.makeText(getContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     cartViewModel.insertCart(cart);
                     Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
                 }
@@ -397,14 +400,13 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
     private String saveToInternalStorage(Bitmap bitmapImage) {

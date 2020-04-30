@@ -11,7 +11,7 @@
     app:cardCornerRadius="20dp">
 
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -49,6 +49,7 @@
                 android:layout_marginVertical="5dp"
                 android:background="@drawable/bg_email_pass"
                 android:hint="Card Number"
+                android:maxLength="19"
                 android:inputType="number"
                 android:maxLines="1"
                 android:textColor="@color/darkGreenColor"
@@ -68,7 +69,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_email_pass"
                     android:hint="CVC"
-                    android:inputType="number"
+                    android:maxLength="3"
+                    android:inputType="numberPassword"
                     android:maxLines="1"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -80,8 +82,9 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_email_pass"
-                    android:hint="Expairy"
-                    android:inputType="number"
+                    android:inputType="date"
+                    android:maxLength="5"
+                    android:hint="Exp. MM/YY"
                     android:maxLines="1"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />

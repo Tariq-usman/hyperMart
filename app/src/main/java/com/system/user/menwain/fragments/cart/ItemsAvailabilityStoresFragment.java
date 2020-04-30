@@ -1,8 +1,10 @@
 package com.system.user.menwain.fragments.cart;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,7 +59,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private int pay_status;
     private CardView mSearchView;
     private Bundle bundle;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     List<Integer> cartList = new ArrayList<>();
     CartViewModel cartViewModel;
     private double lat, lang;
@@ -79,7 +82,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         lang = Double.parseDouble(split_address[1]);
 
 
-        customProgressDialog(getContext());
+        customDialog(getContext());
         cartViewModel = ViewModelProviders.of(ItemsAvailabilityStoresFragment.this).get(CartViewModel.class);
 
         if (prefrences.getOrderStatus() == 1) {
@@ -157,7 +160,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     }
 
     private void lowestPrice() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
@@ -183,13 +186,13 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     stores_list.add(availNotAvailResponse.getData().get(i));
                 }
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         });
         requestQueue.add(request);
@@ -212,7 +215,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     }
 
     private void highestAvailabilityData() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
@@ -248,13 +251,13 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -278,7 +281,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     }
 
     private void nearestDistance() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
@@ -304,13 +307,13 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 }
                 itemsAvailabilityStoresAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         });
         requestQueue.add(request);
@@ -332,14 +335,13 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         });
     }
 
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 }

@@ -1,9 +1,11 @@
 package com.system.user.menwain.fragments.cart.dialog_fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,12 +26,11 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
+import com.system.user.menwain.fragments.cart.OrderSuccessfulFragment;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.cart.CartFragment;
-import com.system.user.menwain.fragments.more.orders.OrdersFragment;
-import com.system.user.menwain.fragments.my_list.AllListsFragment;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -43,7 +44,9 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import org.json.JSONArray;
@@ -59,17 +62,21 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     private int mYear, mMonth, mDay;
     private Preferences prefrences;
     private int pay_status;
-    private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
     CartViewModel cartViewModel;
     View view;
-
+    OrderSuccessfulFragment fragment;
+    FragmentTransaction transaction;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          view = inflater.inflate(R.layout.fragment_dialog_purchasing_method, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        customProgressDialog(getContext());
+        customDialog(getContext());
         prefrences = new Preferences(getContext());
+        fragment= new OrderSuccessfulFragment();
+        transaction = ((AppCompatActivity) getContext()).getSupportFragmentManager().beginTransaction();
 
         cartViewModel = ViewModelProviders.of(DialogFragmentSaveList.this).get(CartViewModel.class);
         mConfirm = view.findViewById(R.id.confirm_btn_purchasing_method);
@@ -112,7 +119,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         if (id == R.id.confirm_btn_purchasing_method) {
             pay_status = prefrences.getPayRBtnStatus();
             placeOrderAndAddToWishList();
-            if (pay_status == 5) {
+            /*if (pay_status == 5) {
                 prefrences.setCartFragStatus(0);
                 prefrences.setBottomNavStatus(4);
                 mHome.setImageResource(R.drawable.ic_housewhite);
@@ -144,11 +151,11 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
                 tvMore.setTextColor(Color.parseColor("#00c1bd"));
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
                 mBackBtnPay.setVisibility(View.INVISIBLE);
-            }
+            }*/
             dismiss();
 
         } else if (id == R.id.close_back_view) {
-            prefrences.setCartFragStatus(0);
+//            prefrences.setCartFragStatus(0);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
             mBackBtnPay.setVisibility(View.INVISIBLE);
             dismiss();
@@ -156,7 +163,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
 
     }
     private void placeOrderAndAddToWishList() {
-        progressDialog.show();
+        dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
@@ -206,48 +213,16 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             @Override
             public void onResponse(JSONObject response) {
                 cartViewModel.deleteAllCartRecords();
+                transaction.replace(R.id.nav_host_fragment,fragment).commit();
                 Log.e("",response.toString());
 //                Toast.makeText(getActivity(), "Resopnse", Toast.LENGTH_SHORT).show();
-               /* if (pay_status == 5) {
-                    prefrences.setCartFragStatus(0);
-                    prefrences.setBottomNavStatus(4);
-                    mHome.setImageResource(R.drawable.ic_housewhite);
-                    tvHome.setTextColor(Color.parseColor("#004040"));
-                    mCategory.setImageResource(R.drawable.ic_searchwhite);
-                    tvCategory.setTextColor(Color.parseColor("#004040"));
-                    mFavourite.setImageResource(R.drawable.ic_likeblue);
-                    tvFavourite.setTextColor(Color.parseColor("#00c1bd"));
-                    mCart.setImageResource(R.drawable.ic_cart_white);
-                    tvCart.setTextColor(Color.parseColor("#004040"));
-                    mMore.setImageResource(R.drawable.ic_morewhite);
-                    tvMore.setTextColor(Color.parseColor("#004040"));
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
-                    mBackBtnPay.setVisibility(View.INVISIBLE);
-                } else {
-                    prefrences.setCartFragStatus(0);
-                    prefrences.setBottomNavStatus(5);
-                    prefrences.setMorFragStatus(2);
-                    prefrences.setMoreOrdersFragStatus(1);
-                    mHome.setImageResource(R.drawable.ic_housewhite);
-                    tvHome.setTextColor(Color.parseColor("#004040"));
-                    mCategory.setImageResource(R.drawable.ic_searchwhite);
-                    tvCategory.setTextColor(Color.parseColor("#004040"));
-                    mFavourite.setImageResource(R.drawable.ic_likewhite);
-                    tvFavourite.setTextColor(Color.parseColor("#004040"));
-                    mCart.setImageResource(R.drawable.ic_cart_white);
-                    tvCart.setTextColor(Color.parseColor("#004040"));
-                    mMore.setImageResource(R.drawable.ic_moreblue);
-                    tvMore.setTextColor(Color.parseColor("#00c1bd"));
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
-                    mBackBtnPay.setVisibility(View.INVISIBLE);
-                }*/
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("order_error",error.networkResponse.data.toString());
-                progressDialog.dismiss();
+                dialog.dismiss();
             }
         }){
             @Override
@@ -261,14 +236,13 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+    public void customDialog(Context context) {
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.layout_loading_dialog);
+        }
+        dialog = builder.create();
     }
 
 
