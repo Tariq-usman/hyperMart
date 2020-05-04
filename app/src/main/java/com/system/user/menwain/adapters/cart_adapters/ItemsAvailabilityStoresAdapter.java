@@ -96,7 +96,6 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
                 AvailNotAvailItemsListsFragment fragment = new AvailNotAvailItemsListsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle = new Bundle();
-                prefrences.setSelectedStoreId(stores_list.get(position).getId());
                 bundle.putInt("store_id", stores_list.get(position).getId());
                 bundle.putString("price", holder.mSortByPrice.getText().toString());
                 bundle.putString("available", stores_list.get(position).getAvailable().size() + "");

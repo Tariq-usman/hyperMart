@@ -81,11 +81,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         lat = Double.parseDouble(split_address[0]);
         lang = Double.parseDouble(split_address[1]);
 
-
         customDialog(getContext());
-        cartViewModel = ViewModelProviders.of(ItemsAvailabilityStoresFragment.this).get(CartViewModel.class);
 
-        if (prefrences.getOrderStatus() == 1) {
+        int order_status= prefrences.getOrderStatus();
+        if (order_status == 1) {
+            cartViewModel = ViewModelProviders.of(ItemsAvailabilityStoresFragment.this).get(CartViewModel.class);
             cartViewModel.getCartDataList().observe(ItemsAvailabilityStoresFragment.this, new Observer<List<Cart>>() {
                 @Override
                 public void onChanged(List<Cart> carts) {
@@ -95,7 +95,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     lowestPrice();
                 }
             });
-        }else if (prefrences.getOrderStatus()==2){
+        }else if (order_status==2){
             for (int i=0;i<reorder_list.size();i++){
                 cartList.add(reorder_list.get(i));
             }
@@ -165,8 +165,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("latitude", lat/*33.29868671102771*/);
-            jsonObj.put("longitude", lang/*71.10277701169252*/);
+            jsonObj.put("latitude", lat);
+            jsonObj.put("longitude", lang);
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < cartList.size(); i++) {
                 jsonArray.put(cartList.get(i));
@@ -180,13 +180,18 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.heighest_availability, jsonObj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                final AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
-                stores_list.clear();
-                for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
-                    stores_list.add(availNotAvailResponse.getData().get(i));
+                try {
+                    final AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
+                    stores_list.clear();
+                    for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
+                        stores_list.add(availNotAvailResponse.getData().get(i));
+                    }
+                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                itemsAvailabilityStoresAdapter.notifyDataSetChanged();
-                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -235,23 +240,29 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.heighest_availability, jsonObj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
-                stores_list.clear();
-                for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
-                    stores_list.add(availNotAvailResponse.getData().get(i));
-                }
-                Collections.sort(stores_list, new Comparator<AvailNotAvailResponse.Datum>() {
-                    @Override
-                    public int compare(AvailNotAvailResponse.Datum o1, AvailNotAvailResponse.Datum o2) {
-                        return Integer.valueOf(o2.getAvailable().size()).compareTo(o1.getAvailable().size());
+                try {
+                    AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
+                    stores_list.clear();
+                    for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
+                        stores_list.add(availNotAvailResponse.getData().get(i));
                     }
-                });
+                    Collections.sort(stores_list, new Comparator<AvailNotAvailResponse.Datum>() {
+                        @Override
+                        public int compare(AvailNotAvailResponse.Datum o1, AvailNotAvailResponse.Datum o2) {
+                            return Integer.valueOf(o2.getAvailable().size()).compareTo(o1.getAvailable().size());
+                        }
+                    });
 
-                //recyclerViewLiveHome.setAdapter(new LiveHomeAdapter(getContext(),productList));
+                    //recyclerViewLiveHome.setAdapter(new LiveHomeAdapter(getContext(),productList));
 
-                itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                    dialog.dismiss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -300,14 +311,20 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.heighest_availability, jsonObj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
-                stores_list.clear();
-                for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
-                    stores_list.add(availNotAvailResponse.getData().get(i));
-                }
-                itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                try {
+                    AvailNotAvailResponse availNotAvailResponse = gson.fromJson(String.valueOf(response), AvailNotAvailResponse.class);
+                    stores_list.clear();
+                    for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
+                        stores_list.add(availNotAvailResponse.getData().get(i));
+                    }
+                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                    dialog.dismiss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override

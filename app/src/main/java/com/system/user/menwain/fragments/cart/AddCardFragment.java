@@ -1,7 +1,6 @@
 package com.system.user.menwain.fragments.cart;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.UserCardsAdapter;
-import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentAddCard;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.cart.UserCardsResponse;
 import com.system.user.menwain.utils.URLs;

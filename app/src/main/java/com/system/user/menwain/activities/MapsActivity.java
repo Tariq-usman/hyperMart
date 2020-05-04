@@ -104,26 +104,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMap.clear();
-                String location = searchEt.getText().toString();
-                List<Address> addressList = null;
+                try {
+                    mMap.clear();
+                    String location = searchEt.getText().toString();
+                    List<Address> addressList = null;
 
-                if (searchEt.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Enter Location:", Toast.LENGTH_LONG).show();
-                } else if (location != null || !location.equals("")) {
-                    Geocoder geocoder = new Geocoder(getApplicationContext());
-                    try {
-                        addressList = geocoder.getFromLocationName(location, 1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if (searchEt.equals("")) {
+                        Toast.makeText(getApplicationContext(), "Enter Location:", Toast.LENGTH_LONG).show();
+                    } else if (location != null || !location.equals("")) {
+                        Geocoder geocoder = new Geocoder(getApplicationContext());
+                        try {
+                            addressList = geocoder.getFromLocationName(location, 1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (addressList.size()==0){
+                            Toast.makeText(getApplicationContext(),"No location found!",Toast.LENGTH_LONG).show();
+                        }
+                        Address address = addressList.get(0);
+                        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+
+                        mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     }
-                    Address address = addressList.get(0);
-                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-//                    Toast.makeText(getApplicationContext(),""+latLng,Toast.LENGTH_LONG).show();
-
-                    mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+
             }
         });
         currentLocationBtn.setOnClickListener(new View.OnClickListener() {

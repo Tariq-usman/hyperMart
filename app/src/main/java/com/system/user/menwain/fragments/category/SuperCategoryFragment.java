@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
@@ -46,10 +47,15 @@ public class SuperCategoryFragment extends Fragment {
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_items_category,container,false);
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+
         mSearchViewCategory = getActivity().findViewById(R.id.search_view);
         mSearchViewCategory.setVisibility(View.VISIBLE);
         customDialog(getContext());

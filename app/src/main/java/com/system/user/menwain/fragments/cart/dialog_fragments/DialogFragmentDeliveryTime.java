@@ -80,7 +80,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         current_date = df.format(date);
-        getStoreTimeSlots(prefrences.getSelectedStoreId());
+        getStoreTimeSlots(prefrences.getStoreId());
 
         //String due_date = jobsResponse.getDueDate();
 
@@ -190,7 +190,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                             Toast.makeText(getContext(), "Please select a valid date!", Toast.LENGTH_SHORT).show();
                         } else {
                             tvDate.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
-                            getStoreTimeSlots(prefrences.getSelectedStoreId());
+                            getStoreTimeSlots(prefrences.getStoreId());
                         }
                     }
                 }, mYear, mMonth, mDay);
@@ -243,6 +243,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("date", tvDate.getText().toString().trim());
+                Log.e("selected_date",tvDate.getText().toString().trim());
                 return map;
             }
         };

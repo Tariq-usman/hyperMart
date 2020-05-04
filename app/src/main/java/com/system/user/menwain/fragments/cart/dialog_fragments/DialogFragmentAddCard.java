@@ -1,4 +1,4 @@
-package com.system.user.menwain.fragments.cart;
+package com.system.user.menwain.fragments.cart.dialog_fragments;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -33,6 +33,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
+import com.system.user.menwain.fragments.cart.AddCardFragment;
+import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.utils.URLs;

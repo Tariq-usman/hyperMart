@@ -113,17 +113,22 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         DeliveryAddressFragment fragment = new DeliveryAddressFragment();
 
         if (id == R.id.proceed_btn) {
-            if (user_token.isEmpty()) {
-                Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
-                logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(logInIntnet);
+            if (cartList.size() == 0) {
+                Toast.makeText(getContext(), "Cart is Empty!", Toast.LENGTH_SHORT).show();
             } else {
-                if (cartList.size() > 0) {
-                    prefrences.setCartFragStatus(1);
-                    prefrences.setOrderStatus(1);
-                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
+                if (user_token.isEmpty()) {
+                    Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                    logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(logInIntnet);
                 } else {
-                    Toast.makeText(getContext(), "Cart is Empty!", Toast.LENGTH_SHORT).show();
+                    if (cartList.size() == 0) {
+                        Toast.makeText(getContext(), "Cart is Empty!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        prefrences.setCartFragStatus(1);
+                        prefrences.setOrderStatus(1);
+                        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
+
+                    }
                 }
             }
         }

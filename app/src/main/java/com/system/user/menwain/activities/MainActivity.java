@@ -53,18 +53,13 @@ import android.widget.Toast;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    public AppBarConfiguration mAppBarConfiguration;
     private ImageView ivSearch, mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
     private LinearLayout home_layout, category_layout, my_list_layout, more_layout;
     private RelativeLayout cart_layout;
     private CartViewModel cartViewModel;
-    private TextView totalCartQuantity, mActionBarTitle, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
+    private TextView totalCartQuantity, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
     private EditText etSearch;
-    private String langauge;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor, editor1;
     boolean isLogin, isSignUp = false;
-    private SharedPreferences fragment_status_pref;
     private int frag_status;
     Preferences prefrences;
     private Dialog MyDialog;
@@ -85,22 +80,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             isLogin = intent.getBooleanExtra("isLogin", false);
             isSignUp = intent.getBooleanExtra("is_sign_up", false);
         }
-        preferences = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        langauge = preferences.getString("my_lang", "");
-
-        if (langauge.isEmpty()) {
-            showSelectLangaugeDialog();
-        }
-
 
         initiateViews();
 
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-
         cartViewModel.getTotalItemQuantity().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-
                 if (integer != null) {
                     totalCartQuantity.setText(integer + "");
                 } else {
@@ -112,7 +98,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
         mHome.setImageResource(R.drawable.ic_houseblue);
         tvHome.setTextColor(Color.parseColor("#00c1bd"));
-//        mActionBarTitle.setText("Home");
 
         if (savedInstanceState == null) {
             if (isLogin == true) {
@@ -183,43 +168,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         category_layout.setOnClickListener(this);
         cart_layout.setOnClickListener(this);
         my_list_layout.setOnClickListener(this);
-    }
-
-    private void showSelectLangaugeDialog() {
-        final String[] langaugesList = {"English", "عربى"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Language");
-        builder.setSingleChoiceItems(langaugesList, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                switch (i) {
-                    case 0:
-                        editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-                        editor.putString("my_lang", String.valueOf(i));
-                        editor.apply();
-                        setNewLocale(MainActivity.this, LocaleManager.ENGLISH);
-                        recreate();
-                        break;
-                    case 1:
-                        editor1 = getSharedPreferences("settings", MODE_PRIVATE).edit();
-                        editor1.putString("my_lang", String.valueOf(i));
-                        editor1.apply();
-                        setNewLocale(MainActivity.this, LocaleManager.ARABIC);
-                        recreate();
-                        break;
-                }
-                dialogInterface.dismiss();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    private void setNewLocale(AppCompatActivity mContext, @LocaleManager.LocaleDef String language) {
-        LocaleManager.setNewLocale(this, language);
-        Intent intent = mContext.getIntent();
-        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     @Override

@@ -160,12 +160,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void init() {
         mPager.setAdapter(banner_slidingImages_adapter);
         tabLayout.setupWithViewPager(mPager, true);
-        NUM_PAGES = IMAGES.length;
+        NUM_PAGES = bannersList.size();
         /*After setting the adapter use the timer */
         handler = new Handler();
         runnable = new Runnable() {
             public void run() {
-                if (IMAGES.length == currentPage) {
+                if (bannersList.size() == currentPage) {
                     currentPage = 0;
                 } else {
                     currentPage++;

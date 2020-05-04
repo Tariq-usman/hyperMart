@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "70131660539",
+    "firebase_url": "https://hyermart.firebaseio.com",
+    "project_id": "hyermart",
+    "storage_bucket": "hyermart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70131660539:android:03bd97ad24ea86c15ee25e",
+        "android_client_info": {
+          "package_name": "com.system.user.menwain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70131660539-a14feueasqbo9isj58tlp4duqbra8tg3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.system.user.menwain",
+            "certificate_hash": "125c89d10a22e12e2c6354397e7ed7cf9d2b31e7"
+          }
+        },
+        {
+          "client_id": "70131660539-lbtquodso33fi0i1mq92nbqccblv3it6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPiVElkDVOCNeNLQc45ZyDaAV9G1HiMRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70131660539-lbtquodso33fi0i1mq92nbqccblv3it6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
