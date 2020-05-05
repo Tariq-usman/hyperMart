@@ -204,9 +204,10 @@
                         android:id="@+id/rb_product"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="?attr/ratingBarStyleSmall"
                         android:layout_gravity="center"
+                        style="@style/Widget.AppCompat.RatingBar.Indicator"
                         android:numStars="5"
+                        android:isIndicator="false"
                         android:rating="4" />
 
                     <TextView

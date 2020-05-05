@@ -50,4 +50,5 @@ public class URLs {
     public static String delete_address_url = base_url + "deladress/";
     public static String user_card_url = base_url + "customerCardlist";
     public static String delete_card_url = base_url + "deletecustomerCard/";
+    public static String update_user_card_url = base_url+"updatecustomerCard/";
 }

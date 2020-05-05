@@ -104,6 +104,17 @@
                 android:textSize="@dimen/fourteen_sp" />
 
             <EditText
+                android:id="@+id/et_card_name_add_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/bg_email_pass"
+                android:hint="Card Name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/fourteen_sp" />
+            <EditText
                 android:id="@+id/et_billing_address_add_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

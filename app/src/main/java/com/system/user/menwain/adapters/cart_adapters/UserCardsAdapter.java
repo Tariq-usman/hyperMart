@@ -67,7 +67,7 @@ public class UserCardsAdapter extends RecyclerView.Adapter<UserCardsAdapter.Card
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                preferences.setCartFragStatus(5);
+                preferences.setCardId(card_list.get(position).getId());
                 bundle = new Bundle();
                 PaymentFragment fragment = new PaymentFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
@@ -76,6 +76,7 @@ public class UserCardsAdapter extends RecyclerView.Adapter<UserCardsAdapter.Card
                 bundle.putString("card_cvc",card_list.get(position).getCvv().toString());
                 bundle.putString("card_expiry",card_list.get(position).getExpiry());
                 bundle.putString("zip_code",card_list.get(position).getZipCode());
+                bundle.putString("card_name",card_list.get(position).getIssuingCompany());
                 bundle.putString("billing_address",card_list.get(position).getCardBillAddress());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();

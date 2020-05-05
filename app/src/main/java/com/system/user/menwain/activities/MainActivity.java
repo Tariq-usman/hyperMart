@@ -99,6 +99,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mHome.setImageResource(R.drawable.ic_houseblue);
         tvHome.setTextColor(Color.parseColor("#00c1bd"));
 
+
         if (savedInstanceState == null) {
             if (isLogin == true) {
                 mHome.setImageResource(R.drawable.ic_housewhite);
@@ -168,6 +169,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         category_layout.setOnClickListener(this);
         cart_layout.setOnClickListener(this);
         my_list_layout.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String barCode = ScanActivity.barCode;
+        if (barCode!=null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SearchFragment()).commit();
+        }else {
+
+        }
     }
 
     @Override

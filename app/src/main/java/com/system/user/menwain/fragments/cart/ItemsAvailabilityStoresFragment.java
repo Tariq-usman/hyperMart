@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,6 +42,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,16 +63,19 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private Bundle bundle;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
-    List<Integer> cartList = new ArrayList<>();
-    CartViewModel cartViewModel;
+    private List<Integer> cartList = new ArrayList<>();
+    private CartViewModel cartViewModel;
     private double lat, lang;
     private List<AvailNotAvailResponse.Datum> stores_list = new ArrayList<>();
-    List<Integer> reorder_list=  ListDetailsFragment.reorder_list;
+    List<Integer> reorder_list = ListDetailsFragment.reorder_list;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_items_availability_stores, container, false);
+        cartViewModel = ViewModelProviders.of(ItemsAvailabilityStoresFragment.this).get(CartViewModel.class);
+
+
         mSearchView = getActivity().findViewById(R.id.search_view);
         mSearchView.setVisibility(View.INVISIBLE);
         prefrences = new Preferences(getContext());
@@ -83,23 +88,24 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 
         customDialog(getContext());
 
-        int order_status= prefrences.getOrderStatus();
-        if (order_status == 1) {
-            cartViewModel = ViewModelProviders.of(ItemsAvailabilityStoresFragment.this).get(CartViewModel.class);
-            cartViewModel.getCartDataList().observe(ItemsAvailabilityStoresFragment.this, new Observer<List<Cart>>() {
+        int order_status = prefrences.getOrderStatus();
+        if (order_status == 2) {
+            cartList.clear();
+            for (int i = 0; i < reorder_list.size(); i++) {
+                cartList.add(reorder_list.get(i));
+            }
+            lowestPrice();
+        } else {
+            cartViewModel.getCartDataList().observe((LifecycleOwner) getContext(), new Observer<List<Cart>>() {
                 @Override
                 public void onChanged(List<Cart> carts) {
+                    cartList.clear();
                     for (int i = 0; i < carts.size(); i++) {
                         cartList.add(carts.get(i).getP_id());
                     }
                     lowestPrice();
                 }
             });
-        }else if (order_status==2){
-            for (int i=0;i<reorder_list.size();i++){
-                cartList.add(reorder_list.get(i));
-            }
-            lowestPrice();
         }
 
         mSortByPrice = view.findViewById(R.id.sort_by_price_view);
@@ -172,7 +178,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 jsonArray.put(cartList.get(i));
             }
             jsonObj.put("products", jsonArray);
-            Log.e("products",jsonArray.toString());
+            Log.e("products", jsonArray.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -187,8 +193,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                         stores_list.add(availNotAvailResponse.getData().get(i));
                     }
                     itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                    if (stores_list.size() == 0) {
+                        Toast.makeText(getContext(), "No Products are Found!", Toast.LENGTH_SHORT).show();
+                    }
                     dialog.dismiss();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     dialog.dismiss();
                 }
@@ -252,13 +261,12 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                             return Integer.valueOf(o2.getAvailable().size()).compareTo(o1.getAvailable().size());
                         }
                     });
-
-                    //recyclerViewLiveHome.setAdapter(new LiveHomeAdapter(getContext(),productList));
-
                     itemsAvailabilityStoresAdapter.notifyDataSetChanged();
-//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                    if (stores_list.size() == 0) {
+                        Toast.makeText(getContext(), "No Products are Found!", Toast.LENGTH_SHORT).show();
+                    }
                     dialog.dismiss();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     dialog.dismiss();
                 }
@@ -318,9 +326,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                         stores_list.add(availNotAvailResponse.getData().get(i));
                     }
                     itemsAvailabilityStoresAdapter.notifyDataSetChanged();
-//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                    if (stores_list.size() == 0) {
+                        Toast.makeText(getContext(), "No Products are Found!", Toast.LENGTH_SHORT).show();
+                    }
                     dialog.dismiss();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     dialog.dismiss();
                 }

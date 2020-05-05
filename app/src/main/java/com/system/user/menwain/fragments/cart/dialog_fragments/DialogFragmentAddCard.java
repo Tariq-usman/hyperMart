@@ -48,7 +48,7 @@ import java.util.Map;
 public class DialogFragmentAddCard extends DialogFragment {
 
     TextView mConfirm, tvPayableAmount;
-    private EditText etCardHolderName, etCardNumber, etCVC, etExpiry, etZipCode, etBillingAddress;
+    private EditText etCardHolderName, etCardNumber, etCVC, etExpiry, etZipCode,etCardName, etBillingAddress;
     private ImageView mBackBtnPay, mBarCodeScanner;
     private Preferences prefrences;
     private CardView mSearchView;
@@ -67,6 +67,7 @@ public class DialogFragmentAddCard extends DialogFragment {
         etCVC = view.findViewById(R.id.et_cvc_add_card);
         etExpiry = view.findViewById(R.id.et_expairy_add_card);
         etZipCode = view.findViewById(R.id.et_zip_code_add_card);
+        etCardName = view.findViewById(R.id.et_card_name_add_card);
         etBillingAddress = view.findViewById(R.id.et_billing_address_add_card);
 
         mSearchView = getActivity().findViewById(R.id.search_view);
@@ -188,7 +189,9 @@ public class DialogFragmentAddCard extends DialogFragment {
                     etExpiry.setError("Enter Expiry");
                 } else if (etZipCode.getText().toString().isEmpty()) {
                     etZipCode.setError("Enter ZipCode");
-                } else if (etBillingAddress.getText().toString().isEmpty()) {
+                } else if (etCardName.getText().toString().isEmpty()) {
+                    etCardName.setError("Enter Card Name");
+                }else if (etBillingAddress.getText().toString().isEmpty()) {
                     etBillingAddress.setError("Enter Billing Address");
                 } else {
                     addCard();
@@ -234,7 +237,7 @@ public class DialogFragmentAddCard extends DialogFragment {
                 map.put("cvv", etCVC.getText().toString().trim());
                 map.put("expiry", etExpiry.getText().toString().trim());
                 map.put("is_favorite", 0 + "");
-                map.put("issuing_company", "null");
+                map.put("issuing_company", etCardName.getText().toString().trim());
                 map.put("card_bill_address", etBillingAddress.getText().toString().trim());
                 return map;
 

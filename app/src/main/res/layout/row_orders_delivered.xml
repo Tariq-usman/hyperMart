@@ -135,7 +135,7 @@
                     android:background="@color/darkGreenColor"
                     android:gravity="bottom"
                     android:orientation="vertical"
-                    android:padding="2dp">
+                    android:padding="1dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -143,6 +143,7 @@
                         app:cardCornerRadius="10dp">
 
                         <ImageView
+                            android:id="@+id/iv_store_image_deleiver"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:src="@drawable/orders" />

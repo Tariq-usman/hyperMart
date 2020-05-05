@@ -168,7 +168,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("total_price", prefrences.getTotalPrice()+prefrences.getShippingCost());
+            jsonObj.put("total_price", prefrences.getTotalAmount() + prefrences.getShippingCost());
             jsonObj.put("discount", 0);
             jsonObj.put("store_id", prefrences.getStoreId());
             jsonObj.put("slot_id",prefrences.getTimeSlotId());

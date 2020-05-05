@@ -58,6 +58,7 @@ public class StoresFragment extends Fragment {
         ivBackStores.setVisibility(View.VISIBLE);
         mSearchStores = getActivity().findViewById(R.id.search_view);
         mSearchStores.setVisibility(View.VISIBLE);
+
         ivBackStores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +68,7 @@ public class StoresFragment extends Fragment {
                 //   tvTitleStores.setText("More");
             }
         });
+
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_stores);
         recyclerViewProductCategory.setHasFixedSize(true);
         recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));

@@ -46,7 +46,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderDetailsItemViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final OrderDetailsItemViewHolder holder, final int position) {
         if (details_list.isEmpty() || details_list.size() == 0) {
             Toast.makeText(context, "No data..", Toast.LENGTH_SHORT).show();
         } else {
@@ -69,7 +69,8 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                     try {
                         bundle.putInt("product_id", details_list.get(position).getProductId());
                         Bitmap bitmap = BitmapFactory.decodeFile(details_list.get(position).getImage());
-                        bundle.putParcelable("image",bitmap);
+//                        bundle.putParcelable("image",bitmap);
+                        bundle.putString("image",details_list.get(position).getImage());
                         bundle.putString("product_name",details_list.get(position).getName());
                         bundle.putString("price",details_list.get(position).getPivot().getPrice().toString());
                         bundle.putString("description",details_list.get(position).getBrand());

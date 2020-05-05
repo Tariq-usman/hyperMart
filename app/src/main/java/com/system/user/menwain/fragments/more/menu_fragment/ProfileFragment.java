@@ -281,7 +281,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 paramsMap.put("last_name", etLname.getText().toString().trim());
                 paramsMap.put("mobile", etPhoneNo.getText().toString().trim());
                 paramsMap.put("password", etPassword.getText().toString().trim());
-                paramsMap.put("county", "pakistan");
+                paramsMap.put("county", "null");
                 if (rbMale.isChecked()) {
                     paramsMap.put("gender", "male");
                 } else {

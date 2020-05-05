@@ -27,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.others.Preferences;
@@ -67,7 +68,7 @@ public class ItemReviewFragment extends Fragment {
         tvDescription = view.findViewById(R.id.iv_description_selected_product);
 
         if (bundle != null) {
-            ivProduct.setImageBitmap((Bitmap) bundle.getParcelable("image"));
+            Glide.with(ivProduct.getContext()).load(bundle.getString("image")).into(ivProduct);
             tvTitle.setText(bundle.getString("product_name"));
             tvPrice.setText(bundle.getString("price"));
            /* String date_time = bundle.getString("date");

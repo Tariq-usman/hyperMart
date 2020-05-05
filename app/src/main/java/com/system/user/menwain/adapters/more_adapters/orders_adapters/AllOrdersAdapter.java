@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.orders.OrderDetailsFragment;
@@ -48,6 +50,7 @@ public class AllOrdersAdapter extends RecyclerView.Adapter<AllOrdersAdapter.Orde
         String date = split_date_time[0];
         holder.tvOrderDate.setText(date);
         holder.tvTotalPrice.setText(all_orders_list.get(position).getTotalPrice() +" SAR");
+        Glide.with(holder.ivStoreImage.getContext()).load(all_orders_list.get(position).getStore().getImage()).into(holder.ivStoreImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,13 +71,16 @@ public class AllOrdersAdapter extends RecyclerView.Adapter<AllOrdersAdapter.Orde
     }
 
     public static class OrdersItemViewHolder extends RecyclerView.ViewHolder{
-        TextView tvTotalPrice,tvOrderNo,tvOrderStatus,tvOrderDate;
+        private TextView tvTotalPrice,tvOrderNo,tvOrderStatus,tvOrderDate;
+        private ImageView ivStoreImage;
         public OrdersItemViewHolder(@NonNull View itemView) {
             super(itemView);
             tvOrderNo = itemView.findViewById(R.id.tv_order_no_all_orders);
             tvOrderStatus = itemView.findViewById(R.id.tv_ordr_status_all_orders);
             tvOrderDate = itemView.findViewById(R.id.tv_order_date_all_orders);
             tvTotalPrice = itemView.findViewById(R.id.tv_total_amount_all_orders);
+            ivStoreImage = itemView.findViewById(R.id.iv_store_orders);
+
         }
     }
 }

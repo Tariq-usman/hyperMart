@@ -28,6 +28,7 @@ public class Preferences {
         return sharedPreferences.getString("token", "");
     }
 
+
     public void setPaymentStatus(int paymentStatus){
         editor.putInt("payment_status", paymentStatus);
         editor.apply();
@@ -270,4 +271,15 @@ public class Preferences {
     public String getDeliveryAddress(){
         return sharedPreferences.getString("delivery_address","");
     }
+
+    public void setCardId(int card_id) {
+        editor.putInt("card_id", card_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getCardId() {
+        return sharedPreferences.getInt("card_id", 0);
+    }
+
 }
