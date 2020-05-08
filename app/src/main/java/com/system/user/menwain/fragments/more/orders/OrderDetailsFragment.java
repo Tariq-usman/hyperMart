@@ -40,8 +40,6 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderDetailsFragment extends Fragment {
-    // private int[] products = {R.drawable.productpic, R.drawable.productdisplay, R.drawable.productpic, R.drawable.productdisplay, R.drawable.productpic, R.drawable.productdisplay};
-
     private List<OrderDetailsResponse.Data.Products> details_list = new ArrayList<OrderDetailsResponse.Data.Products>();
     RecyclerView recyclerViewFavourite;
     OrderDetailsAdapter orderDetailsAdapter;
@@ -52,6 +50,7 @@ public class OrderDetailsFragment extends Fragment {
     private AlertDialog dialog;
     Bundle bundle;
     private int order_id;
+    private String order_status;
 
     @Nullable
     @Override
@@ -87,7 +86,7 @@ public class OrderDetailsFragment extends Fragment {
         recyclerViewFavourite = view.findViewById(R.id.recycler_view_order_details);
         recyclerViewFavourite.setHasFixedSize(true);
         recyclerViewFavourite.setLayoutManager(new LinearLayoutManager(getContext()));
-        orderDetailsAdapter = new OrderDetailsAdapter(getContext(), details_list);
+        orderDetailsAdapter = new OrderDetailsAdapter(getContext(), details_list,order_status);
         recyclerViewFavourite.setAdapter(orderDetailsAdapter);
         return view;
     }
@@ -109,7 +108,8 @@ public class OrderDetailsFragment extends Fragment {
                 String[] split_date_time = date_time.split(" ");
                 tvDate.setText(split_date_time[0]);
                 tvTime.setText(split_date_time[1]);
-                tvStatus.setText(detailsResponse.getData().getOrderStatus());
+                order_status = detailsResponse.getData().getOrderStatus();
+                tvStatus.setText(order_status);
                 details_list.clear();
                 for (int i = 0; i < detailsResponse.getData().getProductss().size(); i++) {
                     details_list.add(detailsResponse.getData().getProductss().get(i));

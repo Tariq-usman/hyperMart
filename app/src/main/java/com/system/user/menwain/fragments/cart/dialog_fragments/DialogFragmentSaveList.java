@@ -1,7 +1,6 @@
 package com.system.user.menwain.fragments.cart.dialog_fragments;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.fragments.cart.OrderSuccessfulFragment;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,21 +61,32 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     private List<Integer> list = new ArrayList<>();
 
     private int mYear, mMonth, mDay;
-    private Preferences prefrences;
+    private Preferences preferences;
     private int pay_status;
+    int order_no;
+    int max=100000;
+    int min=10000;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
-    List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
-    CartViewModel cartViewModel;
-    View view;
-    OrderSuccessfulFragment fragment;
-    FragmentTransaction transaction;
+    private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
+    private List<Integer> quantity_list = AvailableItemsListAdapter.quantity_list;
+    private List<Integer> amount_lit = AvailableItemsListAdapter.amount_list;
+    private CartViewModel cartViewModel;
+    private View view;
+    private OrderSuccessfulFragment fragment;
+    private  FragmentTransaction transaction;
+    private Bundle bundle;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          view = inflater.inflate(R.layout.fragment_dialog_purchasing_method, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         customDialog(getContext());
-        prefrences = new Preferences(getContext());
+        bundle = new Bundle();
+
+        Random r = new Random();
+        order_no = r.nextInt(max - min) + min;
+
+        preferences = new Preferences(getContext());
         fragment= new OrderSuccessfulFragment();
         transaction = ((AppCompatActivity) getContext()).getSupportFragmentManager().beginTransaction();
 
@@ -117,45 +129,11 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
 
         int id = view.getId();
         if (id == R.id.confirm_btn_purchasing_method) {
-            pay_status = prefrences.getPayRBtnStatus();
+            pay_status = preferences.getPayRBtnStatus();
             placeOrderAndAddToWishList();
-            /*if (pay_status == 5) {
-                prefrences.setCartFragStatus(0);
-                prefrences.setBottomNavStatus(4);
-                mHome.setImageResource(R.drawable.ic_housewhite);
-                tvHome.setTextColor(Color.parseColor("#004040"));
-                mCategory.setImageResource(R.drawable.ic_searchwhite);
-                tvCategory.setTextColor(Color.parseColor("#004040"));
-                mFavourite.setImageResource(R.drawable.ic_likeblue);
-                tvFavourite.setTextColor(Color.parseColor("#00c1bd"));
-                mCart.setImageResource(R.drawable.ic_cart_white);
-                tvCart.setTextColor(Color.parseColor("#004040"));
-                mMore.setImageResource(R.drawable.ic_morewhite);
-                tvMore.setTextColor(Color.parseColor("#004040"));
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
-                mBackBtnPay.setVisibility(View.INVISIBLE);
-            } else {
-                prefrences.setCartFragStatus(0);
-                prefrences.setBottomNavStatus(5);
-                prefrences.setMorFragStatus(2);
-                prefrences.setMoreOrdersFragStatus(1);
-                mHome.setImageResource(R.drawable.ic_housewhite);
-                tvHome.setTextColor(Color.parseColor("#004040"));
-                mCategory.setImageResource(R.drawable.ic_searchwhite);
-                tvCategory.setTextColor(Color.parseColor("#004040"));
-                mFavourite.setImageResource(R.drawable.ic_likewhite);
-                tvFavourite.setTextColor(Color.parseColor("#004040"));
-                mCart.setImageResource(R.drawable.ic_cart_white);
-                tvCart.setTextColor(Color.parseColor("#004040"));
-                mMore.setImageResource(R.drawable.ic_moreblue);
-                tvMore.setTextColor(Color.parseColor("#00c1bd"));
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
-                mBackBtnPay.setVisibility(View.INVISIBLE);
-            }*/
             dismiss();
 
         } else if (id == R.id.close_back_view) {
-//            prefrences.setCartFragStatus(0);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
             mBackBtnPay.setVisibility(View.INVISIBLE);
             dismiss();
@@ -168,24 +146,24 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("total_price", prefrences.getTotalAmount() + prefrences.getShippingCost());
+            jsonObj.put("total_price", preferences.getTotalAmount() + preferences.getShippingCost());
             jsonObj.put("discount", 0);
-            jsonObj.put("store_id", prefrences.getStoreId());
-            jsonObj.put("slot_id",prefrences.getTimeSlotId());
-            jsonObj.put("address_id", prefrences.getDeliveryAddressId());
+            jsonObj.put("store_id", preferences.getStoreId());
+            jsonObj.put("slot_id", preferences.getTimeSlotId());
+            jsonObj.put("address_id", preferences.getDeliveryAddressId());
             jsonObj.put("promotion_id", 0);
-            jsonObj.put("shipping_method_id", prefrences.getPayRBtnStatus());
-            jsonObj.put("shipping_cost", prefrences.getShippingCost());
-            jsonObj.put("secret_code", 0);
+            jsonObj.put("shipping_method_id", preferences.getPayRBtnStatus());
+            jsonObj.put("shipping_cost", preferences.getShippingCost());
+            jsonObj.put("secret_code", order_no);
             Date c = Calendar.getInstance().getTime();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
             String formattedDate = df.format(c);
             jsonObj.put("date_time", formattedDate);
             jsonObj.put("delivery_man_id", 0);
-            jsonObj.put("preferred_delivery_date",prefrences.getDateTime());
+            jsonObj.put("preferred_delivery_date", preferences.getDateTime());
             jsonObj.put("order_status", "pending");
             jsonObj.put("order_dispatch_id", 0);
-            jsonObj.put("payment_method_id", prefrences.getPaymentStatus());
+            jsonObj.put("payment_method_id", preferences.getPaymentStatus());
             jsonObj.put("wishlist_name", etListName.getText().toString().trim());
             jsonObj.put("other", "next");
 
@@ -193,11 +171,10 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             for (int i = 0; i < avail_items_list.size(); i++) {
                 JSONObject object = new JSONObject();
                 try {
-
-                    object.put("price",avail_items_list.get(i).getAvgPrice());
-                    object.put("quantity",avail_items_list.get(i).getId());
+                    object.put("price",amount_lit.get(i));
+                    object.put("quantity",quantity_list.get(i));
                     object.put("product_id",avail_items_list.get(i).getId());
-                    object.put("discount",avail_items_list.get(i).getId());
+                    object.put("discount",0);
                     jsonArray.put(object);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -213,9 +190,10 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             @Override
             public void onResponse(JSONObject response) {
                 cartViewModel.deleteAllCartRecords();
+                preferences.setCartFragStatus(0);
+                bundle.putString("order_no", String.valueOf(order_no));
+                fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment,fragment).commit();
-                Log.e("",response.toString());
-//                Toast.makeText(getActivity(), "Resopnse", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -228,7 +206,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> headerMap = new HashMap<>();
-                headerMap.put("Authorization","Bearer " + prefrences.getToken());
+                headerMap.put("Authorization","Bearer " + preferences.getToken());
                 return headerMap;
             }
         };
@@ -244,21 +222,4 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         }
         dialog = builder.create();
     }
-
-
-   /* private void pickDate() {
-        Calendar calendar = Calendar.getInstance();
-        mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        mMonth = calendar.get(Calendar.MONTH);
-        mYear = calendar.get(Calendar.YEAR);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        tvDateInStorePurchase.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                    }
-                }, mYear, mMonth, mYear);
-        datePickerDialog.setTitle("Select Date..");
-        datePickerDialog.show();
-    }*/
 }

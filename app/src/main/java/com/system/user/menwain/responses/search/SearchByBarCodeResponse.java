@@ -1,11 +1,12 @@
-package com.system.user.menwain.responses;
+package com.system.user.menwain.responses.search;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class SearchProductByNameResponse {
+public class SearchByBarCodeResponse {
+
     @SerializedName("data")
     @Expose
     private Data data;
@@ -413,8 +414,8 @@ public class SearchProductByNameResponse {
 
     }
 
-}
 
+}
 
 
 

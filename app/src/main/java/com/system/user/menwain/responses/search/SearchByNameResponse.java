@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class SearchByNameResponse {
-
     @SerializedName("data")
     @Expose
     private Data data;
@@ -415,6 +414,7 @@ public class SearchByNameResponse {
     }
 
 }
+
 
 
 

@@ -27,14 +27,16 @@ import java.util.List;
 
 public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.OrderDetailsItemViewHolder> {
     private List<OrderDetailsResponse.Data.Products> details_list;
-    Context context;
-    Preferences prefrences;
+    private Context context;
+    private Preferences prefrences;
     private Bundle bundle;
+    private String order_status;
 
-    public OrderDetailsAdapter(Context context, List<OrderDetailsResponse.Data.Products> details_list) {
+    public OrderDetailsAdapter(Context context, List<OrderDetailsResponse.Data.Products> details_list, String order_status) {
         this.details_list = details_list;
         this.context = context;
         prefrences = new Preferences(context);
+        this.order_status = order_status;
     }
 
     @NonNull
@@ -51,15 +53,21 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             Toast.makeText(context, "No data..", Toast.LENGTH_SHORT).show();
         } else {
             try {
+
                 Glide.with(holder.mProduct.getContext()).load(details_list.get(position).getImage()).into(holder.mProduct);
                 holder.tvName.setText(details_list.get(position).getName());
                 holder.tvStoreName.setText(details_list.get(position).getName());
                 holder.tvAmount.setText(details_list.get(position).getPivot().getPrice().toString());
-            }catch (Exception e)
-            {
+//                holder.tvRating.setText(details_list.get(position).get);
+                if (order_status.equalsIgnoreCase("delivered")){
+                    holder.tvReviews.setVisibility(View.VISIBLE);
+                }else {
+                    holder.tvReviews.setVisibility(View.GONE);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-             holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.tvReviews.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     prefrences.setMoreOrdersFragStatus(3);
@@ -68,14 +76,12 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                     bundle = new Bundle();
                     try {
                         bundle.putInt("product_id", details_list.get(position).getProductId());
-                        Bitmap bitmap = BitmapFactory.decodeFile(details_list.get(position).getImage());
-//                        bundle.putParcelable("image",bitmap);
-                        bundle.putString("image",details_list.get(position).getImage());
-                        bundle.putString("product_name",details_list.get(position).getName());
-                        bundle.putString("price",details_list.get(position).getPivot().getPrice().toString());
-                        bundle.putString("description",details_list.get(position).getBrand());
+                        bundle.putString("image", details_list.get(position).getImage());
+                        bundle.putString("product_name", details_list.get(position).getName());
+                        bundle.putString("price", details_list.get(position).getPivot().getPrice().toString());
+                        bundle.putString("description", details_list.get(position).getBrand());
 //                        bundle.putString("date", details_list.get(position).getDateTime());
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     fragment.setArguments(bundle);
@@ -92,8 +98,8 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
     }
 
     public static class OrderDetailsItemViewHolder extends RecyclerView.ViewHolder {
-        ImageView mProduct;
-        private TextView tvName, tvStoreName, tvAmount, tvRating;
+        private ImageView mProduct;
+        private TextView tvReviews, tvName, tvStoreName, tvAmount, tvRating;
 
         public OrderDetailsItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +108,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             tvStoreName = itemView.findViewById(R.id.tv_store_name_order_details);
             tvAmount = itemView.findViewById(R.id.tv_price_order_details);
             tvRating = itemView.findViewById(R.id.tv_rating_view_order_details);
+            tvReviews = itemView.findViewById(R.id.tv_review);
         }
     }
 }

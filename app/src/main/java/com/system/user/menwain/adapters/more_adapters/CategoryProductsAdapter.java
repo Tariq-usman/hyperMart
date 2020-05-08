@@ -109,7 +109,7 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
 
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                int productId = 12;
+                int productId = category_products_list.get(position).getId();
                 productName = holder.mProductNameView.getText().toString();
                 storeName = holder.mStoreName.getText().toString();
                 price = holder.mPriceFilterItem.getText().toString();

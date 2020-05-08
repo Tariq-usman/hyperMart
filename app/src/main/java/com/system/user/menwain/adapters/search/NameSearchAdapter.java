@@ -1,4 +1,4 @@
-package com.system.user.menwain.adapters.more_adapters;
+package com.system.user.menwain.adapters.search;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -13,14 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.system.user.menwain.others.Preferences;
-import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.others.ItemDetailsFragment;
-import com.system.user.menwain.local_db.entity.Cart;
-import com.system.user.menwain.local_db.viewmodel.CartViewModel;
-import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -29,42 +21,50 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.others.ItemDetailsFragment;
+import com.system.user.menwain.local_db.entity.Cart;
+import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.others.Preferences;
+import com.system.user.menwain.responses.search.SearchByNameResponse;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<SelectedStoresCategoryProductsAdapter.FilterStoresViewHolder> {
-
-    private List<SelectedStoreResponse.Product.Datum> category_products_list;
+public class NameSearchAdapter extends RecyclerView.Adapter<NameSearchAdapter.FilterItemViewHolder> {
     Context context;
-    byte[] productImage;
-    String productName, storeName, price, quantity, strTotalPrice, imagePath;
+    String imagePath;
+    List<SearchByNameResponse.Data.Datum> search_list;
     private CartViewModel cartViewModel;
     Bundle bundle;
-    private Preferences prefrences;
+    Preferences prefrences;
+    int productId, intQuantity;
+    String productName, storeName, price, quantity, strTotalPrice;
+    float totalPrice, unitPrice;
 
-    public SelectedStoresCategoryProductsAdapter(Context context, List<SelectedStoreResponse.Product.Datum> category_products_list) {
-        this.category_products_list = category_products_list;
+    public NameSearchAdapter(Context context, List<SearchByNameResponse.Data.Datum> search_list) {
         this.context = context;
+        this.search_list = search_list;
         prefrences = new Preferences(context);
-
     }
 
     @NonNull
     @Override
-    public FilterStoresViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_filter_items, parent, false);
-        FilterStoresViewHolder categoryViewHolder = new FilterStoresViewHolder(view);
+    public FilterItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_store_items, parent, false);
+        FilterItemViewHolder categoryViewHolder = new FilterItemViewHolder(view);
         return categoryViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FilterStoresViewHolder holder, final int position) {
-        Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getProducts().get(position).getImage()).into(holder.mFilteProduct);
-        holder.mProductNameView.setText(category_products_list.get(position).getProducts().get(position).getName());
-        holder.mStoreName.setText(category_products_list.get(position).getName());
-        holder.mPriceFilterItem.setText(category_products_list.get(position).getProducts().get(position).getAvgPrice().toString());
+    public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
+
+        holder.mProductNameView.setText(search_list.get(position).getName());
+        Glide.with(holder.mFilteProduct.getContext()).load(search_list.get(position).getImage()).into(holder.mFilteProduct);
+        holder.mStoreName.setText(search_list.get(position).getBrand());
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,10 +90,9 @@ public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<
             @Override
             public void onClick(View view) {
                 bundle = new Bundle();
-                prefrences.setMoreStoresFragStatus(3);
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                bundle.putString("status", "3");
+                bundle.putString("status", "2");
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).commit();
             }
@@ -102,32 +101,52 @@ public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<
         holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                productId = search_list.get(position).getId();
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                int productId = category_products_list.get(position).getId();
                 productName = holder.mProductNameView.getText().toString();
                 storeName = holder.mStoreName.getText().toString();
                 price = holder.mPriceFilterItem.getText().toString();
                 quantity = holder.mItemCounter.getText().toString();
-                strTotalPrice = price;
-                float totalPrice = Float.parseFloat(strTotalPrice);
-
-                int intQuantity = Integer.parseInt(quantity);
-
-                float unitPrice = totalPrice * intQuantity;
+                // strTotalPrice = price;
+                totalPrice = Float.parseFloat(price);
+                intQuantity = Integer.parseInt(quantity);
+                unitPrice = totalPrice * intQuantity;
                 saveToInternalStorage(bitmap);
 
                 cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
-
                 Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
                 //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
                 cartViewModel.insertCart(cart);
                 //cartViewModel.insertAllCart(cart, updateCartQuantity);
                 Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
-                // Toast.makeText(context, "" + DebugDB.getAddressLog(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public int getItemCount() {
+        return search_list.size();
+    }
+
+    public static class FilterItemViewHolder extends RecyclerView.ViewHolder {
+        private TextView mProductNameView, mStoreName, mItemCounter, mPriceFilterItem;
+        private CardView mAddToCart;
+        private ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
+        int count = 0;
+
+        public FilterItemViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mFilteProduct = itemView.findViewById(R.id.view_filter_product);
+            mProductNameView = itemView.findViewById(R.id.filter_product_name_view);
+            mIncreaseItems = itemView.findViewById(R.id.increase_items);
+            mDecreaseItems = itemView.findViewById(R.id.decrees_item);
+            mStoreName = itemView.findViewById(R.id.filter_store_name);
+            mItemCounter = itemView.findViewById(R.id.items_counter);
+            mAddToCart = itemView.findViewById(R.id.add_to_cart_filter_wrapper);
+            mPriceFilterItem = itemView.findViewById(R.id.price_view_filter_item);
+
+        }
     }
 
     private String saveToInternalStorage(Bitmap bitmapImage) {
@@ -152,29 +171,5 @@ public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<
             }
         }
         return directory.getAbsolutePath();
-    }
-
-    @Override
-    public int getItemCount() {
-        return category_products_list.size();
-    }
-
-    public static class FilterStoresViewHolder extends RecyclerView.ViewHolder {
-        private TextView mProductNameView, mStoreName, mItemCounter, mPriceFilterItem;
-        private CardView mAddToCart;
-        private ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
-        int count = 0;
-
-        public FilterStoresViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mFilteProduct = itemView.findViewById(R.id.view_filter_product);
-            mProductNameView = itemView.findViewById(R.id.filter_product_name_view);
-            mIncreaseItems = itemView.findViewById(R.id.increase_items);
-            mDecreaseItems = itemView.findViewById(R.id.decrees_item);
-            mStoreName = itemView.findViewById(R.id.filter_store_name);
-            mItemCounter = itemView.findViewById(R.id.items_counter);
-            mAddToCart = itemView.findViewById(R.id.add_to_cart_filter_wrapper);
-            mPriceFilterItem = itemView.findViewById(R.id.price_view_filter_item);
-        }
     }
 }

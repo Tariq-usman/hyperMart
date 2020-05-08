@@ -61,14 +61,6 @@ public class SuperCategoryFragment extends Fragment {
         customDialog(getContext());
         getSuperCategoryData();
 
-        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
-        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ScanActivity.class);
-                startActivity(intent);
-            }
-        });
 
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_category);
         recyclerViewProductCategory.setHasFixedSize(true);

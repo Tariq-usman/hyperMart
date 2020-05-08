@@ -51,6 +51,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="By MeatOne"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="12sp" />
 
@@ -93,6 +95,7 @@
                 </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_review"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:textColor="@color/whiteColor"
@@ -100,6 +103,7 @@
                 android:textSize="@dimen/twelve_sp"
                 android:background="@drawable/bg_submit_btn"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_marginTop="8dp"
                 android:paddingHorizontal="30dp"/>
 

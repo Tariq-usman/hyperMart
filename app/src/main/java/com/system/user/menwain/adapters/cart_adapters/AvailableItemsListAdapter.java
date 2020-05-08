@@ -2,6 +2,7 @@ package com.system.user.menwain.adapters.cart_adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
+import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.category.CategoryItemsFragment;
@@ -19,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableItemsListAdapter.ItemsListViewHolder> {
@@ -26,10 +30,17 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
     Context context;
     Preferences prefrences;
     private Bundle bundle;
+    private RecyclerClickInterface clickInterface;
+    int addAmount, current_amount, final_amount;
+    int pos;
+    int total_amount = Integer.parseInt(AvailNotAvailItemsListsFragment.mTotalAmount.getText().toString());
+    public static List<Integer> quantity_list = new ArrayList<>();
+    public static List<Integer> amount_list = new ArrayList<>();
 
-    public AvailableItemsListAdapter(Context context, List<AvailNotAvailResponse.Datum.Available> avail_items_list) {
+    public AvailableItemsListAdapter(Context context, List<AvailNotAvailResponse.Datum.Available> avail_items_list, RecyclerClickInterface clickInterface) {
         this.avail_items_list = avail_items_list;
         this.context = context;
+        this.clickInterface = clickInterface;
         prefrences = new Preferences(context);
     }
 
@@ -49,26 +60,63 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
             holder.mProductNameView.setText(avail_items_list.get(position).getName());
             holder.mStoreName.setText(avail_items_list.get(position).getBrand());
             holder.mAmount.setText(avail_items_list.get(position).getStoreprice().toString());
+            for (int i = 0; i < avail_items_list.size(); i++) {
+                quantity_list.add(Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
+                amount_list.add(Integer.valueOf(holder.mAmount.getText().toString()));
+            }
         }
         final String currentItems = holder.mAvilNotAvailItemsView.getText().toString();
+
         final int[] count = {Integer.parseInt(currentItems)};
         holder.mIncreaseAvailItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 count[0] = count[0] + 1;
                 holder.mAvilNotAvailItemsView.setText(String.valueOf(count[0]));
-
+                addAmount = avail_items_list.get(position).getStoreprice();
+                current_amount = Integer.parseInt(holder.mAmount.getText().toString());
+                final_amount = addAmount + current_amount;
+                pos = holder.getAdapterPosition();
+                quantity_list.clear();
+                amount_list.clear();
+                for (int i = 0; i < avail_items_list.size(); i++) {
+                    if (position == pos) {
+                        holder.mAmount.setText(final_amount + "");
+                    }
+                    quantity_list.add(Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
+                    amount_list.add(Integer.valueOf(holder.mAmount.getText().toString()));
+                }
+//                Log.e("quantity", quantity_list.size() + "");
+                total_amount = total_amount + avail_items_list.get(position).getStoreprice();
+                AvailNotAvailItemsListsFragment.mTotalAmount.setText(total_amount + "");
             }
         });
         holder.mDecreaseAvailItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String val = holder.mAvilNotAvailItemsView.getText().toString();
+                addAmount = avail_items_list.get(position).getStoreprice();
+                current_amount = Integer.parseInt(holder.mAmount.getText().toString());
+                final_amount = current_amount - addAmount;
+                pos = holder.getAdapterPosition();
+
                 if (Integer.valueOf(val) > 1) {
                     count[0] = count[0] - 1;
                     holder.mAvilNotAvailItemsView.setText(count[0] + "");
+                    quantity_list.clear();
+                    amount_list.clear();
+                    for (int i = 0; i < avail_items_list.size(); i++) {
+                        if (position == pos) {
+                            holder.mAmount.setText(final_amount + "");
+                        }
+                        quantity_list.add(Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
+                        amount_list.add(Integer.valueOf(holder.mAmount.getText().toString()));
+                    }
+                    total_amount = total_amount - avail_items_list.get(position).getStoreprice();
+                    AvailNotAvailItemsListsFragment.mTotalAmount.setText(total_amount + "");
                 } else {
                     holder.mAvilNotAvailItemsView.setText("1");
+                    holder.mAmount.setText(avail_items_list.get(position).getStoreprice().toString());
                 }
             }
         });
@@ -79,11 +127,13 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
                 prefrences.setBottomNavStatus(6);
                 CategoryItemsFragment fragment = new CategoryItemsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                bundle.putInt("product_id",avail_items_list.get(position).getId());
+                bundle.putInt("product_id", avail_items_list.get(position).getId());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }
         });
+
+
     }
 
     @Override

@@ -87,14 +87,6 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
             }
         });
 
-        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
-        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ScanActivity.class);
-                startActivity(intent);
-            }
-        });
         cat_id = prefrences.getCatsId();
         super_cat_id = prefrences.getSuperCatId();
         getSubCategory(cat_id);

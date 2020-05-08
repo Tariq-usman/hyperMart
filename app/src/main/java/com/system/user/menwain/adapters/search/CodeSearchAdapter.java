@@ -1,4 +1,4 @@
-package com.system.user.menwain.adapters.category_adapters;
+package com.system.user.menwain.adapters.search;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -27,17 +27,18 @@ import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.others.Preferences;
-import com.system.user.menwain.responses.SearchProductByNameResponse;
+import com.system.user.menwain.responses.search.SearchByBarCodeResponse;
+import com.system.user.menwain.responses.search.SearchByNameResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.FilterItemViewHolder> {
+public class CodeSearchAdapter extends RecyclerView.Adapter<CodeSearchAdapter.CodeViewHolder> {
     Context context;
     String imagePath;
-    List<SearchProductByNameResponse.Data.Datum> search_list;
+    List<SearchByBarCodeResponse.Data.Datum> search_list;
     private CartViewModel cartViewModel;
     Bundle bundle;
     Preferences prefrences;
@@ -45,7 +46,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.FilterItem
     String productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
 
-    public SearchAdapter(Context context, List<SearchProductByNameResponse.Data.Datum> search_list) {
+    public CodeSearchAdapter(Context context, List<SearchByBarCodeResponse.Data.Datum> search_list) {
         this.context = context;
         this.search_list = search_list;
         prefrences = new Preferences(context);
@@ -53,14 +54,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.FilterItem
 
     @NonNull
     @Override
-    public FilterItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CodeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_store_items, parent, false);
-        FilterItemViewHolder categoryViewHolder = new FilterItemViewHolder(view);
+        CodeViewHolder categoryViewHolder = new CodeViewHolder(view);
         return categoryViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final CodeViewHolder holder, final int position) {
 
         holder.mProductNameView.setText(search_list.get(position).getName());
         Glide.with(holder.mFilteProduct.getContext()).load(search_list.get(position).getImage()).into(holder.mFilteProduct);
@@ -91,11 +92,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.FilterItem
             public void onClick(View view) {
 
                 bundle = new Bundle();
-                prefrences.setCategoryFragStatus(2);
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle.putString("status", "2");
-              //  bundle.putInt("product_id", subCatergoryList.get(position).getId());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).commit();
             }
@@ -104,7 +103,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.FilterItem
         holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //productId = subCatergoryList.get(position).getId();
+                productId = search_list.get(position).getId();
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 productName = holder.mProductNameView.getText().toString();
@@ -132,13 +131,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.FilterItem
         return search_list.size();
     }
 
-    public static class FilterItemViewHolder extends RecyclerView.ViewHolder {
+    public static class CodeViewHolder extends RecyclerView.ViewHolder {
         private TextView mProductNameView, mStoreName, mItemCounter, mPriceFilterItem;
         private CardView mAddToCart;
         private ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
         int count = 0;
 
-        public FilterItemViewHolder(@NonNull View itemView) {
+        public CodeViewHolder(@NonNull View itemView) {
             super(itemView);
             mFilteProduct = itemView.findViewById(R.id.view_filter_product);
             mProductNameView = itemView.findViewById(R.id.filter_product_name_view);

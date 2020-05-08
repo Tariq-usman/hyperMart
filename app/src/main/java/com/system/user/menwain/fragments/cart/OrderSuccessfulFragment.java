@@ -16,19 +16,21 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.others.Preferences;
 
+import java.util.Random;
+
 public class OrderSuccessfulFragment extends Fragment {
     private ImageView mBackBtn;
     private Preferences preferences;
     private ImageView mCart, mFavourite, mHome, mCategory, mMore;
-    private TextView goHome, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
+    private TextView tvOrderNo, goHome, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
+    private Bundle bundle;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_successfull, container, false);
-
         preferences = new Preferences(getContext());
-
+        bundle = this.getArguments();
         mHome = getActivity().findViewById(R.id.home_view);
         tvHome = getActivity().findViewById(R.id.tv_home_view);
         mCategory = getActivity().findViewById(R.id.category_view);
@@ -43,6 +45,9 @@ public class OrderSuccessfulFragment extends Fragment {
         mMore = getActivity().findViewById(R.id.more);
         tvMore = getActivity().findViewById(R.id.tv_more);
 
+
+        tvOrderNo = view.findViewById(R.id.tv_order_no_success);
+        tvOrderNo.setText("Order # " + bundle.getString("order_no"));
         goHome = view.findViewById(R.id.go_home);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setVisibility(View.VISIBLE);
@@ -58,7 +63,6 @@ public class OrderSuccessfulFragment extends Fragment {
         goHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preferences.setCartFragStatus(0);
                 mHome.setImageResource(R.drawable.ic_houseblue);
                 tvHome.setTextColor(Color.parseColor("#00c1bd"));
                 mCategory.setImageResource(R.drawable.ic_searchwhite);

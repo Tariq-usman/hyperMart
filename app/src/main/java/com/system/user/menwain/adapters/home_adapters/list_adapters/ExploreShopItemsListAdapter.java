@@ -51,7 +51,7 @@ public class ExploreShopItemsListAdapter extends RecyclerView.Adapter<ExploreSho
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ItemsListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ItemsListViewHolder holder, final int position) {
         Glide.with(holder.ivAllItemsList.getContext()).load(explore_shop_grid_list.get(position).getImage()).into(holder.ivAllItemsList);
         holder.tvAllItemsList.setText(explore_shop_grid_list.get(position).getName());
 
@@ -78,7 +78,7 @@ public class ExploreShopItemsListAdapter extends RecyclerView.Adapter<ExploreSho
         holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productId = 12;
+                productId = explore_shop_grid_list.get(position).getId();
                 Drawable drawable = holder.ivAllItemsList.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 productName = holder.tvAllItemsList.getText().toString();

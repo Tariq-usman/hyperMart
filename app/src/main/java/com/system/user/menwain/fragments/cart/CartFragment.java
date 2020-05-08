@@ -113,6 +113,14 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         DeliveryAddressFragment fragment = new DeliveryAddressFragment();
 
         if (id == R.id.proceed_btn) {
+            cartViewModel.getCartDataList().observe(CartFragment.this, new Observer<List<Cart>>() {
+                @Override
+                public void onChanged(List<Cart> carts) {
+                    for (int i = 0; i < carts.size(); i++) {
+                        cartList.add(carts.get(i).getP_id());
+                    }
+                }
+            });
             if (cartList.size() == 0) {
                 Toast.makeText(getContext(), "Cart is Empty!", Toast.LENGTH_SHORT).show();
             } else {
@@ -121,6 +129,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                     logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getActivity().startActivity(logInIntnet);
                 } else {
+
                     if (cartList.size() == 0) {
                         Toast.makeText(getContext(), "Cart is Empty!", Toast.LENGTH_SHORT).show();
                     } else {

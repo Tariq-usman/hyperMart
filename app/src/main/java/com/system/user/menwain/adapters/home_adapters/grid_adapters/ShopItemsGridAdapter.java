@@ -51,7 +51,7 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final AllItemsGridViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final AllItemsGridViewHolder holder, final int position) {
         Glide.with(holder.mFilteProduct.getContext()).load(shop_list.get(position).getImage()).into(holder.mFilteProduct);
         holder.mProductNameView.setText(shop_list.get(position).getName());
 
@@ -79,7 +79,7 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
         holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productId = 12;
+                productId = shop_list.get(position).getId();
                 Drawable drawable = holder.mFilteProduct.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 productName = holder.mProductNameView.getText().toString();

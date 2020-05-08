@@ -56,6 +56,7 @@ import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.responses.ProductDetailsResponse;
 import com.system.user.menwain.responses.ReviewsResponse;
+import com.system.user.menwain.responses.home.HomeBannerResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.io.File;
@@ -70,7 +71,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private List<ProductDetailsResponse.Data.Productpic> related_items_list = new ArrayList<ProductDetailsResponse.Data.Productpic>();
     private RecyclerView recyclerViewRelateItems;
     private SelectedItemsFilterAdapter selectedItemsFilterAdapter;
-
+private Item_details_SlidingImages_Adapter slidingImagesAdapter;
     private List<ReviewsResponse.Dataa.Datum> reviews_list = new ArrayList<ReviewsResponse.Dataa.Datum>();
     private RecyclerView recyclerViewItemReviews;
     private ItemReviewsAdapter itemReviewsAdapter;
@@ -100,6 +101,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private Bitmap bitmap;
     private float totalPrice, unitPrice;
     private List<Integer> p_id_list = new ArrayList<Integer>();
+    private List<HomeBannerResponse.Datum> bannersList = new ArrayList<>();
 
 
     @Nullable
@@ -108,6 +110,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_item_details, container, false);
         prefrences = new Preferences(getContext());
         customDialog(getContext());
+        getBannerData();
 
         bundle = this.getArguments();
         if (bundle != null) {
@@ -128,15 +131,6 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         tvDescription = view.findViewById(R.id.tv_description);
         tvSpecifications = view.findViewById(R.id.tv_specifications);
         //layoutSpecifications = view.findViewById(R.id.layout_specification);
-
-        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
-        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ScanActivity.class);
-                startActivity(intent);
-            }
-        });
 
         tvPrice = view.findViewById(R.id.price_item_details);
         tvStoreName = view.findViewById(R.id.store_name_item_details);
@@ -178,6 +172,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         mBack.setVisibility(View.VISIBLE);
         mBack.setOnClickListener(this);
 
+        slidingImagesAdapter=new Item_details_SlidingImages_Adapter(getContext(), bannersList);
 
         recyclerViewRelateItems = view.findViewById(R.id.recycler_view_related_items_item_details);
         recyclerViewRelateItems.setHasFixedSize(true);
@@ -194,6 +189,47 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
 
         init();
         return view;
+    }
+
+    private void getBannerData() {
+        dialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_banner_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                HomeBannerResponse bannerResponse = gson.fromJson(response,HomeBannerResponse.class);
+                bannersList.clear();
+                for (int i=0;i<bannerResponse.getData().size();i++){
+                    bannersList.add(bannerResponse.getData().get(i));
+                }
+                slidingImagesAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e( "erroe", error.toString());
+                dialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
     }
 
     private void getProductReviews(int product_id) {
@@ -288,14 +324,14 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     }
 
     private void init() {
-        mPager.setAdapter(new Item_details_SlidingImages_Adapter(getContext(), IMAGES));
+        mPager.setAdapter(slidingImagesAdapter);
         tabLayout.setupWithViewPager(mPager, true);
-        NUM_PAGES = IMAGES.length;
+        NUM_PAGES = bannersList.size();
         /*After setting the adapter use the timer */
         handler = new Handler();
         runnable = new Runnable() {
             public void run() {
-                if (IMAGES.length == currentPage) {
+                if (bannersList.size() == currentPage) {
                     currentPage = 0;
                 } else {
                     currentPage++;

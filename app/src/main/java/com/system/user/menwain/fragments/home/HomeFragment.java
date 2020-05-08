@@ -109,15 +109,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         mSearchView = getActivity().findViewById(R.id.search_view);
         mSearchView.setVisibility(View.VISIBLE);
 
-        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
-        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ScanActivity.class);
-                startActivity(intent);
-            }
-        });
-
         tvSeeAllExploreShop = view.findViewById(R.id.tv_see_all_explore_shop);
         tvSeeAllExploreShop.setOnClickListener(this);
         tvSeeAllExplore = view.findViewById(R.id.tv_see_all_explore);

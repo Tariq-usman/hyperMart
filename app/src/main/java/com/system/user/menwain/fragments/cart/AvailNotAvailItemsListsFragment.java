@@ -31,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
@@ -48,7 +49,8 @@ import java.util.Map;
 
 public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
     private CartViewModel cartViewModel;
-    private TextView mAvailable, mNotAvailable, mTitle, mTotalAmount, mPrice, mDistance, mAvailItems, mNotAvailItmes;
+    private TextView mAvailable, mNotAvailable, mTitle, mPrice, mDistance, mAvailItems, mNotAvailItmes;
+    public static TextView mTotalAmount;
     private View mShowStatusColor;
     private ImageView mBackBtn, mBarCodeScanner, mMartLogoView;
     private LinearLayout mConfirmBtn;
@@ -94,28 +96,9 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
 
         mSearchView = getActivity().findViewById(R.id.search_view);
         mSearchView.setVisibility(View.VISIBLE);
-        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
-        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ScanActivity.class);
-                startActivity(intent);
-            }
-        });
 
         mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
         mTotalAmount.setText(price);
-        /*cartViewModel = ViewModelProviders.of(AvailNotAvailItemsListsFragment.this).get(CartViewModel.class);
-        cartViewModel.getTotalCartPrice().observe(this, new Observer<Float>() {
-            @Override
-            public void onChanged(Float aFloat) {
-                if (aFloat != null) {
-                    mTotalAmount.setText(aFloat.toString());
-                } else {
-                    mTotalAmount.setText(00.0 + "");
-                }
-            }
-        });*/
 
         mAvailable = view.findViewById(R.id.available_items);
         mNotAvailable = view.findViewById(R.id.not_available_items);
@@ -163,7 +146,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         } else if (id == R.id.confirm_btn_items_list) {
             pay_status = prefrences.getPayRBtnStatus();
             if (avail_items_list.size() > 0) {
-                prefrences.setTotalAmount(Integer.parseInt(price));
+                prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
                 calculateShippingCost();
             } else {
                 Toast.makeText(getContext(), "There is no avialable items!", Toast.LENGTH_SHORT).show();

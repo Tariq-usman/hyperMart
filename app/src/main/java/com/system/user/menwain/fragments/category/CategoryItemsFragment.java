@@ -50,7 +50,7 @@ import java.util.Map;
 public class CategoryItemsFragment extends Fragment implements RecyclerClickInterface {
 
     private int cat_id, super_cat_id;
-    private RecyclerView recyclerViewCategory, recyclerViewCategoryProducts, recyclerViewSubCategory,recyclerViewSubCategoryProducts;
+    private RecyclerView recyclerViewCategory, recyclerViewCategoryProducts, recyclerViewSubCategory, recyclerViewSubCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
     private int getPreviousId = SuperCategoryAdapter.passId;
     private ImageView mBackBtn, mBarCodeScanner;
@@ -60,14 +60,11 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
     AlertDialog.Builder builder;
     AlertDialog dialog;
     private CategoryAdapter categoryAdapter;
-    private SubCategoryAdapter subCategoryAdapter;
     private CategoryProductsAdapter categoryProductsAdapter;
-    private SubCategoryProductsAdapter subCategoryProductsAdapter;
     Bundle bundle;
     private List<CategoryResponse.Category.Datum> catergoryList = new ArrayList<CategoryResponse.Category.Datum>();
-    private List<SubCategoryResponse.Category.Datum> subCatergoryList = new ArrayList<SubCategoryResponse.Category.Datum>();
     private List<CategoryResponse.Products.Datum_> category_products_list = new ArrayList<CategoryResponse.Products.Datum_>();
-    private List<CategoryResponse.Products.Datum_> subCategory_products_list = new ArrayList<CategoryResponse.Products.Datum_>();
+    private SuperCategoryFragment fragment;
 
     @Nullable
     @Override
@@ -75,31 +72,22 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         prefrences = new Preferences(getContext());
         customDialog(getContext());
-            super_cat_id = prefrences.getSuperCatId();
+        fragment = new SuperCategoryFragment();
+        super_cat_id = prefrences.getSuperCatId();
 
         mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
-        //mSearchViewItemsFragment.setVisibility(View.INVISIBLE);
         mBackBtn = getActivity().findViewById(R.id.iv_back);
         mBackBtn.setVisibility(View.VISIBLE);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prefrences.setCategoryFragStatus(0);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
             }
         });
 
-        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
-        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ScanActivity.class);
-                startActivity(intent);
-            }
-        });
 
-//        getSuperCategoryData();
         getCategory(super_cat_id);
 
         recyclerViewCategory = view.findViewById(R.id.recycler_view_caterory);
@@ -122,6 +110,7 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
     @Override
     public void interfaceOnClick(View view, int position) {
     }
+
     private void getCategory(int superCatId) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

@@ -53,7 +53,7 @@ import android.widget.Toast;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageView ivSearch, mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
+    private ImageView ivSearch, mBarCodeScanner, mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
     private LinearLayout home_layout, category_layout, my_list_layout, more_layout;
     private RelativeLayout cart_layout;
     private CartViewModel cartViewModel;
@@ -141,6 +141,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ivSearch = findViewById(R.id.iv_search);
         ivSearch.setOnClickListener(this);
         etSearch = findViewById(R.id.et_search);
+
+        mBarCodeScanner = findViewById(R.id.bar_code_code_scanner_home);
+        mBarCodeScanner.setOnClickListener(this);
+
         home_layout = findViewById(R.id.home_layout);
         mHome = findViewById(R.id.home_view);
         tvHome = findViewById(R.id.tv_home_view);
@@ -175,9 +179,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         String barCode = ScanActivity.barCode;
-        if (barCode!=null){
+        if (barCode != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SearchFragment()).commit();
-        }else {
+        } else {
 
         }
     }
@@ -188,13 +192,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (id == R.id.iv_search) {
             Bundle bundle = new Bundle();
             SearchFragment fragment = new SearchFragment();
-            if (etSearch.getText().toString().trim().isEmpty()||etSearch.getText().toString().trim()==null) {
+            if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                 Toast.makeText(getApplicationContext(), "Enter Your desire search..", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 bundle.putString("search", etSearch.getText().toString().trim());
+                etSearch.setText("");
                 fragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
             }
+        } else if (id == R.id.bar_code_code_scanner_home) {
+            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+            startActivity(intent);
         } else if (id == R.id.home_layout) {
             //  mActionBarTitle.setText("Home");
             prefrences.setBottomNavStatus(1);
@@ -249,7 +257,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
             } else if (frag_status == 3) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).addToBackStack(null).commit();
-            }else if (frag_status == 4) {
+            } else if (frag_status == 4) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AddCardFragment()).addToBackStack(null).commit();
             }
         } else if (id == R.id.my_list_layout) {
