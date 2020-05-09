@@ -68,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:justificationMode="inter_word"
-        android:text="@string/description"
+        android:text="description"
         android:layout_marginVertical="10dp"
         android:textColor="@color/darkGreenColor"
         android:textSize="@dimen/twelve_sp" />

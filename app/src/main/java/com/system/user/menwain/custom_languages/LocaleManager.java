@@ -5,6 +5,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
+
 import androidx.annotation.StringDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -25,14 +27,12 @@ public class LocaleManager {
      * SharedPreferences Key
      */
     private static final String LANGUAGE_KEY = "language_key";
-
     /**
      * set current pref locale
      */
     public static Context setLocale(Context mContext) {
         return updateResources(mContext, getLanguagePref(mContext));
     }
-
     /**
      * Set new Locale with context
      */
@@ -40,7 +40,6 @@ public class LocaleManager {
         setLanguagePref(mContext, language);
         return updateResources(mContext, language);
     }
-
     /**
      * Get saved Locale from SharedPreferences
      *
@@ -51,7 +50,6 @@ public class LocaleManager {
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         return mPreferences.getString(LANGUAGE_KEY, ENGLISH);
     }
-
     /**
      * set pref key
      */
@@ -59,7 +57,6 @@ public class LocaleManager {
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mPreferences.edit().putString(LANGUAGE_KEY, localeKey).apply();
     }
-
     /**
      * update resource
      */
@@ -67,17 +64,17 @@ public class LocaleManager {
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
         Resources res = context.getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = new Configuration(res.getConfiguration());
-        if (Build.VERSION.SDK_INT >= 17) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             config.setLocale(locale);
             context = context.createConfigurationContext(config);
         } else {
             config.locale = locale;
-            res.updateConfiguration(config, res.getDisplayMetrics());
+            res.updateConfiguration(config, dm);
         }
         return context;
     }
-
     /**
      * get current locale
      */

@@ -12,29 +12,20 @@
 
     <!-- main page -->
     <string name="search_hint">menWain</string>
+    <!--Home Fragment-->
     <string name="explore_shop">استكشاف والتسوق</string>
     <string name="explore">يكتشف</string>
     <string name="shop">متجر</string>
     <string name="see_all">اظهار الكل</string>
+    <!-- Bottom Nav-->
     <string name="home">الصفحة الرئيسية</string>
     <string name="category">الفئة</string>
     <string name="cart">عربة التسوق</string>
     <string name="my_list">قائمتي</string>
     <string name="more">أكثر</string>
+    <!--Category fragments-->
+    <string name="add_to_cart">Add to Cart</string>
 
-    <string name="description">Description is the pattern of narrative development that aims to make vivid a place,
-        object, character, or group. Description is one of four rhetorical modes (also known as modes of discourse),
-        along with exposition, argumentation, and narration.</string>
-    <string name="specification">Description is the pattern of narrative development that aims to make vivid a place,
-        object, character, or group. Description is one of four rhetorical modes (also known as modes of discourse),
-        along with exposition, argumentation, and narration.</string>
-    <string name="reviews">Description is the pattern of narrative development that aims to make vivid a place,
-        object, character, or group. Description is one of four rhetorical modes.
-
-    Description is the pattern of narrative development that aims to make vivid a place,
-        object, character, or group. Description is one of four rhetorical modes.
-
-    Description is the pattern of narrative development that aims to make vivid a place,
-        object, character, or group. Description is one of four rhetorical modes.</string>
     <string name="title_activity_maps">Map</string>
+
 </resources>

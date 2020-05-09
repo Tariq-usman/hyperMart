@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -51,7 +52,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView ivSearch, mBarCodeScanner, mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
     private LinearLayout home_layout, category_layout, my_list_layout, more_layout;
@@ -131,6 +132,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         }
     }
+
 
     private void initiateViews() {
 

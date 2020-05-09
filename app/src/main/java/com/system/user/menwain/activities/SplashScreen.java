@@ -11,11 +11,14 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.system.user.menwain.R;
+import com.system.user.menwain.custom_languages.BaseActivity;
+import com.system.user.menwain.custom_languages.LocalHelper;
 import com.system.user.menwain.custom_languages.LocaleManager;
 import com.system.user.menwain.others.Preferences;
 
-public class SplashScreen extends AppCompatActivity {
-
+public class SplashScreen extends BaseActivity {
+    private String arabic = "ar";
+    private String english = "en";
     private String langauge;
     SharedPreferences preferences;
     SharedPreferences.Editor editor, editor1;
@@ -82,6 +85,7 @@ public class SplashScreen extends AppCompatActivity {
                                 finish();
                             }
                         }, 3000);
+                        break;
                 }
                 dialogInterface.dismiss();
             }
@@ -93,6 +97,6 @@ public class SplashScreen extends AppCompatActivity {
     private void setNewLocale(AppCompatActivity mContext, @LocaleManager.LocaleDef String language) {
         LocaleManager.setNewLocale(this, language);
         Intent intent = mContext.getIntent();
-        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK /*| Intent.FLAG_ACTIVITY_NEW_TASK*/));
     }
 }

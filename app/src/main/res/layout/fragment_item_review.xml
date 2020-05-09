@@ -174,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:justificationMode="inter_word"
-                    android:text="@string/description"
+                    android:text="description"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 

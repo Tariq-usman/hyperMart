@@ -13,9 +13,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:name=".custom_languages.MenWain"
         android:allowBackup="false"
-        android:fullBackupContent="false"
-        android:fullBackupOnly="false"
         tools:replace="allowBackup"
         android:largeHeap="true"
         android:usesCleartextTraffic="true"
@@ -23,20 +22,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:configChanges="locale"
         android:theme="@style/AppTheme">
-        <activity android:name=".fragments.home.AllItemsFragment"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -44,15 +35,6 @@
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".fragments.more.orders.OrderHistoryFragment" />
-        <activity android:name=".fragments.more.menu_fragment.RateUsFragment" />
-        <activity android:name=".fragments.more.orders.ItemReviewFragment" />
-        <activity android:name=".fragments.more.orders.OrderDetailsFragment" />
-        <activity android:name=".fragments.my_list.ListDetailsFragment" />
-        <activity android:name=".fragments.cart.PaymentFragment" />
-        <activity android:name=".fragments.cart.AvailNotAvailItemsListsFragment" />
-        <activity android:name=".fragments.cart.DeliveryAddressFragment" />
-        <activity android:name=".fragments.others.ItemDetailsFragment" />
         <activity android:name=".activities.ScanActivity" />
         <activity
             android:name=".activities.MainActivity"
@@ -61,7 +43,6 @@
         <activity android:name=".activities.SignUpActivity" />
         <activity android:name=".activities.ForgetPasswordActivity" />
         <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".fragments.cart.ItemsAvailabilityStoresFragment" />
         <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -59,8 +59,7 @@ public class SearchFragment extends Fragment {
             name = bundle.getString("search");
             searchProductByName();
         } else {
-            String barCode = ScanActivity.barCode;
-            searchProductByBarCode(barCode);
+            searchProductByBarCode();
         }
         recyclerView = view.findViewById(R.id.recycler_view_search);
         recyclerView.setHasFixedSize(true);
@@ -70,7 +69,7 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    private void searchProductByBarCode(String barCode) {
+    private void searchProductByBarCode() {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
