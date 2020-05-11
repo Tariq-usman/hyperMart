@@ -78,7 +78,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     private Bundle bundle;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         view = inflater.inflate(R.layout.fragment_dialog_purchasing_method, container, false);
+         view = inflater.inflate(R.layout.fragment_dialog_save_list, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         customDialog(getContext());
         bundle = new Bundle();

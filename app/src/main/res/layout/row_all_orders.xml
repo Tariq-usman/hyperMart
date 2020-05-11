@@ -27,7 +27,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Order Number: "
+                    android:text="@string/order_number"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp"
                     android:textStyle="bold" />
@@ -49,7 +49,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Status: "
+                    android:text="@string/order_status"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp"
                     android:textStyle="bold" />
@@ -73,7 +73,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date: "
+                    android:text="@string/order_details_date"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp"
                     android:textStyle="bold" />
@@ -95,7 +95,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total: "
+                    android:text="@string/order_total"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp"
                     android:textStyle="bold" />

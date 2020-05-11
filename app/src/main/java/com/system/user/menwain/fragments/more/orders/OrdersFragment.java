@@ -34,7 +34,7 @@ public class OrdersFragment extends Fragment {
         mBackBtnOrders.setVisibility(View.VISIBLE);
         viewPager = view.findViewById(R.id.vp_orders_container);
 
-        viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
+        viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager(),getContext()));
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);

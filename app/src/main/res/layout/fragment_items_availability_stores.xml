@@ -35,7 +35,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textStyle="italic"
-                    android:text="Lowest Price"
+                    android:text="@string/lowest_price"
                     android:background="@drawable/bg_store_btn_colored"
                     android:textColor="@color/whiteColor"
                     android:textSize="@dimen/ten_sp" />
@@ -48,7 +48,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textStyle="italic"
-                    android:text="Highest Availability"
+                    android:text="@string/highest_avail"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/ten_sp" />
 
@@ -59,7 +59,7 @@
                     android:layout_marginHorizontal="3dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Nearest Distance"
+                    android:text="@string/nearest_dist"
                     android:textStyle="italic"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/ten_sp" />

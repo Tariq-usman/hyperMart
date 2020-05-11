@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.category.CategoryItemsFragment;
+import com.system.user.menwain.fragments.category.CategoryFragment;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
 
 import androidx.annotation.NonNull;
@@ -54,7 +54,7 @@ public class SuperCategoryAdapter extends RecyclerView.Adapter<SuperCategoryAdap
                 passId = holder.getAdapterPosition();
 
                 bundle = new Bundle();
-                CategoryItemsFragment fragment = new CategoryItemsFragment();
+                CategoryFragment fragment = new CategoryFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
 
                 prefrences.setSuperCatId(categoryList.get(position).getId());

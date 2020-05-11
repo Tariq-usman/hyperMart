@@ -39,7 +39,7 @@
                 android:id="@+id/tv_selected_store_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Metro"
+                android:text="@string/store_name"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/sixteen_sp" />
 
@@ -47,7 +47,7 @@
                 android:id="@+id/tv_selected_store_place_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Riyadh"
+                android:text="@string/store_location"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/fourteen_sp" />
 

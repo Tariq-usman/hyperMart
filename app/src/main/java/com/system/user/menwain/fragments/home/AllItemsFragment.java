@@ -51,28 +51,12 @@ import java.util.List;
 import java.util.Map;
 
 public class AllItemsFragment extends Fragment implements View.OnClickListener {
-    private String[] productsName = {"Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallaxy S8", "Samsung", "BlockBuster", "Gallexy M30",
-            "Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallexy M30s", "Samsung s4"};
-    private int[] products = {R.drawable.p, R.drawable.pict, R.drawable.pictu, R.drawable.picturep,
-            R.drawable.picturepi, R.drawable.picturepic, R.drawable.p, R.drawable.pict, R.drawable.pictu,
-            R.drawable.picturep, R.drawable.picturepi, R.drawable.picturepic};
-
-
-    private String[] productsName1 = {"Cooking oil", "Chicken", "Meat", "Butter", "Eggs", "Chocolate", "Frouts", "Carrot", "Mango", "Vegetables"};
-    private int[] items = {R.drawable.coocking_oil, R.drawable.chikken, R.drawable.meat, R.drawable.butter, R.drawable.eggs, R.drawable.choclate, R.drawable.frouts,
-            R.drawable.carrot, R.drawable.mango, R.drawable.vagitables};
-
     private RecyclerView recyclerViewAllitem;
     private LinearLayoutManager linearLayoutManager;
     private ImageView ivGridListView, ivBack, ivListGridView, ivMenu;
     private boolean isList = false;
-    private Intent intent;
     private String val;
-    private int val1;
-    private int val2;
     Bundle bundle;
-    Toolbar toolbar;
-    private TextView fragTitle;
     private CardView searchViewAllItems;
     Preferences prefrences;
     private ExploreShopItemsGridAdapter exploreShopItemsGridAdapter;
@@ -106,8 +90,6 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
 
         bundle = this.getArguments();
         val = bundle.getString("explore", "");
-        Log.i("val", String.valueOf(val));
-        Log.i("val1", String.valueOf(val1));
         recyclerViewAllitem = view.findViewById(R.id.recycler_view_grid_items);
         if (val.equals("1")) {
             getExploreAndShopeSeeAllData();

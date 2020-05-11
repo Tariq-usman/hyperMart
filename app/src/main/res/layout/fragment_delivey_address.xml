@@ -31,7 +31,7 @@
                     android:layout_marginBottom="4dp"
                     android:background="@drawable/bg_store_btn_colored"
                     android:gravity="center"
-                    android:text="Pay Now"
+                    android:text="@string/pay_now"
                     android:textColor="@color/whiteColor"
                     android:textSize="@dimen/twelve_sp"
                     android:textStyle="italic" />
@@ -50,7 +50,7 @@
                     android:layout_marginHorizontal="26dp"
                     android:layout_marginBottom="4dp"
                     android:gravity="center"
-                    android:text="Pay Later"
+                    android:text="@string/pay_later"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp"
                     android:textStyle="italic" />
@@ -71,7 +71,7 @@
                 android:layout_height="20dp"
                 android:layout_marginBottom="4dp"
                 android:checked="true"
-                android:text="Deliver to Address"
+                android:text="@string/deliver_to_address"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="10sp" />
 
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:checked="false"
-                android:text="Prepare and Pick up From Store"
+                android:text="@string/prepare_and_pick"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="10sp" />
 
@@ -100,7 +100,7 @@
                 android:layout_height="20dp"
                 android:layout_marginBottom="4dp"
                 android:checked="true"
-                android:text="Cash On Delivery"
+                android:text="@string/cas_on_delivery"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="10sp" />
 
@@ -112,7 +112,7 @@
                 android:layout_height="20dp"
                 android:layout_marginBottom="4dp"
                 android:checked="false"
-                android:text="Prepare and Pick up From Store"
+                android:text="@string/prepare_and_pick"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="10sp" />
 
@@ -121,38 +121,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:checked="false"
-                android:text="Walk-In Store"
+                android:text="@string/walk_in_store"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="10sp" />
         </RadioGroup>
 
-
-        <!--
-                <TextView
-                    android:id="@+id/pay_now_delivery_adr"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:background="@drawable/bg_store_btn_colored"
-                    android:gravity="center"
-                    android:text="Pay Now"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="@dimen/twelve_sp"
-                    android:textStyle="italic" />
-        -->
-
-        <!--
-                <TextView
-                    android:id="@+id/pay_later_delivery_adr"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:gravity="center"
-                    android:text="Pay Later"
-                    android:textColor="@color/darkGreenColor"
-                    android:textSize="@dimen/twelve_sp"
-                    android:textStyle="italic" />
-        -->
 
 
     </LinearLayout>
@@ -162,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
         android:gravity="center"
-        android:text="Select location"
+        android:text="@string/select_location"
         android:textColor="@color/darkGreenColor"
         android:textSize="@dimen/sixteen_sp" />
 
@@ -229,7 +202,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Add new"
+                            android:text="@string/add_new"
                             android:textColor="@color/darkGreenColor"
                             android:textSize="@dimen/fourteen_sp"
                             android:textStyle="bold" />
@@ -256,7 +229,7 @@
             android:layout_marginBottom="2dp"
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
-            android:text="Confirm"
+            android:text="@string/confirm_btn"
             android:textColor="@color/whiteColor" />
     </LinearLayout>
 

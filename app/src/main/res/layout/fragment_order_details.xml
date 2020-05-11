@@ -38,7 +38,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight=".7"
-                    android:text="Store Name:"
+                    android:text="@string/store_name"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 
@@ -62,7 +62,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".7"
-                    android:text="Order No:"
+                    android:text="@string/order_details_order_no"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 
@@ -87,7 +87,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight=".7"
-                    android:text="Total Price:"
+                    android:text="@string/order_details_total_price"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 
@@ -125,7 +125,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".7"
-                    android:text="Date:"
+                    android:text="@string/order_details_date"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 
@@ -149,7 +149,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".7"
-                    android:text="Time:"
+                    android:text="@string/order_details_time"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 
@@ -173,7 +173,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".7"
-                    android:text="Status:"
+                    android:text="@string/order_details_status"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 
@@ -197,7 +197,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".7"
-                    android:text="Order Code:"
+                    android:text="@string/order_details_order_code"
                     android:textColor="@color/lightBlueColor"
                     android:textSize="13sp"
                     android:textStyle="bold" />

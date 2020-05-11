@@ -32,7 +32,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date: "
+                    android:text="@string/order_details_date"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />
 
@@ -84,7 +84,7 @@
                 android:background="@drawable/bg_submit_btn"
                 android:gravity="center"
                 android:textSize="@dimen/sixteen_sp"
-                android:text="View"
+                android:text="@string/view"
                 android:textColor="@color/whiteColor" />
         </LinearLayout>
 

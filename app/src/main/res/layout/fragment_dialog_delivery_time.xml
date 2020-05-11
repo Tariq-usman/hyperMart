@@ -24,7 +24,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginVertical="20dp"
             android:gravity="center"
-            android:text="Please tell us your preferred delivery time"
+            android:text="@string/time_slot_dialog_title_d"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/sixteen_sp" />
 
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
+                android:text="@string/time_slot_dialog_date"
                 android:textColor="@color/darkGreenColor" />
 
 
@@ -63,7 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time"
+                android:text="@string/time_slot_dialog_time"
                 android:textColor="@color/darkGreenColor" />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
             android:layout_marginVertical="20dp"
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
-            android:text="Confirm"
+            android:text="@string/confirm_btn"
             android:textColor="@color/whiteColor" />
 
     </LinearLayout>

@@ -9,12 +9,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.category.CategoryItemsFragment;
-import com.system.user.menwain.fragments.category.SubCategoryItemsFragment;
+import com.system.user.menwain.fragments.category.SubCategoryFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.category.CategoryResponse;
-import com.system.user.menwain.responses.category.SuperCategoryResponse;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,7 +66,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Select
             //clickInterface.interfaceOnClick(holder.getView(), position);
             preferences.setCatsId(catergoryList.get(position).getId());
             preferences.setCategoryFragStatus(2);
-            SubCategoryItemsFragment fragment = new SubCategoryItemsFragment();
+            SubCategoryFragment fragment = new SubCategoryFragment();
             FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.nav_host_fragment, fragment).commit();
         } else {

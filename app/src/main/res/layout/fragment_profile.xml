@@ -43,7 +43,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
-                            android:text="First Name"
+                            android:text="@string/profile_first_name"
                             android:textColor="@color/darkGreenColor"
                             android:textSize="@dimen/fourteen_sp" />
 
@@ -76,7 +76,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
-                            android:text="Last Name"
+                            android:text="@string/profile_last_name"
                             android:textColor="@color/darkGreenColor"
                             android:textSize="@dimen/fourteen_sp" />
 
@@ -104,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:text="Phone No"
+                    android:text="@string/profile_phone_no"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -130,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:text="Email Address"
+                    android:text="@string/profile_email_address"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -161,7 +161,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sex"
+                    android:text="@string/profile_sex"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -181,7 +181,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Male"
+                            android:text="@string/profile_male"
                             android:textSize="@dimen/fourteen_sp" />
 
                         <RadioButton
@@ -189,7 +189,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Female"
+                            android:text="@string/profile_female"
                             android:textSize="@dimen/fourteen_sp" />
                     </RadioGroup>
                 </LinearLayout>
@@ -205,7 +205,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:text="Change Language"
+                    android:text="@string/profile_change_lang"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -233,7 +233,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:text="Update Password"
+                    android:text="@string/profile_update_pass"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -286,7 +286,7 @@
         android:layout_marginBottom="5dp"
         android:background="@drawable/bg_submit_btn"
         android:gravity="center"
-        android:text="Edit"
+        android:text="@string/profile_edit"
         android:textAllCaps="false"
         android:textColor="@color/whiteColor"
         android:textSize="@dimen/twenty_sp" />

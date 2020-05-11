@@ -122,7 +122,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 }
             });
             if (cartList.size() == 0) {
-                Toast.makeText(getContext(), "Cart is Empty!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.cart_is_empty), Toast.LENGTH_SHORT).show();
             } else {
                 if (user_token.isEmpty()) {
                     Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
@@ -131,7 +131,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 } else {
 
                     if (cartList.size() == 0) {
-                        Toast.makeText(getContext(), "Cart is Empty!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getContext().getString(R.string.cart_is_empty), Toast.LENGTH_SHORT).show();
                     } else {
                         prefrences.setCartFragStatus(1);
                         prefrences.setOrderStatus(1);

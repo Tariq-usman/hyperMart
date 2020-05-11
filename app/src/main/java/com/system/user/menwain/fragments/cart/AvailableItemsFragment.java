@@ -25,8 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class AvailableItemsFragment extends Fragment implements RecyclerClickInterface {
-    private String[] productsName = {"Produce", "Meat & Poultry", "Milk & Cheese", "Produce", "Meat & Poultry", "Milk & Cheese", "Produce", "Meat & Poultry", "Milk & Cheese"};
-
     RecyclerView recyclerViewItemsList;
     AvailableItemsListAdapter availableItemsListAdapter;
     public static int avai_items;
@@ -43,13 +41,6 @@ public class AvailableItemsFragment extends Fragment implements RecyclerClickInt
         recyclerViewItemsList.setLayoutManager(new LinearLayoutManager(getContext()));
         availableItemsListAdapter = new AvailableItemsListAdapter(getContext(), avail_items_list, this);
         recyclerViewItemsList.setAdapter(availableItemsListAdapter);
-
-
-        avai_items = productsName.length;
-        Log.i("total", String.valueOf(avai_items));
-        editor = getActivity().getSharedPreferences("avail_length", Context.MODE_PRIVATE).edit();
-        editor.putString("available", String.valueOf(avai_items));
-        editor.apply();
         return view;
     }
 

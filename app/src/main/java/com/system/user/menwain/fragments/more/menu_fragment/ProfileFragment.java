@@ -167,7 +167,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     etConfPass.setCursorVisible(true);
                     etConfPass.setClickable(true);
                     etConfPass.setFocusableInTouchMode(true);
-                    btnRegister.setText("Save");
+                    btnRegister.setText(getString(R.string.profile_save));
                 } else {
                     updateProfileDetails();
                     etFname.setFocusable(false);
@@ -199,7 +199,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     etConfPass.setCursorVisible(false);
                     etConfPass.setClickable(false);
                     etConfPass.setFocusableInTouchMode(false);
-                    btnRegister.setText("Edit");
+                    btnRegister.setText(getString(R.string.profile_edit));
                 }
         }
 
@@ -230,7 +230,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "You need to Login First!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.login_first), Toast.LENGTH_SHORT).show();
                 Log.e("profiel_error", error.toString());
                 Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
                 logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

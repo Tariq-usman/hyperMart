@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Update"
+            android:text="@string/payment_update"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/fourteen_sp"
             android:textStyle="bold" />
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"
-            android:text="Payment Invoices"
+            android:text="@string/payment_payment_invoice"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/twenty_sp" />
 
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="6dp"
-                android:text="Payment Amount"
+                android:text="@string/payment_payment_amount"
                 android:textSize="@dimen/sixteen_sp" />
 
             <LinearLayout
@@ -113,7 +113,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Payable"
+                    android:text="@string/payment_payable"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/sixteen_sp" />
 
@@ -144,7 +144,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="6dp"
-                        android:text="Card Information"
+                        android:text="@string/card_info"
                         android:textSize="@dimen/sixteen_sp" />
 
                     <EditText
@@ -158,7 +158,7 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
-                        android:hint="Card Holder Name"
+                        android:hint="@string/card_holder_name"
                         android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@color/darkGreenColor"
@@ -175,7 +175,7 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
-                        android:hint="Card Number"
+                        android:hint="@string/card_num"
                         android:inputType="number"
                         android:maxLength="19"
                         android:maxLines="1"
@@ -200,7 +200,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:gravity="center_vertical"
-                            android:hint="CVC"
+                            android:hint="@string/cvc"
                             android:inputType="numberPassword"
                             android:maxLines="1"
                             android:textColor="@color/darkGreenColor"
@@ -218,7 +218,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:gravity="center_vertical"
-                            android:hint="Expairy"
+                            android:hint="@string/expairy"
                             android:inputType="date"
                             android:maxLength="5"
                             android:maxLines="1"
@@ -238,7 +238,7 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
-                        android:hint="Zip Code"
+                        android:hint="@string/zip_code"
                         android:inputType="number"
                         android:maxLines="1"
                         android:textColor="@color/darkGreenColor"
@@ -251,7 +251,7 @@
                         android:layout_marginVertical="5dp"
                         android:background="@drawable/bg_email_pass"
                         android:gravity="center_vertical"
-                        android:hint="Card Name"
+                        android:hint="@string/card_name"
                         android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@color/darkGreenColor"
@@ -268,7 +268,7 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
-                        android:hint="Billing Address"
+                        android:hint="@string/billing_address"
                         android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@color/darkGreenColor"
@@ -291,7 +291,7 @@
         android:layout_marginBottom="2dp"
         android:background="@drawable/bg_submit_btn"
         android:gravity="center"
-        android:text="Pay Now"
+        android:text="@string/payment_pay_now"
         android:textColor="@color/whiteColor" />
 
 </LinearLayout>

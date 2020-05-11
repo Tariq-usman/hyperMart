@@ -18,7 +18,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginBottom="30dp"
             android:gravity="center"
-            android:text="Sign Up"
+            android:text="@string/signup_title"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/twenty_four_sp" />
 
@@ -45,7 +45,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:text="First Name"
+                        android:text="@string/first_name"
                         android:textColor="@color/darkGreenColor"
                         android:textSize="@dimen/fourteen_sp" />
 
@@ -74,7 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:text="Last Name"
+                        android:text="@string/last_name"
                         android:textColor="@color/darkGreenColor"
                         android:textSize="@dimen/fourteen_sp" />
 
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:text="Phone No"
+                android:text="@string/phone_no"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/fourteen_sp" />
 
@@ -120,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:text="Email Address"
+                android:text="@string/email_address"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/fourteen_sp" />
 
@@ -147,7 +147,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sex"
+                android:text="@string/sex"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/fourteen_sp" />
 
@@ -163,7 +163,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Male"
+                    android:text="@string/male"
                     android:checked="true"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -172,7 +172,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Female"
+                    android:text="@string/female"
                     android:textSize="@dimen/fourteen_sp" />
             </RadioGroup>
 
@@ -188,7 +188,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:text="Create Password"
+                android:text="@string/create_pass"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/fourteen_sp" />
 
@@ -231,7 +231,7 @@
         android:layout_marginBottom="30dp"
         android:background="@drawable/bg_submit_btn"
         android:gravity="center"
-        android:text="Register"
+        android:text="@string/register"
         android:textColor="@color/whiteColor"
         android:textSize="@dimen/twenty_sp" />
 
@@ -242,7 +242,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="25dp"
         android:gravity="center"
-        android:text="Login Instead"
+        android:text="@string/login_instead"
         android:textColor="@color/darkGreenColor"
         android:textSize="@dimen/twenty_sp" />
 

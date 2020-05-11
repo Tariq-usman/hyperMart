@@ -91,7 +91,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Average"
+                                    android:text="@string/average"
                                     android:textColor="@color/darkGreenColor"
                                     android:textSize="@dimen/fourteen_sp"
                                     android:textStyle="italic" />
@@ -176,7 +176,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="10dp"
-                                    android:text="In Stock"
+                                    android:text="@string/in_stock"
                                     android:textColor="@color/darkGreenColor"
                                     android:textSize="@dimen/fourteen_sp" />
 
@@ -238,7 +238,7 @@
                             android:layout_marginRight="1dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Description"
+                            android:text="@string/description"
                             android:textColor="@color/lightBlueColor"
                             android:textSize="@dimen/fourteen_sp"
                             android:textStyle="bold" />
@@ -255,7 +255,7 @@
                             android:layout_marginHorizontal="1dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Specification"
+                            android:text="@string/specifications"
                             android:textColor="@color/darkGreenColor"
                             android:textSize="@dimen/fourteen_sp"
                             android:textStyle="bold" />
@@ -272,7 +272,7 @@
                             android:layout_marginLeft="1dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Reviews"
+                            android:text="@string/reviews"
                             android:textColor="@color/darkGreenColor"
                             android:textSize="@dimen/fourteen_sp"
                             android:textStyle="bold" />
@@ -668,15 +668,6 @@
 
 
                 </LinearLayout>
-                <!-- <TextView
-                     android:id="@+id/text_view"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_marginHorizontal="20dp"
-                     android:justificationMode="inter_word"
-                     android:text="@string/description"
-                     android:textColor="@color/textColorLikeBG"
-                     android:textSize="15sp" />-->
 
 
                 <LinearLayout
@@ -689,7 +680,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="Related Items"
+                        android:text="@string/related_items"
                         android:textColor="@color/darkGreenColor"
                         android:textSize="@dimen/sixteen_sp" />
 
@@ -713,7 +704,7 @@
             android:layout_marginVertical="6dp"
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
-            android:text="Add to Cart"
+            android:text="@string/add_to_cart"
             android:textColor="@color/whiteColor"
             android:textSize="@dimen/sixteen_sp" />
 

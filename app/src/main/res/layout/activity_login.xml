@@ -18,7 +18,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginBottom="30dp"
             android:gravity="center"
-            android:text="Login"
+            android:text="@string/login_title"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/twenty_four_sp" />
 
@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:text="Phone no"
+                android:text="@string/phone_no"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/fourteen_sp" />
 
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:text="Password"
+                android:text="@string/password"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/fourteen_sp" />
 
@@ -87,7 +87,7 @@
                 android:layout_marginVertical="10dp"
                 android:background="@drawable/bg_submit_btn"
                 android:gravity="center"
-                android:text="Login"
+                android:text="@string/logout"
                 android:textColor="@color/whiteColor"
                 android:textSize="@dimen/sixteen_sp" />
 
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Forget Password"
+                android:text="@string/forget_password"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/fourteen_sp" />
         </LinearLayout>
@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Use TouchID"
+                android:text="@string/touch_id"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/eighteen_sp" />
         </LinearLayout>
@@ -130,7 +130,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="25dp"
         android:gravity="center"
-        android:text="Create an Account"
+        android:text="@string/creare_an_account"
         android:textColor="@color/darkGreenColor"
         android:textSize="@dimen/eighteen_sp" />
 

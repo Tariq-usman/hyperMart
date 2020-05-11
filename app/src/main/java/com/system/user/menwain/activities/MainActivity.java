@@ -1,14 +1,11 @@
 package com.system.user.menwain.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -17,18 +14,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.ui.AppBarConfiguration;
 
 import com.system.user.menwain.fragments.cart.AddCardFragment;
 import com.system.user.menwain.fragments.category.SuperCategoryFragment;
 import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.others.Preferences;
-import com.system.user.menwain.custom_languages.BaseActivity;
-import com.system.user.menwain.custom_languages.LocaleManager;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.fragments.cart.ItemsAvailabilityStoresFragment;
-import com.system.user.menwain.fragments.category.CategoryItemsFragment;
+import com.system.user.menwain.fragments.category.CategoryFragment;
 import com.system.user.menwain.fragments.more.orders.OrderDetailsFragment;
 import com.system.user.menwain.fragments.more.orders.OrdersFragment;
 import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
@@ -342,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (prefrences.getBottomNavStatus() == 2) {
             if (category_fragment_status == 2) {
                 prefrences.setCategoryFragStatus(1);
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryItemsFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
             } else if (category_fragment_status == 1) {
                 prefrences.setCategoryFragStatus(0);
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).addToBackStack(null).commit();

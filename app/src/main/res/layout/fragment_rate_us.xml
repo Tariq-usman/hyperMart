@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
-                android:text="Rate our store"
+                android:text="@string/rate_our_store"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/eighteen_sp" />
 
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
-                android:text="Rate our delivery boy"
+                android:text="@string/rate_delivery_boy"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/eighteen_sp" />
             <RatingBar
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
-                android:text="Rate our overall services"
+                android:text="@string/rate_services"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/eighteen_sp" />
             <RatingBar
@@ -76,7 +76,7 @@
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textColor="@color/whiteColor"
             android:textSize="@dimen/sixteen_sp" />
 

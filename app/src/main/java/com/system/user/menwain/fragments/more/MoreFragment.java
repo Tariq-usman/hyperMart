@@ -106,7 +106,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), "Already Logout!", Toast.LENGTH_SHORT).show();
                 }else {
                     prefrences.setToken("");
-                    Toast.makeText(getContext(), "Logout Successfully..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.logout_successfully), Toast.LENGTH_SHORT).show();
                     getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).addToBackStack(null).commit();
                     mHome.setImageResource(R.drawable.ic_houseblue);
                     tvHome.setTextColor(Color.parseColor("#00c1bd"));

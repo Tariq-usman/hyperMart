@@ -25,7 +25,7 @@
                 android:layout_marginHorizontal="6dp"
                 android:background="@drawable/bg_avail_items"
                 android:gravity="center"
-                android:text="Available"
+                android:text="@string/available"
                 android:textColor="@color/whiteColor" />
 
             <TextView
@@ -55,7 +55,7 @@
                 android:background="@drawable/bg_not_avail_items"
                 android:gravity="center"
                 android:paddingRight="15dp"
-                android:text="Not Available"
+                android:text="@string/not_available"
                 android:textColor="@color/darkGreenColor" />
 
             <TextView
@@ -309,7 +309,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Confirm"
+                android:text="@string/confirm_btn"
                 android:textColor="@color/whiteColor" />
 
             <LinearLayout
@@ -323,13 +323,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Tatal "
+                    android:text="@string/total"
                     android:textColor="@color/whiteColor" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SAR "
+                    android:text=" SAR "
                     android:textColor="@color/whiteColor" />
 
                 <TextView

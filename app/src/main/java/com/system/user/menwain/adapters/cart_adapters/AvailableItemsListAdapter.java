@@ -2,7 +2,6 @@ package com.system.user.menwain.adapters.cart_adapters;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.category.CategoryItemsFragment;
+import com.system.user.menwain.fragments.category.CategoryFragment;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 
 import androidx.annotation.NonNull;
@@ -125,7 +124,7 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
             public void onClick(View v) {
                 bundle = new Bundle();
                 prefrences.setBottomNavStatus(6);
-                CategoryItemsFragment fragment = new CategoryItemsFragment();
+                CategoryFragment fragment = new CategoryFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle.putInt("product_id", avail_items_list.get(position).getId());
                 fragment.setArguments(bundle);

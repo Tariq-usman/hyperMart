@@ -150,7 +150,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                     e.printStackTrace();
                 }
                 tvStoreRating.setText(String.valueOf(storeResponse.getStore().getAverageRating()));
-                ratingBar.setRating(Float.valueOf(storeResponse.getStore().getAverageRating()));
+                ratingBar.setRating(Float.parseFloat("("+storeResponse.getStore().getAverageRating()+")"));
                 category_list.clear();
                 for (int i = 0; i < storeResponse.getCategory().size(); i++) {
                     category_list.add(storeResponse.getCategory().get(i));

@@ -115,7 +115,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Add to Cart"
+                android:text="@string/add_to_cart"
                 android:gravity="center"
                 android:textSize="@dimen/twelve_sp"
                 android:textColor="@color/whiteColor"

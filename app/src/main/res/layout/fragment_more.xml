@@ -47,7 +47,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
-                            android:text="Browse Stores"
+                            android:text="@string/browse_store"
                             android:textColor="@color/whiteColor"
                             android:textSize="@dimen/eighteen_sp" />
                     </LinearLayout>
@@ -140,7 +140,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="4dp"
                         android:gravity="center"
-                        android:text="Orders"
+                        android:text="@string/orders"
                         android:textColor="#97ADAD"
                         android:textSize="@dimen/fourteen_sp" />
                 </LinearLayout>
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="4dp"
                         android:gravity="center"
-                        android:text="Customer Services"
+                        android:text="@string/custemr_services"
                         android:textColor="#97ADAD"
                         android:textSize="@dimen/fourteen_sp" />
                 </LinearLayout>
@@ -196,7 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"
-                    android:text="Profile"
+                    android:text="@string/profile"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -211,7 +211,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"
-                    android:text="Terms &amp; Conditions"
+                    android:text="@string/terms_conditions"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -226,7 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"
-                    android:text="Privacy Policy "
+                    android:text="@string/pricacy_policy"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -241,7 +241,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"
-                    android:text="Settings"
+                    android:text="@string/settings"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -256,7 +256,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"
-                    android:text="About"
+                    android:text="@string/about"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -271,7 +271,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"
-                    android:text="Rate Application"
+                    android:text="@string/rate_app"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
@@ -286,7 +286,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"
-                    android:text="Logout"
+                    android:text="@string/logout"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 

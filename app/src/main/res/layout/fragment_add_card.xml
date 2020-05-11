@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Deliver to my home address"
+                android:text="@string/pay_title"
                 android:textSize="@dimen/eighteen_sp" />
 
             <LinearLayout
@@ -33,7 +33,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Sub Total"
+                    android:text="@string/pay_sub_total"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/sixteen_sp" />
 
@@ -57,7 +57,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Shipping Cost"
+                    android:text="@string/pay_shipping_cost"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/sixteen_sp" />
 
@@ -80,7 +80,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Total"
+                    android:text="@string/pay_total"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/sixteen_sp" />
 
@@ -101,6 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
+        android:scrollbars="none"
         android:layout_weight="1">
 
         <LinearLayout
@@ -141,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
-                        android:text="Add a new payment Method"
+                        android:text="@string/add_pay"
                         android:textColor="@color/lightBlueColor"
                         android:textSize="@dimen/eighteen_sp" />
                 </LinearLayout>

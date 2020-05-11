@@ -1,9 +1,7 @@
 package com.system.user.menwain.fragments.category;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,17 +18,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.system.user.menwain.adapters.category_adapters.SubCategoryAdapter;
-import com.system.user.menwain.adapters.category_adapters.SubCategoryProductsAdapter;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
-import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.category_adapters.CategoryProductsAdapter;
 import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
 import com.system.user.menwain.responses.category.CategoryResponse;
-import com.system.user.menwain.responses.category.SubCategoryResponse;
 import com.system.user.menwain.utils.URLs;
 
 import androidx.annotation.NonNull;
@@ -43,11 +36,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class CategoryItemsFragment extends Fragment implements RecyclerClickInterface {
+public class CategoryFragment extends Fragment implements RecyclerClickInterface {
 
     private int cat_id, super_cat_id;
     private RecyclerView recyclerViewCategory, recyclerViewCategoryProducts, recyclerViewSubCategory, recyclerViewSubCategoryProducts;
@@ -94,7 +85,7 @@ public class CategoryItemsFragment extends Fragment implements RecyclerClickInte
         recyclerViewCategory.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewCategory.setLayoutManager(linearLayoutManager);
-        categoryAdapter = new CategoryAdapter(getContext(), catergoryList, CategoryItemsFragment.this);
+        categoryAdapter = new CategoryAdapter(getContext(), catergoryList, CategoryFragment.this);
         recyclerViewCategory.setAdapter(categoryAdapter);
         recyclerViewCategory.smoothScrollToPosition(getPreviousId + 1);
 

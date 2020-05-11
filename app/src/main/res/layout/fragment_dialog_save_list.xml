@@ -22,7 +22,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginVertical="20dp"
             android:gravity="center"
-            android:text="Do you want to save these product as list to use in future?"
+            android:text="@string/list_name_dialog_title"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/sixteen_sp" />
 
@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="List Name"
+                android:text="@string/list_name_dialog_name"
                 android:textColor="@color/darkGreenColor" />
 
             <EditText
@@ -60,7 +60,7 @@
             android:layout_marginVertical="20dp"
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
-            android:text="Confirm"
+            android:text="@string/confirm_btn"
             android:textColor="@color/whiteColor" />
 
     </LinearLayout>

@@ -13,18 +13,178 @@
     <!-- main page -->
     <string name="search_hint">menWain</string>
     <!--Home Fragment-->
-    <string name="explore_shop">استكشاف والتسوق</string>
-    <string name="explore">يكتشف</string>
-    <string name="shop">متجر</string>
-    <string name="see_all">اظهار الكل</string>
+    <string name="explore_shop">EXPLORE &amp; SHOP</string>
+    <string name="explore">EXPLORE</string>
+    <string name="see_all">See All</string>
+    <string name="shop">SHOP</string>
     <!-- Bottom Nav-->
-    <string name="home">الصفحة الرئيسية</string>
-    <string name="category">الفئة</string>
-    <string name="cart">عربة التسوق</string>
-    <string name="my_list">قائمتي</string>
-    <string name="more">أكثر</string>
+    <string name="home">Home</string>
+    <string name="category">Category</string>
+    <string name="cart">Cart</string>
+    <string name="my_list">My List</string>
+    <string name="more">More</string>
     <!--Category fragments-->
     <string name="add_to_cart">Add to Cart</string>
+
+    <!--Cart fragments-->
+    <string name="proceed_btn">Proceed</string>
+    <string name="total_average_amount">Total Average Amount</string>
+    <string name="cart_sar">SAR</string>
+    <string name="cart_is_empty">Cart is Empty!</string>
+    <!--User address fragment-->
+    <string name="pay_now">Pay Now</string>
+    <string name="pay_later">Pay Later</string>
+    <string name="deliver_to_address">Deliver to Address</string>
+    <string name="prepare_and_pick">Prepare and Pick up From Store</string>
+    <string name="cas_on_delivery">Cash On Delivery</string>
+    <string name="walk_in_store">Walk in Store</string>
+    <string name="select_location">Select Location</string>
+    <string name="add_new">Add new</string>
+    <string name="confirm_btn">Confirm</string>
+
+    <!--Map Activity-->
+    <string name="map_search_here">Search here</string>
+    <string name="map_selected_location">Selected Location</string>
+    <string name="map_submit">Submit</string>
+    <string name="map_address_title">Address Title</string>
+    <string name="map_save">Save</string>
+
+
+    <!--Store Comparision fragment-->
+    <string name="lowest_price">Lowest Price</string>
+    <string name="highest_avail">Highest Availability</string>
+    <string name="nearest_dist">Nearest Distance</string>
+
+    <!--Avail Not Avail fragment-->
+    <string name="available">Available</string>
+    <string name="not_available">Not Available</string>
+    <string name="total">Total</string>
+
+    <!--Time Slot Dialog Fragment-->
+    <string name="time_slot_dialog_title_d">Please tell us your preferred delivery time</string>
+    <string name="time_slot_dialog_title_p">Please tell us your preferred pickup time</string>
+    <string name="time_slot_dialog_date">Date</string>
+    <string name="time_slot_dialog_time">Time</string>
+
+    <!--List Name Dialog Fragment-->
+    <string name="list_name_dialog_title">Do you want to save these products as list to use in future?</string>
+    <string name="list_name_dialog_name">List Name</string>
+
+    <!--Add payment method-->
+    <string name="pay_title">Deliver to my home Address</string>
+    <string name="pay_sub_total">Sub Total</string>
+    <string name="pay_shipping_cost">Shipping Cost</string>
+    <string name="pay_total">Total</string>
+    <string name="add_pay">Add a new payment Method</string>
+
+    <!--Card information fragment-->
+    <string name="card_info">Card information</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="card_num">Card Number</string>
+    <string name="cvc">CVC</string>
+    <string name="expairy">Exp. MM/YY</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="card_name">Card Name</string>
+    <string name="billing_address">Billing Address</string>
+    <string name="add">Add</string>
+
+    <!--Payment fragment-->
+    <string name="payment_update">Update</string>
+    <string name="payment_payment_invoice">Payment Invoice</string>
+    <string name="payment_payment_amount">Payment Amount</string>
+    <string name="payment_payable">Payable</string>
+    <string name="payment_pay_now">Pay Now</string>
+
+    <!--Order Success fragment-->
+    <string name="successfully_ordered">Your Have Successfully \n Ordered</string>
+    <string name="go_home">Go Home</string>
+    <string name="order_number">Order Number:</string>
+    <string name="order_status">Status:</string>
+    <string name="order_total">Total:</string>
+
+    <!--My List fragment-->
+    <string name="view">View</string>
+
+    <!--More fragment-->
+    <string name="browse_store">Browse Stores</string>
+    <string name="orders">Orders</string>
+    <string name="custemr_services">Customer Services</string>
+    <string name="profile">Profile</string>
+    <string name="terms_conditions">Terms &amp; Conditions</string>
+    <string name="pricacy_policy">Privacy Policy</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="rate_app">Rate Application</string>
+    <string name="logout">Logout</string>
+
+    <!--Browse Stores Fragment-->
+    <string name="store_name">Store Name:</string>
+    <string name="store_location">Location</string>
+
+    <!--Orders Fragment-->
+    <string name="all">All</string>
+    <string name="processing">processing</string>
+    <string name="delivered">Delivered</string>
+    <string name="cancelled">Cancelled</string>
+
+    <!--Orders Details Fragment-->
+    <string name="order_details_order_no">Order No:</string>
+    <string name="order_details_total_price">Total Price:</string>
+    <string name="order_details_date">Date:</string>
+    <string name="order_details_time">Time:</string>
+    <string name="order_details_status">Status:</string>
+    <string name="order_details_order_code">Order Code:</string>
+
+    <!--Profile Fragment-->
+    <string name="profile_first_name">First Name</string>
+    <string name="profile_last_name">Last Name</string>
+    <string name="profile_phone_no">Phone No</string>
+    <string name="profile_email_address">Email Address</string>
+    <string name="profile_sex">Sex</string>
+    <string name="profile_male">Male</string>
+    <string name="profile_female">Female</string>
+    <string name="profile_change_lang">Change Language</string>
+    <string name="profile_update_pass">Update Password</string>
+    <string name="profile_edit">Edit</string>
+    <string name="profile_save">Save</string>
+
+    <!--Rate App Fragment-->
+    <string name="rate_our_store">Rate our store</string>
+    <string name="rate_delivery_boy">Rate our delivery boy</string>
+    <string name="rate_services">Rate our overall services</string>
+    <string name="submit">Submit</string>
+    <string name="logout_successfully">Logout Successfully</string>
+    <string name="login_first">You need to login first!</string>
+
+
+    <!--LogIn activity-->
+    <string name="login_title">Login</string>
+    <string name="login_phone_no">Phone no</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="touch_id">Use TouchID</string>
+    <string name="creare_an_account">Create an Account</string>
+
+    <!--SignUp activity-->
+    <string name="signup_title">Sign Up</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_no">Phone No</string>
+    <string name="email_address">Email Address</string>
+    <string name="sex">Sex</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="create_pass">Create Password</string>
+    <string name="register">Register</string>
+    <string name="login_instead">Login Instead</string>
+
+    <!--Item details fragment-->
+    <string name="average">Average</string>
+    <string name="in_stock">In Stock</string>
+    <string name="description">Description</string>
+    <string name="specifications">Specifications</string>
+    <string name="reviews">Reviews</string>
+    <string name="related_items">Related Items</string>
 
     <string name="title_activity_maps">Map</string>
 

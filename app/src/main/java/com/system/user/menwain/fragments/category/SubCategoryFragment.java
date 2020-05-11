@@ -1,9 +1,7 @@
 package com.system.user.menwain.fragments.category;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +29,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryAdapter;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryProductsAdapter;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryProductsFinalAdapter;
@@ -47,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SubCategoryItemsFragment extends Fragment implements RecyclerClickInterface {
+public class SubCategoryFragment extends Fragment implements RecyclerClickInterface {
 
     private int cat_id, super_cat_id,sub_cat_id;
     private RecyclerView  recyclerViewSubCategory,recyclerViewSubCategoryProducts,recyclerViewSubCategoryProductsFinal;
@@ -82,7 +79,7 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
             @Override
             public void onClick(View view) {
                 prefrences.setCategoryFragStatus(1);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryItemsFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.GONE);
             }
         });
@@ -94,7 +91,7 @@ public class SubCategoryItemsFragment extends Fragment implements RecyclerClickI
         recyclerViewSubCategory = view.findViewById(R.id.recycler_view_sub_caterory);
         recyclerViewSubCategory.setHasFixedSize(true);
         recyclerViewSubCategory.setLayoutManager( new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        subCategoryAdapter = new SubCategoryAdapter(getContext(), subCatergoryList, SubCategoryItemsFragment.this);
+        subCategoryAdapter = new SubCategoryAdapter(getContext(), subCatergoryList, SubCategoryFragment.this);
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
 
         recyclerViewSubCategoryProducts = view.findViewById(R.id.recycler_view_sub_category_roducts);

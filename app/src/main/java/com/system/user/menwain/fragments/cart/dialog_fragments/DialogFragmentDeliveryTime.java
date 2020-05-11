@@ -91,7 +91,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
         mCloseBtn.setOnClickListener(this);
         tvDate.setOnClickListener(this);
         if (prefrences.getPayRBtnStatus() == 2 || prefrences.getPayRBtnStatus() == 4) {
-            tvDeliveryPickUp.setText("Please tell us your preferred pickup time");
+            tvDeliveryPickUp.setText(R.string.time_slot_dialog_title_p);
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         timesAdapter = new DeliveryTimesAdapter(getContext(), delivery_times_list, this);

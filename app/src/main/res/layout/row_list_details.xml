@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_selected"
                 android:gravity="center"
-                android:text="Add to Cart"
+                android:text="@string/add_to_cart"
                 android:textColor="@color/whiteColor"
                 android:textSize="@dimen/fourteen_sp" />
         </androidx.cardview.widget.CardView>

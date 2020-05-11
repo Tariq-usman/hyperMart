@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -47,10 +45,9 @@ import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.Item_details_SlidingImages_Adapter;
 import com.system.user.menwain.adapters.category_adapters.SelectedItemsFilterAdapter;
-import com.system.user.menwain.fragments.category.CategoryItemsFragment;
+import com.system.user.menwain.fragments.category.CategoryFragment;
 import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
@@ -67,11 +64,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDetailsFragment extends Fragment implements View.OnClickListener {
-    private int[] IMAGES = {R.drawable.dis, R.drawable.disc, R.drawable.disco};
     private List<ProductDetailsResponse.Data.Productpic> related_items_list = new ArrayList<ProductDetailsResponse.Data.Productpic>();
     private RecyclerView recyclerViewRelateItems;
     private SelectedItemsFilterAdapter selectedItemsFilterAdapter;
-private Item_details_SlidingImages_Adapter slidingImagesAdapter;
+    private Item_details_SlidingImages_Adapter slidingImagesAdapter;
     private List<ReviewsResponse.Dataa.Datum> reviews_list = new ArrayList<ReviewsResponse.Dataa.Datum>();
     private RecyclerView recyclerViewItemReviews;
     private ItemReviewsAdapter itemReviewsAdapter;
@@ -121,9 +117,6 @@ private Item_details_SlidingImages_Adapter slidingImagesAdapter;
         } else {
             Toast.makeText(getContext(), "No product selected", Toast.LENGTH_SHORT).show();
         }
-        /*IMAGES = new int[]{(Integer.parseInt(bundle.getString("image_url", ""))),
-                (Integer.parseInt(bundle.getString("image_url1", ""))),
-                (Integer.parseInt(bundle.getString("image_url2", "")))};*/
         mSearchView = getActivity().findViewById(R.id.search_view);
         //mSearchView.setVisibility(View.INVISIBLE);
         mPager = view.findViewById(R.id.item_detail_pager);
@@ -172,7 +165,7 @@ private Item_details_SlidingImages_Adapter slidingImagesAdapter;
         mBack.setVisibility(View.VISIBLE);
         mBack.setOnClickListener(this);
 
-        slidingImagesAdapter=new Item_details_SlidingImages_Adapter(getContext(), bannersList);
+        slidingImagesAdapter = new Item_details_SlidingImages_Adapter(getContext(), bannersList);
 
         recyclerViewRelateItems = view.findViewById(R.id.recycler_view_related_items_item_details);
         recyclerViewRelateItems.setHasFixedSize(true);
@@ -198,9 +191,9 @@ private Item_details_SlidingImages_Adapter slidingImagesAdapter;
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_banner_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                HomeBannerResponse bannerResponse = gson.fromJson(response,HomeBannerResponse.class);
+                HomeBannerResponse bannerResponse = gson.fromJson(response, HomeBannerResponse.class);
                 bannersList.clear();
-                for (int i=0;i<bannerResponse.getData().size();i++){
+                for (int i = 0; i < bannerResponse.getData().size(); i++) {
                     bannersList.add(bannerResponse.getData().get(i));
                 }
                 slidingImagesAdapter.notifyDataSetChanged();
@@ -209,7 +202,7 @@ private Item_details_SlidingImages_Adapter slidingImagesAdapter;
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e( "erroe", error.toString());
+                Log.e("erroe", error.toString());
                 dialog.dismiss();
             }
         });
@@ -427,7 +420,7 @@ private Item_details_SlidingImages_Adapter slidingImagesAdapter;
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").addToBackStack(null).commit();
             } else if (status == "2") {
                 prefrences.setCategoryFragStatus(1);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryItemsFragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
             } else {
                 prefrences.setMoreStoresFragStatus(2);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SelectedStoreFragment()).addToBackStack(null).commit();

@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
-                android:text="Card Information"
+                android:text="@string/card_info"
                 android:textSize="@dimen/sixteen_sp" />
 
             <EditText
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:background="@drawable/bg_email_pass"
-                android:hint="Card Holder Name"
+                android:hint="@string/card_holder_name"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/darkGreenColor"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:background="@drawable/bg_email_pass"
-                android:hint="Card Number"
+                android:hint="@string/card_num"
                 android:maxLength="19"
                 android:inputType="number"
                 android:maxLines="1"
@@ -68,7 +68,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_email_pass"
-                    android:hint="CVC"
+                    android:hint="@string/cvc"
                     android:maxLength="3"
                     android:inputType="numberPassword"
                     android:maxLines="1"
@@ -84,7 +84,7 @@
                     android:background="@drawable/bg_email_pass"
                     android:inputType="date"
                     android:maxLength="5"
-                    android:hint="Exp. MM/YY"
+                    android:hint="@string/expairy"
                     android:maxLines="1"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:background="@drawable/bg_email_pass"
-                android:hint="Zip Code"
+                android:hint="@string/zip_code"
                 android:inputType="number"
                 android:maxLines="1"
                 android:textColor="@color/darkGreenColor"
@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:background="@drawable/bg_email_pass"
-                android:hint="Card Name"
+                android:hint="@string/card_name"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/darkGreenColor"
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:background="@drawable/bg_email_pass"
-                android:hint="Billing Address"
+                android:hint="@string/billing_address"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/darkGreenColor"
@@ -136,7 +136,7 @@
             android:layout_marginVertical="20dp"
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
-            android:text="Add"
+            android:text="@string/add"
             android:textColor="@color/whiteColor" />
 
     </LinearLayout>
