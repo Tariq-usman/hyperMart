@@ -39,11 +39,17 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".activities.ForgetPasswordActivity" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.SplashScreen">
+            android:configChanges="locale|layoutDirection"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".activities.SignUpActivity"
+            android:configChanges="locale|layoutDirection"/>
+        <activity android:name=".activities.ForgetPasswordActivity"
+            android:configChanges="locale|layoutDirection"/>
+        <activity android:name=".activities.LoginActivity"
+            android:configChanges="locale|layoutDirection"/>
+        <activity android:name=".activities.SplashScreen"
+            android:configChanges="locale|layoutDirection">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

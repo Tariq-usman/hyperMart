@@ -65,7 +65,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         cartViewModel = ViewModelProviders.of(CartFragment.this).get(CartViewModel.class);
 
         tvTotalCartAmount = view.findViewById(R.id.tv_total_cart_amount);
-        cartViewModel.getTotalCartPrice().observe(this, new Observer<Float>() {
+        cartViewModel.getTotalCartPrice().observe(getViewLifecycleOwner(), new Observer<Float>() {
             @Override
             public void onChanged(Float aFloat) {
 
@@ -77,7 +77,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-        cartViewModel.getCartDataList().observe(CartFragment.this, new Observer<List<Cart>>() {
+        cartViewModel.getCartDataList().observe(getViewLifecycleOwner(), new Observer<List<Cart>>() {
             @Override
             public void onChanged(List<Cart> carts) {
                 for (int i = 0; i < carts.size(); i++) {
@@ -96,7 +96,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         cartItemsAdapter = new CartItemsAdapter();
 
         recyclerViewCartItems.setAdapter(cartItemsAdapter);
-        cartViewModel.getCartDataList().observe(CartFragment.this, new Observer<List<Cart>>() {
+        cartViewModel.getCartDataList().observe(getViewLifecycleOwner(), new Observer<List<Cart>>() {
             @Override
             public void onChanged(List<Cart> carts) {
                 cartItemsAdapter.setCartData(carts, cartViewModel);

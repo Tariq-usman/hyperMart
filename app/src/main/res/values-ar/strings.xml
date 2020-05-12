@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Men Wain</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">Main Activity</string>
+    <!-- main page -->
+    <string name="search_hint">menWain</string>
+
+    <!--Toast messages-->
+    <string name="please_wait">ارجوك انتظر...</string>
+    <string name="insert_success">أقحم العربة بنجاح</string>
+    <string name="update_success">تم التحديث بنجاح</string>
+    <string name="no_sub_category">لا توجد فئة فرعية متاحة!</string>
+    <string name="no_products">لا توجد منتجات متوفرة في هذه الفئة!</string>
+    <string name="card_deleted">تم حذف البطاقة</string>
+    <string name="no_items_available">لا توجد عناصر متاحة!</string>
+    <string name="item_delete_success">تم حذف العنصر بنجاح</string>
+
+    <!--Home Fragment-->
+    <string name="explore_shop">استكشاف وتسوق</string>
+    <string name="explore">يكتشف</string>
+    <string name="see_all">اظهار الكل</string>
+    <string name="shop">متجر</string>
+    <!-- Bottom Nav-->
+    <string name="home">الصفحة الرئيسية</string>
+    <string name="category">الفئة</string>
+    <string name="cart">عربة التسوق</string>
+    <string name="my_list">قائمتي</string>
+    <string name="more">أكثر</string>
+    <!--Category fragments-->
+    <string name="add_to_cart">أضف إلى السلة</string>
+
+    <!--Cart fragments-->
+    <string name="proceed_btn">تقدم</string>
+    <string name="total_average_amount">إجمالي المبلغ الإجمالي</string>
+    <string name="cart_sar">SAR</string>
+    <string name="cart_is_empty">السلة فارغة!</string>
+    <!--User address fragment-->
+    <string name="pay_now">ادفع الآن</string>
+    <string name="pay_later">ادفع لاحقا</string>
+    <string name="deliver_to_address">تسليم إلى العنوان</string>
+    <string name="prepare_and_pick">تحضير والتقاط من المتجر</string>
+    <string name="cas_on_delivery">الدفع عند الاستلام</string>
+    <string name="walk_in_store">المشي في المتجر</string>
+    <string name="select_location">اختر موقعا</string>
+    <string name="add_new">اضف جديد</string>
+    <string name="confirm_btn">تؤكد</string>
+
+    <!--Map Activity-->
+    <string name="map_search_here">ابحث هنا</string>
+    <string name="map_selected_location">الموقع المحدد</string>
+    <string name="map_submit">إرسال</string>
+    <string name="map_address_title">عنوان عنوان</string>
+    <string name="map_save">حفظ</string>
+
+
+    <!--Store Comparision fragment-->
+    <string name="lowest_price">أقل سعر</string>
+    <string name="highest_avail">أعلى توافر</string>
+    <string name="nearest_dist">أقرب مسافة</string>
+
+    <!--Avail Not Avail fragment-->
+    <string name="available">متاح</string>
+    <string name="not_available">غير متاح</string>
+    <string name="total">مجموع</string>
+
+    <!--Time Slot Dialog Fragment-->
+    <string name="time_slot_dialog_title_d">من فضلك قل لنا وقت التسليم المفضل لديك</string>
+    <string name="time_slot_dialog_title_p">يرجى إخبارنا بوقت الالتقاط المفضل لديك</string>
+    <string name="time_slot_dialog_date">تاريخ</string>
+    <string name="time_slot_dialog_time">زمن</string>
+
+    <!--List Name Dialog Fragment-->
+    <string name="list_name_dialog_title">هل تريد حفظ هذه المنتجات كقائمة لاستخدامها في المستقبل؟</string>
+    <string name="list_name_dialog_name">اسم القائمة</string>
+
+    <!--Add payment method-->
+    <string name="pay_title">التسليم إلى عنوان منزلي</string>
+    <string name="pay_sub_total">المجموع الفرعي</string>
+    <string name="pay_shipping_cost">تكلفة الشحن</string>
+    <string name="pay_total">مجموع</string>
+    <string name="add_pay">أضف طريقة دفع جديدة</string>
+
+    <!--Card information fragment-->
+    <string name="card_info">معلومات البطاقة</string>
+    <string name="card_holder_name">إسم صاحب البطاقة</string>
+    <string name="card_num">رقم البطاقة</string>
+    <string name="cvc">رمز التحقق من البطاقة</string>
+    <string name="expairy">إكسب. شهر / سنة</string>
+    <string name="zip_code">الرمز البريدي</string>
+    <string name="card_name">اسم البطاقة</string>
+    <string name="billing_address">عنوان وصول الفواتير</string>
+    <string name="add">أضف</string>
+
+    <!--Payment fragment-->
+    <string name="payment_update">تحديث</string>
+    <string name="payment_payment_invoice">فاتورة الدفع</string>
+    <string name="payment_payment_amount">مبلغ الدفع</string>
+    <string name="payment_payable">مستحق الدفع</string>
+    <string name="payment_pay_now">ادفع الآن</string>
+
+    <!--Order Success fragment-->
+    <string name="successfully_ordered">لقد أمرت بنجاح</string>
+    <string name="go_home">اذهب للمنزل</string>
+    <string name="order_number">رقم الأمر:</string>
+    <string name="order_status">الحالة:</string>
+    <string name="order_total">مجموع:</string>
+
+    <!--My List fragment-->
+    <string name="view">رأي</string>
+
+    <!--More fragment-->
+    <string name="browse_store">تصفح المتاجر</string>
+    <string name="orders">الطلب</string>
+    <string name="custemr_services">خدمة العملاء</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="terms_conditions">الشروط و الظروف</string>
+    <string name="pricacy_policy">سياسة الخصوصية</string>
+    <string name="settings">الإعدادات</string>
+    <string name="about">حول</string>
+    <string name="rate_app">تطبيق المعدل</string>
+    <string name="logout">تسجيل خروج</string>
+
+    <!--Settings fragment-->
+    <string name="change_language">تغيير اللغة</string>
+
+    <!--Browse Stores Fragment-->
+    <string name="store_name">اسم المتجر:</string>
+    <string name="store_location">موقعك</string>
+
+    <!--Orders Fragment-->
+    <string name="all">الكل</string>
+    <string name="processing">معالجة</string>
+    <string name="delivered">تم التوصيل</string>
+    <string name="cancelled">ألغيت</string>
+
+    <!--Orders Details Fragment-->
+    <string name="order_details_order_no">رقم الطلب:</string>
+    <string name="order_details_total_price">السعر الكلي:</string>
+    <string name="order_details_date">تاريخ:</string>
+    <string name="order_details_time">زمن:</string>
+    <string name="order_details_status">الحالة:</string>
+    <string name="order_details_order_code">رمز الطلب:</string>
+
+    <!--Profile Fragment-->
+    <string name="profile_first_name">الاسم الاول</string>
+    <string name="profile_last_name">الكنية</string>
+    <string name="profile_phone_no">رقم الهاتف</string>
+    <string name="profile_email_address">عنوان بريد الكتروني</string>
+    <string name="profile_sex">الجنس</string>
+    <string name="profile_male">الذكر</string>
+    <string name="profile_female">أنثى</string>
+    <string name="profile_change_lang">تغيير اللغة</string>
+    <string name="profile_update_pass">تطوير كلمة السر</string>
+    <string name="profile_edit">تعديل</string>
+    <string name="profile_save">حفظ</string>
+
+    <!--Rate App Fragment-->
+    <string name="rate_our_store">تقييم متجرنا</string>
+    <string name="rate_delivery_boy">قيم صبي التوصيل لدينا</string>
+    <string name="rate_services">تقييم خدماتنا الشاملة</string>
+    <string name="submit">إرسال</string>
+    <string name="logout_successfully">تسجيل الخروج بنجاح</string>
+    <string name="login_first">انت تحتاج لتسجيل الدخول اولا!</string>
+
+
+    <!--LogIn activity-->
+    <string name="login_title">تسجيل الدخول</string>
+    <string name="login_phone_no">رقم الهاتف</string>
+    <string name="password">كلمه السر</string>
+    <string name="forget_password">نسيت كلمة المرور</string>
+    <string name="touch_id">استخدم اللمس هوية شخصية</string>
+    <string name="creare_an_account">انشئ حساب</string>
+
+    <!--SignUp activity-->
+    <string name="signup_title">سجل</string>
+    <string name="first_name">الاسم الاول</string>
+    <string name="last_name">الكنية</string>
+    <string name="phone_no">رقم الهاتف</string>
+    <string name="email_address">عنوان بريد الكتروني</string>
+    <string name="sex">الجنس</string>
+    <string name="male">الذكر</string>
+    <string name="female">أنثى</string>
+    <string name="create_pass">إنشاء كلمة مرور</string>
+    <string name="register">تسجيل</string>
+    <string name="login_instead">تسجيل الدخول بدلاً من ذلك</string>
+
+    <!--Item details fragment-->
+    <string name="average">معدل</string>
+    <string name="in_stock">في المخزن</string>
+    <string name="description">وصف</string>
+    <string name="specifications">مواصفات</string>
+    <string name="reviews">المراجعات</string>
+    <string name="related_items">الأصناف ذات الصلة</string>
+
+    <string name="title_activity_maps">خريطة</string>
+
+</resources>

@@ -46,8 +46,8 @@ import java.util.Map;
 
 public class SubCategoryFragment extends Fragment implements RecyclerClickInterface {
 
-    private int cat_id, super_cat_id,sub_cat_id;
-    private RecyclerView  recyclerViewSubCategory,recyclerViewSubCategoryProducts,recyclerViewSubCategoryProductsFinal;
+    private int cat_id, super_cat_id, sub_cat_id;
+    private RecyclerView recyclerViewSubCategory, recyclerViewSubCategoryProducts, recyclerViewSubCategoryProductsFinal;
     private LinearLayoutManager linearLayoutManager;
     private int getPreviousId = SuperCategoryAdapter.passId;
     private ImageView mBackBtn, mBarCodeScanner;
@@ -90,7 +90,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
 
         recyclerViewSubCategory = view.findViewById(R.id.recycler_view_sub_caterory);
         recyclerViewSubCategory.setHasFixedSize(true);
-        recyclerViewSubCategory.setLayoutManager( new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         subCategoryAdapter = new SubCategoryAdapter(getContext(), subCatergoryList, SubCategoryFragment.this);
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
 
@@ -103,7 +103,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         recyclerViewSubCategoryProductsFinal = view.findViewById(R.id.recycler_view_sub_category_roducts_final);
         recyclerViewSubCategoryProductsFinal.setHasFixedSize(true);
         recyclerViewSubCategoryProductsFinal.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
-        subCategoryProductsFinalAdapter = new SubCategoryProductsFinalAdapter(getContext(),subCategory_products_final_list );
+        subCategoryProductsFinalAdapter = new SubCategoryProductsFinalAdapter(getContext(), subCategory_products_final_list);
         recyclerViewSubCategoryProductsFinal.setAdapter(subCategoryProductsFinalAdapter);
 
         return view;
@@ -129,13 +129,19 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                     subCatergoryList.add(subCategoryResponse.getCategory().getData().get(i));
                 }
                 subCategoryAdapter.notifyDataSetChanged();
+
                 subCategory_products_list.clear();
                 for (int i = 0; i < subCategoryResponse.getProducts().getData().size(); i++) {
                     subCategory_products_list.add(subCategoryResponse.getProducts().getData().get(i));
                 }
                 subCategoryProductsAdapter.notifyDataSetChanged();
-                if (subCategory_products_list.size()==0){
-                    Toast.makeText(getContext(), "No Such Products!", Toast.LENGTH_SHORT).show();
+                if (subCatergoryList.size() == 0) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_sub_category), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    if (subCategory_products_list.size() == 0) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.no_products), Toast.LENGTH_SHORT).show();
+                    }
                 }
                 dialog.dismiss();
             }
@@ -145,11 +151,11 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                 Log.e("erroe", error.toString());
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("sup_category_id",super_cat_id+"");
+                Map<String, String> map = new HashMap<>();
+                map.put("sup_category_id", super_cat_id + "");
                 return map;
             }
         };
@@ -171,8 +177,8 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                     subCategory_products_final_list.add(finalProducts.getProducts().getData().get(i));
                 }
                 subCategoryProductsFinalAdapter.notifyDataSetChanged();
-                if (subCategory_products_final_list.size()==0){
-                    Toast.makeText(getContext(), "No Such Products!", Toast.LENGTH_SHORT).show();
+                if (subCategory_products_final_list.size() == 0) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_products), Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
             }
@@ -182,11 +188,11 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                 Log.e("erroe", error.toString());
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("sup_category_id",super_cat_id+"");
+                Map<String, String> map = new HashMap<>();
+                map.put("sup_category_id", super_cat_id + "");
                 return map;
             }
         };

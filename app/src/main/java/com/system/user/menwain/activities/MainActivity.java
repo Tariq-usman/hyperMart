@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.fragments.cart.AddCardFragment;
 import com.system.user.menwain.fragments.category.SuperCategoryFragment;
 import com.system.user.menwain.fragments.others.SearchFragment;
@@ -46,7 +47,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView ivSearch, mBarCodeScanner, mCart, mFavourite, mHome, mCategory, mMore, ivBack, ivListGridView, ivMenu;
     private LinearLayout home_layout, category_layout, my_list_layout, more_layout;

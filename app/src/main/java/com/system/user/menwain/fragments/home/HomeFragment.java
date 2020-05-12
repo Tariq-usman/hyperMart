@@ -228,13 +228,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     bannersList.add(bannerResponse.getData().get(i));
                 }
                 banner_slidingImages_adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                try {
+                    dialog.dismiss();
+
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e( "erroe", error.toString());
-                dialog.dismiss();
+                try {
+                    dialog.dismiss();
+
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         requestQueue.add(request);
@@ -283,13 +293,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
                 shopAdapter.notifyDataSetChanged();
                 Log.e( "Response",(String.valueOf(exploreShopList.size())));
-                dialog.dismiss();
+                try {
+                    dialog.dismiss();
+
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e( "erroe", error.toString());
-                dialog.dismiss();
+                try {
+                    dialog.dismiss();
+
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         requestQueue.add(request);
@@ -350,7 +370,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
     }
     public void customDialog(Context context) {
-         builder = new AlertDialog.Builder(context);
+         builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(false); // if you want user to wait for some process to finish,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setView(R.layout.layout_loading_dialog);

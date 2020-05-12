@@ -72,7 +72,7 @@ public class SubCategoryProductsAdapter extends RecyclerView.Adapter<SubCategory
     public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
 
         Glide.with(holder.mFilteProduct.getContext()).load(subCatergoryList.get(position).getImage()).into(holder.mFilteProduct);
-        holder.mProductNameView.setText(subCatergoryList.get(position).getDescription());
+        holder.mProductNameView.setText(subCatergoryList.get(position).getName());
         //  holder.mStoreName.setText(subCatergoryList.get(position).getBrand());
         holder.mPriceFilterItem.setText(subCatergoryList.get(position).getLowestPrice().toString());
         final int[] count = {1};
@@ -141,7 +141,7 @@ public class SubCategoryProductsAdapter extends RecyclerView.Adapter<SubCategory
                 });
                 if (p_id_list.size() == 0) {
                     cartViewModel.insertCart(cart);
-                    Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.insert_success), Toast.LENGTH_SHORT).show();
                 } else {
 
                     for (int i = 0; i < p_id_list.size(); i++) {
@@ -155,10 +155,10 @@ public class SubCategoryProductsAdapter extends RecyclerView.Adapter<SubCategory
                         int final_quantity = intQuantity+pro_quantity;
                         updateCartQuantity = new UpdateCartQuantity(productId, intQuantity, unitPrice);
                         cartViewModel.updateCartQuantity(updateCartQuantity);
-                        Toast.makeText(context, "Update Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.update_success), Toast.LENGTH_SHORT).show();
                     } else {
                         cartViewModel.insertCart(cart);
-                        Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.insert_success), Toast.LENGTH_SHORT).show();
                     }
                 }
 

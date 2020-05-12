@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import static android.content.pm.PackageManager.GET_META_DATA;
 
 public abstract class BaseActivity extends AppCompatActivity {
+    protected Context context = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

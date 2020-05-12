@@ -23,13 +23,14 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
+import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.responses.SignUpResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignUpActivity extends BaseActivity implements View.OnClickListener {
     TextView mLoginInstead, mRegister;
     private EditText etFname, etLname, etPhoneNo, etEmail, etPassword, etConfPass;
     private RadioButton rbMale, rbFemale;

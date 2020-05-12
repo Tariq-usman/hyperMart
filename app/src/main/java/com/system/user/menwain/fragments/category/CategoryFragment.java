@@ -87,7 +87,7 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
         recyclerViewCategory.setLayoutManager(linearLayoutManager);
         categoryAdapter = new CategoryAdapter(getContext(), catergoryList, CategoryFragment.this);
         recyclerViewCategory.setAdapter(categoryAdapter);
-        recyclerViewCategory.smoothScrollToPosition(getPreviousId + 1);
+        //recyclerViewCategory.smoothScrollToPosition(getPreviousId + 1);
 
         recyclerViewCategoryProducts = view.findViewById(R.id.recycler_view_category_products);
         recyclerViewCategoryProducts.setHasFixedSize(true);
@@ -125,7 +125,7 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("erroe", error.toString());
+                Log.e("error", error.toString());
                 dialog.dismiss();
             }
         });

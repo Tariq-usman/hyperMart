@@ -149,7 +149,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
                 prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
                 calculateShippingCost();
             } else {
-                Toast.makeText(getContext(), "There is no avialable items!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.no_items_available), Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.iv_back) {
             prefrences.setCartFragStatus(2);

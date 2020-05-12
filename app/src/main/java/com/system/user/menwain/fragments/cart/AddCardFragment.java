@@ -150,7 +150,7 @@ public class AddCardFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, URLs.delete_card_url + card_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), "Card has been deleted.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.card_deleted), Toast.LENGTH_SHORT).show();
                 //Remove swiped item from list and notify the RecyclerView
                 card_list.remove(position);
                 userCardsAdapter.notifyItemRemoved(position);

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.system.user.menwain.fragments.home.HomeFragment;
+import com.system.user.menwain.fragments.more.menu_fragment.SettingsFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.more.menu_fragment.ProfileFragment;
@@ -22,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
 
@@ -96,6 +98,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 prefrences.setMoreOrdersFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.tv_settings:
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SettingsFragment()).addToBackStack(null).commit();
                 break;
             case R.id.tv_rate_app:
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new RateUsFragment()).addToBackStack(null).commit();

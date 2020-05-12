@@ -9,6 +9,16 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">Main Activity</string>
 
+    <!--Toast messages-->
+    <string name="please_wait">Please wait...</string>
+    <string name="insert_success">Cart Inset Successfully</string>
+    <string name="update_success">Update Successfully</string>
+    <string name="no_sub_category">No sub category available!</string>
+    <string name="no_products">No products available in this category!</string>
+    <string name="card_deleted">Card has been deleted</string>
+    <string name="no_items_available">There is no available items!</string>
+    <string name="item_delete_success">"Item deleted successfully</string>
+
     <!-- main page -->
     <string name="search_hint">menWain</string>
 
@@ -118,6 +128,9 @@
     <string name="about">About</string>
     <string name="rate_app">Rate Application</string>
     <string name="logout">Logout</string>
+
+    <!--Settings fragment-->
+    <string name="change_language">Change Language</string>
 
     <!--Browse Stores Fragment-->
     <string name="store_name">Store Name:</string>

@@ -17,8 +17,6 @@ import com.system.user.menwain.custom_languages.LocaleManager;
 import com.system.user.menwain.others.Preferences;
 
 public class SplashScreen extends BaseActivity {
-    private String arabic = "ar";
-    private String english = "en";
     private String langauge;
     SharedPreferences preferences;
     SharedPreferences.Editor editor, editor1;
@@ -60,7 +58,7 @@ public class SplashScreen extends BaseActivity {
                         editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
                         editor.putString("my_lang", String.valueOf(i));
                         editor.apply();
-                        setNewLocale(SplashScreen.this, LocaleManager.ENGLISH);
+                        setNewLocale((AppCompatActivity)context, LocaleManager.ENGLISH);
                         recreate();
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -75,7 +73,7 @@ public class SplashScreen extends BaseActivity {
                         editor1 = getSharedPreferences("settings", MODE_PRIVATE).edit();
                         editor1.putString("my_lang", String.valueOf(i));
                         editor1.apply();
-                        setNewLocale(SplashScreen.this, LocaleManager.ARABIC);
+                        setNewLocale((AppCompatActivity)context, LocaleManager.ARABIC);
                         recreate();
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -95,7 +93,7 @@ public class SplashScreen extends BaseActivity {
 
     private void setNewLocale(AppCompatActivity mContext, @LocaleManager.LocaleDef String language) {
         LocaleManager.setNewLocale(this, language);
-        Intent intent = mContext.getIntent();
-        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK /*| Intent.FLAG_ACTIVITY_NEW_TASK*/));
+        Intent intent = this.getIntent();
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 }
