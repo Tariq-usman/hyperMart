@@ -59,6 +59,8 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
             holder.mProductNameView.setText(avail_items_list.get(position).getName());
             holder.mStoreName.setText(avail_items_list.get(position).getBrand());
             holder.mAmount.setText(avail_items_list.get(position).getStoreprice().toString());
+            quantity_list.clear();
+            amount_list.clear();
             for (int i = 0; i < avail_items_list.size(); i++) {
                 quantity_list.add(Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
                 amount_list.add(Integer.valueOf(holder.mAmount.getText().toString()));
@@ -76,14 +78,15 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
                 current_amount = Integer.parseInt(holder.mAmount.getText().toString());
                 final_amount = addAmount + current_amount;
                 pos = holder.getAdapterPosition();
-                quantity_list.clear();
-                amount_list.clear();
+
                 for (int i = 0; i < avail_items_list.size(); i++) {
                     if (position == pos) {
                         holder.mAmount.setText(final_amount + "");
+                        quantity_list.remove(pos);
+                        quantity_list.add(pos, Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
+                        amount_list.remove(pos);
+                        amount_list.add(pos, Integer.valueOf(holder.mAmount.getText().toString()));
                     }
-                    quantity_list.add(Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
-                    amount_list.add(Integer.valueOf(holder.mAmount.getText().toString()));
                 }
 //                Log.e("quantity", quantity_list.size() + "");
                 total_amount = total_amount + avail_items_list.get(position).getStoreprice();
@@ -102,14 +105,15 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
                 if (Integer.valueOf(val) > 1) {
                     count[0] = count[0] - 1;
                     holder.mAvilNotAvailItemsView.setText(count[0] + "");
-                    quantity_list.clear();
-                    amount_list.clear();
+
                     for (int i = 0; i < avail_items_list.size(); i++) {
                         if (position == pos) {
                             holder.mAmount.setText(final_amount + "");
+                            quantity_list.remove(pos);
+                            quantity_list.add(pos, Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
+                            amount_list.remove(pos);
+                            amount_list.add(pos, Integer.valueOf(holder.mAmount.getText().toString()));
                         }
-                        quantity_list.add(Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
-                        amount_list.add(Integer.valueOf(holder.mAmount.getText().toString()));
                     }
                     total_amount = total_amount - avail_items_list.get(position).getStoreprice();
                     AvailNotAvailItemsListsFragment.mTotalAmount.setText(total_amount + "");

@@ -183,16 +183,16 @@ public class Preferences {
     public int getStoreId() {
         return sharedPreferences.getInt("store_id", 0);
     }
-
-    public void setSelectedStoreId(int selectedstore_id) {
-        editor.putInt("selectedstore_id", selectedstore_id);
+    public void setStoreName(String storeName) {
+        editor.putString("storeName", storeName);
         editor.apply();
         editor.commit();
     }
 
-    public int getSelectedStoreId() {
-        return sharedPreferences.getInt("selectedstore_id", 0);
+    public String getStoreName() {
+        return sharedPreferences.getString("storeName", "");
     }
+
 
     public void setTotalPrice(int total_price) {
         editor.putInt("total_price", total_price);

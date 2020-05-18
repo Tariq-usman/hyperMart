@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
+import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -36,7 +39,8 @@ import java.util.List;
 
 public class SuperCategoryFragment extends Fragment {
     RecyclerView recyclerViewProductCategory;
-    private ImageView mBarCodeScanner;
+    private ImageView mBarCodeScanner,ivSearch;
+    private EditText etSearhText;
     private CardView mSearchViewCategory;
     private List<SuperCategoryResponse.SuperCategory.Datum> superCategoryList = new ArrayList<>();
     private SuperCategoryAdapter superCategoryAdapter;
@@ -53,12 +57,26 @@ public class SuperCategoryFragment extends Fragment {
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
 
-        mSearchViewCategory = getActivity().findViewById(R.id.search_view);
-        mSearchViewCategory.setVisibility(View.VISIBLE);
+        ivSearch = view.findViewById(R.id.iv_search_sup_cat);
+        etSearhText = view.findViewById(R.id.et_search_sup_cat);
         customDialog(getContext());
         getSuperCategoryData();
 
-
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                SearchFragment fragment = new SearchFragment();
+                if (etSearhText.getText().toString().trim().isEmpty() || etSearhText.getText().toString().trim() == null) {
+                    Toast.makeText(getContext(), "Enter Your desire search..", Toast.LENGTH_SHORT).show();
+                } else {
+                    bundle.putString("search", etSearhText.getText().toString().trim());
+                    etSearhText.setText("");
+                    fragment.setArguments(bundle);
+                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                }
+            }
+        });
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_category);
         recyclerViewProductCategory.setHasFixedSize(true);
         recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(),3, GridLayoutManager.VERTICAL,false));

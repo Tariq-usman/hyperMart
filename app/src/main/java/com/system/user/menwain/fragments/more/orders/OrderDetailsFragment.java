@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,20 +41,23 @@ import com.system.user.menwain.utils.URLs;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class OrderDetailsFragment extends Fragment {
     private List<OrderDetailsResponse.Data.Products> details_list = new ArrayList<OrderDetailsResponse.Data.Products>();
     RecyclerView recyclerViewFavourite;
     OrderDetailsAdapter orderDetailsAdapter;
-    private ImageView mBack, ivStoreImage;
-    private TextView tvStoreName, tvOrderNo, tvPrice, tvDate, tvTime, tvStatus, tvOrderCode;
+    private ImageView mBack, mDirection, ivStoreImage;
+    private TextView tvStoreName, tvStoreAddress, tvOrderNo, tvPrice, tvDate, tvTime, tvStatus, tvOrderCode;
     private Preferences prefrences;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     Bundle bundle;
     private int order_id;
     private String order_status;
+    public static String store_name = null;
+    OrderDetailsResponse detailsResponse;
 
     @Nullable
     @Override
@@ -59,22 +66,22 @@ public class OrderDetailsFragment extends Fragment {
         prefrences = new Preferences(getContext());
         customDialog(getContext());
         bundle = this.getArguments();
-            order_id = prefrences.getMoreOrderId();
-            getOrdersDetails(String.valueOf(order_id));
+        order_id = prefrences.getMoreOrderId();
+        getOrdersDetails(String.valueOf(order_id));
 
-        mBack = getActivity().findViewById(R.id.iv_back);
-        mBack.setVisibility(View.VISIBLE);
+
+        mBack = view.findViewById(R.id.iv_back_order_details);
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prefrences.setMoreOrdersFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).addToBackStack(null).commit();
-                mBack.setVisibility(View.INVISIBLE);
             }
         });
 
         ivStoreImage = view.findViewById(R.id.mart_logo_view_order_details);
         tvStoreName = view.findViewById(R.id.tv_store_order_details);
+        tvStoreAddress = view.findViewById(R.id.tv_store_address_order_details);
         tvOrderNo = view.findViewById(R.id.tv_order_no_order_details);
         tvPrice = view.findViewById(R.id.tv_total_amount_order_details);
         tvDate = view.findViewById(R.id.tv_date_order_details);
@@ -83,10 +90,25 @@ public class OrderDetailsFragment extends Fragment {
         tvOrderCode = view.findViewById(R.id.tv_order_code_order_details);
 
 
+        mDirection = view.findViewById(R.id.iv_nav_order_details);
+        mDirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String address = tvStoreAddress.getText().toString().trim();
+//                String geoUri = "http://maps.google.com/maps?q=loc:" + detailsResponse.getData().getStore().getLatitude() + "," + detailsResponse.getData().getStore().getLongitude();
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?saddr=" + "&daddr=" + address));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
         recyclerViewFavourite = view.findViewById(R.id.recycler_view_order_details);
         recyclerViewFavourite.setHasFixedSize(true);
         recyclerViewFavourite.setLayoutManager(new LinearLayoutManager(getContext()));
-        orderDetailsAdapter = new OrderDetailsAdapter(getContext(), details_list,order_status);
+        orderDetailsAdapter = new OrderDetailsAdapter(getContext(), details_list, order_status);
         recyclerViewFavourite.setAdapter(orderDetailsAdapter);
         return view;
     }
@@ -98,9 +120,10 @@ public class OrderDetailsFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_orders_details_url + order_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                OrderDetailsResponse detailsResponse = gson.fromJson(response, OrderDetailsResponse.class);
-
+                detailsResponse = gson.fromJson(response, OrderDetailsResponse.class);
+                findAddress(detailsResponse.getData().getStore().getLatitude(), detailsResponse.getData().getStore().getLongitude());
                 Glide.with(ivStoreImage.getContext()).load(detailsResponse.getData().getStore().getImage()).into(ivStoreImage);
+                store_name = detailsResponse.getData().getStore().getName();
                 tvStoreName.setText(detailsResponse.getData().getStore().getName());
                 tvOrderNo.setText(detailsResponse.getData().getId().toString());
                 tvPrice.setText(detailsResponse.getData().getTotalPrice().toString());
@@ -142,6 +165,34 @@ public class OrderDetailsFragment extends Fragment {
             builder.setView(R.layout.layout_loading_dialog);
         }
         dialog = builder.create();
+    }
+
+    public void findAddress(String latitude, String longitude) {
+        Geocoder geocoder = new Geocoder(getContext(), Locale.ENGLISH);
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocation(Double.valueOf(latitude), Double.valueOf(longitude), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            if (addresses.isEmpty()) {
+                addresses = geocoder.getFromLocation(33.684422, 73.047882, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalCode = addresses.get(0).getPostalCode();
+                String knownName = addresses.get(0).getFeatureName();
+                tvStoreAddress.setText("( "+city+" )");
+            } else {
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalCode = addresses.get(0).getPostalCode();
+                String knownName = addresses.get(0).getFeatureName();
+                tvStoreAddress.setText("( "+city+" )");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

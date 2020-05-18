@@ -54,17 +54,15 @@ public class StoresFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_stores, container, false);
         prefrences = new Preferences(getContext());
         customDialog(getContext());
-        ivBackStores = getActivity().findViewById(R.id.iv_back);
-        ivBackStores.setVisibility(View.VISIBLE);
-        mSearchStores = getActivity().findViewById(R.id.search_view);
-        mSearchStores.setVisibility(View.VISIBLE);
+        ivBackStores = view.findViewById(R.id.iv_back_stores);
+       /* mSearchStores = getActivity().findViewById(R.id.search_view);
+        mSearchStores.setVisibility(View.VISIBLE);*/
 
         ivBackStores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prefrences.setMoreStoresFragStatus(0);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).addToBackStack(null).commit();
-                ivBackStores.setVisibility(View.INVISIBLE);
                 //   tvTitleStores.setText("More");
             }
         });

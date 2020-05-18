@@ -76,14 +76,14 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         customDialog(getContext());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        searchViewAllItems = getActivity().findViewById(R.id.search_view);
-        ivListGridView = getActivity().findViewById(R.id.iv_grid_list_view);
+        searchViewAllItems = view.findViewById(R.id.search_view);
+        ivListGridView = view.findViewById(R.id.iv_grid_list_view);
         ivListGridView.setVisibility(View.VISIBLE);
         ivListGridView.setImageResource(R.drawable.ic_list_view);
         ivListGridView.setOnClickListener(this);
 
 
-        ivBack = getActivity().findViewById(R.id.iv_back);
+        ivBack = view.findViewById(R.id.iv_back);
         ivBack.setOnClickListener(this);
         ivBack.setVisibility(View.VISIBLE);
 

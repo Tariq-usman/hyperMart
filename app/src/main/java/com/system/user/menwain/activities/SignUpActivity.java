@@ -26,16 +26,18 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.responses.SignUpResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener {
     TextView mLoginInstead, mRegister;
-    private EditText etFname, etLname, etPhoneNo, etEmail, etPassword, etConfPass;
+    private EditText etFname, etLname, etPhoneNo, etEmail, etPassword, etConfPass, etAge, etCountry;
     private RadioButton rbMale, rbFemale;
     boolean isSignUp = false;
     private ProgressDialog progressDialog;
+    private String email, pass, cPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         etEmail = findViewById(R.id.et_email_signup);
         etPassword = findViewById(R.id.et_pass_signup);
         etConfPass = findViewById(R.id.et_conf_pass_signup);
+        etAge = findViewById(R.id.et_age_signup);
+        etCountry = findViewById(R.id.et_country_signup);
         rbMale = findViewById(R.id.rb_male);
         rbMale.setOnClickListener(this);
         rbFemale = findViewById(R.id.rb_female);
@@ -71,7 +75,28 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 rbMale.setChecked(false);
                 break;
             case R.id.register:
-                signUpUser();
+                email = etEmail.getText().toString().trim();
+                pass = etPassword.getText().toString().trim();
+                cPass = etConfPass.getText().toString().trim();
+                if (etFname.getText().toString().isEmpty()) {
+                    etFname.setError("Enter first name");
+                } else if (etLname.getText().toString().isEmpty()) {
+                    etLname.setError("Enter last name");
+                } else if (etPhoneNo.getText().toString().isEmpty()) {
+                    etPhoneNo.setError("Enter phone no");
+                } else if (!email.matches(Utils.emailPattern)) {
+                    etEmail.setError("Please enter valid email");
+                } else if (etAge.getText().toString().isEmpty()) {
+                    etAge.setError("Enter age");
+                } else if (etCountry.getText().toString().isEmpty()) {
+                    etCountry.setError("Enter country");
+                } else if (pass.length() < 8 && !Utils.isValidPassword(pass)) {
+                    etPassword.setError("Not Valid Password");
+                } else if (!cPass.equalsIgnoreCase(etConfPass.getText().toString().trim())) {
+                    etConfPass.setError("Password Not matching");
+                } else {
+                    signUpUser();
+                }
                 break;
             case R.id.login_instead:
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -87,8 +112,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         StringRequest request = new StringRequest(Request.Method.POST, URLs.user_register_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                SignUpResponse signUpResponse = gson.fromJson(response,SignUpResponse.class);
-                Toast.makeText(SignUpActivity.this, ""+signUpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                SignUpResponse signUpResponse = gson.fromJson(response, SignUpResponse.class);
+                Toast.makeText(SignUpActivity.this, "" + signUpResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 isSignUp = true;
                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                 intent.putExtra("is_sign_up", isSignUp);
@@ -98,8 +123,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error",error.toString());
-                Toast.makeText(SignUpActivity.this, ""+error.toString(), Toast.LENGTH_SHORT).show();
+                Log.e("error", error.toString());
+                Toast.makeText(SignUpActivity.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }) {
@@ -111,11 +136,11 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 map.put("mobile", etPhoneNo.getText().toString().trim());
                 map.put("email", etEmail.getText().toString().trim());
                 map.put("password", etPassword.getText().toString().trim());
-                map.put("country", "pakistan");
-                map.put("age", "22");
-                if (rbMale.isChecked()){
+                map.put("country", etCountry.getText().toString().trim());
+                map.put("age", etAge.getText().toString().trim());
+                if (rbMale.isChecked()) {
                     map.put("gender", "male");
-                }else {
+                } else {
                     map.put("gender", "female");
                 }
                 return map;
@@ -123,6 +148,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         };
         requestQueue.add(request);
     }
+
     public void customProgressDialog(Context context) {
         progressDialog = new ProgressDialog(context);
         // Setting Message

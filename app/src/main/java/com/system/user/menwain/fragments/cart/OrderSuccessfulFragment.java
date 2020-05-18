@@ -49,8 +49,7 @@ public class OrderSuccessfulFragment extends Fragment {
         tvOrderNo = view.findViewById(R.id.tv_order_no_success);
         tvOrderNo.setText("Order # " + bundle.getString("order_no"));
         goHome = view.findViewById(R.id.go_home);
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mBackBtn.setVisibility(View.VISIBLE);
+        mBackBtn = view.findViewById(R.id.iv_back_order_success);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

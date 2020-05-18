@@ -37,7 +37,7 @@ public class ListDetailsAdapter extends RecyclerView.Adapter<ListDetailsAdapter.
             Glide.with(holder.mProductImage.getContext()).load(products_list.get(position).getImage()).into(holder.mProductImage);
             holder.tvName.setText(products_list.get(position).getName());
             holder.tvStoreName.setText(products_list.get(position).getBrand());
-            holder.tvName.setText(products_list.get(position).getAvgPrice().toString());
+            holder.tvPrice.setText(products_list.get(position).getAvgPrice().toString());
 
     }
 
@@ -47,7 +47,7 @@ public class ListDetailsAdapter extends RecyclerView.Adapter<ListDetailsAdapter.
     }
 
     public static class ListDetailsViewHolder extends RecyclerView.ViewHolder {
-        ImageView mProductImage;
+        private ImageView mProductImage;
         private TextView tvName,tvStoreName,tvPrice;
 
         public ListDetailsViewHolder(@NonNull View itemView) {

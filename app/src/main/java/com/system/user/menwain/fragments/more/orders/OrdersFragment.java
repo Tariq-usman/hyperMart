@@ -30,8 +30,7 @@ public class OrdersFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         prefrences = new Preferences(getContext());
-        mBackBtnOrders = getActivity().findViewById(R.id.iv_back);
-        mBackBtnOrders.setVisibility(View.VISIBLE);
+        mBackBtnOrders = view.findViewById(R.id.iv_back_orders);
         viewPager = view.findViewById(R.id.vp_orders_container);
 
         viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager(),getContext()));
@@ -44,7 +43,6 @@ public class OrdersFragment extends Fragment {
             public void onClick(View view) {
                 prefrences.setMoreOrdersFragStatus(0);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).addToBackStack(null).commit();
-                mBackBtnOrders.setVisibility(View.INVISIBLE);
             }
         });
 

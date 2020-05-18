@@ -87,21 +87,10 @@ public class PaymentFragment extends Fragment {
             etBillingAddress.setText(bundle.getString("billing_address"));
         }
 
-        mSearchView = getActivity().findViewById(R.id.search_view);
-        mSearchView.setVisibility(View.INVISIBLE);
-        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
-        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ScanActivity.class);
-                startActivity(intent);
-            }
-        });
         prefrences = new Preferences(getContext());
         mConfirm = view.findViewById(R.id.proceed_btn_payment);
 
-        mBackBtnPay = getActivity().findViewById(R.id.iv_back);
-        mBackBtnPay.setVisibility(View.VISIBLE);
+        mBackBtnPay = view.findViewById(R.id.iv_back_payment);
         mBackBtnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

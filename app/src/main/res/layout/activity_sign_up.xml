@@ -1,249 +1,307 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginHorizontal="30dp"
+    android:orientation="vertical"
     tools:context=".activities.SignUpActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="30dp"
-            android:gravity="center"
-            android:text="@string/signup_title"
-            android:textColor="@color/darkGreenColor"
-            android:textSize="@dimen/twenty_four_sp" />
-
+        android:layout_height="match_parent"
+        android:scrollbars="none">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:text="@string/signup_title"
+                android:textColor="@color/darkGreenColor"
+                android:textSize="@dimen/twenty_four_sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/first_name"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/fourteen_sp" />
+
+                        <EditText
+                            android:id="@+id/et_f_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_email_pass"
+                            android:gravity="center"
+                            android:hint="John"
+                            android:inputType="text"
+                            android:text="tariq"
+                            android:textColor="@color/whiteColor"
+                            android:textColorHint="@color/whiteColor"
+                            android:textSize="@dimen/fourteen_sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/last_name"
+                            android:textColor="@color/darkGreenColor"
+                            android:textSize="@dimen/fourteen_sp" />
+
+                        <EditText
+                            android:id="@+id/et_l_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_email_pass"
+                            android:gravity="center"
+                            android:hint="John"
+                            android:inputType="text"
+                            android:text="usman"
+                            android:textColor="@color/whiteColor"
+                            android:textColorHint="@color/whiteColor"
+                            android:textSize="@dimen/fourteen_sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/phone_no"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
+
+                <EditText
+                    android:id="@+id/et_phone_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/bg_email_pass"
+                    android:gravity="center"
+                    android:hint="+92 345 1234567"
+                    android:inputType="number"
+                    android:text="03439801420"
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/email_address"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
+
+                <EditText
+                    android:id="@+id/et_email_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_email_pass"
+                    android:gravity="center"
+                    android:hint="johnsmith@email.com"
+                    android:inputType="textEmailAddress"
+                    android:text="tariqusman2222@gmail.com"
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sex"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
+
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_male"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/male"
+                        android:textSize="@dimen/fourteen_sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_female"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/female"
+                        android:textSize="@dimen/fourteen_sp" />
+                </RadioGroup>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/age"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="@string/first_name"
-                        android:textColor="@color/darkGreenColor"
-                        android:textSize="@dimen/fourteen_sp" />
-
-                    <EditText
-                        android:id="@+id/et_f_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_email_pass"
-                        android:gravity="center"
-                        android:hint="John"
-                        android:text="tariq"
-                        android:inputType="text"
-                        android:textColor="@color/whiteColor"
-                        android:textColorHint="@color/whiteColor"
-                        android:textSize="@dimen/fourteen_sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <EditText
+                    android:id="@+id/et_age_signup"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="@string/last_name"
-                        android:textColor="@color/darkGreenColor"
-                        android:textSize="@dimen/fourteen_sp" />
-
-                    <EditText
-                        android:id="@+id/et_l_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_email_pass"
-                        android:gravity="center"
-                        android:hint="John"
-                        android:text="usman"
-                        android:inputType="text"
-                        android:textColor="@color/whiteColor"
-                        android:textColorHint="@color/whiteColor"
-                        android:textSize="@dimen/fourteen_sp" />
-                </LinearLayout>
-
+                    android:background="@drawable/bg_email_pass"
+                    android:gravity="center"
+                    android:hint="25"
+                    android:inputType="number"
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="@string/phone_no"
-                android:textColor="@color/darkGreenColor"
-                android:textSize="@dimen/fourteen_sp" />
-
-            <EditText
-                android:id="@+id/et_phone_no"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:background="@drawable/bg_email_pass"
-                android:gravity="center"
-                android:hint="+92 345 1234567"
-                android:text="03439801420"
-                android:inputType="number"
-                android:textColor="@color/whiteColor"
-                android:textColorHint="@color/whiteColor"
-                android:textSize="@dimen/fourteen_sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="@string/email_address"
-                android:textColor="@color/darkGreenColor"
-                android:textSize="@dimen/fourteen_sp" />
-
-            <EditText
-                android:id="@+id/et_email_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_email_pass"
-                android:gravity="center"
-                android:hint="johnsmith@email.com"
-                android:text="tariqusman2222@gmail.com"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/whiteColor"
-                android:textColorHint="@color/whiteColor"
-                android:textSize="@dimen/fourteen_sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/sex"
-                android:textColor="@color/darkGreenColor"
-                android:textSize="@dimen/fourteen_sp" />
-
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_male"
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/male"
-                    android:checked="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/country"
+                    android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
-                <RadioButton
-                    android:id="@+id/rb_female"
-                    android:layout_width="0dp"
+                <EditText
+                    android:id="@+id/et_country_signup"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/female"
+                    android:background="@drawable/bg_email_pass"
+                    android:gravity="center"
+                    android:hint="Pakistan"
+                    android:inputType="number"
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
-            </RadioGroup>
+            </LinearLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/create_pass"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
+
+                <EditText
+                    android:id="@+id/et_pass_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:background="@drawable/bg_email_pass"
+                    android:gravity="center"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:text="123456789"
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
+
+                <EditText
+                    android:id="@+id/et_conf_pass_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/bg_email_pass"
+                    android:gravity="center"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:text="123456789"
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="@string/create_pass"
+                android:layout_above="@+id/login_instead"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/bg_submit_btn"
+                android:gravity="center"
+                android:text="@string/register"
+                android:textColor="@color/whiteColor"
+                android:textSize="@dimen/twenty_sp" />
+
+            <TextView
+                android:id="@+id/login_instead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="25dp"
+                android:gravity="center"
+                android:text="@string/login_instead"
                 android:textColor="@color/darkGreenColor"
-                android:textSize="@dimen/fourteen_sp" />
-
-            <EditText
-                android:id="@+id/et_pass_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="2dp"
-                android:background="@drawable/bg_email_pass"
-                android:gravity="center"
-                android:hint="Password"
-                android:text="123456789"
-                android:inputType="textPassword"
-                android:textColor="@color/whiteColor"
-                android:textColorHint="@color/whiteColor"
-                android:textSize="@dimen/fourteen_sp" />
-
-            <EditText
-                android:id="@+id/et_conf_pass_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:background="@drawable/bg_email_pass"
-                android:gravity="center"
-                android:hint="Confirm Password"
-                android:text="123456789"
-                android:inputType="textPassword"
-                android:textColor="@color/whiteColor"
-                android:textColorHint="@color/whiteColor"
-                android:textSize="@dimen/fourteen_sp" />
+                android:textSize="@dimen/twenty_sp" />
         </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/login_instead"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/bg_submit_btn"
-        android:gravity="center"
-        android:text="@string/register"
-        android:textColor="@color/whiteColor"
-        android:textSize="@dimen/twenty_sp" />
-
-    <TextView
-        android:id="@+id/login_instead"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="25dp"
-        android:gravity="center"
-        android:text="@string/login_instead"
-        android:textColor="@color/darkGreenColor"
-        android:textSize="@dimen/twenty_sp" />
-
-</RelativeLayout>
+    </ScrollView>
+</LinearLayout>

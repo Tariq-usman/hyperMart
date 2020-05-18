@@ -14,5 +14,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:layout_marginHorizontal="10dp"
-        android:text="Please wait..." />
+        android:textSize="@dimen/sixteen_sp"
+        android:text="@string/please_wait" />
 </LinearLayout>

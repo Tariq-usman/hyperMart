@@ -39,7 +39,7 @@ public class URLs {
     public static String see_all_explore_shop = base_url + "productsseeall";
     public static String see_all_explore = base_url + "exploreProductsSeeAll";
     public static String see_all_shop = base_url + "exploreProductsSeeAll";
-    public static String search_product_by_name_url = base_url + "searchproductbyname";
+    public static String search_product_by_name_url = base_url + "searchprdctbyname";
     public static String reviews_list_url = base_url + "reviewslist/";
     public static String post_preffered_date_url = base_url + "storeslotslist/";
     public static String payments_ypes_url = base_url + "PaymentsTypes";

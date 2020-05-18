@@ -18,6 +18,9 @@
     <string name="card_deleted">Card has been deleted</string>
     <string name="no_items_available">There is no available items!</string>
     <string name="item_delete_success">"Item deleted successfully</string>
+    <string name="no_store_found">No stores are found</string>
+    <string name="no_products_found">No products are found</string>
+    <string name="no_result_found">No result found</string>
 
     <!-- main page -->
     <string name="search_hint">menWain</string>
@@ -80,7 +83,7 @@
 
     <!--List Name Dialog Fragment-->
     <string name="list_name_dialog_title">Do you want to save these products as list to use in future?</string>
-    <string name="list_name_dialog_name">List Name</string>
+    <string name="list_name_dialog_name">Shopping List Name</string>
 
     <!--Add payment method fragment-->
     <string name="pay_title">Deliver to my home Address</string>
@@ -116,6 +119,7 @@
 
     <!--My List fragment-->
     <string name="view">View</string>
+    <string name="reorder">Reorder</string>
 
     <!--More fragment-->
     <string name="browse_store">Browse Stores</string>
@@ -189,6 +193,8 @@
     <string name="sex">Sex</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="age">Age</string>
+    <string name="country">Country</string>
     <string name="create_pass">Create Password</string>
     <string name="register">Register</string>
     <string name="login_instead">Login Instead</string>

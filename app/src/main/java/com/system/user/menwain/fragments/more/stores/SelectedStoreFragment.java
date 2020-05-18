@@ -88,16 +88,14 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         stars.getDrawable(1).setColorFilter(getContext().getResources().getColor(R.color.yellowColor), PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(2).setColorFilter(getContext().getResources().getColor(R.color.yellowColor), PorterDuff.Mode.SRC_ATOP);
 
-        mSearchViewSelecredStore = getActivity().findViewById(R.id.search_view);
-        mSearchViewSelecredStore.setVisibility(View.VISIBLE);
-        ivBackBtnSelectedStore = getActivity().findViewById(R.id.iv_back);
-        ivBackBtnSelectedStore.setVisibility(View.VISIBLE);
+       /* mSearchViewSelecredStore = getActivity().findViewById(R.id.search_view);
+        mSearchViewSelecredStore.setVisibility(View.VISIBLE);*/
+        ivBackBtnSelectedStore = view.findViewById(R.id.iv_back_selected_stores);
         ivBackBtnSelectedStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prefrences.setMoreStoresFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new StoresFragment()).addToBackStack(null).commit();
-                ivBackBtnSelectedStore.setVisibility(View.INVISIBLE);
             }
         });
         recyclerViewSelectedStore = view.findViewById(R.id.recycler_view_selected_store);
@@ -150,7 +148,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                     e.printStackTrace();
                 }
                 tvStoreRating.setText(String.valueOf(storeResponse.getStore().getAverageRating()));
-                ratingBar.setRating(Float.parseFloat("("+storeResponse.getStore().getAverageRating()+")"));
+                ratingBar.setRating(Float.parseFloat("(" + storeResponse.getStore().getAverageRating() + ")"));
                 category_list.clear();
                 for (int i = 0; i < storeResponse.getCategory().size(); i++) {
                     category_list.add(storeResponse.getCategory().get(i));

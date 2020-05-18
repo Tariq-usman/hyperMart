@@ -48,22 +48,16 @@ import java.util.List;
 import java.util.Map;
 
 public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
-    private CartViewModel cartViewModel;
-    private TextView mAvailable, mNotAvailable, mTitle, mPrice, mDistance, mAvailItems, mNotAvailItmes;
-    public static TextView mTotalAmount;
-    private View mShowStatusColor;
-    private ImageView mBackBtn, mBarCodeScanner, mMartLogoView;
+    private TextView mAvailable, mNotAvailable, mAvailItems, mNotAvailItmes;
+    public static TextView mTotalAmount,tvStoreName;
+    private ImageView mBackBtn;
     private LinearLayout mConfirmBtn;
     private int store_id, avail, not_avial;
     public String price, distance, final_dist;
     String[] split_dist, dist;
-    SharedPreferences availPreferences, notAvailPrefrences;
     Bundle bundle;
-    private Boolean pay_now, pay_later = false;
-    public static Boolean isCheck = false;
     Preferences prefrences;
     private int pay_status;
-    private CardView mSearchView;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
@@ -94,15 +88,14 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         prefrences = new Preferences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
-        mSearchView = getActivity().findViewById(R.id.search_view);
-        mSearchView.setVisibility(View.VISIBLE);
-
+        tvStoreName= view.findViewById(R.id.store_name_avial_not_avial);
+        tvStoreName.setText(prefrences.getStoreName());
         mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
         mTotalAmount.setText(price);
 
         mAvailable = view.findViewById(R.id.available_items);
         mNotAvailable = view.findViewById(R.id.not_available_items);
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
+        mBackBtn = view.findViewById(R.id.iv_back_avail_not_avail);
         mConfirmBtn = view.findViewById(R.id.confirm_btn_items_list);
         mAvailItems = view.findViewById(R.id.count_avail_items);
         mAvailItems.setText(avail + "");
@@ -113,7 +106,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         mNotAvailable.setOnClickListener(this);
         mConfirmBtn.setOnClickListener(this);
         mBackBtn.setOnClickListener(this);
-        mBackBtn.setVisibility(View.VISIBLE);
+
 
         return view;
     }
@@ -151,10 +144,9 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             } else {
                 Toast.makeText(getContext(), getContext().getString(R.string.no_items_available), Toast.LENGTH_SHORT).show();
             }
-        } else if (id == R.id.iv_back) {
+        } else if (id == R.id.iv_back_avail_not_avail) {
             prefrences.setCartFragStatus(2);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
-            mBackBtn.setVisibility(View.GONE);
         }
     }
 

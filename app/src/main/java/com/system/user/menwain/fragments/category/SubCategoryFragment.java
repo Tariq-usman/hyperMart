@@ -71,16 +71,14 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         prefrences = new Preferences(getContext());
         customDialog(getContext());
 
-        mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
+        //mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
         //mSearchViewItemsFragment.setVisibility(View.INVISIBLE);
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mBackBtn.setVisibility(View.VISIBLE);
+        mBackBtn = view.findViewById(R.id.iv_back_sub_cat);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prefrences.setCategoryFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
-                mBackBtn.setVisibility(View.GONE);
             }
         });
 

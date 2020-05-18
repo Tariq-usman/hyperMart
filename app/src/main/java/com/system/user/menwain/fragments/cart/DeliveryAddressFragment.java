@@ -80,15 +80,14 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_delivey_address, container, false);
         prefrences = new Preferences(getContext());
         prefrences.setPaymentStatus(1);
+        prefrences.setPayRBtnStatus(1);
+
         customDialog(getContext());
         rBtnPaymentStatus = prefrences.getPayRBtnStatus();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
 //        setRadioButtonChecked();
         getUserAddress();
-
-        mSearchViewAddress = getActivity().findViewById(R.id.search_view);
-        mSearchViewAddress.setVisibility(View.INVISIBLE);
 
         addNewAddress = view.findViewById(R.id.add_address_card_view);
         addNewAddress.setOnClickListener(this);
@@ -114,9 +113,8 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
 
         rgPayNow = view.findViewById(R.id.rg_pay_now);
         rgPayLater = view.findViewById(R.id.rg_pay_later);
-        mBackView = getActivity().findViewById(R.id.iv_back);
+        mBackView = view.findViewById(R.id.iv_back_delivery_address);
         mAddNewAddress = view.findViewById(R.id.add_new_address);
-        mBackView.setVisibility(View.VISIBLE);
         mConfirmBtn = view.findViewById(R.id.confirm_btn);
         mPayNow = view.findViewById(R.id.pay_now_delivery_adr);
         mPayLater = view.findViewById(R.id.pay_later_delivery_adr);
@@ -252,6 +250,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             rgPayNow.setVisibility(View.VISIBLE);
             rgPayLater.setVisibility(View.GONE);
             prefrences.setPaymentStatus(1);
+            prefrences.setPayRBtnStatus(1);
             mPayNow.setBackgroundResource(R.drawable.bg_store_btn_colored);
             mPayLater.setBackgroundResource(0);
             mPayNow.setTextColor(Color.parseColor("#FFFFFF"));
@@ -297,10 +296,9 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             prefrences.setDeliverAddress(Double.valueOf(latitude) + " " + Double.valueOf(longitude));
             storesFragment.setArguments(bundle);
             transaction.replace(R.id.nav_host_fragment, storesFragment).addToBackStack(null).commit();
-        } else if (id == R.id.iv_back) {
+        } else if (id == R.id.iv_back_delivery_address) {
             prefrences.setCartFragStatus(0);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
-            mBackView.setVisibility(View.GONE);
         } else if (id == R.id.add_address_card_view) {
             Intent intent = new Intent(getContext(), MapsActivity.class);
             intent.putExtra("address_id", -1);

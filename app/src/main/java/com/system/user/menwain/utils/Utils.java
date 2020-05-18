@@ -15,14 +15,6 @@ public class Utils {
 
         Pattern pattern;
         Matcher matcher;
-
-      /*  # a digit must occur at least once
-          # a lower case letter must occur at least once
-          # an upper case letter must occur at least once
-          # a special character must occur at least once you can replace with your special characters
-          # no whitespace allowed in the entire string
-          # anything, at least six places though
-          # end-of-string*/
         final String PASSWORD_PATTERN = "^" +
                 "(?=.*[0-9])" +
                 "(?=.*[a-z])" + //a lower case letter must occur at least once

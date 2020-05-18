@@ -38,10 +38,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
         prefrences = new Preferences(getContext());
-        mSearchViewMore = getActivity().findViewById(R.id.search_view);
-        mSearchViewMore.setVisibility(View.INVISIBLE);
-        ivBack = getActivity().findViewById(R.id.iv_back);
-        ivBack.setVisibility(View.INVISIBLE);
         ivStores = view.findViewById(R.id.iv_stores);
         tvProfile = view.findViewById(R.id.tv_profile);
         ivOrder = view.findViewById(R.id.iv_order);
@@ -51,7 +47,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         tvRateApp = view.findViewById(R.id.tv_rate_app);
         tvLogout = view.findViewById(R.id.tv_log_out);
 
-        ivBack.setOnClickListener(this);
         ivStores.setOnClickListener(this);
         tvProfile.setOnClickListener(this);
         ivOrder.setOnClickListener(this);

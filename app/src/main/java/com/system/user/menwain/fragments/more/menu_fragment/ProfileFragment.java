@@ -46,10 +46,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
-    String[] lang = {"English", "Arabic"};
+    String[] lang = {"English", "عربى"};
     private ImageView ivBackProfile;
     private TextView tvTitleProfile;
-    private EditText etFname, etLname, etPhoneNo, etEmail, etPassword, etConfPass;
+    private EditText etFname, etLname, etPhoneNo, etEmail, etCountry, etPassword, etConfPass;
     private RadioButton rbMale, rbFemale;
     private String gender;
     private Button btnRegister;
@@ -69,6 +69,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         etLname = view.findViewById(R.id.et_l_name_profile);
         etPhoneNo = view.findViewById(R.id.et_phone_no_profile);
         etEmail = view.findViewById(R.id.et_email_profile);
+        etCountry = view.findViewById(R.id.et_country_profile);
         etPassword = view.findViewById(R.id.et_pass_profile);
         etConfPass = view.findViewById(R.id.et_conf_pass_profile);
         rbMale = view.findViewById(R.id.rb_male_profile);
@@ -77,29 +78,27 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         rbFemale.setOnClickListener(this);
         btnRegister = view.findViewById(R.id.register);
         btnRegister.setOnClickListener(this);
-        if (prefrences.getToken().isEmpty()||prefrences.getToken()==null){
+        if (prefrences.getToken().isEmpty() || prefrences.getToken() == null) {
             btnRegister.setClickable(false);
             btnRegister.setEnabled(false);
-        }else {
+        } else {
             btnRegister.setClickable(true);
             btnRegister.setEnabled(true);
 
         }
 
 
-        ivBackProfile = getActivity().findViewById(R.id.iv_back);
-        ivBackProfile.setVisibility(View.VISIBLE);
+        ivBackProfile = view.findViewById(R.id.iv_back_profile);
 
         ivBackProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prefrences.setProfileFragStatus(0);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).addToBackStack(null).commit();
-                ivBackProfile.setVisibility(View.INVISIBLE);
             }
         });
         //Getting the instance of Spinner and applying OnItemSelectedListener on it
-        Spinner spin = view.findViewById(R.id.spinner);
+        /*Spinner spin = view.findViewById(R.id.spinner);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -111,11 +110,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-
         //Creating the ArrayAdapter instance having the country list
         ArrayAdapter aa = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lang);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin.setAdapter(aa);
+        spin.setAdapter(aa);*/
 
         getUserProfileDetails();
         return view;
@@ -153,6 +151,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     etEmail.setClickable(true);
                     etEmail.setFocusableInTouchMode(true);
 
+                    etCountry.setFocusable(true);
+                    etCountry.setCursorVisible(true);
+                    etCountry.setClickable(true);
+                    etCountry.setFocusableInTouchMode(true);
+
                     etPhoneNo.setFocusable(true);
                     etPhoneNo.setCursorVisible(true);
                     etPhoneNo.setClickable(true);
@@ -184,6 +187,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     etEmail.setCursorVisible(false);
                     etEmail.setClickable(false);
                     etEmail.setFocusableInTouchMode(false);
+
+                    etCountry.setFocusable(false);
+                    etCountry.setCursorVisible(false);
+                    etCountry.setClickable(false);
+                    etCountry.setFocusableInTouchMode(false);
 
                     etPhoneNo.setFocusable(false);
                     etPhoneNo.setCursorVisible(false);
@@ -218,10 +226,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 etPhoneNo.setText(userProfileDetailsResponse.getCustomerdata().getMobile());
                 etEmail.setText(userProfileDetailsResponse.getCustomerdata().getEmail());
                 gender = userProfileDetailsResponse.getCustomerdata().getGender();
-                if (gender.equalsIgnoreCase("Male")){
+                if (gender.equalsIgnoreCase("Male")) {
                     rbMale.setChecked(true);
                     rbFemale.setChecked(false);
-                }else {
+                } else {
                     rbMale.setChecked(false);
                     rbFemale.setChecked(true);
                 }
@@ -262,7 +270,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("profiel_error", error.toString());
+                Log.e("profile_error", error.toString());
                 Toast.makeText(getContext(), "" + error.toString(), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -281,7 +289,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 paramsMap.put("last_name", etLname.getText().toString().trim());
                 paramsMap.put("mobile", etPhoneNo.getText().toString().trim());
                 paramsMap.put("password", etPassword.getText().toString().trim());
-                paramsMap.put("county", "null");
+                paramsMap.put("county", etCountry.getText().toString().trim());
                 if (rbMale.isChecked()) {
                     paramsMap.put("gender", "male");
                 } else {

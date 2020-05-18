@@ -5,6 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/darkGreenColor"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_back_orders"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:padding="16dp"
+            android:src="@drawable/ic_backwhite"
+            android:visibility="visible" />
+
+    </FrameLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,11 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.search.CodeSearchAdapter;
 import com.system.user.menwain.adapters.search.NameSearchAdapter;
+import com.system.user.menwain.fragments.category.CategoryFragment;
+import com.system.user.menwain.fragments.category.SuperCategoryFragment;
+import com.system.user.menwain.fragments.home.HomeFragment;
+import com.system.user.menwain.fragments.more.stores.StoresFragment;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.search.SearchByNameResponse;
 import com.system.user.menwain.responses.search.SearchByBarCodeResponse;
 import com.system.user.menwain.utils.URLs;
@@ -41,18 +48,21 @@ import java.util.Map;
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private NameSearchAdapter nameSearchAdapter;
-    private CodeSearchAdapter  codeSearchAdapter;
+    private CodeSearchAdapter codeSearchAdapter;
     private List<SearchByNameResponse.Data.Datum> search_by_name_list = new ArrayList<>();
     private List<SearchByBarCodeResponse.Data.Datum> search_by_code_list = new ArrayList<>();
     private Bundle bundle;
     private String name;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
+    private ImageView searchBack;
+    private Preferences preferences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmet_search, container, false);
+        preferences = new Preferences(getContext());
         customDialog(getContext());
         bundle = this.getArguments();
         if (bundle != null) {
@@ -61,11 +71,24 @@ public class SearchFragment extends Fragment {
         } else {
             searchProductByBarCode();
         }
+        searchBack = view.findViewById(R.id.iv_back_search);
+        searchBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (preferences.getBottomNavStatus() == 1) {
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(),"Home").commit();
+                } else if (preferences.getBottomNavStatus() == 2) {
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).commit();
+                } else if (preferences.getBottomNavStatus() == 2) {
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new StoresFragment()).commit();
+                }
+            }
+        });
         recyclerView = view.findViewById(R.id.recycler_view_search);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         nameSearchAdapter = new NameSearchAdapter(getContext(), search_by_name_list);
-        codeSearchAdapter = new CodeSearchAdapter(getContext(),search_by_code_list);
+        codeSearchAdapter = new CodeSearchAdapter(getContext(), search_by_code_list);
         return view;
     }
 
@@ -82,12 +105,10 @@ public class SearchFragment extends Fragment {
                     search_by_code_list.add(nameResponse.getData().getData().get(i));
                 }
                 if (search_by_code_list.size() == 0) {
-                    Toast.makeText(getContext(), "No such data found!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
                 }
                 recyclerView.setAdapter(codeSearchAdapter);
                 codeSearchAdapter.notifyDataSetChanged();
-
-//                Toast.makeText(getContext(), "Response.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
 
             }
@@ -101,7 +122,7 @@ public class SearchFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("barcode", ScanActivity.barCode+"");
+                map.put("barcode", ScanActivity.barCode + "");
                 return map;
             }
         };
@@ -126,7 +147,7 @@ public class SearchFragment extends Fragment {
                 }
                 recyclerView.setAdapter(nameSearchAdapter);
                 nameSearchAdapter.notifyDataSetChanged();
-//                Toast.makeText(getContext(), "Response.", Toast.LENGTH_SHORT).show();
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
                 dialog.dismiss();
 
             }

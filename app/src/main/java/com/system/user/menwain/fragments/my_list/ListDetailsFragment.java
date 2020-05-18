@@ -89,10 +89,8 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         mConfirmBtn = view.findViewById(R.id.confirm_btn_list_details);
         tvListName = view.findViewById(R.id.tv_list_name);
         tvListName.setText(list_name);
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mBackBtn.setVisibility(View.VISIBLE);
+        mBackBtn = view.findViewById(R.id.iv_back_my_list_details);
 
-        //floatingActionButton.setOnClickListener(this);
         mConfirmBtn.setOnClickListener(this);
         mBackBtn.setOnClickListener(this);
 
@@ -157,10 +155,9 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
             tvMore.setTextColor(Color.parseColor("#004040"));
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
             mBackBtn.setVisibility(View.INVISIBLE);
-        } else if (id == R.id.iv_back) {
+        } else if (id == R.id.iv_back_my_list_details) {
             prefrences.setMyListFragStatus(0);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).addToBackStack(null).commit();
-            mBackBtn.setVisibility(View.INVISIBLE);
         }
 
     }

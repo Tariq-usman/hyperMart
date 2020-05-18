@@ -6,10 +6,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +43,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
@@ -53,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ItemsAvailabilityStoresFragment extends Fragment implements View.OnClickListener {
+    private EditText etSearch;
     private RecyclerView recyclerViewAvailableItemsStore;
     private ItemsAvailabilityStoresAdapter itemsAvailabilityStoresAdapter;
     private TextView mSortByDistance, mSortByPrice, mSortByAvailability;
@@ -68,6 +73,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private double lat, lang;
     private List<AvailNotAvailResponse.Datum> stores_list = new ArrayList<>();
     List<Integer> reorder_list = ListDetailsFragment.reorder_list;
+    List<AvailNotAvailResponse.Datum> filter_list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -75,9 +81,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         View view = inflater.inflate(R.layout.fragment_items_availability_stores, container, false);
         cartViewModel = ViewModelProviders.of(ItemsAvailabilityStoresFragment.this).get(CartViewModel.class);
 
-
-        mSearchView = getActivity().findViewById(R.id.search_view);
-        mSearchView.setVisibility(View.INVISIBLE);
         prefrences = new Preferences(getContext());
         pay_status = prefrences.getPaymentStatus();
         bundle = this.getArguments();
@@ -108,22 +111,51 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             });
         }
 
+        etSearch = view.findViewById(R.id.et_search_availability_store);
         mSortByPrice = view.findViewById(R.id.sort_by_price_view);
         mSortByDistance = view.findViewById(R.id.sort_by_distance);
         mSortByAvailability = view.findViewById(R.id.sort_by_availability);
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
+        mBackBtn = view.findViewById(R.id.iv_back_items_avail_store);
         mBackBtn.setOnClickListener(this);
-        mBackBtn.setVisibility(View.VISIBLE);
         mSortByDistance.setOnClickListener(this);
         mSortByPrice.setOnClickListener(this);
         mSortByAvailability.setOnClickListener(this);
+
 
         recyclerViewAvailableItemsStore = view.findViewById(R.id.recycler_view_available_item_store);
         recyclerViewAvailableItemsStore.setHasFixedSize(true);
         recyclerViewAvailableItemsStore.setLayoutManager(new LinearLayoutManager(getContext()));
         itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), stores_list, lat, lang);
         recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().toLowerCase();
+                filter_list.clear();
+                for (int i = 0; i < stores_list.size(); i++) {
+                    final String text = stores_list.get(i).getName().toLowerCase();
+                    if (text.contains(query)) {
+                        filter_list.add(stores_list.get(i));
+                    }
+                }
+                /*if (filter_list.size() == 0) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
+                } else {*/
+                    itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), filter_list, lat, lang);
+                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
+//                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
     }
 
@@ -157,10 +189,9 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
                 nearestDistance();
                 break;
-            case R.id.iv_back:
+            case R.id.iv_back_items_avail_store:
                 prefrences.setCartFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
-                mBackBtn.setVisibility(View.GONE);
                 break;
         }
     }
@@ -192,9 +223,17 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
                         stores_list.add(availNotAvailResponse.getData().get(i));
                     }
-                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                    Collections.sort(stores_list, new Comparator<AvailNotAvailResponse.Datum>() {
+                        @Override
+                        public int compare(AvailNotAvailResponse.Datum o1, AvailNotAvailResponse.Datum o2) {
+                            return Integer.valueOf(o2.getAvailable().size()).compareTo(o1.getAvailable().size());
+                        }
+                    });
+                    itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), stores_list, lat, lang);
+                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
+//                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (stores_list.size() == 0) {
-                        Toast.makeText(getContext(), "No Products are Found!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getContext().getString(R.string.no_store_found), Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
                 } catch (Exception e) {
@@ -261,9 +300,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                             return Integer.valueOf(o2.getAvailable().size()).compareTo(o1.getAvailable().size());
                         }
                     });
-                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                    itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), stores_list, lat, lang);
+                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
+//                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (stores_list.size() == 0) {
-                        Toast.makeText(getContext(), "No Products are Found!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getContext().getString(R.string.no_store_found), Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
                 } catch (Exception e) {
@@ -325,9 +366,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     for (int i = 0; i < availNotAvailResponse.getData().size(); i++) {
                         stores_list.add(availNotAvailResponse.getData().get(i));
                     }
-                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                    itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), stores_list, lat, lang);
+                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
+//                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (stores_list.size() == 0) {
-                        Toast.makeText(getContext(), "No Products are Found!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getContext().getString(R.string.no_store_found), Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
                 } catch (Exception e) {

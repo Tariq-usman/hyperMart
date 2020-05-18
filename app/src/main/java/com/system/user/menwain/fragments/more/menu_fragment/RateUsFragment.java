@@ -55,11 +55,7 @@ public class RateUsFragment extends Fragment {
         ratingBarStore = view.findViewById(R.id.rating_bar_store);
         ratingBarDeliveryBo = view.findViewById(R.id.rating_bar_delivery_boy);
         ratingBarServices= view.findViewById(R.id.rating_bar_overall_services);
-      //  mTitle = getActivity().findViewById(R.id.toolbar_title);
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mBackBtn.setVisibility(View.VISIBLE);
-        //mTitle.setText("Rate Us");
-//        mBackBtn.setImageResource(R.drawable.ic_backwhite);
+        mBackBtn = view.findViewById(R.id.iv_back_rate);
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,8 +69,6 @@ public class RateUsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new MoreFragment()).addToBackStack(null).commit();
-                mBackBtn.setVisibility(View.INVISIBLE);
-               // finish();
             }
         });
 

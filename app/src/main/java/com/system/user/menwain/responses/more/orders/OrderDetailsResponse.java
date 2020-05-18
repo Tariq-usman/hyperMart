@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class OrderDetailsResponse {
-
         @SerializedName("data")
         @Expose
         private Data data;
@@ -18,8 +17,6 @@ public class OrderDetailsResponse {
         public void setData(Data data) {
             this.data = data;
         }
-
-
     public class Data {
 
         @SerializedName("id")
@@ -151,9 +148,21 @@ public class OrderDetailsResponse {
             @SerializedName("name")
             @Expose
             private String name;
+            @SerializedName("address")
+            @Expose
+            private String address;
             @SerializedName("image")
             @Expose
             private String image;
+            @SerializedName("latitude")
+            @Expose
+            private String latitude;
+            @SerializedName("longitude")
+            @Expose
+            private String longitude;
+            @SerializedName("secret_code")
+            @Expose
+            private Integer secretCode;
             @SerializedName("average-rating")
             @Expose
             private Integer averageRating;
@@ -174,12 +183,44 @@ public class OrderDetailsResponse {
                 this.name = name;
             }
 
+            public String getAddress() {
+                return address;
+            }
+
+            public void setAddress(String address) {
+                this.address = address;
+            }
+
             public String getImage() {
                 return image;
             }
 
             public void setImage(String image) {
                 this.image = image;
+            }
+
+            public String getLatitude() {
+                return latitude;
+            }
+
+            public void setLatitude(String latitude) {
+                this.latitude = latitude;
+            }
+
+            public String getLongitude() {
+                return longitude;
+            }
+
+            public void setLongitude(String longitude) {
+                this.longitude = longitude;
+            }
+
+            public Integer getSecretCode() {
+                return secretCode;
+            }
+
+            public void setSecretCode(Integer secretCode) {
+                this.secretCode = secretCode;
             }
 
             public Integer getAverageRating() {
@@ -278,10 +319,10 @@ public class OrderDetailsResponse {
                 private Integer discount;
                 @SerializedName("created_at")
                 @Expose
-                private Object createdAt;
+                private String createdAt;
                 @SerializedName("updated_at")
                 @Expose
-                private Object updatedAt;
+                private String updatedAt;
 
                 public Integer getOrderNum() {
                     return orderNum;
@@ -323,19 +364,19 @@ public class OrderDetailsResponse {
                     this.discount = discount;
                 }
 
-                public Object getCreatedAt() {
+                public String getCreatedAt() {
                     return createdAt;
                 }
 
-                public void setCreatedAt(Object createdAt) {
+                public void setCreatedAt(String createdAt) {
                     this.createdAt = createdAt;
                 }
 
-                public Object getUpdatedAt() {
+                public String getUpdatedAt() {
                     return updatedAt;
                 }
 
-                public void setUpdatedAt(Object updatedAt) {
+                public void setUpdatedAt(String updatedAt) {
                     this.updatedAt = updatedAt;
                 }
 
@@ -345,9 +386,5 @@ public class OrderDetailsResponse {
 
     }
 
+
 }
-
-
-
-
-

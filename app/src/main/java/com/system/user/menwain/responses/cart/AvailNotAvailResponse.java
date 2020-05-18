@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class AvailNotAvailResponse {
+
         @SerializedName("data")
         @Expose
         private List<Datum> data = null;
@@ -17,11 +18,15 @@ public class AvailNotAvailResponse {
         public void setData(List<Datum> data) {
             this.data = data;
         }
+
     public class Datum {
 
         @SerializedName("id")
         @Expose
         private Integer id;
+        @SerializedName("name")
+        @Expose
+        private String name;
         @SerializedName("address")
         @Expose
         private String address;
@@ -53,6 +58,14 @@ public class AvailNotAvailResponse {
 
         public void setId(Integer id) {
             this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         public String getAddress() {
@@ -679,10 +692,7 @@ public class AvailNotAvailResponse {
 
     }
 
-
-
 }
-
 
 
 

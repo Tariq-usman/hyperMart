@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class UserWishlistProductsResponse {
+
     @SerializedName("product")
     @Expose
     private Product product;
@@ -167,6 +168,9 @@ public class UserWishlistProductsResponse {
             @SerializedName("total_amount")
             @Expose
             private Integer totalAmount;
+            @SerializedName("share_link")
+            @Expose
+            private String shareLink;
 
             public Integer getId() {
                 return id;
@@ -200,10 +204,19 @@ public class UserWishlistProductsResponse {
                 this.totalAmount = totalAmount;
             }
 
+            public String getShareLink() {
+                return shareLink;
+            }
+
+            public void setShareLink(String shareLink) {
+                this.shareLink = shareLink;
+            }
+
         }
 
     }
 
 }
+
 
 

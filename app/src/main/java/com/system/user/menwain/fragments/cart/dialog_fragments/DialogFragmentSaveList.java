@@ -94,8 +94,6 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         mConfirm = view.findViewById(R.id.confirm_btn_purchasing_method);
         etListName = view.findViewById(R.id.tv_date_in_store_purchase);
         mCloseBtn = view.findViewById(R.id.close_back_view);
-        mBackBtnPay = getActivity().findViewById(R.id.iv_back);
-        mBackBtnPay.setVisibility(View.VISIBLE);
 
         mHome = getActivity().findViewById(R.id.home_view);
         tvHome = getActivity().findViewById(R.id.tv_home_view);

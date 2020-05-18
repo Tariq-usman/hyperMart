@@ -21,6 +21,9 @@
     <string name="card_deleted">تم حذف البطاقة</string>
     <string name="no_items_available">لا توجد عناصر متاحة!</string>
     <string name="item_delete_success">تم حذف العنصر بنجاح</string>
+    <string name="no_store_found">لم يتم العثور على متاجر</string>
+    <string name="no_products_found">لم يتم العثور على منتجات</string>
+    <string name="no_result_found">لم يتم العثور على نتيجة</string>
 
     <!--Home Fragment-->
     <string name="explore_shop">استكشاف وتسوق</string>
@@ -78,7 +81,7 @@
 
     <!--List Name Dialog Fragment-->
     <string name="list_name_dialog_title">هل تريد حفظ هذه المنتجات كقائمة لاستخدامها في المستقبل؟</string>
-    <string name="list_name_dialog_name">اسم القائمة</string>
+    <string name="list_name_dialog_name">اسم قائمة التسوق</string>
 
     <!--Add payment method-->
     <string name="pay_title">التسليم إلى عنوان منزلي</string>
@@ -114,6 +117,7 @@
 
     <!--My List fragment-->
     <string name="view">رأي</string>
+    <string name="reorder">إعادة ترتيب</string>
 
     <!--More fragment-->
     <string name="browse_store">تصفح المتاجر</string>
@@ -187,6 +191,8 @@
     <string name="sex">الجنس</string>
     <string name="male">الذكر</string>
     <string name="female">أنثى</string>
+    <string name="age">عمر</string>
+    <string name="country">بلد</string>
     <string name="create_pass">إنشاء كلمة مرور</string>
     <string name="register">تسجيل</string>
     <string name="login_instead">تسجيل الدخول بدلاً من ذلك</string>

@@ -5,11 +5,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -48,24 +52,54 @@ public class AllListsFragment extends Fragment {
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private List<UserWishlistProductsResponse.Product.Datum> orders_list = new ArrayList<>();
+    private List<UserWishlistProductsResponse.Product.Datum> filter_orders_list = new ArrayList<>();
+    private EditText etSearchList;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_all_lists,container,false);
+        View view = inflater.inflate(R.layout.fragment_all_lists, container, false);
         prefrences = new Preferences(getContext());
         customDialog(getContext());
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mBackBtn.setVisibility(View.INVISIBLE);
-        mSearchViewAllLists = getActivity().findViewById(R.id.search_view);
-        mSearchViewAllLists.setVisibility(View.INVISIBLE);
+
+        etSearchList = view.findViewById(R.id.et_search_my_list);
 
         recyclerViewAllLists = view.findViewById(R.id.recycler_view_all_lists);
         recyclerViewAllLists.setHasFixedSize(true);
         recyclerViewAllLists.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        allListsAdapter = new AllListsAdapter(getContext(),orders_list);
+        allListsAdapter = new AllListsAdapter(getContext(), orders_list);
         recyclerViewAllLists.setAdapter(allListsAdapter);
         getUserWistList();
+        etSearchList.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().toLowerCase();
+                filter_orders_list.clear();
+                for (int i = 0; i < orders_list.size(); i++) {
+                    final String text = orders_list.get(i).getWishlistName().toLowerCase();
+                    if (text.contains(query)) {
+                        filter_orders_list.add(orders_list.get(i));
+                    }
+                }
+                /*if (filter_orders_list.size() == 0) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
+                } else {*/
+                    allListsAdapter = new AllListsAdapter(getContext(), filter_orders_list);
+                    recyclerViewAllLists.setAdapter(allListsAdapter);
+//                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
     }
 
@@ -76,9 +110,9 @@ public class AllListsFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_wish_list, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                UserWishlistProductsResponse wishlistProductsResponse = gson.fromJson(response,UserWishlistProductsResponse.class);
+                UserWishlistProductsResponse wishlistProductsResponse = gson.fromJson(response, UserWishlistProductsResponse.class);
                 orders_list.clear();
-                for (int i = 0; i< wishlistProductsResponse.getProduct().getData().size();i++){
+                for (int i = 0; i < wishlistProductsResponse.getProduct().getData().size(); i++) {
                     orders_list.add(wishlistProductsResponse.getProduct().getData().get(i));
                 }
                 allListsAdapter.notifyDataSetChanged();
@@ -88,19 +122,20 @@ public class AllListsFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("wishError",error.toString());
+                Log.e("wishError", error.toString());
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headerMap = new HashMap<>();
-                headerMap.put("Authorization","Bearer " + prefrences.getToken());
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Bearer " + prefrences.getToken());
                 return headerMap;
             }
         };
         requestQueue.add(request);
     }
+
     public void customDialog(Context context) {
         builder = new AlertDialog.Builder(context);
         builder.setCancelable(false); // if you want user to wait for some process to finish,

@@ -2,6 +2,7 @@ package com.system.user.menwain.adapters.my_lists_adapters;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,7 +66,7 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
         String [] split_date = date.split(" ");
         holder.tvDate.setText(split_date[0]);
         holder.tvPrice.setText(orders_list.get(position).getTotalAmount().toString());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.viewList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 bundle = new Bundle();
@@ -76,6 +77,15 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
                 bundle.putString("list_name", orders_list.get(position).getWishlistName());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
+            }
+        });
+        holder.shareList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, orders_list.get(position).getShareLink());
+                context.startActivity(Intent.createChooser(shareIntent, "Share via"));
             }
         });
         holder.ivDelete.setOnClickListener(new View.OnClickListener() {
@@ -94,15 +104,17 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
     }
 
     public static class AllListsViewHolder extends RecyclerView.ViewHolder {
-        private TextView mListName, tvDate, tvPrice;
-        private ImageView ivDelete;
+        private TextView mListName, tvDate, tvPrice,viewList;
+        private ImageView ivDelete,shareList;
 
         public AllListsViewHolder(@NonNull View itemView) {
             super(itemView);
             mListName = itemView.findViewById(R.id.list_name_view);
             tvDate = itemView.findViewById(R.id.tv_date_my_list);
             tvPrice = itemView.findViewById(R.id.tv_price_my_list);
+            viewList = itemView.findViewById(R.id.view_list);
             ivDelete = itemView.findViewById(R.id.iv_delete_my_list);
+            shareList = itemView.findViewById(R.id.iv_share_list);
         }
     }
 

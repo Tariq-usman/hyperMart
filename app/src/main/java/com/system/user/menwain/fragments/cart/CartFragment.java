@@ -56,8 +56,8 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         recyclerViewCartItems.setHasFixedSize(true);
         recyclerViewCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mSearchViewCart = getActivity().findViewById(R.id.search_view);
-        mSearchViewCart.setVisibility(View.VISIBLE);
+       /* mSearchViewCart = getActivity().findViewById(R.id.search_view);
+        mSearchViewCart.setVisibility(View.VISIBLE);*/
 
         mProceedBtn = view.findViewById(R.id.proceed_btn);
         mProceedBtn.setOnClickListener(this);

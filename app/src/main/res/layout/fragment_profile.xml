@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginHorizontal="30dp"
+    android:orientation="vertical"
     tools:context=".fragments.more.menu_fragment.ProfileFragment">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/darkGreenColor"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_back_profile"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:padding="16dp"
+            android:src="@drawable/ic_backwhite"
+            android:visibility="visible" />
+
+    </FrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -195,38 +212,71 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!--
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:text="@string/profile_change_lang"
+                                android:textColor="@color/darkGreenColor"
+                                android:textSize="@dimen/fourteen_sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_email_pass">
+
+                                <Spinner
+                                    android:id="@+id/spinner"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+            -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:text="@string/profile_change_lang"
+                    android:text="@string/country"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/fourteen_sp" />
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/et_country_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_email_pass">
-
-                    <Spinner
-                        android:id="@+id/spinner"
-                        android:layout_width="fill_parent"
-                        android:layout_height="match_parent" />
-
-                </LinearLayout>
-
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_email_pass"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:hint="Pakistan"
+                    android:inputType="number"
+                    android:textColor="@color/whiteColor"
+                    android:textColorHint="@color/whiteColor"
+                    android:textSize="@dimen/fourteen_sp" />
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -273,22 +323,23 @@
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
             </LinearLayout>
+            <Button
+                android:id="@+id/register"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_submit_btn"
+                android:gravity="center"
+                android:text="@string/profile_edit"
+                android:textAllCaps="false"
+                android:textColor="@color/whiteColor"
+                android:textSize="@dimen/twenty_sp" />
 
         </LinearLayout>
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/register"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/bg_submit_btn"
-        android:gravity="center"
-        android:text="@string/profile_edit"
-        android:textAllCaps="false"
-        android:textColor="@color/whiteColor"
-        android:textSize="@dimen/twenty_sp" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+<!--
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -84,6 +85,7 @@
             android:src="@drawable/ic_list_view"
             android:visibility="invisible" />
     </FrameLayout>
+-->
 
     <FrameLayout
         android:id="@+id/nav_host_fragment"

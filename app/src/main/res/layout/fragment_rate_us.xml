@@ -6,7 +6,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragments.more.menu_fragment.RateUsFragment">
-    <!--<include layout="@layout/header_item_details" />-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/darkGreenColor"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_back_rate"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:padding="16dp"
+            android:src="@drawable/ic_backwhite"
+            android:visibility="visible" />
+
+    </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:paddingBottom="80dp"

@@ -117,7 +117,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         } else {
             Toast.makeText(getContext(), "No product selected", Toast.LENGTH_SHORT).show();
         }
-        mSearchView = getActivity().findViewById(R.id.search_view);
+        mSearchView = view.findViewById(R.id.search_view);
         //mSearchView.setVisibility(View.INVISIBLE);
         mPager = view.findViewById(R.id.item_detail_pager);
         tabLayout = view.findViewById(R.id.tab_layout_item_details);
@@ -161,8 +161,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         mReviews.setOnClickListener(this);
         mAddToCart = view.findViewById(R.id.add_to_cart_item_details);
         mAddToCart.setOnClickListener(this);
-        mBack = getActivity().findViewById(R.id.iv_back);
-        mBack.setVisibility(View.VISIBLE);
+        mBack = view.findViewById(R.id.iv_back_items_details);
         mBack.setOnClickListener(this);
 
         slidingImagesAdapter = new Item_details_SlidingImages_Adapter(getContext(), bannersList);
@@ -414,7 +413,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 }
             }
 
-        } else if (id == R.id.iv_back) {
+        } else if (id == R.id.iv_back_items_details) {
             if (status == "1") {
                 prefrences.setHomeFragStatus(0);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").addToBackStack(null).commit();

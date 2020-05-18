@@ -61,8 +61,7 @@ public class AddCardFragment extends Fragment {
         customDialog(getContext());
         getUserCards();
 
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mBackBtn.setVisibility(View.VISIBLE);
+        mBackBtn = view.findViewById(R.id.iv_back_add_card);
         tvOrderTotla = view.findViewById(R.id.tv_order_total_add_card);
         tvOrderTotla.setText(preferences.getTotalAmount()+"");
         tvShippingCost = view.findViewById(R.id.tv_shipping_cost_add_card);
@@ -74,7 +73,6 @@ public class AddCardFragment extends Fragment {
             public void onClick(View v) {
                 preferences.setCartFragStatus(3);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).addToBackStack(null).commit();
-                mBackBtn.setVisibility(View.GONE);
             }
         });
 

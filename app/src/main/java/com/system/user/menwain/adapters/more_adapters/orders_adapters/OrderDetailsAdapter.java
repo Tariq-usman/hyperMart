@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.system.user.menwain.fragments.more.orders.OrderDetailsFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.fragments.more.orders.ItemReviewFragment;
 import com.system.user.menwain.R;
@@ -56,7 +57,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
                 Glide.with(holder.mProduct.getContext()).load(details_list.get(position).getImage()).into(holder.mProduct);
                 holder.tvName.setText(details_list.get(position).getName());
-                holder.tvStoreName.setText(details_list.get(position).getName());
+                holder.tvStoreName.setText(OrderDetailsFragment.store_name);
                 holder.tvAmount.setText(details_list.get(position).getPivot().getPrice().toString());
 //                holder.tvRating.setText(details_list.get(position).get);
                 if (order_status.equalsIgnoreCase("delivered")){

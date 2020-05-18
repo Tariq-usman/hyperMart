@@ -11,8 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.home_adapters.ExploreAdapter;
 import com.system.user.menwain.adapters.home_adapters.ShopAdapter;
+import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
@@ -61,22 +64,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private Runnable runnable;
     AllItemsFragment allItemsFragment;
     private Bundle bundle;
-    private int[] IMAGES = {R.drawable.dis, R.drawable.disc, R.drawable.disco, R.drawable.discoun, R.drawable.discount};
-    private String[] productsName = {"Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallaxy S8", "Samsung", "BlockBuster", "Gallexy M30",
-            "Gallexy M30s", "Samsung s4", "Gallexy M30", "Gallexy M30s", "Samsung s4"};
-    private int[] items = {R.drawable.p, R.drawable.pict, R.drawable.pictu, R.drawable.picturep, R.drawable.picturepi,
-            R.drawable.picturepic, R.drawable.p, R.drawable.pict, R.drawable.pictu, R.drawable.picturep, R.drawable.picturepi,
-            R.drawable.picturepic};
 
     private RecyclerView recyclerViewExploreAndShop, recyclerViewExplore, recyclerViewShop;
     private LinearLayoutManager linearLayoutManager;
-    private ImageView mBarCodeScanner, mBackBtn;
+    private ImageView mBarCodeScanner, ivSearch;
     private TextView tvSeeAllExploreShop, tvSeeAllExplore, tvSeeAllShop;
+    private EditText etSearch;
     private TabLayout tabLayout;
-    private CardView mSearchView;
     Preferences prefrences;
-    private int frag_status;
-    private Context context;
     AlertDialog.Builder builder;
     AlertDialog dialog;
     // List for banner images
@@ -104,10 +99,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         mPager = view.findViewById(R.id.pager);
         tabLayout = view.findViewById(R.id.tab_layout);
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mBackBtn.setVisibility(View.INVISIBLE);
-        mSearchView = getActivity().findViewById(R.id.search_view);
-        mSearchView.setVisibility(View.VISIBLE);
+        ivSearch =view.findViewById(R.id.iv_search_home);
+        ivSearch.setOnClickListener(this);
+        mBarCodeScanner =view.findViewById(R.id.bar_code_code_scanner_home);
+        mBarCodeScanner.setOnClickListener(this);
+        etSearch = view.findViewById(R.id.et_search_home);
 
         tvSeeAllExploreShop = view.findViewById(R.id.tv_see_all_explore_shop);
         tvSeeAllExploreShop.setOnClickListener(this);
@@ -182,6 +178,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_search_home:
+                Bundle bundle = new Bundle();
+                SearchFragment fragment = new SearchFragment();
+                if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
+                    Toast.makeText(getContext(), "Enter Your desire search..", Toast.LENGTH_SHORT).show();
+                } else {
+                    bundle.putString("search", etSearch.getText().toString().trim());
+                    etSearch.setText("");
+                    fragment.setArguments(bundle);
+                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                }
+                break;
+            case R.id.bar_code_code_scanner_home:
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
+                break;
             case R.id.tv_see_all_explore_shop:
                 prefrences.setHomeFragStatus(1);
                 allItemsFragment = new AllItemsFragment();
