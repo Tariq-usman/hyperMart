@@ -33,5 +33,12 @@
         <item name="android:minHeight">23dip</item>
         <item name="android:maxHeight">25dip</item>
     </style>
+    <style name="NumberPickerTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="android:textColorPrimary">@color/darkGreenColor</item>
+        <item name="android:background">@color/whiteColor</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
 </resources>

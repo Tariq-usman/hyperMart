@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
 import com.system.user.menwain.adapters.cart_adapters.NotAvailableItemsListAdapter;
+import com.system.user.menwain.adapters.cart_adapters.NotAvailableItemsListRadiusAdapter;
+import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 
 import androidx.annotation.NonNull;
@@ -25,9 +28,11 @@ public class NotAvailableItemsFragment extends Fragment {
 
     RecyclerView recyclerViewItemsList;
     NotAvailableItemsListAdapter notAvailableItemsListAdapter;
+    NotAvailableItemsListRadiusAdapter notAvailableItemsListRadiusAdapter;
     SharedPreferences.Editor editor;
     public static int not_avail_items;
     List<AvailNotAvailResponse.Datum.Notavailable> not_avail_items_list = ItemsAvailabilityStoresAdapter.not_available_list;
+    List<AvailNotAvailRadiusResponse.Datum.Notavailable> not_avail_items_list_radius = ItemsAvailabilityStoresRadiusAdapter.not_available_list;
 
     @Nullable
     @Override
@@ -37,8 +42,13 @@ public class NotAvailableItemsFragment extends Fragment {
         recyclerViewItemsList.setHasFixedSize(true);
         recyclerViewItemsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        notAvailableItemsListAdapter= new NotAvailableItemsListAdapter(getContext(),not_avail_items_list);
-        recyclerViewItemsList.setAdapter(notAvailableItemsListAdapter);
+        if (not_avail_items_list.size()>0) {
+            notAvailableItemsListAdapter = new NotAvailableItemsListAdapter(getContext(), not_avail_items_list);
+            recyclerViewItemsList.setAdapter(notAvailableItemsListAdapter);
+        }else {
+            notAvailableItemsListRadiusAdapter = new NotAvailableItemsListRadiusAdapter(getContext(), not_avail_items_list_radius);
+            recyclerViewItemsList.setAdapter(notAvailableItemsListRadiusAdapter);
+        }
 
         not_avail_items = productsName.length;
         editor = getActivity().getSharedPreferences("not_avail_items", Context.MODE_PRIVATE).edit();

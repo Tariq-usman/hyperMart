@@ -8,35 +8,36 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
-import com.system.user.menwain.interfaces.RecyclerClickInterface;
-import com.system.user.menwain.others.Preferences;
-import com.system.user.menwain.R;
-import com.system.user.menwain.fragments.category.CategoryFragment;
-import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
+import com.system.user.menwain.fragments.category.CategoryFragment;
+import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.others.Preferences;
+import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
+import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableItemsListAdapter.ItemsListViewHolder> {
-    private List<AvailNotAvailResponse.Datum.Available> avail_items_list;
+public class AvailableItemsListRadiusAdapter extends RecyclerView.Adapter<AvailableItemsListRadiusAdapter.ItemsListViewHolder> {
+    private List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list;
     Context context;
     Preferences prefrences;
     private Bundle bundle;
     private RecyclerClickInterface clickInterface;
     int addAmount, current_amount, final_amount;
     int pos;
-    int total_amount = 0/*Integer.parseInt(AvailNotAvailItemsListsFragment.mTotalAmount.getText().toString())*/;
+    int total_amount = 0;
     public static List<Integer> quantity_list = new ArrayList<>();
     public static List<Integer> amount_list = new ArrayList<>();
 
-    public AvailableItemsListAdapter(Context context, List<AvailNotAvailResponse.Datum.Available> avail_items_list, RecyclerClickInterface clickInterface) {
+    public AvailableItemsListRadiusAdapter(Context context, List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list, RecyclerClickInterface clickInterface) {
         this.avail_items_list = avail_items_list;
         this.context = context;
         this.clickInterface = clickInterface;
@@ -61,15 +62,13 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
             holder.mAmount.setText(avail_items_list.get(position).getStoreprice().toString());
             quantity_list.clear();
             amount_list.clear();
-            total_amount=0;
             for (int i = 0; i < avail_items_list.size(); i++) {
                 quantity_list.add(Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
                 amount_list.add(Integer.valueOf(holder.mAmount.getText().toString()));
                 total_amount = total_amount +avail_items_list.get(position).getStoreprice();
             }
             AvailNotAvailItemsListsFragment.mTotalAmount.setText(total_amount+"");
-            total_amount=0;
-        }
+            total_amount=0;  }
         final String currentItems = holder.mAvilNotAvailItemsView.getText().toString();
 
         final int[] count = {Integer.parseInt(currentItems)};
@@ -92,6 +91,7 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
                         amount_list.add(pos, Integer.valueOf(holder.mAmount.getText().toString()));
                     }
                 }
+//                Log.e("quantity", quantity_list.size() + "");
                 int initial_amount = Integer.parseInt(AvailNotAvailItemsListsFragment.mTotalAmount.getText().toString());
                 int final_amount = initial_amount + avail_items_list.get(position).getStoreprice();
                 AvailNotAvailItemsListsFragment.mTotalAmount.setText(final_amount + "");

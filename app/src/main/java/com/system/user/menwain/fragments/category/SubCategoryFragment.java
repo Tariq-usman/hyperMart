@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -33,10 +35,12 @@ import com.system.user.menwain.adapters.category_adapters.SubCategoryAdapter;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryProductsAdapter;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryProductsFinalAdapter;
 import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
+import com.system.user.menwain.adapters.search.NameSearchAdapter;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.category.SubCategoryProductsFinalResponse;
 import com.system.user.menwain.responses.category.SubCategoryResponse;
+import com.system.user.menwain.responses.search.SearchByNameResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.ArrayList;
@@ -50,7 +54,8 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
     private RecyclerView recyclerViewSubCategory, recyclerViewSubCategoryProducts, recyclerViewSubCategoryProductsFinal;
     private LinearLayoutManager linearLayoutManager;
     private int getPreviousId = SuperCategoryAdapter.passId;
-    private ImageView mBackBtn, mBarCodeScanner;
+    private ImageView mBackBtn,mSearch, mBarCodeScanner;
+    private EditText etSearch;
 
     private CardView mSearchViewItemsFragment;
     private Preferences prefrences;
@@ -63,22 +68,33 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
     private List<SubCategoryResponse.Category.Datum> subCatergoryList = new ArrayList<SubCategoryResponse.Category.Datum>();
     private List<SubCategoryResponse.Products.Datum_> subCategory_products_list = new ArrayList<SubCategoryResponse.Products.Datum_>();
     private List<SubCategoryProductsFinalResponse.Products.Datum_> subCategory_products_final_list = new ArrayList<SubCategoryProductsFinalResponse.Products.Datum_>();
-
+    private List<SearchByNameResponse.Data.Datum> search_by_name_list = new ArrayList<>();
+    private NameSearchAdapter nameSearchAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sub_category, container, false);
         prefrences = new Preferences(getContext());
         customDialog(getContext());
-
-        //mSearchViewItemsFragment = getActivity().findViewById(R.id.search_view);
-        //mSearchViewItemsFragment.setVisibility(View.INVISIBLE);
         mBackBtn = view.findViewById(R.id.iv_back_sub_cat);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prefrences.setCategoryFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
+            }
+        });
+        mSearch = view.findViewById(R.id.iv_search_sub_cat);
+        etSearch = view.findViewById(R.id.et_search_sub_cat);
+        mSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
+                    Toast.makeText(getContext(), "Enter Your desire search..", Toast.LENGTH_SHORT).show();
+                } else {
+                    String name = etSearch.getText().toString().trim();
+                    searchProductByName(name);
+                }
             }
         });
 
@@ -103,6 +119,8 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         recyclerViewSubCategoryProductsFinal.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
         subCategoryProductsFinalAdapter = new SubCategoryProductsFinalAdapter(getContext(), subCategory_products_final_list);
         recyclerViewSubCategoryProductsFinal.setAdapter(subCategoryProductsFinalAdapter);
+
+        nameSearchAdapter = new NameSearchAdapter(getContext(), search_by_name_list);
 
         return view;
     }
@@ -191,6 +209,48 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("sup_category_id", super_cat_id + "");
+                return map;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    private void searchProductByName(final String name) {
+        dialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.POST, URLs.search_product_by_name_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                SearchByNameResponse nameResponse = gson.fromJson(response, SearchByNameResponse.class);
+                search_by_name_list.clear();
+                for (int i = 0; i < nameResponse.getData().getData().size(); i++) {
+                    search_by_name_list.add(nameResponse.getData().getData().get(i));
+                }
+                if (search_by_name_list.size() == 0) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                    recyclerViewSubCategoryProducts.setAdapter(nameSearchAdapter);
+                    nameSearchAdapter.notifyDataSetChanged();
+                } else {
+                    recyclerViewSubCategoryProducts.setAdapter(nameSearchAdapter);
+                    nameSearchAdapter.notifyDataSetChanged();
+                }
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                etSearch.setText("");
+                dialog.dismiss();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("error_response", error.toString());
+                dialog.dismiss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("name", name);
                 return map;
             }
         };

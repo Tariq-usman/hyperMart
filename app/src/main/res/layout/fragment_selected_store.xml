@@ -126,7 +126,30 @@
                 android:text="@string/store_location"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/fourteen_sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:textSize="@dimen/sixteen_sp"
+                            android:paddingRight="8dp"
+                            android:text="@string/contact_no"
+                            android:textColor="@color/darkGreenColor" />
+
+                        <TextView
+                            android:id="@+id/tv_store_contact_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" 03456789123"
+                            android:textColor="@color/darkGreenColor" />
+
+                    </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

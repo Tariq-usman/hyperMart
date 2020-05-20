@@ -1,7 +1,6 @@
 package com.system.user.menwain.fragments.cart;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -26,24 +25,24 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
 import com.system.user.menwain.fragments.my_list.ListDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
+import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
@@ -60,6 +59,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private EditText etSearch;
     private RecyclerView recyclerViewAvailableItemsStore;
     private ItemsAvailabilityStoresAdapter itemsAvailabilityStoresAdapter;
+    private ItemsAvailabilityStoresRadiusAdapter itemsAvailabilityStoresRadiusAdapter;
     private TextView mSortByDistance, mSortByPrice, mSortByAvailability;
     private ImageView mBackBtn;
     Preferences prefrences;
@@ -72,8 +72,10 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private CartViewModel cartViewModel;
     private double lat, lang;
     private List<AvailNotAvailResponse.Datum> stores_list = new ArrayList<>();
+    private List<AvailNotAvailRadiusResponse.Datum> stores_list_radius = new ArrayList<AvailNotAvailRadiusResponse.Datum>();
     List<Integer> reorder_list = ListDetailsFragment.reorder_list;
     List<AvailNotAvailResponse.Datum> filter_list = new ArrayList<>();
+    List<AvailNotAvailRadiusResponse.Datum> filter_list_radius = new ArrayList<>();
 
     @Nullable
     @Override
@@ -106,7 +108,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     for (int i = 0; i < carts.size(); i++) {
                         cartList.add(carts.get(i).getP_id());
                     }
-                    lowestPrice();
+                    if (bundle != null && bundle.getInt("selected_radius") > 0) {
+                        lowestPriceAsRadius(bundle.getInt("selected_radius"));
+                    } else {
+                        lowestPrice();
+                    }
                 }
             });
         }
@@ -146,8 +152,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 /*if (filter_list.size() == 0) {
                     Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
                 } else {*/
-                    itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), filter_list, lat, lang);
-                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
+                itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), filter_list, lat, lang);
+                recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
 //                }
             }
 
@@ -169,7 +175,12 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 mSortByDistance.setTextColor(Color.parseColor("#004040"));
                 mSortByAvailability.setBackgroundResource(0);
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
-                lowestPrice();
+//                lowestPrice();
+                if (bundle != null && bundle.getInt("selected_radius") > 0) {
+                    lowestPriceAsRadius(bundle.getInt("selected_radius"));
+                } else {
+                    lowestPrice();
+                }
                 break;
             case R.id.sort_by_availability:
                 mSortByAvailability.setBackgroundResource(R.drawable.bg_store_btn_colored);
@@ -178,7 +189,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 mSortByDistance.setTextColor(Color.parseColor("#004040"));
                 mSortByPrice.setBackgroundResource(0);
                 mSortByPrice.setTextColor(Color.parseColor("#004040"));
-                highestAvailabilityData();
+                if (bundle != null && bundle.getInt("selected_radius") > 0) {
+                    highestAvailabilityAsRadius(bundle.getInt("selected_radius"));
+                } else {
+                    highestAvailabilityData();
+                }
                 break;
             case R.id.sort_by_distance:
                 mSortByDistance.setBackgroundResource(R.drawable.bg_store_btn_colored);
@@ -187,7 +202,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 mSortByPrice.setTextColor(Color.parseColor("#004040"));
                 mSortByAvailability.setBackgroundResource(0);
                 mSortByAvailability.setTextColor(Color.parseColor("#004040"));
-                nearestDistance();
+                if (bundle != null && bundle.getInt("selected_radius") > 0) {
+                    nearestDistanceAsRadius(bundle.getInt("selected_radius"));
+                } else {
+                    nearestDistance();
+                }
                 break;
             case R.id.iv_back_items_avail_store:
                 prefrences.setCartFragStatus(1);
@@ -378,6 +397,216 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     dialog.dismiss();
                 }
 
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("avail_error", error.toString());
+                dialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
+    private void lowestPriceAsRadius(int selected_radius) {
+        dialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("latitude", lat);
+            jsonObj.put("longitude", lang);
+            jsonObj.put("radius", selected_radius);
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < cartList.size(); i++) {
+                jsonArray.put(cartList.get(i));
+            }
+            jsonObj.put("products", jsonArray);
+            Log.e("products", jsonArray.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.heighest_availability_by_radius, jsonObj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    final AvailNotAvailRadiusResponse availNotAvailRadiusResponse = gson.fromJson(String.valueOf(response), AvailNotAvailRadiusResponse.class);
+                    stores_list_radius.clear();
+                    for (int i = 0; i < availNotAvailRadiusResponse.getData().size(); i++) {
+                        stores_list_radius.add(availNotAvailRadiusResponse.getData().get(i));
+                    }
+                    Collections.sort(stores_list_radius, new Comparator<AvailNotAvailRadiusResponse.Datum>() {
+                        @Override
+                        public int compare(AvailNotAvailRadiusResponse.Datum o1, AvailNotAvailRadiusResponse.Datum o2) {
+                            return Integer.valueOf(o2.getAvailable().size()).compareTo(o1.getAvailable().size());
+                        }
+                    });
+                    itemsAvailabilityStoresRadiusAdapter = new ItemsAvailabilityStoresRadiusAdapter(getContext(), stores_list_radius, lat, lang);
+                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresRadiusAdapter);
+//                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                    if (stores_list_radius.size() == 0) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.no_store_found), Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("avail_error", error.toString());
+                dialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
+    private void highestAvailabilityAsRadius(int selected_radius) {
+        dialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("latitude", lat);
+            jsonObj.put("longitude", lang);
+            jsonObj.put("radius", selected_radius);
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < cartList.size(); i++) {
+                jsonArray.put(cartList.get(i));
+            }
+            jsonObj.put("products", jsonArray);
+            Log.e("products", jsonArray.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.heighest_availability_by_radius, jsonObj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    final AvailNotAvailRadiusResponse availNotAvailRadiusResponse = gson.fromJson(String.valueOf(response), AvailNotAvailRadiusResponse.class);
+                    stores_list_radius.clear();
+                    for (int i = 0; i < availNotAvailRadiusResponse.getData().size(); i++) {
+                        stores_list_radius.add(availNotAvailRadiusResponse.getData().get(i));
+                    }
+                    Collections.sort(stores_list_radius, new Comparator<AvailNotAvailRadiusResponse.Datum>() {
+                        @Override
+                        public int compare(AvailNotAvailRadiusResponse.Datum o1, AvailNotAvailRadiusResponse.Datum o2) {
+                            return Integer.valueOf(o2.getAvailable().size()).compareTo(o1.getAvailable().size());
+                        }
+                    });
+                    itemsAvailabilityStoresRadiusAdapter = new ItemsAvailabilityStoresRadiusAdapter(getContext(), stores_list_radius, lat, lang);
+                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresRadiusAdapter);
+//                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                    if (stores_list_radius.size() == 0) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.no_store_found), Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("avail_error", error.toString());
+                dialog.dismiss();
+            }
+        });
+        requestQueue.add(request);
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
+    private void nearestDistanceAsRadius(int selected_radius) {
+        dialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("latitude", lat);
+            jsonObj.put("longitude", lang);
+            jsonObj.put("radius", selected_radius);
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < cartList.size(); i++) {
+                jsonArray.put(cartList.get(i));
+            }
+            jsonObj.put("products", jsonArray);
+            Log.e("products", jsonArray.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.heighest_availability_by_radius, jsonObj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    final AvailNotAvailRadiusResponse availNotAvailRadiusResponse = gson.fromJson(String.valueOf(response), AvailNotAvailRadiusResponse.class);
+                    stores_list_radius.clear();
+                    for (int i = 0; i < availNotAvailRadiusResponse.getData().size(); i++) {
+                        stores_list_radius.add(availNotAvailRadiusResponse.getData().get(i));
+                    }
+                    itemsAvailabilityStoresRadiusAdapter = new ItemsAvailabilityStoresRadiusAdapter(getContext(), stores_list_radius, lat, lang);
+                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresRadiusAdapter);
+//                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
+                    if (stores_list_radius.size() == 0) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.no_store_found), Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

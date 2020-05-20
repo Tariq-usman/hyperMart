@@ -226,6 +226,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 etPhoneNo.setText(userProfileDetailsResponse.getCustomerdata().getMobile());
                 etEmail.setText(userProfileDetailsResponse.getCustomerdata().getEmail());
                 gender = userProfileDetailsResponse.getCustomerdata().getGender();
+                etCountry.setText(userProfileDetailsResponse.getCustomerdata().getCounty().toString());
                 if (gender.equalsIgnoreCase("Male")) {
                     rbMale.setChecked(true);
                     rbFemale.setChecked(false);

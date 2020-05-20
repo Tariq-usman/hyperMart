@@ -5,120 +5,148 @@ import com.google.gson.annotations.SerializedName;
 
 public class StoreTimeSLotsResponse {
 
-        @SerializedName("list")
-        @Expose
-        private java.util.List<List> list = null;
+    @SerializedName("list")
+    @Expose
+    private java.util.List<List> list = null;
 
-        public java.util.List<List> getList() {
-            return list;
-        }
+    public java.util.List<List> getList() {
+        return list;
+    }
 
-        public void setList(java.util.List<List> list) {
-            this.list = list;
-        }
+    public void setList(java.util.List<List> list) {
+        this.list = list;
+    }
+
     public class List {
 
-        @SerializedName("id")
+        @SerializedName("date")
         @Expose
-        private Integer id;
-        @SerializedName("store_id")
+        private String date;
+        @SerializedName("slots")
         @Expose
-        private Integer storeId;
-        @SerializedName("from")
-        @Expose
-        private String from;
-        @SerializedName("to")
-        @Expose
-        private String to;
-        @SerializedName("capacity")
-        @Expose
-        private Integer capacity;
-        @SerializedName("status")
-        @Expose
-        private Integer status;
-        @SerializedName("created_at")
-        @Expose
-        private Object createdAt;
-        @SerializedName("updated_at")
-        @Expose
-        private Object updatedAt;
-        @SerializedName("deleted_at")
-        @Expose
-        private Object deletedAt;
+        private java.util.List<Slot> slots = null;
 
-        public Integer getId() {
-            return id;
+        public String getDate() {
+            return date;
         }
 
-        public void setId(Integer id) {
-            this.id = id;
+        public void setDate(String date) {
+            this.date = date;
         }
 
-        public Integer getStoreId() {
-            return storeId;
+        public java.util.List<Slot> getSlots() {
+            return slots;
         }
 
-        public void setStoreId(Integer storeId) {
-            this.storeId = storeId;
+        public void setSlots(java.util.List<Slot> slots) {
+            this.slots = slots;
         }
 
-        public String getFrom() {
-            return from;
-        }
+        public class Slot {
 
-        public void setFrom(String from) {
-            this.from = from;
-        }
+            @SerializedName("id")
+            @Expose
+            private Integer id;
+            @SerializedName("store_id")
+            @Expose
+            private Integer storeId;
+            @SerializedName("from")
+            @Expose
+            private String from;
+            @SerializedName("to")
+            @Expose
+            private String to;
+            @SerializedName("capacity")
+            @Expose
+            private Integer capacity;
+            @SerializedName("status")
+            @Expose
+            private Integer status;
+            @SerializedName("created_at")
+            @Expose
+            private Object createdAt;
+            @SerializedName("updated_at")
+            @Expose
+            private Object updatedAt;
+            @SerializedName("deleted_at")
+            @Expose
+            private Object deletedAt;
 
-        public String getTo() {
-            return to;
-        }
+            public Integer getId() {
+                return id;
+            }
 
-        public void setTo(String to) {
-            this.to = to;
-        }
+            public void setId(Integer id) {
+                this.id = id;
+            }
 
-        public Integer getCapacity() {
-            return capacity;
-        }
+            public Integer getStoreId() {
+                return storeId;
+            }
 
-        public void setCapacity(Integer capacity) {
-            this.capacity = capacity;
-        }
+            public void setStoreId(Integer storeId) {
+                this.storeId = storeId;
+            }
 
-        public Integer getStatus() {
-            return status;
-        }
+            public String getFrom() {
+                return from;
+            }
 
-        public void setStatus(Integer status) {
-            this.status = status;
-        }
+            public void setFrom(String from) {
+                this.from = from;
+            }
 
-        public Object getCreatedAt() {
-            return createdAt;
-        }
+            public String getTo() {
+                return to;
+            }
 
-        public void setCreatedAt(Object createdAt) {
-            this.createdAt = createdAt;
-        }
+            public void setTo(String to) {
+                this.to = to;
+            }
 
-        public Object getUpdatedAt() {
-            return updatedAt;
-        }
+            public Integer getCapacity() {
+                return capacity;
+            }
 
-        public void setUpdatedAt(Object updatedAt) {
-            this.updatedAt = updatedAt;
-        }
+            public void setCapacity(Integer capacity) {
+                this.capacity = capacity;
+            }
 
-        public Object getDeletedAt() {
-            return deletedAt;
-        }
+            public Integer getStatus() {
+                return status;
+            }
 
-        public void setDeletedAt(Object deletedAt) {
-            this.deletedAt = deletedAt;
-        }
+            public void setStatus(Integer status) {
+                this.status = status;
+            }
 
+            public Object getCreatedAt() {
+                return createdAt;
+            }
+
+            public void setCreatedAt(Object createdAt) {
+                this.createdAt = createdAt;
+            }
+
+            public Object getUpdatedAt() {
+                return updatedAt;
+            }
+
+            public void setUpdatedAt(Object updatedAt) {
+                this.updatedAt = updatedAt;
+            }
+
+            public Object getDeletedAt() {
+                return deletedAt;
+            }
+
+            public void setDeletedAt(Object deletedAt) {
+                this.deletedAt = deletedAt;
+            }
+
+        }
     }
 
-    }
+}
+
 

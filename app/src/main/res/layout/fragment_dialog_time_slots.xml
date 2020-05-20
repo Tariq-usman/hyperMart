@@ -42,7 +42,13 @@
                 android:textColor="@color/darkGreenColor" />
 
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_view_delivery_date"
+                tools:listitem="@layout/row_items_delivery_time"/>
 
+<!--
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="match_parent"
@@ -51,6 +57,7 @@
                 android:gravity="center"
                 android:text="11/11/19"
                 android:textColor="@color/darkGreenColor"/>
+-->
         </LinearLayout>
 
         <LinearLayout

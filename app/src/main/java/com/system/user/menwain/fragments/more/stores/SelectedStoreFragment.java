@@ -1,7 +1,6 @@
 package com.system.user.menwain.fragments.more.stores;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
@@ -54,7 +53,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private RecyclerView recyclerViewSelectedStore, recyclerViewFilterStores, recyclerViewCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
     private ImageView ivBackBtnSelectedStore, ivSelectedStore;
-    private TextView tvStoreName, tvStoreLocation, tvStoreRating;
+    private TextView tvStoreName,tvStoreContactNo, tvStoreLocation, tvStoreRating;
     private CardView mSearchViewSelecredStore;
     private RatingBar ratingBar;
     private Preferences prefrences;
@@ -80,6 +79,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         customDialog(getContext());
         ivSelectedStore = view.findViewById(R.id.iv_store_iamge);
         tvStoreName = view.findViewById(R.id.tv_selected_store_name);
+        tvStoreContactNo = view.findViewById(R.id.tv_store_contact_no);
         tvStoreLocation = view.findViewById(R.id.tv_selected_store_place_name);
         tvStoreRating = view.findViewById(R.id.tv_selected_store_rating);
         ratingBar = view.findViewById(R.id.rating_bar_selected_stores);
@@ -135,6 +135,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 SelectedStoreResponse storeResponse = gson.fromJson(response, SelectedStoreResponse.class);
                 Glide.with(ivSelectedStore.getContext()).load(storeResponse.getStore().getImage()).into(ivSelectedStore);
                 tvStoreName.setText(storeResponse.getStore().getName());
+                tvStoreContactNo.setText(storeResponse.getStore().getMobile());
                 try {
                     addresses = geocoder.getFromLocation(Double.valueOf(storeResponse.getStore().getLatitude()), Double.valueOf(storeResponse.getStore().getLongitude()), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                     String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
@@ -147,8 +148,8 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                tvStoreRating.setText(String.valueOf(storeResponse.getStore().getAverageRating()));
-                ratingBar.setRating(Float.parseFloat("(" + storeResponse.getStore().getAverageRating() + ")"));
+                tvStoreRating.setText("(" + storeResponse.getStore().getAverageRating() + ")");
+                ratingBar.setRating(Float.parseFloat(String.valueOf(storeResponse.getStore().getAverageRating())));
                 category_list.clear();
                 for (int i = 0; i < storeResponse.getCategory().size(); i++) {
                     category_list.add(storeResponse.getCategory().get(i));

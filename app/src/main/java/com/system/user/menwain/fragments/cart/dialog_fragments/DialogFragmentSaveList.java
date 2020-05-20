@@ -25,12 +25,15 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListAdapter;
+import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListRadiusAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
 import com.system.user.menwain.fragments.cart.OrderSuccessfulFragment;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.cart.CartFragment;
+import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -56,7 +59,7 @@ import org.json.JSONObject;
 
 public class DialogFragmentSaveList extends DialogFragment implements View.OnClickListener {
     private EditText etListName;
-    private ImageView mCart, mFavourite, mHome, mCategory, mMore,mCloseBtn, mBackBtnPay;
+    private ImageView mCart, mFavourite, mHome, mCategory, mMore, mCloseBtn, mBackBtnPay;
     private TextView mConfirm, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
     private List<Integer> list = new ArrayList<>();
 
@@ -64,21 +67,25 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     private Preferences preferences;
     private int pay_status;
     int order_no;
-    int max=100000;
-    int min=10000;
+    int max = 100000;
+    int min = 10000;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
+    private List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list_radius = ItemsAvailabilityStoresRadiusAdapter.available_list;
     private List<Integer> quantity_list = AvailableItemsListAdapter.quantity_list;
     private List<Integer> amount_lit = AvailableItemsListAdapter.amount_list;
+    private List<Integer> quantity_list_radius = AvailableItemsListRadiusAdapter.quantity_list;
+    private List<Integer> amount_lit_radius = AvailableItemsListRadiusAdapter.amount_list;
     private CartViewModel cartViewModel;
     private View view;
     private OrderSuccessfulFragment fragment;
-    private  FragmentTransaction transaction;
+    private FragmentTransaction transaction;
     private Bundle bundle;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         view = inflater.inflate(R.layout.fragment_dialog_save_list, container, false);
+        view = inflater.inflate(R.layout.fragment_dialog_save_list, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         customDialog(getContext());
         bundle = new Bundle();
@@ -87,7 +94,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         order_no = r.nextInt(max - min) + min;
 
         preferences = new Preferences(getContext());
-        fragment= new OrderSuccessfulFragment();
+        fragment = new OrderSuccessfulFragment();
         transaction = ((AppCompatActivity) getContext()).getSupportFragmentManager().beginTransaction();
 
         cartViewModel = ViewModelProviders.of(DialogFragmentSaveList.this).get(CartViewModel.class);
@@ -113,7 +120,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         mConfirm.setOnClickListener(this);
 
 
-        for (int i = 0; i<avail_items_list.size();i++){
+        for (int i = 0; i < avail_items_list.size(); i++) {
             list.add(avail_items_list.get(i).getAvgPrice());
             list.add(2);
             list.add(avail_items_list.get(i).getId());
@@ -138,6 +145,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         }
 
     }
+
     private void placeOrderAndAddToWishList() {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -166,20 +174,35 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             jsonObj.put("other", "next");
 
             JSONArray jsonArray = new JSONArray();
-            for (int i = 0; i < avail_items_list.size(); i++) {
-                JSONObject object = new JSONObject();
-                try {
-                    object.put("price",amount_lit.get(i));
-                    object.put("quantity",quantity_list.get(i));
-                    object.put("product_id",avail_items_list.get(i).getId());
-                    object.put("discount",0);
-                    jsonArray.put(object);
-                }catch (Exception e){
-                    e.printStackTrace();
+            if (avail_items_list.size() == 0) {
+                for (int i = 0; i < avail_items_list.size(); i++) {
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("price", amount_lit.get(i));
+                        object.put("quantity", quantity_list.get(i));
+                        object.put("product_id", avail_items_list.get(i).getId());
+                        object.put("discount", 0);
+                        jsonArray.put(object);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                for (int i = 0; i < avail_items_list_radius.size(); i++) {
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("price", amount_lit_radius.get(i));
+                        object.put("quantity", quantity_list_radius.get(i));
+                        object.put("product_id", avail_items_list_radius.get(i).getId());
+                        object.put("discount", 0);
+                        jsonArray.put(object);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             jsonObj.put("prodct", jsonArray);
-            Log.e("json",jsonArray.toString());
+            Log.e("json", jsonArray.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -191,20 +214,20 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
                 preferences.setCartFragStatus(0);
                 bundle.putString("order_no", String.valueOf(order_no));
                 fragment.setArguments(bundle);
-                transaction.replace(R.id.nav_host_fragment,fragment).commit();
+                transaction.replace(R.id.nav_host_fragment, fragment).commit();
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("order_error",error.networkResponse.data.toString());
+                Log.e("order_error", error.networkResponse.data.toString());
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headerMap = new HashMap<>();
-                headerMap.put("Authorization","Bearer " + preferences.getToken());
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Bearer " + preferences.getToken());
                 return headerMap;
             }
         };
@@ -212,6 +235,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
+
     public void customDialog(Context context) {
         builder = new AlertDialog.Builder(context);
         builder.setCancelable(false); // if you want user to wait for some process to finish,

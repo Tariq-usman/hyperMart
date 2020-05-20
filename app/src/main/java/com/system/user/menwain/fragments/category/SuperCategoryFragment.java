@@ -73,7 +73,7 @@ public class SuperCategoryFragment extends Fragment {
                     bundle.putString("search", etSearhText.getText().toString().trim());
                     etSearhText.setText("");
                     fragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
                 }
             }
         });

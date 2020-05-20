@@ -2,7 +2,6 @@ package com.system.user.menwain.fragments.cart.dialog_fragments;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,8 +25,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.adapters.cart_adapters.DeliveryDatesAdapter;
 import com.system.user.menwain.fragments.cart.AddCardFragment;
-import com.system.user.menwain.fragments.cart.PaymentFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
@@ -50,51 +49,52 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class DialogFragmentDeliveryTime extends DialogFragment implements View.OnClickListener, RecyclerClickInterface {
-    private int mYear, mMonth, mDay, time_slot;
+public class DialogFragmentTimeSlots extends DialogFragment implements View.OnClickListener, RecyclerClickInterface {
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    public static int time_slot;
     TextView mConfirm, mTitleView, tvDate, tvDeliveryPickUp;
     ImageView mCloseBtn;
-    private String date_time;
-    private RecyclerView recyclerView;
+    public static String selected_date, selecte_time, date_time;
+    private RecyclerView recyclerViewDate, recyclerView;
     private DeliveryTimesAdapter timesAdapter;
-    private List<StoreTimeSLotsResponse.List> delivery_times_list = new ArrayList<>();
+    private DeliveryDatesAdapter datesAdapter;
+    private List<StoreTimeSLotsResponse.List> delivery_times_list = new ArrayList<StoreTimeSLotsResponse.List>();
+    private List<StoreTimeSLotsResponse.List> delivery_dates_list = new ArrayList<StoreTimeSLotsResponse.List>();
     Preferences prefrences;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     String current_date;
     long daysDiff;
+    private StoreTimeSLotsResponse timeSLotsResponse;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dialog_delivery_time, container, false);
+        View view = inflater.inflate(R.layout.fragment_dialog_time_slots, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         prefrences = new Preferences(getContext());
         customDialog(getContext());
         tvDeliveryPickUp = view.findViewById(R.id.tv_delivery_pickup);
         mConfirm = view.findViewById(R.id.confirm_btn_delivery_time);
         mCloseBtn = view.findViewById(R.id.close_back_view);
+        recyclerViewDate = view.findViewById(R.id.recycler_view_delivery_date);
         recyclerView = view.findViewById(R.id.recycler_view_delivery_time);
-        Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
 
-        Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        current_date = df.format(date);
         getStoreTimeSlots(prefrences.getStoreId());
-
-        //String due_date = jobsResponse.getDueDate();
-
-        tvDate = view.findViewById(R.id.tv_date);
-        tvDate.setText(current_date);
 
         mConfirm.setOnClickListener(this);
         mCloseBtn.setOnClickListener(this);
-        tvDate.setOnClickListener(this);
         if (prefrences.getPayRBtnStatus() == 2 || prefrences.getPayRBtnStatus() == 4) {
             tvDeliveryPickUp.setText(R.string.time_slot_dialog_title_p);
         }
+        recyclerViewDate.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        datesAdapter = new DeliveryDatesAdapter(getContext(), delivery_dates_list, this);
+        recyclerViewDate.setAdapter(datesAdapter);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        timesAdapter = new DeliveryTimesAdapter(getContext(), delivery_times_list, this);
+        timesAdapter = new DeliveryTimesAdapter(getContext(), delivery_times_list);
         recyclerView.setAdapter(timesAdapter);
         return view;
     }
@@ -106,9 +106,6 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
             case R.id.confirm_btn_delivery_time:
                 submitPreferredDeliveryDate();
                 break;
-            case R.id.tv_date:
-                getDate();
-                break;
             case R.id.close_back_view:
                 dismiss();
                 break;
@@ -117,13 +114,21 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
 
     @Override
     public void interfaceOnClick(View view, int position) {
-        time_slot = delivery_times_list.get(position).getId();
-        date_time = tvDate.getText().toString().trim() + " " + delivery_times_list.get(position).getFrom() + ":" + delivery_times_list.get(position).getTo();
-        Log.e("time_slot", time_slot + "");
-
+        selected_date = delivery_dates_list.get(position).getDate();
+        delivery_times_list.clear();
+        for (int i = 0; i < delivery_dates_list.get(position).getSlots().size(); i++) {
+            delivery_times_list.add(delivery_dates_list.get(i));
+        }
+        if (delivery_times_list.size() == 0) {
+            Toast.makeText(getContext(), getContext().getString(R.string.no_slots_available), Toast.LENGTH_SHORT).show();
+            timesAdapter.notifyDataSetChanged();
+        } else {
+            timesAdapter.notifyDataSetChanged();
+        }
     }
 
     private void submitPreferredDeliveryDate() {
+        date_time = selected_date + " " + selecte_time;
         dialog.show();
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest request = new StringRequest(Request.Method.POST, URLs.submit_delivery_date_url + time_slot, new Response.Listener<String>() {
@@ -140,7 +145,7 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                     dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
                 }
                 dismiss();
-               // Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -161,64 +166,26 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("slot_id", String.valueOf(time_slot));
-                map.put("preferred_delivery_date", tvDate.getText().toString().trim());
+                map.put("preferred_delivery_date", String.valueOf(selected_date));
                 return map;
             }
         };
         requestQueue.add(request);
     }
 
-    private void getDate() {
-        // Get Current Date
-        Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        String due_date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                        daybetween(current_date/*"25/02/2020"*/, due_date /*"28/02/2020"*/, "yyyy-MM-dd");
-                        if (daysDiff < 0) {
-                            Toast.makeText(getContext(), "Please select a valid date!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            tvDate.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
-                            getStoreTimeSlots(prefrences.getStoreId());
-                        }
-                    }
-                }, mYear, mMonth, mDay);
-        datePickerDialog.setTitle("Select Date..");
-        datePickerDialog.show();
-    }
-    public long daybetween(String date1, String date2, String pattern) {
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.ENGLISH);
-        Date Date1 = null, Date2 = null;
-        try {
-            Date1 = sdf.parse(date1);
-            Date2 = sdf.parse(date2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        daysDiff = (Date2.getTime() - Date1.getTime()) / (24 * 60 * 60 * 1000);
-        return (Date2.getTime() - Date1.getTime()) / (24 * 60 * 60 * 1000);
-    }
     private void getStoreTimeSlots(int selectedStoreId) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.POST, URLs.post_preffered_date_url + selectedStoreId, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.post_preffered_date_url + selectedStoreId, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                StoreTimeSLotsResponse timeSLotsResponse = gson.fromJson(response, StoreTimeSLotsResponse.class);
-                delivery_times_list.clear();
+                timeSLotsResponse = gson.fromJson(response, StoreTimeSLotsResponse.class);
+                delivery_dates_list.clear();
                 for (int i = 0; i < timeSLotsResponse.getList().size(); i++) {
-                    delivery_times_list.add(timeSLotsResponse.getList().get(i));
+                    delivery_dates_list.add(timeSLotsResponse.getList().get(i));
                 }
-                timesAdapter.notifyDataSetChanged();
+                datesAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -236,13 +203,6 @@ public class DialogFragmentDeliveryTime extends DialogFragment implements View.O
                 return headerMap;
             }
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("date", tvDate.getText().toString().trim());
-                Log.e("selected_date",tvDate.getText().toString().trim());
-                return map;
-            }
         };
         requestQueue.add(request);
     }

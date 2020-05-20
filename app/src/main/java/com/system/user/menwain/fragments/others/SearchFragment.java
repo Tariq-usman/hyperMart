@@ -143,7 +143,7 @@ public class SearchFragment extends Fragment {
                     search_by_name_list.add(nameResponse.getData().getData().get(i));
                 }
                 if (search_by_name_list.size() == 0) {
-                    Toast.makeText(getContext(), "No such data found!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                 }
                 recyclerView.setAdapter(nameSearchAdapter);
                 nameSearchAdapter.notifyDataSetChanged();

@@ -118,7 +118,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
             public void onClick(View view) {
 
                 cartViewModel.deleteCart(getPosition(holder.getAdapterPosition()));
-                Toast.makeText(context, "Item deleted successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.delete_successfully), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -2,14 +2,10 @@ package com.system.user.menwain.fragments.cart;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,14 +27,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
-import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentDeliveryTime;
-import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentTimeSlots;
+import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.responses.cart.CalculateShippingCostResponse;
 import com.system.user.menwain.utils.URLs;
@@ -48,8 +43,8 @@ import java.util.List;
 import java.util.Map;
 
 public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
-    private TextView mAvailable, mNotAvailable, mAvailItems, mNotAvailItmes;
-    public static TextView mTotalAmount,tvStoreName;
+    private TextView mAvailable, mNotAvailable;
+    public static TextView mTotalAmount, tvStoreName, mAvailItems, mNotAvailItmes;
     private ImageView mBackBtn;
     private LinearLayout mConfirmBtn;
     private int store_id, avail, not_avial;
@@ -61,6 +56,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
+    private List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list_radius = ItemsAvailabilityStoresRadiusAdapter.available_list;
 
 
     @Nullable
@@ -88,7 +84,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         prefrences = new Preferences(getContext());
         getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
-        tvStoreName= view.findViewById(R.id.store_name_avial_not_avial);
+        tvStoreName = view.findViewById(R.id.store_name_avial_not_avial);
         tvStoreName.setText(prefrences.getStoreName());
         mTotalAmount = view.findViewById(R.id.tv_total_amount_avial_items);
         mTotalAmount.setText(price);
@@ -141,6 +137,9 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             if (avail_items_list.size() > 0) {
                 prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
                 calculateShippingCost();
+            } else if (avail_items_list_radius.size() > 0) {
+                prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
+                calculateShippingCost();
             } else {
                 Toast.makeText(getContext(), getContext().getString(R.string.no_items_available), Toast.LENGTH_SHORT).show();
             }
@@ -165,7 +164,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
                     dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
                 } else {
                     //if (pay_status == 2){
-                    DialogFragmentDeliveryTime deliveryTime = new DialogFragmentDeliveryTime();
+                    DialogFragmentTimeSlots deliveryTime = new DialogFragmentTimeSlots();
                     deliveryTime.show(getFragmentManager(), "Select Method");
                 }
                 dialog.dismiss();

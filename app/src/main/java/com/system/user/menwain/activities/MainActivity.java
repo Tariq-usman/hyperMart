@@ -231,16 +231,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             tvCart.setTextColor(Color.parseColor("#00c1bd"));
             mMore.setImageResource(R.drawable.ic_morewhite);
             tvMore.setTextColor(Color.parseColor("#004040"));
-            if (frag_status == 0) {
+            if (prefrences.getToken().isEmpty() || prefrences.getToken() == null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
-            } else if (frag_status == 1) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
-            } else if (frag_status == 2) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
-            } else if (frag_status == 3) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).addToBackStack(null).commit();
-            } else if (frag_status == 4) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AddCardFragment()).addToBackStack(null).commit();
+            } else {
+                if (frag_status == 0) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).addToBackStack(null).commit();
+                } else if (frag_status == 1) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
+                } else if (frag_status == 2) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
+                } else if (frag_status == 3) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment()).addToBackStack(null).commit();
+                } else if (frag_status == 4) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AddCardFragment()).addToBackStack(null).commit();
+                }
             }
         } else if (id == R.id.my_list_layout) {
             prefrences.setBottomNavStatus(4);/*

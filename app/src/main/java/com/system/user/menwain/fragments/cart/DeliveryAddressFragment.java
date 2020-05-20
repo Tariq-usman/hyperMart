@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -55,14 +56,14 @@ import java.util.Map;
 
 public class DeliveryAddressFragment extends Fragment implements View.OnClickListener, RecyclerClickInterface {
 
-    private TextView mTitleView, mConfirmBtn, mPayNow, mPayLater;
+    private TextView mTitleView, mConfirmBtn, mPayNow, mPayLater,tvSelectRadius;
     private ImageView mBackView, mAddNewAddress;
     private String[] address;
     private Double latitude, longitude;
     private RecyclerView recyclerViewAddress, recyclerViewPayNow, recyclerViewPayLater;
     DelivieryAddressesAdapter delivieryAddressesAdapter;
     private PayNaoAdapter payNaoAdapter;
-    private CardView mSearchViewAddress, addNewAddress;
+    private CardView mSearchViewAddress, addNewAddress,selectRadius;
     private SharedPreferences.Editor editor;
     Preferences prefrences;
     private Bundle bundle;
@@ -73,6 +74,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     private AlertDialog dialog;
     private List<UserAddressListResponse.Addresslist> addressList = new ArrayList<UserAddressListResponse.Addresslist>();
     private List<PaymentTypesResponse.DataPayNow> pay_now_list = new ArrayList<PaymentTypesResponse.DataPayNow>();
+    private NumberPicker numberPicker;
 
     @Nullable
     @Override
@@ -81,16 +83,20 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         prefrences = new Preferences(getContext());
         prefrences.setPaymentStatus(1);
         prefrences.setPayRBtnStatus(1);
-
+        bundle = new Bundle();
         customDialog(getContext());
         rBtnPaymentStatus = prefrences.getPayRBtnStatus();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
 
 //        setRadioButtonChecked();
         getUserAddress();
 
         addNewAddress = view.findViewById(R.id.add_address_card_view);
         addNewAddress.setOnClickListener(this);
+        selectRadius = view.findViewById(R.id.select_radius);
+        selectRadius.setOnClickListener(this);
+        tvSelectRadius = view.findViewById(R.id.tv_select_radius);
         rbDeliverToAddress = view.findViewById(R.id.rb_deliver_to_address);
         rbDeliverToAddress.setOnClickListener(this);
         rbPreparePickUp = view.findViewById(R.id.rb_prepare_pick_fr_store);
@@ -148,6 +154,23 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerViewAddress);
 
+        numberPicker = view.findViewById(R.id.number_picker);
+        numberPicker.setMaxValue(0);
+        numberPicker.setMaxValue(60);
+        numberPicker.setWrapSelectorWheel(true);
+        numberPicker.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int value) {
+                return String.format("%02d",value);
+            }
+        });
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                bundle.putInt("selected_radius",newVal);
+//                Toast.makeText(getContext(), "" + newVal, Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 
@@ -211,29 +234,6 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         getUserAddress();
     }
 
-    private void setRadioButtonChecked() {
-
-        if (rBtnPaymentStatus == 1) {
-            rbPreparePickUp.setChecked(false);
-            rbDeliverToAddress.setChecked(true);
-        } else if (rBtnPaymentStatus == 2) {
-            rbPreparePickUp.setChecked(true);
-            rbDeliverToAddress.setChecked(false);
-        } else if (rBtnPaymentStatus == 3) {
-            rbWalkInStore.setChecked(false);
-            rbPreparePickFromStore.setChecked(false);
-            rbCashOnDelivery.setChecked(true);
-        } else if (rBtnPaymentStatus == 4) {
-            rbWalkInStore.setChecked(false);
-            rbPreparePickFromStore.setChecked(true);
-            rbCashOnDelivery.setChecked(false);
-        } else if (rBtnPaymentStatus == 5) {
-            rbWalkInStore.setChecked(true);
-            rbPreparePickFromStore.setChecked(false);
-            rbCashOnDelivery.setChecked(false);
-        }
-    }
-
     @Override
     public void interfaceOnClick(View view, int position) {
         latitude = Double.valueOf(addressList.get(position).getLatitude());
@@ -292,7 +292,6 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             prefrences.setDeliveryAddressId(delivery_address_id);
             ItemsAvailabilityStoresFragment storesFragment = new ItemsAvailabilityStoresFragment();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            bundle = new Bundle();
             prefrences.setDeliverAddress(Double.valueOf(latitude) + " " + Double.valueOf(longitude));
             storesFragment.setArguments(bundle);
             transaction.replace(R.id.nav_host_fragment, storesFragment).addToBackStack(null).commit();
@@ -303,7 +302,13 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             Intent intent = new Intent(getContext(), MapsActivity.class);
             intent.putExtra("address_id", -1);
             startActivity(intent);
-        }
+        }/*else if (id==R.id.select_radius){
+            selectRadius.setBackgroundColor(Color.parseColor("#004040"));
+            tvSelectRadius.setTextColor(Color.parseColor("#FFFFFF"));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                numberPicker.setTextColor(Color.parseColor("#FFFFFF"));
+            }
+        }*/
 
     }
 

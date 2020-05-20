@@ -40,7 +40,6 @@ public class SelectedStoreResponse {
     public void setProduct(Product product) {
         this.product = product;
     }
-
     public class Store {
 
         @SerializedName("id")
@@ -61,6 +60,9 @@ public class SelectedStoreResponse {
         @SerializedName("longitude")
         @Expose
         private String longitude;
+        @SerializedName("mobile")
+        @Expose
+        private String mobile;
         @SerializedName("active_status")
         @Expose
         private String activeStatus;
@@ -162,6 +164,14 @@ public class SelectedStoreResponse {
 
         public void setLongitude(String longitude) {
             this.longitude = longitude;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
         }
 
         public String getActiveStatus() {
@@ -309,7 +319,6 @@ public class SelectedStoreResponse {
         }
 
     }
-
     public class Category {
 
         @SerializedName("id")
@@ -347,7 +356,6 @@ public class SelectedStoreResponse {
         }
 
     }
-
     public class Product {
 
         @SerializedName("current_page")
@@ -482,7 +490,6 @@ public class SelectedStoreResponse {
         public void setTotal(Integer total) {
             this.total = total;
         }
-
         public class Datum {
 
             @SerializedName("id")
@@ -503,6 +510,9 @@ public class SelectedStoreResponse {
             @SerializedName("longitude")
             @Expose
             private String longitude;
+            @SerializedName("mobile")
+            @Expose
+            private String mobile;
             @SerializedName("active_status")
             @Expose
             private String activeStatus;
@@ -607,6 +617,14 @@ public class SelectedStoreResponse {
 
             public void setLongitude(String longitude) {
                 this.longitude = longitude;
+            }
+
+            public String getMobile() {
+                return mobile;
+            }
+
+            public void setMobile(String mobile) {
+                this.mobile = mobile;
             }
 
             public String getActiveStatus() {
@@ -760,7 +778,6 @@ public class SelectedStoreResponse {
             public void setProducts(List<Product_> products) {
                 this.products = products;
             }
-
             public class Product_ {
 
                 @SerializedName("id")
@@ -1027,7 +1044,6 @@ public class SelectedStoreResponse {
                 public void setPivot(Pivot pivot) {
                     this.pivot = pivot;
                 }
-
                 public class Pivot {
 
                     @SerializedName("store_id")
@@ -1047,7 +1063,7 @@ public class SelectedStoreResponse {
                     private String storeProductUrl;
                     @SerializedName("status")
                     @Expose
-                    private Integer status;
+                    private Object status;
                     @SerializedName("other1")
                     @Expose
                     private String other1;
@@ -1104,11 +1120,11 @@ public class SelectedStoreResponse {
                         this.storeProductUrl = storeProductUrl;
                     }
 
-                    public Integer getStatus() {
+                    public Object getStatus() {
                         return status;
                     }
 
-                    public void setStatus(Integer status) {
+                    public void setStatus(Object status) {
                         this.status = status;
                     }
 
@@ -1160,8 +1176,9 @@ public class SelectedStoreResponse {
 
     }
 
-
 }
+
+
 
 
 
