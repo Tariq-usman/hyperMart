@@ -51,24 +51,13 @@ public class AvailableItemsFragment extends Fragment implements RecyclerClickInt
         recyclerViewItemsList = view.findViewById(R.id.recycler_view_available_items_list);
         recyclerViewItemsList.setHasFixedSize(true);
         recyclerViewItemsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        /*if (avail_items_list.size() == 0 && avail_items_list_radius.size() == 0) {
-            Toast.makeText(getContext(), "dslfjsadj", Toast.LENGTH_SHORT).show();
-            availableItemsListAdapter = new AvailableItemsListAdapter(getContext(), avail_items_list, this);
-            recyclerViewItemsList.setAdapter(availableItemsListAdapter);
-
-            availableItemsListRadiusAdapter = new AvailableItemsListRadiusAdapter(getContext(), avail_items_list_radius, this);
-            recyclerViewItemsList.setAdapter(availableItemsListRadiusAdapter);
-
-        } else*/
         try {
             if (avail_items_list.size() > 0) {
-                Toast.makeText(getContext(), "alsdjfaljdflajdfjasldjfld", Toast.LENGTH_SHORT).show();
                 AvailNotAvailItemsListsFragment.mAvailItems.setText(avail_items_list.size()+"");
                 AvailNotAvailItemsListsFragment.mNotAvailItmes.setText(not_avail_items_list.size()+"");
                 availableItemsListAdapter = new AvailableItemsListAdapter(getContext(), avail_items_list, this);
                 recyclerViewItemsList.setAdapter(availableItemsListAdapter);
             } else if (avail_items_list_radius.size() > 0) {
-                Toast.makeText(getContext(), "radius", Toast.LENGTH_SHORT).show();
                 AvailNotAvailItemsListsFragment.mAvailItems.setText(avail_items_list_radius.size()+"");
                 AvailNotAvailItemsListsFragment.mNotAvailItmes.setText(not_avail_items_list_radius.size()+"");
                 availableItemsListRadiusAdapter = new AvailableItemsListRadiusAdapter(getContext(), avail_items_list_radius, this);

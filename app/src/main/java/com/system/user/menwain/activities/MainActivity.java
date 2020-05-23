@@ -176,10 +176,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         String barCode = ScanActivity.barCode;
-        if (barCode != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SearchFragment()).commit();
+        if (barCode == null || barCode == "") {
         } else {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SearchFragment()).commit();
         }
     }
 

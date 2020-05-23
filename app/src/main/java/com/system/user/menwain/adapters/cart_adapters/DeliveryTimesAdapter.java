@@ -48,9 +48,9 @@ public class DeliveryTimesAdapter extends RecyclerView.Adapter<DeliveryTimesAdap
         }
         if (last_position == position) {
             holder.tvTime.setTextColor(Color.parseColor("#00c1bd"));
-            DialogFragmentTimeSlots.time_slot = delivery_times_list.get(position).getSlots().get(position).getId();
+            DialogFragmentTimeSlots.time_slot_id = delivery_times_list.get(position).getSlots().get(position).getId();
             DialogFragmentTimeSlots.selecte_time = delivery_times_list.get(position).getSlots().get(position).getFrom() + ":" + delivery_times_list.get(position).getSlots().get(position).getTo();
-            Log.e("time_id", DialogFragmentTimeSlots.time_slot + "");
+            Log.e("time_id", DialogFragmentTimeSlots.time_slot_id + "");
             // clickInterface.interfaceOnClick(holder.itemView, position);
         } else {
             holder.tvTime.setTextColor(Color.parseColor("#004040"));

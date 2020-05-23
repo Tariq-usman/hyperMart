@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CartFragment extends Fragment implements View.OnClickListener {
 
+    private EditText etSearch;
     private CartViewModel cartViewModel;
     RecyclerView recyclerViewCartItems;
     CartItemsAdapter cartItemsAdapter;
@@ -43,6 +47,8 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     SharedPreferences preferences, fragment_status_pref;
     private Preferences prefrences;
     private List<Integer> cartList = new ArrayList<Integer>();
+    private List<Cart> searchlist = new ArrayList<Cart>();
+
 
 
     @Nullable
@@ -56,11 +62,46 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         recyclerViewCartItems.setHasFixedSize(true);
         recyclerViewCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
 
-       /* mSearchViewCart = getActivity().findViewById(R.id.search_view);
-        mSearchViewCart.setVisibility(View.VISIBLE);*/
-
         mProceedBtn = view.findViewById(R.id.proceed_btn);
         mProceedBtn.setOnClickListener(this);
+        etSearch = view.findViewById(R.id.et_search_cart);
+        etSearch.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length() > 0) {
+                    etSearch.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                } else {
+                    //Assign your image again to the view, otherwise it will always be gone even if the text is 0 again.
+                    etSearch.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
+                }
+                final String query = s.toString().toLowerCase();
+                searchlist.clear();
+                cartViewModel.getCartDataList().observe(getViewLifecycleOwner(), new Observer<List<Cart>>() {
+                    @Override
+                    public void onChanged(List<Cart> carts) {
+                        for (int i = 0; i < carts.size(); i++) {
+                            final String text = carts.get(i).getProduct_name().toLowerCase();
+                            if (text.contains(query)) {
+                                searchlist.add(carts.get(i));
+                            }
+                        }
+                        cartItemsAdapter.setCartData(searchlist, cartViewModel);
+                        cartItemsAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         cartViewModel = ViewModelProviders.of(CartFragment.this).get(CartViewModel.class);
 
@@ -74,7 +115,6 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 } else {
                     tvTotalCartAmount.setText(00.0 + "");
                 }
-
             }
         });
         cartViewModel.getCartDataList().observe(getViewLifecycleOwner(), new Observer<List<Cart>>() {
@@ -87,14 +127,11 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         });
 
         getCartData();
-
-
         return view;
     }
 
     private void getCartData() {
         cartItemsAdapter = new CartItemsAdapter();
-
         recyclerViewCartItems.setAdapter(cartItemsAdapter);
         cartViewModel.getCartDataList().observe(getViewLifecycleOwner(), new Observer<List<Cart>>() {
             @Override
@@ -103,15 +140,12 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 cartItemsAdapter.notifyDataSetChanged();
             }
         });
-
     }
-
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         DeliveryAddressFragment fragment = new DeliveryAddressFragment();
-
         if (id == R.id.proceed_btn) {
             cartViewModel.getCartDataList().observe(CartFragment.this, new Observer<List<Cart>>() {
                 @Override
@@ -129,14 +163,12 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                     logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getActivity().startActivity(logInIntnet);
                 } else {
-
                     if (cartList.size() == 0) {
                         Toast.makeText(getContext(), getContext().getString(R.string.cart_is_empty), Toast.LENGTH_SHORT).show();
                     } else {
                         prefrences.setCartFragStatus(1);
                         prefrences.setOrderStatus(1);
                         getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
-
                     }
                 }
             }

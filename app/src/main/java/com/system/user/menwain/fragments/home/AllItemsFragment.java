@@ -20,8 +20,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -32,8 +34,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.home_adapters.grid_adapters.ShopItemsGridAdapter;
 import com.system.user.menwain.adapters.home_adapters.list_adapters.ShopItemsListAdapter;
+import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.home_adapters.grid_adapters.ExploreItemsGridAdapter;
@@ -51,9 +55,10 @@ import java.util.List;
 import java.util.Map;
 
 public class AllItemsFragment extends Fragment implements View.OnClickListener {
+    private EditText etSearch;
+    private ImageView mBarCodeScanner, ivSearch, ivBack, ivListGridView;
     private RecyclerView recyclerViewAllitem;
     private LinearLayoutManager linearLayoutManager;
-    private ImageView ivGridListView, ivBack, ivListGridView, ivMenu;
     private boolean isList = false;
     private String val;
     Bundle bundle;
@@ -76,7 +81,12 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         customDialog(getContext());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        searchViewAllItems = view.findViewById(R.id.search_view);
+        ivSearch =view.findViewById(R.id.iv_search_all);
+        ivSearch.setOnClickListener(this);
+        mBarCodeScanner =view.findViewById(R.id.bar_code_scanner_all);
+        mBarCodeScanner.setOnClickListener(this);
+        etSearch = view.findViewById(R.id.et_search_all);
+
         ivListGridView = view.findViewById(R.id.iv_grid_list_view);
         ivListGridView.setVisibility(View.VISIBLE);
         ivListGridView.setImageResource(R.drawable.ic_list_view);
@@ -123,6 +133,22 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                 ivBack.setVisibility(View.INVISIBLE);
                 ivListGridView.setVisibility(View.INVISIBLE);
 
+                break;
+            case R.id.iv_search_home:
+                Bundle bundle = new Bundle();
+                SearchFragment fragment = new SearchFragment();
+                if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
+                } else {
+                    bundle.putString("search", etSearch.getText().toString().trim());
+                    etSearch.setText("");
+                    fragment.setArguments(bundle);
+                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                }
+                break;
+            case R.id.bar_code_code_scanner_home:
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
                 break;
             case R.id.iv_grid_list_view:
                 if (val.equals("1")) {

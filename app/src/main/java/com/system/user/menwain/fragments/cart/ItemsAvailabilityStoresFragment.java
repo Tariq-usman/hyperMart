@@ -118,6 +118,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         }
 
         etSearch = view.findViewById(R.id.et_search_availability_store);
+        etSearch.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
         mSortByPrice = view.findViewById(R.id.sort_by_price_view);
         mSortByDistance = view.findViewById(R.id.sort_by_distance);
         mSortByAvailability = view.findViewById(R.id.sort_by_availability);
@@ -141,20 +142,34 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String query = s.toString().toLowerCase();
-                filter_list.clear();
-                for (int i = 0; i < stores_list.size(); i++) {
-                    final String text = stores_list.get(i).getName().toLowerCase();
-                    if (text.contains(query)) {
-                        filter_list.add(stores_list.get(i));
-                    }
+                if (s.toString().length() > 0) {
+                    etSearch.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                } else {
+                    //Assign your image again to the view, otherwise it will always be gone even if the text is 0 again.
+                    etSearch.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
                 }
-                /*if (filter_list.size() == 0) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
-                } else {*/
-                itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), filter_list, lat, lang);
-                recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
-//                }
+                String query = s.toString().toLowerCase();
+                if (stores_list.size() > 0) {
+                    filter_list.clear();
+                    for (int i = 0; i < stores_list.size(); i++) {
+                        final String text = stores_list.get(i).getName().toLowerCase();
+                        if (text.contains(query)) {
+                            filter_list.add(stores_list.get(i));
+                        }
+                    }
+                    itemsAvailabilityStoresAdapter = new ItemsAvailabilityStoresAdapter(getContext(), filter_list, lat, lang);
+                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresAdapter);
+                } else {
+                    filter_list_radius.clear();
+                    for (int i = 0; i < stores_list_radius.size(); i++) {
+                        final String text = stores_list_radius.get(i).getName().toLowerCase();
+                        if (text.contains(query)) {
+                            filter_list_radius.add(stores_list_radius.get(i));
+                        }
+                    }
+                    itemsAvailabilityStoresRadiusAdapter = new ItemsAvailabilityStoresRadiusAdapter(getContext(), filter_list_radius, lat, lang);
+                    recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilityStoresRadiusAdapter);
+                }
             }
 
             @Override

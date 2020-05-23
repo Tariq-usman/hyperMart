@@ -236,9 +236,10 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void interfaceOnClick(View view, int position) {
+        delivery_address_id = addressList.get(position).getId();
+        prefrences.setDeliveryAddressId(delivery_address_id);
         latitude = Double.valueOf(addressList.get(position).getLatitude());
         longitude = Double.valueOf(addressList.get(position).getLongitude());
-        delivery_address_id = addressList.get(position).getId();
     }
 
     @Override

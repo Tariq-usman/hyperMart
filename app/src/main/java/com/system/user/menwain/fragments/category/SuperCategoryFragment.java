@@ -2,6 +2,7 @@ package com.system.user.menwain.fragments.category;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
@@ -59,6 +61,7 @@ public class SuperCategoryFragment extends Fragment {
 
         ivSearch = view.findViewById(R.id.iv_search_sup_cat);
         etSearhText = view.findViewById(R.id.et_search_sup_cat);
+        mBarCodeScanner =view.findViewById(R.id.bar_code_scanner_sup_cat);
         customDialog(getContext());
         getSuperCategoryData();
 
@@ -68,13 +71,20 @@ public class SuperCategoryFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 SearchFragment fragment = new SearchFragment();
                 if (etSearhText.getText().toString().trim().isEmpty() || etSearhText.getText().toString().trim() == null) {
-                    Toast.makeText(getContext(), "Enter Your desire search..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
                     bundle.putString("search", etSearhText.getText().toString().trim());
                     etSearhText.setText("");
                     fragment.setArguments(bundle);
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
                 }
+            }
+        });
+        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
             }
         });
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_category);

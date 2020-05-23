@@ -76,7 +76,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (preferences.getBottomNavStatus() == 1) {
-                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(),"Home").commit();
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
                 } else if (preferences.getBottomNavStatus() == 2) {
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).commit();
                 } else if (preferences.getBottomNavStatus() == 2) {
@@ -109,12 +109,14 @@ public class SearchFragment extends Fragment {
                 }
                 recyclerView.setAdapter(codeSearchAdapter);
                 codeSearchAdapter.notifyDataSetChanged();
+                ScanActivity.barCode="";
                 dialog.dismiss();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                ScanActivity.barCode="";
                 Log.e("error_response", error.toString());
                 dialog.dismiss();
             }

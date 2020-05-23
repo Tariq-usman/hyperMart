@@ -63,6 +63,7 @@ public class AllListsFragment extends Fragment {
         customDialog(getContext());
 
         etSearchList = view.findViewById(R.id.et_search_my_list);
+        etSearchList.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
 
         recyclerViewAllLists = view.findViewById(R.id.recycler_view_all_lists);
         recyclerViewAllLists.setHasFixedSize(true);
@@ -79,6 +80,12 @@ public class AllListsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length() > 0) {
+                    etSearchList.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                } else {
+                    //Assign your image again to the view, otherwise it will always be gone even if the text is 0 again.
+                    etSearchList.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
+                }
                 String query = s.toString().toLowerCase();
                 filter_orders_list.clear();
                 for (int i = 0; i < orders_list.size(); i++) {

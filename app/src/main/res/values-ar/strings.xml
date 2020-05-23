@@ -27,6 +27,7 @@
     <string name="no_slots_available">لا توجد فترات زمنية متاحة</string>
     <string name="delete_successfully">تم حذف العنصر بنجاح</string>
     <string name="no_data_found">لم يتم العثور على مثل هذه البيانات!</string>
+    <string name="enter_desire_search">أدخل البحث عن رغبتك ..</string>
 
     <!--Home Fragment-->
     <string name="explore_shop">استكشاف وتسوق</string>

@@ -82,6 +82,8 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     private OrderSuccessfulFragment fragment;
     private FragmentTransaction transaction;
     private Bundle bundle;
+    private SimpleDateFormat dateFormat;
+    String date_time;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,6 +91,9 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         customDialog(getContext());
         bundle = new Bundle();
+        Date current_time = Calendar.getInstance().getTime();
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm aa");
+        date_time = dateFormat.format(current_time);
 
         Random r = new Random();
         order_no = r.nextInt(max - min) + min;
@@ -147,6 +152,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     }
 
     private void placeOrderAndAddToWishList() {
+        Log.e("list_size", avail_items_list.size() + "");
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
@@ -170,11 +176,15 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             jsonObj.put("order_status", "pending");
             jsonObj.put("order_dispatch_id", 0);
             jsonObj.put("payment_method_id", preferences.getPaymentStatus());
-            jsonObj.put("wishlist_name", etListName.getText().toString().trim());
+            if (etListName.getText().toString().trim().isEmpty() || etListName.getText().toString().trim() == "") {
+                jsonObj.put("wishlist_name", date_time);
+            } else {
+                jsonObj.put("wishlist_name", etListName.getText().toString().trim());
+            }
             jsonObj.put("other", "next");
 
             JSONArray jsonArray = new JSONArray();
-            if (avail_items_list.size() == 0) {
+            if (avail_items_list.size() > 0) {
                 for (int i = 0; i < avail_items_list.size(); i++) {
                     JSONObject object = new JSONObject();
                     try {
@@ -210,6 +220,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URLs.place_order_add_wish_list, jsonObj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+
                 cartViewModel.deleteAllCartRecords();
                 preferences.setCartFragStatus(0);
                 bundle.putString("order_no", String.valueOf(order_no));

@@ -40,7 +40,7 @@ import java.util.List;
 public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProductsAdapter.FilterItemViewHolder> {
     Context context;
     String imagePath;
-    List<CategoryResponse.Products.Datum_> subCatergoryList;
+    List<CategoryResponse.Products.Datum_> category_products_list;
     private CartViewModel cartViewModel;
     Bundle bundle;
     Preferences prefrences;
@@ -54,9 +54,9 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
     int id, pro_quantity;
     FileOutputStream fos = null;
 
-    public CategoryProductsAdapter(Context context, List<CategoryResponse.Products.Datum_> subCatergoryList) {
+    public CategoryProductsAdapter(Context context, List<CategoryResponse.Products.Datum_> category_products_list) {
         this.context = context;
-        this.subCatergoryList = subCatergoryList;
+        this.category_products_list = category_products_list;
         prefrences = new Preferences(context);
     }
 
@@ -71,10 +71,10 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
     @Override
     public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
 
-        Glide.with(holder.mFilteProduct.getContext()).load(subCatergoryList.get(position).getImage()).into(holder.mFilteProduct);
-        holder.mProductNameView.setText(subCatergoryList.get(position).getName());
+        Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getImage()).into(holder.mFilteProduct);
+        holder.mProductNameView.setText(category_products_list.get(position).getName());
         //  holder.mStoreName.setText(subCatergoryList.get(position).getBrand());
-        holder.mPriceFilterItem.setText(subCatergoryList.get(position).getLowestPrice().toString());
+        holder.mPriceFilterItem.setText(category_products_list.get(position).getLowestPrice().toString());
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +105,7 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle.putString("status", "2");
-                bundle.putInt("product_id", subCatergoryList.get(position).getId());
+                bundle.putInt("product_id", category_products_list.get(position).getId());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).commit();
             }
@@ -115,12 +115,12 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
             @Override
             public void onClick(View view) {
                 try {
-                    productId = subCatergoryList.get(position).getId();
+                    productId = category_products_list.get(position).getId();
                     Drawable drawable = holder.mFilteProduct.getDrawable();
                     Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                    productName = subCatergoryList.get(position).getName();
+                    productName = category_products_list.get(position).getName();
                     //  storeName = holder.mStoreName.getText().toString();
-                    price = subCatergoryList.get(position).getLowestPrice().toString();
+                    price = category_products_list.get(position).getLowestPrice().toString();
                     quantity = holder.mItemCounter.getText().toString();
                     // strTotalPrice = price;
                     totalPrice = Float.parseFloat(price);
@@ -174,7 +174,7 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
 
     @Override
     public int getItemCount() {
-        return subCatergoryList.size();
+        return category_products_list.size();
     }
 
     public static class FilterItemViewHolder extends RecyclerView.ViewHolder {

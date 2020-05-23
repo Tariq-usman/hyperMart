@@ -100,7 +100,7 @@ public class AddCardFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 int card_id = card_list.get(position).getId();
-                deleteAddress(position, card_id);
+                deleteCard(position, card_id);
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -142,7 +142,7 @@ public class AddCardFragment extends Fragment {
         requestQueue.add(request);
     }
 
-    private void deleteAddress(final int position, final int card_id) {
+    private void deleteCard(final int position, final int card_id) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest request = new StringRequest(Request.Method.POST, URLs.delete_card_url + card_id, new Response.Listener<String>() {

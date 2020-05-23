@@ -1,9 +1,7 @@
 package com.system.user.menwain.fragments.cart.dialog_fragments;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -22,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -32,10 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.system.user.menwain.R;
-import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.fragments.cart.AddCardFragment;
 import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
-import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.utils.URLs;
 
@@ -47,11 +42,10 @@ import java.util.Map;
 
 public class DialogFragmentAddCard extends DialogFragment {
 
-    TextView mConfirm, tvPayableAmount;
+    TextView mConfirm;
     private EditText etCardHolderName, etCardNumber, etCVC, etExpiry, etZipCode,etCardName, etBillingAddress;
-    private ImageView mBackBtnPay, mBarCodeScanner;
+    private ImageView mCloseBtn;
     private Preferences prefrences;
-    private CardView mSearchView;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     int count = 0;
@@ -70,28 +64,14 @@ public class DialogFragmentAddCard extends DialogFragment {
         etCardName = view.findViewById(R.id.et_card_name_add_card);
         etBillingAddress = view.findViewById(R.id.et_billing_address_add_card);
 
-        mSearchView = getActivity().findViewById(R.id.search_view);
-        mSearchView.setVisibility(View.INVISIBLE);
-        mBarCodeScanner = getActivity().findViewById(R.id.bar_code_code_scanner_home);
-        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ScanActivity.class);
-                startActivity(intent);
-            }
-        });
         prefrences = new Preferences(getContext());
         mConfirm = view.findViewById(R.id.confirm_btn_add_card);
 
-        mBackBtnPay = getActivity().findViewById(R.id.iv_back);
-        mBackBtnPay.setVisibility(View.VISIBLE);
-        mBackBtnPay.setOnClickListener(new View.OnClickListener() {
+        mCloseBtn = view.findViewById(R.id.close_back_view);
+        mCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prefrences.setCartFragStatus(3);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AvailNotAvailItemsListsFragment())
-                        .addToBackStack(null).commit();
-
+               dismiss();
             }
         });
 
@@ -196,9 +176,6 @@ public class DialogFragmentAddCard extends DialogFragment {
                 } else {
                     addCard();
                 }
-                /*getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment())
-                        .addToBackStack(null).commit();*/
-//                prefrences.setCartFragStatus(0);
             }
         });
         return view;

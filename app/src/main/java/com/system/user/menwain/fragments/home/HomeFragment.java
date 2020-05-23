@@ -182,7 +182,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Bundle bundle = new Bundle();
                 SearchFragment fragment = new SearchFragment();
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
-                    Toast.makeText(getContext(), "Enter Your desire search..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
                     bundle.putString("search", etSearch.getText().toString().trim());
                     etSearch.setText("");

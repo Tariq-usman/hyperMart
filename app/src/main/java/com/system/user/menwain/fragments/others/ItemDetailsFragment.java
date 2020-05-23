@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -40,6 +42,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.ItemReviewsAdapter;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
@@ -64,6 +67,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDetailsFragment extends Fragment implements View.OnClickListener {
+    private EditText etSearch;
     private List<ProductDetailsResponse.Data.Productpic> related_items_list = new ArrayList<ProductDetailsResponse.Data.Productpic>();
     private RecyclerView recyclerViewRelateItems;
     private SelectedItemsFilterAdapter selectedItemsFilterAdapter;
@@ -75,7 +79,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
 
     TextView mDescription, mSpecification, mReviews, tvDescription, tvSpecifications;
     private TextView tvPrice, tvStoreName, tvTitle, tvReviewsCount, tvQuantity, mAddToCart;
-    private ImageView mBack, mBarCodeScanner, ivIncreaseItem, ivDecreaseItem;
+    private ImageView mBack,mSearch, mBarCodeScanner, ivIncreaseItem, ivDecreaseItem;
     private RatingBar ratingBar;
     Bundle bundle;
     private String status, productName, imagePath, storeName, price, quantity;
@@ -117,13 +121,10 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         } else {
             Toast.makeText(getContext(), "No product selected", Toast.LENGTH_SHORT).show();
         }
-        mSearchView = view.findViewById(R.id.search_view);
-        //mSearchView.setVisibility(View.INVISIBLE);
         mPager = view.findViewById(R.id.item_detail_pager);
         tabLayout = view.findViewById(R.id.tab_layout_item_details);
         tvDescription = view.findViewById(R.id.tv_description);
         tvSpecifications = view.findViewById(R.id.tv_specifications);
-        //layoutSpecifications = view.findViewById(R.id.layout_specification);
 
         tvPrice = view.findViewById(R.id.price_item_details);
         tvStoreName = view.findViewById(R.id.store_name_item_details);
@@ -131,6 +132,32 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         tvReviewsCount = view.findViewById(R.id.reviews_count);
         tvQuantity = view.findViewById(R.id.quantity_item_details);
         ratingBar = view.findViewById(R.id.ratingBar_item_details);
+
+        mSearch = view.findViewById(R.id.iv_search_details);
+        etSearch = view.findViewById(R.id.et_search_details);
+        mBarCodeScanner = view.findViewById(R.id.bar_code_scanner_details);
+        mSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                SearchFragment fragment = new SearchFragment();
+                if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
+                } else {
+                    bundle.putString("search", etSearch.getText().toString().trim());
+                    etSearch.setText("");
+                    fragment.setArguments(bundle);
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                }
+            }
+        });
+        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
+            }
+        });
 
         ivDecreaseItem = view.findViewById(R.id.decrees_count_item_details);
         ivDecreaseItem.setOnClickListener(new View.OnClickListener() {
@@ -371,13 +398,10 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
             mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.add_to_cart_item_details) {
-//            Drawable drawable = holder.mFilteProduct.getDrawable();
-//            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             productName = tvTitle.getText().toString();
             storeName = tvStoreName.getText().toString();
             price = tvPrice.getText().toString();
             quantity = tvQuantity.getText().toString();
-            // strTotalPrice = price;
             totalPrice = Float.parseFloat(price);
             intQuantity = Integer.parseInt(quantity);
             unitPrice = totalPrice * intQuantity;

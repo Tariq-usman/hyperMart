@@ -1,7 +1,6 @@
 package com.system.user.menwain.fragments.cart.dialog_fragments;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,13 +32,9 @@ import com.system.user.menwain.adapters.cart_adapters.DeliveryTimesAdapter;
 import com.system.user.menwain.responses.cart.StoreTimeSLotsResponse;
 import com.system.user.menwain.utils.URLs;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -53,7 +47,7 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
     private int mYear;
     private int mMonth;
     private int mDay;
-    public static int time_slot;
+    public static int time_slot_id;
     TextView mConfirm, mTitleView, tvDate, tvDeliveryPickUp;
     ImageView mCloseBtn;
     public static String selected_date, selecte_time, date_time;
@@ -104,7 +98,11 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.confirm_btn_delivery_time:
-                submitPreferredDeliveryDate();
+                if (delivery_times_list.size() == 0) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_slots_available), Toast.LENGTH_SHORT).show();
+                } else {
+                    submitPreferredDeliveryDate();
+                }
                 break;
             case R.id.close_back_view:
                 dismiss();
@@ -131,12 +129,12 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
         date_time = selected_date + " " + selecte_time;
         dialog.show();
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        StringRequest request = new StringRequest(Request.Method.POST, URLs.submit_delivery_date_url + time_slot, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, URLs.submit_delivery_date_url + time_slot_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 prefrences.setCartFragStatus(4);
                 prefrences.setDateTime(date_time);
-                prefrences.setTimeSlotId(time_slot);
+                prefrences.setTimeSlotId(time_slot_id);
 
                 if (prefrences.getPaymentStatus() == 1) {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AddCardFragment()).commit();
@@ -165,7 +163,7 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("slot_id", String.valueOf(time_slot));
+                map.put("slot_id", String.valueOf(time_slot_id));
                 map.put("preferred_delivery_date", String.valueOf(selected_date));
                 return map;
             }

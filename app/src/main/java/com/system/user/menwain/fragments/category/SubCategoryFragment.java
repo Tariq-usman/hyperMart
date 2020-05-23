@@ -2,6 +2,7 @@ package com.system.user.menwain.fragments.category;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,11 +32,13 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryAdapter;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryProductsAdapter;
 import com.system.user.menwain.adapters.category_adapters.SubCategoryProductsFinalAdapter;
 import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.adapters.search.NameSearchAdapter;
+import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.category.SubCategoryProductsFinalResponse;
@@ -86,15 +89,27 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         });
         mSearch = view.findViewById(R.id.iv_search_sub_cat);
         etSearch = view.findViewById(R.id.et_search_sub_cat);
+        mBarCodeScanner = view.findViewById(R.id.bar_code_scanner_sub_cat);
         mSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                SearchFragment fragment = new SearchFragment();
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
-                    Toast.makeText(getContext(), "Enter Your desire search..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
-                    String name = etSearch.getText().toString().trim();
-                    searchProductByName(name);
+                    bundle.putString("search", etSearch.getText().toString().trim());
+                    etSearch.setText("");
+                    fragment.setArguments(bundle);
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
                 }
+            }
+        });
+        mBarCodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
             }
         });
 

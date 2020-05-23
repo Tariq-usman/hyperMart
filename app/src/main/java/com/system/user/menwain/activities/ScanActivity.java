@@ -128,7 +128,6 @@ public class ScanActivity extends AppCompatActivity implements ZBarScannerView.R
         Log.v("uuuu", result.getBarcodeFormat().getName()); // Prints the scan format (qrcode, pdf417 etc.)
         barCode = result.getContents();
         Toast.makeText(this, "" + result.getContents(), Toast.LENGTH_SHORT).show();
-//        MainActivity.tvresult.setText(result.getContents());
         onBackPressed();
 
         // If you would like to resume scanning, call this method below:

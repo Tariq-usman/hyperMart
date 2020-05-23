@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.MapsActivity;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.cart.PaymentTypesResponse;
 import com.system.user.menwain.responses.cart.UserAddressListResponse;
 
@@ -35,11 +36,13 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
     Context context;
     private RecyclerClickInterface clickInterface;
     private int lastPositon = 0;
+    private Preferences preferences;
 
     public DelivieryAddressesAdapter(Context applicationContext, List<UserAddressListResponse.Addresslist> addressList, RecyclerClickInterface clickInterface) {
         this.addressList = addressList;
         this.clickInterface = clickInterface;
         this.context = applicationContext;
+        preferences = new Preferences(context);
         //texts = new String[address.length];
     }
 
@@ -56,6 +59,7 @@ public class DelivieryAddressesAdapter extends RecyclerView.Adapter<DelivieryAdd
 
         if (addressList.size() > 0) {
             if (lastPositon == position) {
+              //  preferences.setDeliveryAddressId(addressList.get(position).getId());
                 holder.mAddressesView.setBackgroundColor(Color.parseColor("#004040"));
                 holder.mMainAddress.setTextColor(Color.parseColor("#FFFFFF"));
                 holder.mEditBtn.setImageResource(R.drawable.ic_edit_white);
