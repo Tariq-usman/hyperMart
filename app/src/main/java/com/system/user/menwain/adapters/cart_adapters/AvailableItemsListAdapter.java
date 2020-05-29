@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.local_db.entity.Cart;
+import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.category.CategoryFragment;
@@ -33,8 +36,10 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
     int addAmount, current_amount, final_amount;
     int pos;
     int total_amount = 0/*Integer.parseInt(AvailNotAvailItemsListsFragment.mTotalAmount.getText().toString())*/;
+    private List<Cart> cartList = new ArrayList<>();
     public static List<Integer> quantity_list = new ArrayList<>();
     public static List<Integer> amount_list = new ArrayList<>();
+    private CartViewModel cartViewModel;
 
     public AvailableItemsListAdapter(Context context, List<AvailNotAvailResponse.Datum.Available> avail_items_list, RecyclerClickInterface clickInterface) {
         this.avail_items_list = avail_items_list;
@@ -140,10 +145,22 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }
         });
+        holder.deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                avail_items_list.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, avail_items_list.size());
+                notifyDataSetChanged();
+            }
+        });
 
 
     }
-
+    public Cart getPosition(int position)
+    {
+        return cartList.get(position);
+    }
     @Override
     public int getItemCount() {
         if (avail_items_list != null) {
@@ -155,7 +172,7 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
 
     public static class ItemsListViewHolder extends RecyclerView.ViewHolder {
         private TextView mProductNameView, mStoreName, mAmount, mAvilNotAvailItemsView;
-        private ImageView mIncreaseAvailItems, mDecreaseAvailItems, ivProduct;
+        private ImageView mIncreaseAvailItems, mDecreaseAvailItems, ivProduct, deleteItem;
 
         public ItemsListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -166,6 +183,7 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
             mAvilNotAvailItemsView = itemView.findViewById(R.id.view_avil_not_avil_items);
             mIncreaseAvailItems = itemView.findViewById(R.id.increase_available_items);
             mDecreaseAvailItems = itemView.findViewById(R.id.decrees_available_items);
+            deleteItem = itemView.findViewById(R.id.delete_avail_item);
         }
     }
 }

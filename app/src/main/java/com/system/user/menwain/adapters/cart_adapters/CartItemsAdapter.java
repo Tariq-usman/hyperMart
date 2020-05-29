@@ -73,18 +73,14 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
                 count[0] = count[0] + 1;
                 holder.mCartQuantity.setText(""+ count[0]);
                 int quant = count[0];
-
                 String price = holder.mCartPrice.getText().toString();
                 String strTotalPrice = price.substring(1,price.length());
                 float fTotalPrice = Float.parseFloat(strTotalPrice);
-
                 for (int i=0;i<unit_price.size();i++){
                      unitPrice = unit_price.get(position);
                 }
 //                float unitPrice = Float.parseFloat(holder.mCartPrice.getText().toString().substring(1));
-
                 float finalPrice = unitPrice + fTotalPrice;
-
                 UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(cartList.get(position).getId(), quant, finalPrice);
                 cartViewModel.updateCartQuantity(updateCartQuantity);
             }
@@ -97,7 +93,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
                     count[0] = count[0] - 1;
                     holder.mCartQuantity.setText("" + count[0]);
                     int quant = count[0];
-
                     String price = holder.mCartPrice.getText().toString();
                     String strTotalPrice = price.substring(1,price.length());
                     float fTotalPrice = Float.parseFloat(strTotalPrice);
@@ -105,7 +100,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
                         unitPrice = unit_price.get(position);
                     }
                     float finalPrice = fTotalPrice - unitPrice ;
-
                     UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(cartList.get(position).getId(), quant, finalPrice);
                     cartViewModel.updateCartQuantity(updateCartQuantity);
                 }else if (holder.mCartQuantity.getText().toString().length()==1){
@@ -116,7 +110,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
         holder.imgDeleteCartItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 cartViewModel.deleteCart(getPosition(holder.getAdapterPosition()));
                 Toast.makeText(context, context.getString(R.string.delete_successfully), Toast.LENGTH_SHORT).show();
             }

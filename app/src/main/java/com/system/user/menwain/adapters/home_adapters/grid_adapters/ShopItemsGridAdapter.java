@@ -15,27 +15,35 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
 import com.system.user.menwain.local_db.entity.Cart;
+import com.system.user.menwain.local_db.model.UpdateCartQuantity;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.responses.home.ShopSeeAllResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdapter.AllItemsGridViewHolder> {
     Context context;
-    private  List<ShopSeeAllResponse.Datum> shop_list;
+    private List<ShopSeeAllResponse.Datum> shop_list;
     private CartViewModel cartViewModel;
     int productId, intQuantity;
-    String imagePath,productName, storeName, price, quantity, strTotalPrice;
+    String imagePath, productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
+    UpdateCartQuantity updateCartQuantity;
+    int id, pro_quantity;
+    private List<Integer> p_id_list = new ArrayList<Integer>();
+    List<Integer> quantity_list = new ArrayList<Integer>();
+
     public ShopItemsGridAdapter(Context applicationContext, List<ShopSeeAllResponse.Datum> shop_list) {
         this.context = applicationContext;
         this.shop_list = shop_list;
@@ -45,7 +53,7 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
     @NonNull
     @Override
     public AllItemsGridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_filter_items,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_filter_items, parent, false);
         AllItemsGridViewHolder viewHolder = new AllItemsGridViewHolder(view);
         return viewHolder;
     }
@@ -79,26 +87,59 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
         holder.mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productId = shop_list.get(position).getId();
-                Drawable drawable = holder.mFilteProduct.getDrawable();
-                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                productName = holder.mProductNameView.getText().toString();
-               // storeName = holder.mStoreName.getText().toString();
-                price = holder.mPriceFilterItem.getText().toString();
-                quantity = holder.mItemCounter.getText().toString();
-                // strTotalPrice = price;
-                totalPrice = Float.parseFloat(price);
-                intQuantity = Integer.parseInt(quantity);
-                unitPrice = totalPrice * intQuantity;
-                saveToInternalStorage(bitmap);
+                try {
+                    productId = shop_list.get(position).getId();
+                    Drawable drawable = holder.mFilteProduct.getDrawable();
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    productName = holder.mProductNameView.getText().toString();
+                    // storeName = holder.mStoreName.getText().toString();
+                    price = holder.mPriceFilterItem.getText().toString();
+                    quantity = holder.mItemCounter.getText().toString();
+                    // strTotalPrice = price;
+                    totalPrice = Float.parseFloat(price);
+                    intQuantity = Integer.parseInt(quantity);
+                    unitPrice = totalPrice * intQuantity;
+                    saveToInternalStorage(bitmap);
 
-                cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
-                Cart cart = new Cart(productId, imagePath,productName, storeName, totalPrice, unitPrice, intQuantity);
-                //UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity);
-                cartViewModel.insertCart(cart);
-                //cartViewModel.insertAllCart(cart, updateCartQuantity);
-                Toast.makeText(context, "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                    cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
+                    Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
+                    cartViewModel.getCartDataList().observe((FragmentActivity) context, new Observer<List<Cart>>() {
+                        @Override
+                        public void onChanged(List<Cart> carts) {
+
+                            for (int i = 0; i < carts.size(); i++) {
+                                p_id_list.add(carts.get(i).getP_id());
+                                quantity_list.add(carts.get(i).getQuantity());
+                            }
+                        }
+                    });
+                    if (p_id_list.size() == 0) {
+                        cartViewModel.insertCart(cart);
+                        Toast.makeText(context, context.getString(R.string.insert_success), Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        for (int i = 0; i < p_id_list.size(); i++) {
+                            if (p_id_list.get(i) == productId) {
+                                id = p_id_list.get(i);
+                                pro_quantity = quantity_list.get(i);
+                            }
+                        }
+
+                        if (id == productId) {
+                            int final_quantity = intQuantity + pro_quantity;
+                            updateCartQuantity = new UpdateCartQuantity(productId, intQuantity, unitPrice);
+                            cartViewModel.updateCartQuantity(updateCartQuantity);
+                            Toast.makeText(context, context.getString(R.string.update_success), Toast.LENGTH_SHORT).show();
+                        } else {
+                            cartViewModel.insertCart(cart);
+                            Toast.makeText(context, context.getString(R.string.insert_success), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
         });
     }
 
@@ -107,10 +148,11 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
         return shop_list.size();
     }
 
-    public class AllItemsGridViewHolder extends RecyclerView.ViewHolder{
+    public class AllItemsGridViewHolder extends RecyclerView.ViewHolder {
         private TextView mProductNameView, mStoreName, mItemCounter, mPriceFilterItem;
         private CardView mAddToCart;
         private ImageView mFilteProduct, mIncreaseItems, mDecreaseItems;
+
         public AllItemsGridViewHolder(@NonNull View itemView) {
             super(itemView);
             mFilteProduct = itemView.findViewById(R.id.view_filter_product);
@@ -123,6 +165,7 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
             mPriceFilterItem = itemView.findViewById(R.id.price_view_filter_item);
         }
     }
+
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(context);
         // path to /data/data/yourapp/app_data/imageDir

@@ -75,12 +75,18 @@ public class SearchFragment extends Fragment {
         searchBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int more_status = preferences.getMoreFragStatus();
+                int stores_fragment_status = preferences.getMoreStoresFragStatus();
                 if (preferences.getBottomNavStatus() == 1) {
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
                 } else if (preferences.getBottomNavStatus() == 2) {
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).commit();
-                } else if (preferences.getBottomNavStatus() == 2) {
-                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new StoresFragment()).commit();
+                } else if (preferences.getBottomNavStatus() == 5) {
+                    if (more_status == 1) {
+                       // if (stores_fragment_status == 2) {
+                            getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new StoresFragment()).commit();
+                       // }
+                    }
                 }
             }
         });

@@ -2,6 +2,7 @@ package com.system.user.menwain.fragments.more.stores;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
@@ -12,9 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,7 +28,9 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.more_adapters.CategoryProductsAdapter;
+import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
@@ -48,8 +53,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SelectedStoreFragment extends Fragment implements RecyclerClickInterface {
+public class SelectedStoreFragment extends Fragment implements RecyclerClickInterface, View.OnClickListener {
 
+    private ImageView mBarCodeScanner, ivSearch;
+    private EditText etSearch;
     private RecyclerView recyclerViewSelectedStore, recyclerViewFilterStores, recyclerViewCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
     private ImageView ivBackBtnSelectedStore, ivSelectedStore;
@@ -88,8 +95,12 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         stars.getDrawable(1).setColorFilter(getContext().getResources().getColor(R.color.yellowColor), PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(2).setColorFilter(getContext().getResources().getColor(R.color.yellowColor), PorterDuff.Mode.SRC_ATOP);
 
-       /* mSearchViewSelecredStore = getActivity().findViewById(R.id.search_view);
-        mSearchViewSelecredStore.setVisibility(View.VISIBLE);*/
+        ivSearch =view.findViewById(R.id.iv_search_selected_store);
+        ivSearch.setOnClickListener(this);
+        mBarCodeScanner =view.findViewById(R.id.bar_code_scanner_selected_store);
+        mBarCodeScanner.setOnClickListener(this);
+        etSearch = view.findViewById(R.id.et_search_selected_store);
+
         ivBackBtnSelectedStore = view.findViewById(R.id.iv_back_selected_stores);
         ivBackBtnSelectedStore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,11 +166,6 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                     category_list.add(storeResponse.getCategory().get(i));
                 }
                 storeCategoryAdapter.notifyDataSetChanged();
-                /*selected_store_category_products_list.clear();
-                for (int i = 0; i < storeResponse.getProduct().getData().size(); i++) {
-                    selected_store_category_products_list.add(storeResponse.getProduct().getData().get(i));
-                }
-                selectedStorecategoryProductsAdapter.notifyDataSetChanged();*/
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -209,4 +215,25 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_search_selected_store:
+                Bundle bundle = new Bundle();
+                SearchFragment fragment = new SearchFragment();
+                if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
+                } else {
+                    bundle.putString("search", etSearch.getText().toString().trim());
+                    etSearch.setText("");
+                    fragment.setArguments(bundle);
+                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                }
+                break;
+            case R.id.bar_code_scanner_selected_store:
+                Intent intent = new Intent(getContext(), ScanActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
 }

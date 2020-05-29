@@ -125,6 +125,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/delete_avail_item"
             android:layout_width="22dp"
             android:layout_height="28dp"
             android:layout_gravity="center"
