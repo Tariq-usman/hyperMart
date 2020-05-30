@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.others;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,7 +55,7 @@ public class SearchFragment extends Fragment {
     private Bundle bundle;
     private String name;
     private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private ImageView searchBack;
     private Preferences preferences;
 

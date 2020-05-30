@@ -63,12 +63,9 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
 
         Glide.with(holder.mMartImageView.getContext()).load(stores_list.get(position).getImage()).into(holder.mMartImageView);
         getKmFromLatLong(lat, lang, Double.valueOf(stores_list.get(position).getLatitude()), Double.valueOf(stores_list.get(position).getLongitude()));
-        String dist = distanceTo + "";
-        String[] split_date = dist.split(".");
-//        String first = split_date[0];
         df2 = new DecimalFormat("#.##");
         df2.setRoundingMode(RoundingMode.UP);
-        holder.mDistanceView.setText(String.valueOf(df2.format(distanceTo)));
+        holder.mDistanceView.setText(df2.format(distanceTo));
         for (int i = 0; i < stores_list.get(position).getAvailable().size(); i++) {
             total_amount = total_amount + stores_list.get(position).getAvailable().get(i).getStoreprice();
         }
@@ -87,7 +84,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
             holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFF44336"));
         }
 
-        if (holder.mSortByPrice.getText().toString()=="0"){
+        if (holder.mSortByPrice.getText().toString() == "0") {
             for (int i = 0; i < stores_list.get(position).getNotavailable().size(); i++) {
                 total_amount_not_avail = total_amount_not_avail + stores_list.get(position).getNotavailable().get(i).getHighestPrice();
             }

@@ -140,7 +140,15 @@ public class AvailableItemsListRadiusAdapter extends RecyclerView.Adapter<Availa
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }
         });
-
+        holder.deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                avail_items_list.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, avail_items_list.size());
+                notifyDataSetChanged();
+            }
+        });
 
     }
 
@@ -155,7 +163,7 @@ public class AvailableItemsListRadiusAdapter extends RecyclerView.Adapter<Availa
 
     public static class ItemsListViewHolder extends RecyclerView.ViewHolder {
         private TextView mProductNameView, mStoreName, mAmount, mAvilNotAvailItemsView;
-        private ImageView mIncreaseAvailItems, mDecreaseAvailItems, ivProduct;
+        private ImageView mIncreaseAvailItems, mDecreaseAvailItems, ivProduct,deleteItem;
 
         public ItemsListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -166,6 +174,7 @@ public class AvailableItemsListRadiusAdapter extends RecyclerView.Adapter<Availa
             mAvilNotAvailItemsView = itemView.findViewById(R.id.view_avil_not_avil_items);
             mIncreaseAvailItems = itemView.findViewById(R.id.increase_available_items);
             mDecreaseAvailItems = itemView.findViewById(R.id.decrees_available_items);
+            deleteItem = itemView.findViewById(R.id.delete_avail_item);
         }
     }
 }
