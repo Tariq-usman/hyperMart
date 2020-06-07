@@ -2,7 +2,6 @@ package com.system.user.menwain.fragments.home;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -10,16 +9,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,6 +55,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private EditText etSearch;
     private ImageView mBarCodeScanner, ivSearch, ivBack, ivListGridView;
@@ -72,6 +75,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private List<ExploreShopeSeeAllResponse.Datum> explore_shop_grid_list = new ArrayList<>();
     private List<ExploreSellAllResponse.Datum> explore_list = new ArrayList<>();
     private List<ShopSeeAllResponse.Datum> shop_list = new ArrayList<>();
+    SearchFragment searchFragment = new SearchFragment();
 
     @Nullable
     @Override
@@ -86,7 +90,27 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         mBarCodeScanner =view.findViewById(R.id.bar_code_scanner_all);
         mBarCodeScanner.setOnClickListener(this);
         etSearch = view.findViewById(R.id.et_search_all);
-
+        etSearch.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    Bundle bundle = new Bundle();
+                    if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
+                    } else {
+                        InputMethodManager inputMethodManager = (InputMethodManager)getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
+                        bundle.putString("search", etSearch.getText().toString().trim());
+                        etSearch.setText("");
+                        searchFragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         ivListGridView = view.findViewById(R.id.iv_grid_list_view);
         ivListGridView.setVisibility(View.VISIBLE);
         ivListGridView.setImageResource(R.drawable.ic_list_view);
@@ -136,14 +160,13 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.iv_search_home:
                 Bundle bundle = new Bundle();
-                SearchFragment fragment = new SearchFragment();
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
                     bundle.putString("search", etSearch.getText().toString().trim());
                     etSearch.setText("");
-                    fragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                    searchFragment.setArguments(bundle);
+                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                 }
                 break;
             case R.id.bar_code_code_scanner_home:

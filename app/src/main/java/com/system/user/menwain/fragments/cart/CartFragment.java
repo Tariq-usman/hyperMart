@@ -6,9 +6,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +35,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class CartFragment extends Fragment implements View.OnClickListener {
 
     private EditText etSearch;
@@ -48,7 +53,6 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     private Preferences prefrences;
     private List<Integer> cartList = new ArrayList<Integer>();
     private List<Cart> searchlist = new ArrayList<Cart>();
-
 
 
     @Nullable
@@ -73,7 +77,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().length() > 0) {
+                if (s.toString().length() > 0) {
                     etSearch.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 } else {
                     //Assign your image again to the view, otherwise it will always be gone even if the text is 0 again.
@@ -102,7 +106,18 @@ public class CartFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-
+        etSearch.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    return true;
+                }
+                return false;
+            }
+        });
         cartViewModel = ViewModelProviders.of(CartFragment.this).get(CartViewModel.class);
 
         tvTotalCartAmount = view.findViewById(R.id.tv_total_cart_amount);
@@ -145,33 +160,29 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        DeliveryAddressFragment fragment = new DeliveryAddressFragment();
+        final DeliveryAddressFragment fragment = new DeliveryAddressFragment();
         if (id == R.id.proceed_btn) {
             cartViewModel.getCartDataList().observe(CartFragment.this, new Observer<List<Cart>>() {
                 @Override
                 public void onChanged(List<Cart> carts) {
-                    for (int i = 0; i < carts.size(); i++) {
-                        cartList.add(carts.get(i).getP_id());
-                    }
-                }
-            });
-            if (cartList.size() == 0) {
-                Toast.makeText(getContext(), getContext().getString(R.string.cart_is_empty), Toast.LENGTH_SHORT).show();
-            } else {
-                if (user_token.isEmpty()) {
-                    Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
-                    logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getActivity().startActivity(logInIntnet);
-                } else {
-                    if (cartList.size() == 0) {
+                    if (user_token.isEmpty()) {
+                        Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                        logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().startActivity(logInIntnet);
+                    } else if (carts.size() == 0) {
                         Toast.makeText(getContext(), getContext().getString(R.string.cart_is_empty), Toast.LENGTH_SHORT).show();
                     } else {
+                        for (int i = 0; i < carts.size(); i++) {
+                            cartList.add(carts.get(i).getP_id());
+                        }
                         prefrences.setCartFragStatus(1);
                         prefrences.setOrderStatus(1);
                         getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
                     }
+
                 }
-            }
+            });
+
         }
     }
 }

@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 tvCart.setTextColor(Color.parseColor("#00c1bd"));
                 mMore.setImageResource(R.drawable.ic_morewhite);
                 tvMore.setTextColor(Color.parseColor("#004040"));
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment(), "del").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment(), "del").commit();
             } else if (isSignUp == true) {
                 mHome.setImageResource(R.drawable.ic_housewhite);
                 tvHome.setTextColor(Color.parseColor("#004040"));
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 tvCart.setTextColor(Color.parseColor("#00c1bd"));
                 mMore.setImageResource(R.drawable.ic_morewhite);
                 tvMore.setTextColor(Color.parseColor("#004040"));
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment(), "del").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment(), "del").commit();
             } else {
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
             }
@@ -187,9 +187,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         int id = view.getId();
         if (id == R.id.home_layout) {
             prefrences.setBottomNavStatus(1);
-            //  ivListGridView.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_houseblue);
-            // ivBack.setVisibility(View.INVISIBLE);
             tvHome.setTextColor(Color.parseColor("#00c1bd"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
             tvCategory.setTextColor(Color.parseColor("#004040"));
@@ -201,9 +199,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             tvMore.setTextColor(Color.parseColor("#004040"));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
         } else if (id == R.id.category_layout) {
-            prefrences.setBottomNavStatus(2);/*
-            ivBack.setVisibility(View.INVISIBLE);
-            ivListGridView.setVisibility(View.INVISIBLE);*/
+            prefrences.setBottomNavStatus(2);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchblue);
@@ -217,9 +213,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).addToBackStack(null).commit();
         } else if (id == R.id.cart_layout) {
             prefrences.setBottomNavStatus(3);
-            frag_status = prefrences.getCartFragStatus();/*
-            ivBack.setVisibility(View.INVISIBLE);
-            ivListGridView.setVisibility(View.INVISIBLE);*/
+            frag_status = prefrences.getCartFragStatus();
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -246,9 +240,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         } else if (id == R.id.my_list_layout) {
-            prefrences.setBottomNavStatus(4);/*
-            ivBack.setVisibility(View.INVISIBLE);
-            ivListGridView.setVisibility(View.INVISIBLE);*/
+            prefrences.setBottomNavStatus(4);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -262,7 +254,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
         } else if (id == R.id.more_layout) {
             prefrences.setBottomNavStatus(5);
-//            ivBack.setVisibility(View.INVISIBLE);
             mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -293,8 +284,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             homeIntent.addCategory(Intent.CATEGORY_HOME);
             homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             MyCustomAlertDialog();
-            //exitAppDialog();
-            //  finish();
         } else if (prefrences.getBottomNavStatus() == 1) {
             if (home_fragment_status == 4) {
                 prefrences.setHomeFragStatus(3);
@@ -308,9 +297,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             } else if (home_fragment_status == 1) {
                 prefrences.setBottomNavStatus(1);
                 prefrences.setHomeFragStatus(0);
-                setFragment(new HomeFragment(), "Home");/*
-                ivBack.setVisibility(View.INVISIBLE);
-                ivListGridView.setVisibility(View.INVISIBLE);*/
+                setFragment(new HomeFragment(), "Home");
                 mHome.setImageResource(R.drawable.ic_houseblue);
                 tvHome.setTextColor(Color.parseColor("#00c1bd"));
                 mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -332,8 +319,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             } else if (category_fragment_status == 0) {
                 prefrences.setBottomNavStatus(1);
                 setFragment(new HomeFragment(), "Home");
-                /*ivBack.setVisibility(View.INVISIBLE);
-                ivListGridView.setVisibility(View.INVISIBLE);*/
                 mHome.setImageResource(R.drawable.ic_houseblue);
                 tvHome.setTextColor(Color.parseColor("#00c1bd"));
                 mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -361,8 +346,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             } else {
                 prefrences.setBottomNavStatus(1);
                 setFragment(new HomeFragment(), "Home");
-               /* ivBack.setVisibility(View.INVISIBLE);
-                ivListGridView.setVisibility(View.INVISIBLE);*/
                 mHome.setImageResource(R.drawable.ic_houseblue);
                 tvHome.setTextColor(Color.parseColor("#00c1bd"));
                 mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -381,8 +364,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             } else {
                 prefrences.setBottomNavStatus(1);
                 setFragment(new HomeFragment(), "Home");
-               /* ivBack.setVisibility(View.INVISIBLE);
-                ivListGridView.setVisibility(View.INVISIBLE);*/
                 mHome.setImageResource(R.drawable.ic_houseblue);
                 tvHome.setTextColor(Color.parseColor("#00c1bd"));
                 mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -408,8 +389,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     prefrences.setBottomNavStatus(1);
                     setFragment(new HomeFragment(), "Home");
-                    /*ivBack.setVisibility(View.INVISIBLE);
-                    ivListGridView.setVisibility(View.INVISIBLE);*/
                     mHome.setImageResource(R.drawable.ic_houseblue);
                     tvHome.setTextColor(Color.parseColor("#00c1bd"));
                     mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -434,8 +413,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     prefrences.setBottomNavStatus(1);
                     setFragment(new HomeFragment(), "Home");
-                    /*ivBack.setVisibility(View.INVISIBLE);
-                    ivListGridView.setVisibility(View.INVISIBLE);*/
                     mHome.setImageResource(R.drawable.ic_houseblue);
                     tvHome.setTextColor(Color.parseColor("#00c1bd"));
                     mCategory.setImageResource(R.drawable.ic_searchwhite);
@@ -454,8 +431,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     prefrences.setBottomNavStatus(1);
                     setFragment(new HomeFragment(), "Home");
-                    /*ivBack.setVisibility(View.INVISIBLE);
-                    ivListGridView.setVisibility(View.INVISIBLE);*/
                     mHome.setImageResource(R.drawable.ic_houseblue);
                     tvHome.setTextColor(Color.parseColor("#00c1bd"));
                     mCategory.setImageResource(R.drawable.ic_searchwhite);

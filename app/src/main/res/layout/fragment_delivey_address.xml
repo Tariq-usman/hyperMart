@@ -284,6 +284,11 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <CheckBox
+                    android:id="@+id/cb_select_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select radius"/>
                 <androidx.cardview.widget.CardView
                     android:id="@+id/select_radius"
                     android:layout_width="match_parent"
@@ -291,6 +296,7 @@
                     android:layout_margin="5dp"
                     android:background="@drawable/bg_number_picker"
                     app:cardCornerRadius="10dp"
+                    android:visibility="gone"
                     app:cardElevation="4dp">
 
                     <LinearLayout
@@ -313,12 +319,18 @@
 
                         <NumberPicker
                             android:id="@+id/number_picker"
-                            android:layout_width="0dp"
+                            android:layout_width="34dp"
                             android:layout_height="80dp"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/ten_sp"
-                            android:layout_weight="1"
                             android:theme="@style/NumberPickerTheme" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/sixteen_sp"
+                            android:layout_marginVertical="4dp"
+                            android:text="Km"
+                            android:textSize="@dimen/twelve_sp"/>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

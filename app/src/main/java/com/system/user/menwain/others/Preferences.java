@@ -37,6 +37,14 @@ public class Preferences {
     public int getPaymentStatus() {
         return sharedPreferences.getInt("payment_status", 0);
     }
+public void setRadius(int radius){
+        editor.putInt("radius", radius);
+        editor.apply();
+        editor.commit();
+    }
+    public int getRadius() {
+        return sharedPreferences.getInt("radius", 0);
+    }
 
     public void setPayRBtnStatus(int rBtnStatus){
         editor.putInt("pay_r_btn_checked", rBtnStatus);

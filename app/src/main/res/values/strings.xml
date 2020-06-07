@@ -18,7 +18,7 @@
     <string name="card_deleted">Card has been deleted</string>
     <string name="no_items_available">There is no available items!</string>
     <string name="item_delete_success">"Item deleted successfully</string>
-    <string name="no_store_found">No stores are found</string>
+    <string name="no_store_found">No store available in this area</string>
     <string name="no_products_found">No products are found</string>
     <string name="no_result_found">No result found</string>
     <string name="no_slots_available">No time slots are available</string>
@@ -50,7 +50,8 @@
     <string name="total_average_amount">Total Average Amount</string>
     <string name="cart_sar">SAR</string>
     <string name="cart_is_empty">Cart is Empty!</string>
-    <string name="select_radius">Select radius</string>
+    <string name="select_radius">Selected radius</string>
+    <string name="no_store_available">No store found</string>
 
     <!--User address fragment-->
     <string name="pay_now">Pay Now</string>

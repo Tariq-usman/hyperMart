@@ -11,24 +11,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.system.user.menwain.others.Preferences;
-import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
+import com.system.user.menwain.responses.cart.SelectedStoreProductsResponse;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAvailabilityStoresAdapter.ItemViewHolder> {
-    private List<AvailNotAvailResponse.Datum> stores_list;
+public class ItemsAvailabilitySelectedStoresAdapter extends RecyclerView.Adapter<ItemsAvailabilitySelectedStoresAdapter.ItemViewHolder> {
+    private List<SelectedStoreProductsResponse.Datum> stores_list;
     private double lat, lang;
     private int total_amount = 0;
     private int total_amount_not_avail = 0;
@@ -36,18 +37,18 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     Bundle bundle;
     Preferences prefrences;
     private float distanceTo;
-    public static List<AvailNotAvailResponse.Datum.Available> available_list;
-    public static List<AvailNotAvailResponse.Datum.Notavailable> not_available_list;
+    public static List<SelectedStoreProductsResponse.Datum.Available> available_list;
+//    public static List<AvailNotAvailResponse.Datum.Notavailable> not_available_list;
     private static DecimalFormat decimalFormat;
 
-    public ItemsAvailabilityStoresAdapter(Context context, List<AvailNotAvailResponse.Datum> stores_list, double lat, double lang) {
+    public ItemsAvailabilitySelectedStoresAdapter(Context context, List<SelectedStoreProductsResponse.Datum> stores_list, double lat, double lang) {
         this.stores_list = stores_list;
         this.lat = lat;
         this.lang = lang;
         this.context = context;
         prefrences = new Preferences(context);
-        available_list = new ArrayList<>();
-        not_available_list = new ArrayList<>();
+        available_list = new ArrayList<SelectedStoreProductsResponse.Datum.Available>();
+//        not_available_list = new ArrayList<>();
     }
 
     @NonNull
@@ -84,13 +85,13 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
             holder.mStatusColorView.setBackgroundColor(Color.parseColor("#FFF44336"));
         }
 
-        if (holder.mSortByPrice.getText().toString() == "0") {
+        /*if (holder.mSortByPrice.getText().toString() == "0") {
             for (int i = 0; i < stores_list.get(position).getNotavailable().size(); i++) {
-                total_amount_not_avail = total_amount_not_avail + stores_list.get(position).getNotavailable().get(i).getHighestPrice();
+                total_amount_not_avail = total_amount_not_avail + stores_list.get(position).getNotavailable().();
             }
             holder.mSortByPrice.setText(String.valueOf(total_amount_not_avail));
             total_amount_not_avail = 0;
-        }
+        }*/
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,9 +112,12 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
                 for (int i = 0; i < stores_list.get(position).getAvailable().size(); i++) {
                     available_list.add(stores_list.get(position).getAvailable().get(i));
                 }
-                for (int i = 0; i < stores_list.get(position).getNotavailable().size(); i++) {
+                Log.d("selected_size", String.valueOf(stores_list.size()));
+                Log.d("selected_sele", String.valueOf(available_list.size()));
+
+               /* for (int i = 0; i < stores_list.get(position).getNotavailable().size(); i++) {
                     not_available_list.add(stores_list.get(position).getNotavailable().get(i));
-                }
+                }*/
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }

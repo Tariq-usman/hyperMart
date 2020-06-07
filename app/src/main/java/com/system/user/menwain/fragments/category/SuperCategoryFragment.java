@@ -6,11 +6,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -39,6 +43,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class SuperCategoryFragment extends Fragment {
     RecyclerView recyclerViewProductCategory;
     private ImageView mBarCodeScanner,ivSearch;
@@ -51,6 +57,7 @@ public class SuperCategoryFragment extends Fragment {
     private AlertDialog dialog;
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    SearchFragment searchFragment = new SearchFragment();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,6 +68,27 @@ public class SuperCategoryFragment extends Fragment {
 
         ivSearch = view.findViewById(R.id.iv_search_sup_cat);
         etSearhText = view.findViewById(R.id.et_search_sup_cat);
+        etSearhText.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        etSearhText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    Bundle bundle = new Bundle();
+                    if (etSearhText.getText().toString().trim().isEmpty() || etSearhText.getText().toString().trim() == null) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
+                    } else {
+                        InputMethodManager inputMethodManager = (InputMethodManager)getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
+                        bundle.putString("search", etSearhText.getText().toString().trim());
+                        etSearhText.setText("");
+                        searchFragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         mBarCodeScanner =view.findViewById(R.id.bar_code_scanner_sup_cat);
         customDialog(getContext());
         getSuperCategoryData();
@@ -69,14 +97,13 @@ public class SuperCategoryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                SearchFragment fragment = new SearchFragment();
                 if (etSearhText.getText().toString().trim().isEmpty() || etSearhText.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
                     bundle.putString("search", etSearhText.getText().toString().trim());
                     etSearhText.setText("");
-                    fragment.setArguments(bundle);
-                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                    searchFragment.setArguments(bundle);
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                 }
             }
         });

@@ -52,5 +52,6 @@ public class URLs {
     public static String delete_card_url = base_url + "deletecustomerCard/";
     public static String update_user_card_url = base_url + "updatecustomerCard/";
     public static String search_product_by_bar_code_url = base_url + "searchproductbybarcode";
-    public static String heighest_availability_by_radius = base_url +"availByRadious";
+    public static String heighest_availability_by_radius = base_url +"hAByRadious";
+    public static String radious_stores_list = base_url+"radiousStoresList";
 }

@@ -8,11 +8,15 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -38,9 +42,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class AllListsFragment extends Fragment {
 
@@ -64,7 +71,18 @@ public class AllListsFragment extends Fragment {
 
         etSearchList = view.findViewById(R.id.et_search_my_list);
         etSearchList.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
-
+        etSearchList.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        etSearchList.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    return true;
+                }
+                return false;
+            }
+        });
         recyclerViewAllLists = view.findViewById(R.id.recycler_view_all_lists);
         recyclerViewAllLists.setHasFixedSize(true);
         recyclerViewAllLists.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -122,6 +140,7 @@ public class AllListsFragment extends Fragment {
                 for (int i = 0; i < wishlistProductsResponse.getProduct().getData().size(); i++) {
                     orders_list.add(wishlistProductsResponse.getProduct().getData().get(i));
                 }
+                Collections.reverse(orders_list);
                 allListsAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();

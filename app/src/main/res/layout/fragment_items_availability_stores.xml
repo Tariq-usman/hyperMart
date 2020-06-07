@@ -46,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:hint="@string/search_hint"
+                    android:imeOptions="actionDone"
                     android:paddingHorizontal="10dp"
                     android:inputType="text"
                     android:maxLines="1"
@@ -181,14 +182,28 @@
         -->
 
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_available_item_store"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:overScrollMode="never"
-        tools:listitem="@layout/row_available_item_store" />
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_available_item_store"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:overScrollMode="never"
+            tools:listitem="@layout/row_available_item_store" />
+<TextView
+    android:id="@+id/tv_no_store_found"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/no_store_available"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:textSize="@dimen/twenty_four_sp"
+    android:visibility="invisible"
+    android:textColor="@color/darkGreenColor"/>
+    </FrameLayout>
+
 
 
 </LinearLayout>

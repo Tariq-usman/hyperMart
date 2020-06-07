@@ -27,6 +27,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListSelectedStoreRadiusAdapter;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilitySelectedStoresAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
 import com.system.user.menwain.others.Preferences;
@@ -36,6 +38,7 @@ import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentTim
 import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.responses.cart.CalculateShippingCostResponse;
+import com.system.user.menwain.responses.cart.SelectedStoreProductsResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.HashMap;
@@ -57,6 +60,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
     private AlertDialog dialog;
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
     private List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list_radius = ItemsAvailabilityStoresRadiusAdapter.available_list;
+    private List<SelectedStoreProductsResponse.Datum.Available> selected_store_avail_items_list_radius = ItemsAvailabilitySelectedStoresAdapter.available_list;
 
 
     @Nullable
@@ -140,7 +144,10 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             } else if (avail_items_list_radius.size() > 0) {
                 prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
                 calculateShippingCost();
-            } else {
+            } else if (selected_store_avail_items_list_radius.size() > 0) {
+                prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
+                calculateShippingCost();
+            }else {
                 Toast.makeText(getContext(), getContext().getString(R.string.no_items_available), Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.iv_back_avail_not_avail) {

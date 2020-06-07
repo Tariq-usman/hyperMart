@@ -29,7 +29,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.activities.ScanActivity;
-import com.system.user.menwain.adapters.more_adapters.CategoryProductsAdapter;
+import com.system.user.menwain.adapters.more_adapters.SelectedStoreSelectedCategoryProductsAdapter;
 import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
 import com.system.user.menwain.others.Preferences;
@@ -71,10 +71,12 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private List<Address> addresses;
     private SelectedStoreCategoryAdapter storeCategoryAdapter;
     private SelectedStoresCategoryProductsAdapter selectedStorecategoryProductsAdapter;
-    private CategoryProductsAdapter categoryProductsAdapter;
+    private SelectedStoreSelectedCategoryProductsAdapter categoryProductsAdapter;
     private List<SelectedStoreResponse.Category> category_list = new ArrayList<>();
-    private List<SelectedStoreResponse.Product.Datum> selected_store_category_products_list = new ArrayList<>();
-    private List<SelectedStoreCategoryProductsResponse.Product.Datum> category_products_list = new ArrayList<>();
+    private List<SelectedStoreCategoryProductsResponse.Product.Datum> selected_store_category_products_list = new ArrayList<>();
+    private List<SelectedStoreResponse.Product.Datum.Product_> category_products_list = new ArrayList<SelectedStoreResponse.Product.Datum.Product_>();
+
+    public static List<Integer> store_id_list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -116,11 +118,10 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         storeCategoryAdapter = new SelectedStoreCategoryAdapter(getContext(), category_list, this);
         recyclerViewSelectedStore.setAdapter(storeCategoryAdapter);
 
-        recyclerViewCategoryProducts = view.findViewById(R.id.recycler_view_category_products);
+        recyclerViewCategoryProducts = view.findViewById(R.id.recycler_view_selected_store_category_products);
         recyclerViewCategoryProducts.setHasFixedSize(true);
         recyclerViewCategoryProducts.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
-        categoryProductsAdapter = new CategoryProductsAdapter(getContext(), category_products_list);
-        recyclerViewCategoryProducts.setAdapter(categoryProductsAdapter);
+
 
         int store_id = prefrences.getMoreStoreId();
         getSelectedStoreCategory(store_id);
@@ -130,13 +131,12 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
 
     @Override
     public void interfaceOnClick(View view, int position) {
-        recyclerViewCategoryProducts.setVisibility(View.VISIBLE);
         int category_id = category_list.get(position).getId();
-        getCategoryProducts(category_id);
+      //  getCategoryProducts(category_id);
     }
 
 
-    private void getSelectedStoreCategory(int store_id) {
+    private void getSelectedStoreCategory(final int store_id) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
@@ -165,6 +165,12 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 for (int i = 0; i < storeResponse.getCategory().size(); i++) {
                     category_list.add(storeResponse.getCategory().get(i));
                 }
+                for (int i = 0; i < storeResponse.getProduct().getData().get(0).getProducts().size(); i++) {
+                    category_products_list.add(storeResponse.getProduct().getData().get(0).getProducts().get(i));
+                }
+                Log.e("list_size", String.valueOf(category_products_list.size()));
+                selectedStorecategoryProductsAdapter = new SelectedStoresCategoryProductsAdapter(getContext(), category_products_list,storeResponse.getStore().getName(),storeResponse.getStore().getId());
+                recyclerViewCategoryProducts.setAdapter(selectedStorecategoryProductsAdapter);
                 storeCategoryAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -187,12 +193,14 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
             @Override
             public void onResponse(String response) {
                 SelectedStoreCategoryProductsResponse categoryProductsResponse = gson.fromJson(response, SelectedStoreCategoryProductsResponse.class);
-                category_products_list.clear();
+                selected_store_category_products_list.clear();
                 for (int i = 0; i < categoryProductsResponse.getProduct().getData().size(); i++) {
-                    category_products_list.add(categoryProductsResponse.getProduct().getData().get(i));
+                    selected_store_category_products_list.add(categoryProductsResponse.getProduct().getData().get(i));
                 }
-                category_products_list.size();
-                categoryProductsAdapter.notifyDataSetChanged();
+                selected_store_category_products_list.size();
+                categoryProductsAdapter = new SelectedStoreSelectedCategoryProductsAdapter(getContext(), selected_store_category_products_list);
+                recyclerViewCategoryProducts.setAdapter(categoryProductsAdapter);
+                selectedStorecategoryProductsAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {

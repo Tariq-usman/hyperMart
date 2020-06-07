@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
@@ -56,14 +57,14 @@ import java.util.Map;
 
 public class DeliveryAddressFragment extends Fragment implements View.OnClickListener, RecyclerClickInterface {
 
-    private TextView mTitleView, mConfirmBtn, mPayNow, mPayLater,tvSelectRadius;
+    private TextView mTitleView, mConfirmBtn, mPayNow, mPayLater, tvSelectRadius;
     private ImageView mBackView, mAddNewAddress;
     private String[] address;
     private Double latitude, longitude;
     private RecyclerView recyclerViewAddress, recyclerViewPayNow, recyclerViewPayLater;
     DelivieryAddressesAdapter delivieryAddressesAdapter;
     private PayNaoAdapter payNaoAdapter;
-    private CardView mSearchViewAddress, addNewAddress,selectRadius;
+    private CardView mSearchViewAddress, addNewAddress, selectRadius;
     private SharedPreferences.Editor editor;
     Preferences prefrences;
     private Bundle bundle;
@@ -74,6 +75,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     private AlertDialog dialog;
     private List<UserAddressListResponse.Addresslist> addressList = new ArrayList<UserAddressListResponse.Addresslist>();
     private List<PaymentTypesResponse.DataPayNow> pay_now_list = new ArrayList<PaymentTypesResponse.DataPayNow>();
+    private CheckBox checkBox;
     private NumberPicker numberPicker;
 
     @Nullable
@@ -96,6 +98,16 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         addNewAddress.setOnClickListener(this);
         selectRadius = view.findViewById(R.id.select_radius);
         selectRadius.setOnClickListener(this);
+
+        checkBox = view.findViewById(R.id.cb_select_radius);
+        checkBox.setOnClickListener(this);
+        if (prefrences.getOrderStatus() == 1) {
+            checkBox.setChecked(true);
+            selectRadius.setVisibility(View.VISIBLE);
+        } else {
+            checkBox.setChecked(false);
+            selectRadius.setVisibility(View.GONE);
+        }
         tvSelectRadius = view.findViewById(R.id.tv_select_radius);
         rbDeliverToAddress = view.findViewById(R.id.rb_deliver_to_address);
         rbDeliverToAddress.setOnClickListener(this);
@@ -158,17 +170,17 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         numberPicker.setMaxValue(0);
         numberPicker.setMaxValue(60);
         numberPicker.setWrapSelectorWheel(true);
+        numberPicker.setValue(prefrences.getRadius());
         numberPicker.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int value) {
-                return String.format("%02d",value);
+                return String.format("%02d", value);
             }
         });
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                bundle.putInt("selected_radius",newVal);
-//                Toast.makeText(getContext(), "" + newVal, Toast.LENGTH_SHORT).show();
+                prefrences.setRadius(newVal);
             }
         });
         return view;
@@ -288,6 +300,16 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             rbWalkInStore.setChecked(true);
             rbPreparePickFromStore.setChecked(false);
             rbCashOnDelivery.setChecked(false);
+        } else if (id == R.id.cb_select_radius) {
+            if (!checkBox.isChecked()) {
+                checkBox.setChecked(false);
+                prefrences.setOrderStatus(0);
+                selectRadius.setVisibility(View.GONE);
+            } else {
+                checkBox.setChecked(true);
+                prefrences.setOrderStatus(1);
+                selectRadius.setVisibility(View.VISIBLE);
+            }
         } else if (id == R.id.confirm_btn) {
             prefrences.setCartFragStatus(2);
             prefrences.setDeliveryAddressId(delivery_address_id);

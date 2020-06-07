@@ -21,7 +21,7 @@
     <string name="card_deleted">تم حذف البطاقة</string>
     <string name="no_items_available">لا توجد عناصر متاحة!</string>
     <string name="item_delete_success">تم حذف العنصر بنجاح</string>
-    <string name="no_store_found">لم يتم العثور على متاجر</string>
+    <string name="no_store_found">لا يوجد متجر متاح في هذه المنطقة</string>
     <string name="no_products_found">لم يتم العثور على منتجات</string>
     <string name="no_result_found">لم يتم العثور على نتيجة</string>
     <string name="no_slots_available">لا توجد فترات زمنية متاحة</string>
@@ -49,6 +49,7 @@
     <string name="cart_sar">SAR</string>
     <string name="cart_is_empty">السلة فارغة!</string>
     <string name="select_radius">حدد نصف القطر</string>
+    <string name="no_store_available">لم يتم العثور على متجر</string>
 
     <!--User address fragment-->
     <string name="pay_now">ادفع الآن</string>

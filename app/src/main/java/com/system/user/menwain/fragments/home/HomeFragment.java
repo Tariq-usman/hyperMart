@@ -8,9 +8,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +54,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private static ViewPager mPager;
@@ -84,6 +89,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ExploreAndShopAdapter exploreAndShopAdapter;
     private ExploreAdapter exploreAdapter;
     private ShopAdapter shopAdapter;
+    SearchFragment searchFragment;
 
     @Nullable
     @Override
@@ -91,19 +97,42 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragmet_home, container, false);
         prefrences = new Preferences(getContext());
         prefrences.setBottomNavStatus(1);
+        searchFragment = new SearchFragment();
         customDialog(getContext());
 
         getExploreAndShop();
         getBannerData();
-     //   getExplore();
+        //   getExplore();
 
         mPager = view.findViewById(R.id.pager);
         tabLayout = view.findViewById(R.id.tab_layout);
-        ivSearch =view.findViewById(R.id.iv_search_home);
+        ivSearch = view.findViewById(R.id.iv_search_home);
         ivSearch.setOnClickListener(this);
-        mBarCodeScanner =view.findViewById(R.id.bar_code_code_scanner_home);
+        mBarCodeScanner = view.findViewById(R.id.bar_code_code_scanner_home);
         mBarCodeScanner.setOnClickListener(this);
         etSearch = view.findViewById(R.id.et_search_home);
+        etSearch.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    Bundle bundle = new Bundle();
+                    if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
+                    } else {
+                        InputMethodManager inputMethodManager = (InputMethodManager)getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
+                        bundle.putString("search", etSearch.getText().toString().trim());
+                        etSearch.setText("");
+                        searchFragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
         tvSeeAllExploreShop = view.findViewById(R.id.tv_see_all_explore_shop);
         tvSeeAllExploreShop.setOnClickListener(this);
@@ -128,7 +157,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recyclerViewExplore.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerViewExplore.setLayoutManager(linearLayoutManager);
-        exploreAdapter = new ExploreAdapter(getContext(),exploreList);
+        exploreAdapter = new ExploreAdapter(getContext(), exploreList);
         recyclerViewExplore.setAdapter(exploreAdapter);
 
         /*-------------recyclerview of shop----------*/
@@ -136,7 +165,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recyclerViewShop.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerViewShop.setLayoutManager(linearLayoutManager);
-        shopAdapter = new ShopAdapter(getContext(),shopList);
+        shopAdapter = new ShopAdapter(getContext(), shopList);
         recyclerViewShop.setAdapter(shopAdapter);
 
         /* ----Banner ---*/
@@ -180,14 +209,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.iv_search_home:
                 Bundle bundle = new Bundle();
-                SearchFragment fragment = new SearchFragment();
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
                     bundle.putString("search", etSearch.getText().toString().trim());
                     etSearch.setText("");
-                    fragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                    searchFragment.setArguments(bundle);
+                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                 }
                 break;
             case R.id.bar_code_code_scanner_home:
@@ -227,6 +255,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
     private void getBannerData() {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -234,27 +263,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_banner_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                HomeBannerResponse  bannerResponse = gson.fromJson(response,HomeBannerResponse.class);
+                HomeBannerResponse bannerResponse = gson.fromJson(response, HomeBannerResponse.class);
                 bannersList.clear();
-                for (int i=0;i<bannerResponse.getData().size();i++){
+                for (int i = 0; i < bannerResponse.getData().size(); i++) {
                     bannersList.add(bannerResponse.getData().get(i));
                 }
                 banner_slidingImages_adapter.notifyDataSetChanged();
                 try {
                     dialog.dismiss();
 
-                }catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e( "erroe", error.toString());
+                Log.e("erroe", error.toString());
                 try {
                     dialog.dismiss();
 
-                }catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -286,40 +315,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_explore_and_shop_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                HomeExploreAndShop exploreAndShop = gson.fromJson(response,HomeExploreAndShop.class);
+                HomeExploreAndShop exploreAndShop = gson.fromJson(response, HomeExploreAndShop.class);
                 exploreShopList.clear();
-                for (int i=0;i<exploreAndShop.getDymmy1().size();i++){
+                for (int i = 0; i < exploreAndShop.getDymmy1().size(); i++) {
                     exploreShopList.add(exploreAndShop.getDymmy1().get(i));
                 }
                 exploreAndShopAdapter.notifyDataSetChanged();
 
                 exploreList.clear();
-                for (int i=0;i<exploreAndShop.getDummy2().size();i++){
+                for (int i = 0; i < exploreAndShop.getDummy2().size(); i++) {
                     exploreList.add(exploreAndShop.getDummy2().get(i));
                 }
                 exploreAdapter.notifyDataSetChanged();
 
                 shopList.clear();
-                for (int i=0;i<exploreAndShop.getDummy3().size();i++){
+                for (int i = 0; i < exploreAndShop.getDummy3().size(); i++) {
                     shopList.add(exploreAndShop.getDummy3().get(i));
                 }
                 shopAdapter.notifyDataSetChanged();
-                Log.e( "Response",(String.valueOf(exploreShopList.size())));
+                Log.e("Response", (String.valueOf(exploreShopList.size())));
                 try {
                     dialog.dismiss();
 
-                }catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e( "erroe", error.toString());
+                Log.e("erroe", error.toString());
                 try {
                     dialog.dismiss();
 
-                }catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -351,16 +380,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onResponse(String response) {
                 HomeExploreAndShop exploreAndShop = gson.fromJson(response, HomeExploreAndShop.class);
                 exploreShopList.clear();
-                for (int i=0;i<exploreAndShop.getDummy2().size();i++){
+                for (int i = 0; i < exploreAndShop.getDummy2().size(); i++) {
                     exploreList.add(exploreAndShop.getDummy2().get(i));
                     exploreAdapter.notifyDataSetChanged();
                 }
-                Log.e( "Response",(String.valueOf(exploreShopList.size())));
+                Log.e("Response", (String.valueOf(exploreShopList.size())));
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e( "erroe", error.toString());
+                Log.e("erroe", error.toString());
             }
         });
         requestQueue.add(request);
@@ -381,13 +410,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+
     public void customDialog(Context context) {
-         builder = new AlertDialog.Builder(getActivity());
+        builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(false); // if you want user to wait for some process to finish,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setView(R.layout.layout_loading_dialog);
         }
-         dialog = builder.create();
+        dialog = builder.create();
     }
 
 

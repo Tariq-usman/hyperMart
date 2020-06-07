@@ -30,6 +30,7 @@ import com.system.user.menwain.local_db.model.UpdateCartQuantity;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.stores.SelectedStoreCategoryProductsResponse;
+import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,7 +38,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProductsAdapter.FilterStoresViewHolder> {
+public class SelectedStoreSelectedCategoryProductsAdapter extends RecyclerView.Adapter<SelectedStoreSelectedCategoryProductsAdapter.FilterStoresViewHolder> {
 
     List<SelectedStoreCategoryProductsResponse.Product.Datum> category_products_list;
     Context context;
@@ -51,8 +52,8 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
     private List<Integer> p_id_list = new ArrayList<Integer>();
     List<Integer> quantity_list = new ArrayList<Integer>();
 
-    public CategoryProductsAdapter(Context context, List<SelectedStoreCategoryProductsResponse.Product.Datum> category_products_list) {
-        this.category_products_list = category_products_list;
+    public SelectedStoreSelectedCategoryProductsAdapter(Context context, List<SelectedStoreCategoryProductsResponse.Product.Datum> selected_store_category_products_list) {
+        this.category_products_list = selected_store_category_products_list;
         this.context = context;
         prefrences = new Preferences(context);
 
@@ -68,9 +69,8 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
 
     @Override
     public void onBindViewHolder(@NonNull final FilterStoresViewHolder holder, final int position) {
-        if (category_products_list.size() > 0) {
-            Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getProducts().get(position).getImage()).into(holder.mFilteProduct);
-        }
+//        if (category_products_list.size() > 0) {
+        Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getProducts().get(position).getImage()).into(holder.mFilteProduct);
         holder.mProductNameView.setText(category_products_list.get(position).getProducts().get(position).getName());
         holder.mStoreName.setText(category_products_list.get(position).getName());
         holder.mPriceFilterItem.setText(category_products_list.get(position).getProducts().get(position).getAvgPrice().toString());
@@ -194,11 +194,7 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
 
     @Override
     public int getItemCount() {
-        if (category_products_list.size() > 0) {
-            return category_products_list.size();
-        } else {
-            return 0;
-        }
+        return category_products_list.size();
     }
 
     public static class FilterStoresViewHolder extends RecyclerView.ViewHolder {

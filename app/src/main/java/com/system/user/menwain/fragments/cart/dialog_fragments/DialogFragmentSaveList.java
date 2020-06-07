@@ -26,6 +26,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListAdapter;
 import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListRadiusAdapter;
+import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListSelectedStoreRadiusAdapter;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilitySelectedStoresAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
 import com.system.user.menwain.fragments.cart.OrderSuccessfulFragment;
@@ -35,6 +37,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.cart.CartFragment;
 import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
+import com.system.user.menwain.responses.cart.SelectedStoreProductsResponse;
 import com.system.user.menwain.utils.URLs;
 
 import java.text.SimpleDateFormat;
@@ -73,10 +76,13 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     private AlertDialog dialog;
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
     private List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list_radius = ItemsAvailabilityStoresRadiusAdapter.available_list;
+    private List<SelectedStoreProductsResponse.Datum.Available> selected_store_avail_items_list_radius = ItemsAvailabilitySelectedStoresAdapter.available_list;
     private List<Integer> quantity_list = AvailableItemsListAdapter.quantity_list;
     private List<Integer> amount_lit = AvailableItemsListAdapter.amount_list;
     private List<Integer> quantity_list_radius = AvailableItemsListRadiusAdapter.quantity_list;
     private List<Integer> amount_lit_radius = AvailableItemsListRadiusAdapter.amount_list;
+    private List<Integer> selected_store_quantity_list_radius = AvailableItemsListSelectedStoreRadiusAdapter.quantity_list;
+    private List<Integer> selected_store_amount_lit_radius = AvailableItemsListSelectedStoreRadiusAdapter.amount_list;
     private CartViewModel cartViewModel;
     private View view;
     private OrderSuccessfulFragment fragment;
@@ -197,13 +203,26 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
                         e.printStackTrace();
                     }
                 }
-            } else {
+            } else if (avail_items_list_radius.size()>0){
                 for (int i = 0; i < avail_items_list_radius.size(); i++) {
                     JSONObject object = new JSONObject();
                     try {
                         object.put("price", amount_lit_radius.get(i));
                         object.put("quantity", quantity_list_radius.get(i));
                         object.put("product_id", avail_items_list_radius.get(i).getId());
+                        object.put("discount", 0);
+                        jsonArray.put(object);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }else {
+                for (int i = 0; i < selected_store_avail_items_list_radius.size(); i++) {
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("price", selected_store_amount_lit_radius.get(i));
+                        object.put("quantity", selected_store_quantity_list_radius.get(i));
+                        object.put("product_id", selected_store_avail_items_list_radius.get(i).getId());
                         object.put("discount", 0);
                         jsonArray.put(object);
                     } catch (Exception e) {

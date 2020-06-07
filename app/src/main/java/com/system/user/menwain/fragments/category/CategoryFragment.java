@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -49,6 +53,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class CategoryFragment extends Fragment implements RecyclerClickInterface {
 
     private int cat_id, super_cat_id;
@@ -68,6 +74,7 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
     private SuperCategoryFragment fragment;
     private List<SearchByNameResponse.Data.Datum> search_by_name_list = new ArrayList<>();
     private NameSearchAdapter nameSearchAdapter;
+    SearchFragment searchFragment = new SearchFragment();
 
     @Nullable
     @Override
@@ -80,7 +87,28 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
 
         mSearch = view.findViewById(R.id.iv_search_cat);
         etSearch = view.findViewById(R.id.et_search_cat);
-        mBarCodeScanner=view.findViewById(R.id.bar_code_scanner_cat);
+        etSearch.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    Bundle bundle = new Bundle();
+                    if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
+                    } else {
+                        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                        bundle.putString("search", etSearch.getText().toString().trim());
+                        etSearch.setText("");
+                        searchFragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+        mBarCodeScanner = view.findViewById(R.id.bar_code_scanner_cat);
         mBackBtn = view.findViewById(R.id.iv_back_cat);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,14 +121,13 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                SearchFragment fragment = new SearchFragment();
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
                     bundle.putString("search", etSearch.getText().toString().trim());
                     etSearch.setText("");
-                    fragment.setArguments(bundle);
-                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                    searchFragment.setArguments(bundle);
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                 }
             }
         });
