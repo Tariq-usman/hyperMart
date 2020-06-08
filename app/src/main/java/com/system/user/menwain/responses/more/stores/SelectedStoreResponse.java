@@ -40,6 +40,7 @@ public class SelectedStoreResponse {
     public void setProduct(Product product) {
         this.product = product;
     }
+
     public class Store {
 
         @SerializedName("id")
@@ -319,6 +320,7 @@ public class SelectedStoreResponse {
         }
 
     }
+
     public class Category {
 
         @SerializedName("id")
@@ -356,6 +358,7 @@ public class SelectedStoreResponse {
         }
 
     }
+
     public class Product {
 
         @SerializedName("current_page")
@@ -490,6 +493,7 @@ public class SelectedStoreResponse {
         public void setTotal(Integer total) {
             this.total = total;
         }
+
         public class Datum {
 
             @SerializedName("id")
@@ -778,6 +782,7 @@ public class SelectedStoreResponse {
             public void setProducts(List<Product_> products) {
                 this.products = products;
             }
+
             public class Product_ {
 
                 @SerializedName("id")
@@ -1044,6 +1049,7 @@ public class SelectedStoreResponse {
                 public void setPivot(Pivot pivot) {
                     this.pivot = pivot;
                 }
+
                 public class Pivot {
 
                     @SerializedName("store_id")
@@ -1063,7 +1069,7 @@ public class SelectedStoreResponse {
                     private String storeProductUrl;
                     @SerializedName("status")
                     @Expose
-                    private Object status;
+                    private Integer status;
                     @SerializedName("other1")
                     @Expose
                     private String other1;
@@ -1120,11 +1126,11 @@ public class SelectedStoreResponse {
                         this.storeProductUrl = storeProductUrl;
                     }
 
-                    public Object getStatus() {
+                    public Integer getStatus() {
                         return status;
                     }
 
-                    public void setStatus(Object status) {
+                    public void setStatus(Integer status) {
                         this.status = status;
                     }
 
@@ -1175,12 +1181,4 @@ public class SelectedStoreResponse {
         }
 
     }
-
 }
-
-
-
-
-
-
-

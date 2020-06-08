@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class NotAvailableItemsFragment extends Fragment {
-    private String [] productsName={"Produce","Meat & Poultry","Milk & Cheese"};
+    private String[] productsName = {"Produce", "Meat & Poultry", "Milk & Cheese"};
 
     RecyclerView recyclerViewItemsList;
     NotAvailableItemsListAdapter notAvailableItemsListAdapter;
@@ -37,17 +37,16 @@ public class NotAvailableItemsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_not_available_items,container,false);
+        View view = inflater.inflate(R.layout.fragment_not_available_items, container, false);
         recyclerViewItemsList = view.findViewById(R.id.recycler_view_not_available_items_list);
         recyclerViewItemsList.setHasFixedSize(true);
         recyclerViewItemsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (not_avail_items_list.size()>0) {
+        if (not_avail_items_list.size() > 0) {
             notAvailableItemsListAdapter = new NotAvailableItemsListAdapter(getContext(), not_avail_items_list);
             recyclerViewItemsList.setAdapter(notAvailableItemsListAdapter);
-        }else {
-            notAvailableItemsListRadiusAdapter = new NotAvailableItemsListRadiusAdapter(getContext(), not_avail_items_list_radius);
-            recyclerViewItemsList.setAdapter(notAvailableItemsListRadiusAdapter);
+        } else {
+
         }
 
         not_avail_items = productsName.length;

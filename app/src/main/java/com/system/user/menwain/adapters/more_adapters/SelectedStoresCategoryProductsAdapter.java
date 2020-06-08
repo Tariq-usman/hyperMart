@@ -37,6 +37,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<
     int id,storeId, pro_quantity;
     private List<Integer> p_id_list = new ArrayList<Integer>();
     List<Integer> quantity_list = new ArrayList<Integer>();
-
+    DecimalFormat decimalFormat;
     public SelectedStoresCategoryProductsAdapter(Context context, List<SelectedStoreResponse.Product.Datum.Product_> category_products_list, String name, Integer storeId) {
         this.category_products_list = category_products_list;
         this.context = context;
@@ -76,6 +78,12 @@ public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<
         Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getImage()).into(holder.mFilteProduct);
         holder.mProductNameView.setText(category_products_list.get(position).getName());
         holder.mStoreName.setText(name);
+        /*
+        String avg_price = String.valueOf(category_products_list.get(position).getAvgPrice());
+        decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setRoundingMode(RoundingMode.UP);
+        holder.mPriceFilterItem.setText(decimalFormat.format(avg_price));
+*/
         holder.mPriceFilterItem.setText(category_products_list.get(position).getAvgPrice().toString());
 
         final int[] count = {1};

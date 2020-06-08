@@ -176,7 +176,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                             cartList.add(carts.get(i).getP_id());
                         }
                         prefrences.setCartFragStatus(1);
-                        prefrences.setOrderStatus(1);
+                        prefrences.setOrderStatus(0);
                         getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
                     }
 

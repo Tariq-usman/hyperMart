@@ -31,6 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.fragments.cart.DeliveryAddressFragment;
+import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentTimeSlots;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.my_lists_adapters.ListDetailsAdapter;
@@ -43,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ListDetailsFragment extends Fragment implements View.OnClickListener {
-    private ImageView mCart, mFavourite, mHome, mCategory, mMore,mCloseBtn, mBackBtnPay;
+    private ImageView mCart, mFavourite, mHome, mCategory, mMore, mCloseBtn, mBackBtnPay;
     private TextView mConfirm, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
     private RecyclerView recyclerViewListDetails;
     private ListDetailsAdapter listDetailsAdapter;
@@ -56,7 +57,8 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
     private AlertDialog dialog;
     private List<WistListByIdResopnse.Datum> products_list = new ArrayList<>();
     private String list_name;
-    public  static List<Integer> reorder_list = new ArrayList<Integer>();
+    public static List<Integer> reorder_list = new ArrayList<Integer>();
+    private WistListByIdResopnse listByIdResopnse;
 
     @Nullable
     @Override
@@ -66,11 +68,11 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         prefrences = new Preferences(getContext());
         customDialog(getContext());
         bundle = this.getArguments();
-        if (bundle!=null){
-            int list_id = bundle.getInt("list_id",0);
-            list_name = bundle.getString("list_name","");
+        if (bundle != null) {
+            int list_id = bundle.getInt("list_id", 0);
+            list_name = bundle.getString("list_name", "");
             getProductList(list_id);
-        }else {
+        } else {
 
         }
         mHome = getActivity().findViewById(R.id.home_view);
@@ -110,40 +112,50 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_wish_list_by_id + list_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                WistListByIdResopnse listByIdResopnse = gson.fromJson(response,WistListByIdResopnse.class);
+                listByIdResopnse = gson.fromJson(response, WistListByIdResopnse.class);
                 products_list.clear();
-                for (int i = 0; i< listByIdResopnse.getData().size();i++){
+                for (int i = 0; i < listByIdResopnse.getData().size(); i++) {
                     products_list.add(listByIdResopnse.getData().get(i));
                 }
-                listDetailsAdapter.notifyDataSetChanged();;
+                listDetailsAdapter.notifyDataSetChanged();
+                ;
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("wishError",error.toString());
+                Log.e("wishError", error.toString());
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headerMap = new HashMap<>();
-                headerMap.put("Authorization","Bearer " + prefrences.getToken());
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Bearer " + prefrences.getToken());
                 return headerMap;
             }
         };
         requestQueue.add(request);
     }
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.confirm_btn_list_details) {
             prefrences.setOrderStatus(2);
+            prefrences.setWishListName(listByIdResopnse.getDetails().getWishlistName());
+            prefrences.setTotalAmount(listByIdResopnse.getDetails().getTotalAmount());
+            prefrences.setStoreId(listByIdResopnse.getDetails().getStoreId());
+            prefrences.setDeliveryAddressId(listByIdResopnse.getDetails().getAddressId());
+            prefrences.setShippingId(listByIdResopnse.getDetails().getShippingMethodId());
+            prefrences.setShippingCost(listByIdResopnse.getDetails().getShippingCost());
+            prefrences.setOrderId(listByIdResopnse.getDetails().getId());
+            prefrences.setPaymentStatus(listByIdResopnse.getDetails().getPaymentMethodId());
             reorder_list.clear();
-            for (int i=0;i<products_list.size();i++){
+            for (int i = 0; i < products_list.size(); i++) {
                 reorder_list.add(products_list.get(i).getId());
             }
-            mHome.setImageResource(R.drawable.ic_housewhite);
+           /* mHome.setImageResource(R.drawable.ic_housewhite);
             tvHome.setTextColor(Color.parseColor("#004040"));
             mCategory.setImageResource(R.drawable.ic_searchwhite);
             tvCategory.setTextColor(Color.parseColor("#004040"));
@@ -152,15 +164,16 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
             mCart.setImageResource(R.drawable.ic_cart_blue);
             tvCart.setTextColor(Color.parseColor("#00c1bd"));
             mMore.setImageResource(R.drawable.ic_morewhite);
-            tvMore.setTextColor(Color.parseColor("#004040"));
-            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
-            mBackBtn.setVisibility(View.INVISIBLE);
+            tvMore.setTextColor(Color.parseColor("#004040"));*/
+            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DialogFragmentTimeSlots()).addToBackStack(null).commit();
+//            mBackBtn.setVisibility(View.INVISIBLE);
         } else if (id == R.id.iv_back_my_list_details) {
             prefrences.setMyListFragStatus(0);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).addToBackStack(null).commit();
         }
 
     }
+
     public void customDialog(Context context) {
         builder = new AlertDialog.Builder(context);
         builder.setCancelable(false); // if you want user to wait for some process to finish,

@@ -260,11 +260,30 @@
         </LinearLayout>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_order_details"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:overScrollMode="never"
-        tools:listitem="@layout/row_items_order_details" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_order_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="45dp"
+            android:overScrollMode="never"
+            tools:listitem="@layout/row_items_order_details" />
+
+        <TextView
+            android:id="@+id/confirm_btn_order_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/bg_submit_btn"
+            android:gravity="center"
+            android:text="@string/reorder"
+            android:textColor="@color/whiteColor" />
+    </RelativeLayout>
+
 </LinearLayout>

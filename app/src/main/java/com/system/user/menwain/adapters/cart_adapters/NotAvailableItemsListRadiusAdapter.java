@@ -56,7 +56,11 @@ public class NotAvailableItemsListRadiusAdapter extends RecyclerView.Adapter<Not
 
     @Override
     public int getItemCount() {
-        return not_avail_items_list.size();
+        if (not_avail_items_list.size() > 0) {
+            return not_avail_items_list.size();
+        } else {
+            return 0;
+        }
     }
 
     public static class NotAvailableItemsListViewHolder extends RecyclerView.ViewHolder {

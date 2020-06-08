@@ -29,38 +29,53 @@ public class Preferences {
     }
 
 
-    public void setPaymentStatus(int paymentStatus){
+    public void setPaymentStatus(int paymentStatus) {
         editor.putInt("payment_status", paymentStatus);
         editor.apply();
         editor.commit();
     }
+
     public int getPaymentStatus() {
         return sharedPreferences.getInt("payment_status", 0);
     }
-public void setRadius(int radius){
+
+    public void setPaymentMethodId(int payment_method_id) {
+        editor.putInt("payment_method_id", payment_method_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getPaymentMethodId() {
+        return sharedPreferences.getInt("payment_method_id", 0);
+    }
+
+    public void setRadius(int radius) {
         editor.putInt("radius", radius);
         editor.apply();
         editor.commit();
     }
+
     public int getRadius() {
         return sharedPreferences.getInt("radius", 0);
     }
 
-    public void setPayRBtnStatus(int rBtnStatus){
+    public void setPayRBtnStatus(int rBtnStatus) {
         editor.putInt("pay_r_btn_checked", rBtnStatus);
         editor.apply();
         editor.commit();
     }
+
     public int getPayRBtnStatus() {
         return sharedPreferences.getInt("pay_r_btn_checked", 0);
     }
 
 
-    public void setBottomNavStatus(int bottomNavStatus){
+    public void setBottomNavStatus(int bottomNavStatus) {
         editor.putInt("Bottom_Nav_status", bottomNavStatus);
         editor.apply();
         editor.commit();
     }
+
     public int getBottomNavStatus() {
         return sharedPreferences.getInt("Bottom_Nav_status", 0);
     }
@@ -94,6 +109,7 @@ public void setRadius(int radius){
     public int getSuperCatId() {
         return sharedPreferences.getInt("super_cat_id", 0);
     }
+
     public void setTotalAmount(int total_amount) {
         editor.putInt("total_amount", total_amount);
         editor.apply();
@@ -103,6 +119,7 @@ public void setRadius(int radius){
     public int getTotalAmount() {
         return sharedPreferences.getInt("total_amount", 0);
     }
+
     public void setCatsId(int cat_id) {
         editor.putInt("cat_id", cat_id);
         editor.apply();
@@ -112,6 +129,7 @@ public void setRadius(int radius){
     public int getCatsId() {
         return sharedPreferences.getInt("cat_id", 0);
     }
+
     public void setCartFragStatus(int fragStatus) {
         editor.putInt("cart_frag_status", fragStatus);
         editor.apply();
@@ -151,6 +169,7 @@ public void setRadius(int radius){
     public int getMoreStoresFragStatus() {
         return sharedPreferences.getInt("store_frag_status", 0);
     }
+
     public void setMoreOrdersFragStatus(int fragStatus) {
         editor.putInt("store_frag_status", fragStatus);
         editor.apply();
@@ -159,6 +178,26 @@ public void setRadius(int radius){
 
     public int getMoreOrdersFragStatus() {
         return sharedPreferences.getInt("store_frag_status", 0);
+    }
+
+    public void setMoreOrdersStatus(int MoreOrdersStatus) {
+        editor.putInt("MoreOrdersStatus", MoreOrdersStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getMoreOrdersStatus() {
+        return sharedPreferences.getInt("MoreOrdersStatus", 0);
+    }
+
+    public void setMoreOrdersStatusName(String MoreOrdersStatusName) {
+        editor.putString("MoreOrdersStatusName", MoreOrdersStatusName);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getMoreOrdersStatusName() {
+        return sharedPreferences.getString("MoreOrdersStatusName", "");
     }
 
     public void setProfileFragStatus(int fragStatus) {
@@ -191,6 +230,7 @@ public void setRadius(int radius){
     public int getStoreId() {
         return sharedPreferences.getInt("store_id", 0);
     }
+
     public void setStoreName(String storeName) {
         editor.putString("storeName", storeName);
         editor.apply();
@@ -201,6 +241,16 @@ public void setRadius(int radius){
         return sharedPreferences.getString("storeName", "");
     }
 
+
+    public void setWishListName(String setWishListName) {
+        editor.putString("setWishListName", setWishListName);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getWishListName() {
+        return sharedPreferences.getString("setWishListName", "");
+    }
 
     public void setTotalPrice(int total_price) {
         editor.putInt("total_price", total_price);
@@ -222,6 +272,17 @@ public void setRadius(int radius){
         return sharedPreferences.getInt("shipping_cost", 0);
     }
 
+    public void setShippingId(int shipping_cost_id) {
+        editor.putInt("shipping_cost_id", shipping_cost_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getShippingId() {
+        return sharedPreferences.getInt("shipping_cost_id", 0);
+    }
+
+
     public void setDateTime(String date_time) {
         editor.putString("date_time", date_time);
         editor.apply();
@@ -231,6 +292,7 @@ public void setRadius(int radius){
     public String getDateTime() {
         return sharedPreferences.getString("date_time", "");
     }
+
     public void setTimeSlotId(int time_slot_id) {
         editor.putInt("time_slot_id", time_slot_id);
         editor.apply();
@@ -271,13 +333,24 @@ public void setRadius(int radius){
         return sharedPreferences.getInt("order_status", 0);
     }
 
+    public void setOrderId(int order_status_id) {
+        editor.putInt("order_status_id", order_status_id);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getOrderId() {
+        return sharedPreferences.getInt("order_status_id", 0);
+    }
+
     public void setDeliverAddress(String delivery_address) {
         editor.putString("delivery_address", delivery_address);
         editor.apply();
         editor.commit();
     }
-    public String getDeliveryAddress(){
-        return sharedPreferences.getString("delivery_address","");
+
+    public String getDeliveryAddress() {
+        return sharedPreferences.getString("delivery_address", "");
     }
 
     public void setCardId(int card_id) {

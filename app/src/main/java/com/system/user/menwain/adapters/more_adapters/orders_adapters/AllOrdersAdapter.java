@@ -56,10 +56,11 @@ public class AllOrdersAdapter extends RecyclerView.Adapter<AllOrdersAdapter.Orde
             @Override
             public void onClick(View view) {
                 prefrences.setMoreOrdersFragStatus(2);
+                prefrences.setMoreOrdersStatus(1);
                 OrderDetailsFragment fragment = new OrderDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                 prefrences.setMoreOrderId(all_orders_list.get(position).getId());
-                fragment.setArguments(bundle);
+                prefrences.setMoreOrdersStatusName("pending");
                 transaction.replace(R.id.nav_host_fragment,fragment).commit();
             }
         });

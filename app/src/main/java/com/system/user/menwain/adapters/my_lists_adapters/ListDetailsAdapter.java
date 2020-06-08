@@ -14,11 +14,14 @@ import com.system.user.menwain.responses.my_list.WistListByIdResopnse;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListDetailsAdapter extends RecyclerView.Adapter<ListDetailsAdapter.ListDetailsViewHolder> {
     private List<WistListByIdResopnse.Datum> products_list;
     Context context;
+    public static List<Integer> quantity_list = new ArrayList<>();
+    public static List<Integer> amount_list = new ArrayList<>();
     public ListDetailsAdapter(Context applicationContext, List<WistListByIdResopnse.Datum> products_list) {
         this.products_list = products_list;
         this.context = applicationContext;
@@ -38,7 +41,10 @@ public class ListDetailsAdapter extends RecyclerView.Adapter<ListDetailsAdapter.
             holder.tvName.setText(products_list.get(position).getName());
             holder.tvStoreName.setText(products_list.get(position).getBrand());
             holder.tvPrice.setText(products_list.get(position).getAvgPrice().toString());
-
+        for (int i = 0; i < products_list.size(); i++) {
+            quantity_list.add(Integer.valueOf(holder.tvQuantity.getText().toString()));
+            amount_list.add(Integer.valueOf(holder.tvPrice.getText().toString()));
+        }
     }
 
     @Override
@@ -47,15 +53,18 @@ public class ListDetailsAdapter extends RecyclerView.Adapter<ListDetailsAdapter.
     }
 
     public static class ListDetailsViewHolder extends RecyclerView.ViewHolder {
-        private ImageView mProductImage;
-        private TextView tvName,tvStoreName,tvPrice;
+        private ImageView mProductImage,mIncrease,mDecrease;
+        private TextView tvName,tvStoreName,tvPrice,tvQuantity;
 
         public ListDetailsViewHolder(@NonNull View itemView) {
             super(itemView);
             mProductImage = itemView.findViewById(R.id.product_image_view);
+            mDecrease = itemView.findViewById(R.id.decrees_item_my_list);
+            mIncrease = itemView.findViewById(R.id.increase_items_my_list);
             tvName = itemView.findViewById(R.id.tv_name_my_list);
             tvStoreName = itemView.findViewById(R.id.tv_store_name_my_list);
             tvPrice = itemView.findViewById(R.id.tv_price_my_list);
+            tvQuantity = itemView.findViewById(R.id.items_counter_my_list);
         }
     }
 }

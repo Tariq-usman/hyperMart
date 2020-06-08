@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -23,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentTimeSlots;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.OrderDetailsAdapter;
@@ -49,7 +50,7 @@ public class OrderDetailsFragment extends Fragment {
     RecyclerView recyclerViewFavourite;
     OrderDetailsAdapter orderDetailsAdapter;
     private ImageView mBack, mDirection, ivStoreImage;
-    private TextView tvStoreName, tvStoreAddress, tvOrderNo, tvPrice, tvDate, tvTime, tvStatus, tvOrderCode;
+    private TextView tvStoreName, tvStoreAddress, tvOrderNo, tvPrice, tvDate, tvTime, tvStatus, tvOrderCode,mConfirmBtn;
     private Preferences prefrences;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
@@ -58,6 +59,7 @@ public class OrderDetailsFragment extends Fragment {
     private String order_status;
     public static String store_name = null;
     OrderDetailsResponse detailsResponse;
+    public static List<Integer> orders_reorder_list = new ArrayList<Integer>();
 
     @Nullable
     @Override
@@ -65,7 +67,6 @@ public class OrderDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_order_details, container, false);
         prefrences = new Preferences(getContext());
         customDialog(getContext());
-        bundle = this.getArguments();
         order_id = prefrences.getMoreOrderId();
         getOrdersDetails(String.valueOf(order_id));
 
@@ -76,6 +77,31 @@ public class OrderDetailsFragment extends Fragment {
             public void onClick(View view) {
                 prefrences.setMoreOrdersFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).addToBackStack(null).commit();
+            }
+        });
+        mConfirmBtn = view.findViewById(R.id.confirm_btn_order_details);
+        if (prefrences.getMoreOrdersStatus()==3 || prefrences.getMoreOrdersStatus()==4){
+            mConfirmBtn.setVisibility(View.VISIBLE);
+        }else {
+            mConfirmBtn.setVisibility(View.GONE);
+        }
+        mConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prefrences.setOrderStatus(4);
+                prefrences.setWishListName("");
+                prefrences.setTotalAmount(detailsResponse.getData().getTotalPrice());
+                prefrences.setStoreId(detailsResponse.getData().getStoreId());
+                prefrences.setDeliveryAddressId(detailsResponse.getData().getAddressId());
+                prefrences.setShippingId(detailsResponse.getData().getShippingMethodId());
+                prefrences.setShippingCost(detailsResponse.getData().getShippingCost());
+                prefrences.setOrderId(detailsResponse.getData().getId());
+                prefrences.setPaymentStatus(detailsResponse.getData().getPaymentMethodId());
+                orders_reorder_list.clear();
+                for (int i = 0; i < detailsResponse.getData().getProductss().size(); i++) {
+                    orders_reorder_list.add(detailsResponse.getData().getProductss().get(i).getProductId());
+                }
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DialogFragmentTimeSlots()).addToBackStack(null).commit();
             }
         });
 
@@ -108,7 +134,7 @@ public class OrderDetailsFragment extends Fragment {
         recyclerViewFavourite = view.findViewById(R.id.recycler_view_order_details);
         recyclerViewFavourite.setHasFixedSize(true);
         recyclerViewFavourite.setLayoutManager(new LinearLayoutManager(getContext()));
-        orderDetailsAdapter = new OrderDetailsAdapter(getContext(), details_list, order_status);
+        orderDetailsAdapter = new OrderDetailsAdapter(getContext(), details_list, prefrences.getMoreOrdersStatusName());
         recyclerViewFavourite.setAdapter(orderDetailsAdapter);
         return view;
     }
@@ -139,7 +165,6 @@ public class OrderDetailsFragment extends Fragment {
                 }
                 orderDetailsAdapter.notifyDataSetChanged();
                 dialog.dismiss();
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -156,6 +181,7 @@ public class OrderDetailsFragment extends Fragment {
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     public void customDialog(Context context) {

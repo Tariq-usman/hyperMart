@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.cart.dialog_fragments;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +60,7 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
     private List<StoreTimeSLotsResponse.List> delivery_dates_list = new ArrayList<StoreTimeSLotsResponse.List>();
     Preferences prefrences;
     private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     String current_date;
     long daysDiff;
     private StoreTimeSLotsResponse timeSLotsResponse;
@@ -67,7 +69,11 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_time_slots, container, false);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+       try {
+           getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+       }catch (Exception e){
+           e.printStackTrace();
+       }
         prefrences = new Preferences(getContext());
         customDialog(getContext());
         tvDeliveryPickUp = view.findViewById(R.id.tv_delivery_pickup);

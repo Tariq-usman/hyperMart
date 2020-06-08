@@ -82,7 +82,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private List<AvailNotAvailResponse.Datum> stores_list = new ArrayList<>();
     private List<AvailNotAvailRadiusResponse.Datum> stores_list_radius = new ArrayList<AvailNotAvailRadiusResponse.Datum>();
     private List<SelectedStoreProductsResponse.Datum> selected_stores_list = new ArrayList<SelectedStoreProductsResponse.Datum>();
-    List<Integer> reorder_list = ListDetailsFragment.reorder_list;
     List<AvailNotAvailResponse.Datum> filter_list = new ArrayList<>();
     List<AvailNotAvailRadiusResponse.Datum> filter_list_radius = new ArrayList<>();
 
@@ -103,31 +102,24 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         customDialog(getContext());
 
         int order_status = prefrences.getOrderStatus();
-        if (order_status == 2) {
-            cartList.clear();
-            for (int i = 0; i < reorder_list.size(); i++) {
-                cartList.add(reorder_list.get(i));
-            }
-            lowestPrice();
-        } else {
-            cartViewModel.getCartDataList().observe((LifecycleOwner) getContext(), new Observer<List<Cart>>() {
-                @Override
-                public void onChanged(List<Cart> carts) {
-                    cartList.clear();
-                    for (int i = 0; i < carts.size(); i++) {
-                        cartList.add(carts.get(i).getP_id());
-                        String store_name = carts.get(i).getStore_name();
-                    }
-                    if (prefrences.getOrderStatus() == 0) {
-                        lowestPrice();
-                    } else if (prefrences.getOrderStatus() == 1) {
-                        lowestPriceAsRadius();
-                    } else if (prefrences.getOrderStatus() == 3) {
-                        selectedStoreLowestPrice();
-                    }
+
+        cartViewModel.getCartDataList().observe((LifecycleOwner) getContext(), new Observer<List<Cart>>() {
+            @Override
+            public void onChanged(List<Cart> carts) {
+                cartList.clear();
+                for (int i = 0; i < carts.size(); i++) {
+                    cartList.add(carts.get(i).getP_id());
+                    String store_name = carts.get(i).getStore_name();
                 }
-            });
-        }
+                if (prefrences.getOrderStatus() == 0) {
+                    lowestPrice();
+                } else if (prefrences.getOrderStatus() == 1) {
+                    lowestPriceAsRadius();
+                } else if (prefrences.getOrderStatus() == 3) {
+                    selectedStoreLowestPrice();
+                }
+            }
+        });
 
         tvNoStoreFound = view.findViewById(R.id.tv_no_store_found);
         etSearch = view.findViewById(R.id.et_search_availability_store);
@@ -230,11 +222,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 mSortByDistance.setTextColor(Color.parseColor("#004040"));
                 mSortByPrice.setBackgroundResource(0);
                 mSortByPrice.setTextColor(Color.parseColor("#004040"));
-                if (prefrences.getOrderStatus() == 0){
+                if (prefrences.getOrderStatus() == 0) {
                     highestAvailabilityData();
-                }else if (prefrences.getOrderStatus() == 1) {
+                } else if (prefrences.getOrderStatus() == 1) {
                     highestAvailabilityAsRadius(prefrences.getRadius());
-                }else if (prefrences.getOrderStatus() == 3) {
+                } else if (prefrences.getOrderStatus() == 3) {
                     selectedStoreHighestAvailability();
                 }
                 break;
@@ -333,6 +325,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         });
     }
+
     private void highestAvailabilityData() {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -407,6 +400,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         });
     }
+
     private void nearestDistance() {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -549,6 +543,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         });
     }
+
     private void highestAvailabilityAsRadius(int selected_radius) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -622,6 +617,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         });
     }
+
     private void nearestDistanceAsRadius(int selected_radius) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -771,6 +767,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         });
     }
+
     private void selectedStoreHighestAvailability() {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -851,6 +848,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         });
     }
+
     private void selectedStoreNearestDist() {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

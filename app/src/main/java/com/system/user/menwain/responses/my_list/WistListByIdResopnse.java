@@ -6,9 +6,20 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class WistListByIdResopnse {
+    @SerializedName("Details")
+    @Expose
+    private Details details;
     @SerializedName("Data")
     @Expose
     private List<Datum> data = null;
+
+    public Details getDetails() {
+        return details;
+    }
+
+    public void setDetails(Details details) {
+        this.details = details;
+    }
 
     public List<Datum> getData() {
         return data;
@@ -16,6 +27,187 @@ public class WistListByIdResopnse {
 
     public void setData(List<Datum> data) {
         this.data = data;
+    }
+
+    public class Details {
+
+        @SerializedName("id")
+        @Expose
+        private Integer id;
+        @SerializedName("customer_id")
+        @Expose
+        private Integer customerId;
+        @SerializedName("date_time")
+        @Expose
+        private String dateTime;
+        @SerializedName("discount")
+        @Expose
+        private Integer discount;
+        @SerializedName("promotional_id")
+        @Expose
+        private Integer promotionalId;
+        @SerializedName("address_id")
+        @Expose
+        private Integer addressId;
+        @SerializedName("payment_method_id")
+        @Expose
+        private Integer paymentMethodId;
+        @SerializedName("wishlist_name")
+        @Expose
+        private String wishlistName;
+        @SerializedName("total_amount")
+        @Expose
+        private Integer totalAmount;
+        @SerializedName("store_id")
+        @Expose
+        private Integer storeId;
+        @SerializedName("shipping_cost")
+        @Expose
+        private Integer shippingCost;
+        @SerializedName("shipping_method_id")
+        @Expose
+        private Integer shippingMethodId;
+        @SerializedName("other")
+        @Expose
+        private String other;
+        @SerializedName("created_at")
+        @Expose
+        private String createdAt;
+        @SerializedName("updated_at")
+        @Expose
+        private String updatedAt;
+        @SerializedName("deleted_at")
+        @Expose
+        private Object deletedAt;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getCustomerId() {
+            return customerId;
+        }
+
+        public void setCustomerId(Integer customerId) {
+            this.customerId = customerId;
+        }
+
+        public String getDateTime() {
+            return dateTime;
+        }
+
+        public void setDateTime(String dateTime) {
+            this.dateTime = dateTime;
+        }
+
+        public Integer getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(Integer discount) {
+            this.discount = discount;
+        }
+
+        public Integer getPromotionalId() {
+            return promotionalId;
+        }
+
+        public void setPromotionalId(Integer promotionalId) {
+            this.promotionalId = promotionalId;
+        }
+
+        public Integer getAddressId() {
+            return addressId;
+        }
+
+        public void setAddressId(Integer addressId) {
+            this.addressId = addressId;
+        }
+
+        public Integer getPaymentMethodId() {
+            return paymentMethodId;
+        }
+
+        public void setPaymentMethodId(Integer paymentMethodId) {
+            this.paymentMethodId = paymentMethodId;
+        }
+
+        public String getWishlistName() {
+            return wishlistName;
+        }
+
+        public void setWishlistName(String wishlistName) {
+            this.wishlistName = wishlistName;
+        }
+
+        public Integer getTotalAmount() {
+            return totalAmount;
+        }
+
+        public void setTotalAmount(Integer totalAmount) {
+            this.totalAmount = totalAmount;
+        }
+
+        public Integer getStoreId() {
+            return storeId;
+        }
+
+        public void setStoreId(Integer storeId) {
+            this.storeId = storeId;
+        }
+
+        public Integer getShippingCost() {
+            return shippingCost;
+        }
+
+        public void setShippingCost(Integer shippingCost) {
+            this.shippingCost = shippingCost;
+        }
+
+        public Integer getShippingMethodId() {
+            return shippingMethodId;
+        }
+
+        public void setShippingMethodId(Integer shippingMethodId) {
+            this.shippingMethodId = shippingMethodId;
+        }
+
+        public String getOther() {
+            return other;
+        }
+
+        public void setOther(String other) {
+            this.other = other;
+        }
+
+        public String getCreatedAt() {
+            return createdAt;
+        }
+
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
+        }
+
+        public String getUpdatedAt() {
+            return updatedAt;
+        }
+
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
+        }
+
+        public Object getDeletedAt() {
+            return deletedAt;
+        }
+
+        public void setDeletedAt(Object deletedAt) {
+            this.deletedAt = deletedAt;
+        }
+
     }
 
     public class Datum {
@@ -414,6 +606,3 @@ public class WistListByIdResopnse {
     }
 
 }
-
-
-

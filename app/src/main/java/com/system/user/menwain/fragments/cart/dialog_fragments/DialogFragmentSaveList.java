@@ -30,7 +30,11 @@ import com.system.user.menwain.adapters.cart_adapters.AvailableItemsListSelected
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilitySelectedStoresAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
+import com.system.user.menwain.adapters.more_adapters.orders_adapters.OrderDetailsAdapter;
+import com.system.user.menwain.adapters.my_lists_adapters.ListDetailsAdapter;
 import com.system.user.menwain.fragments.cart.OrderSuccessfulFragment;
+import com.system.user.menwain.fragments.more.orders.OrderDetailsFragment;
+import com.system.user.menwain.fragments.my_list.ListDetailsFragment;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
@@ -77,12 +81,24 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
     private List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list_radius = ItemsAvailabilityStoresRadiusAdapter.available_list;
     private List<SelectedStoreProductsResponse.Datum.Available> selected_store_avail_items_list_radius = ItemsAvailabilitySelectedStoresAdapter.available_list;
+
     private List<Integer> quantity_list = AvailableItemsListAdapter.quantity_list;
     private List<Integer> amount_lit = AvailableItemsListAdapter.amount_list;
+
     private List<Integer> quantity_list_radius = AvailableItemsListRadiusAdapter.quantity_list;
     private List<Integer> amount_lit_radius = AvailableItemsListRadiusAdapter.amount_list;
+
     private List<Integer> selected_store_quantity_list_radius = AvailableItemsListSelectedStoreRadiusAdapter.quantity_list;
     private List<Integer> selected_store_amount_lit_radius = AvailableItemsListSelectedStoreRadiusAdapter.amount_list;
+
+    private List<Integer> reorder_quantity_list = ListDetailsAdapter.quantity_list;
+    private List<Integer> reorder_amount_lit = ListDetailsAdapter.amount_list;
+    List<Integer> reorder_list = ListDetailsFragment.reorder_list;
+
+    private List<Integer> orders_reorder_quantity_list = OrderDetailsAdapter.orders_quantity_list;
+    private List<Integer> orders_reorder_amount_lit = OrderDetailsAdapter.orders_amount_list;
+    List<Integer> orders_reorder_list = OrderDetailsFragment.orders_reorder_list;
+
     private CartViewModel cartViewModel;
     private View view;
     private OrderSuccessfulFragment fragment;
@@ -111,6 +127,11 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         cartViewModel = ViewModelProviders.of(DialogFragmentSaveList.this).get(CartViewModel.class);
         mConfirm = view.findViewById(R.id.confirm_btn_purchasing_method);
         etListName = view.findViewById(R.id.tv_date_in_store_purchase);
+        if (preferences.getOrderStatus() == 2) {
+            etListName.setText(preferences.getWishListName().toString());
+        } else {
+            etListName.setText("");
+        }
         mCloseBtn = view.findViewById(R.id.close_back_view);
 
         mHome = getActivity().findViewById(R.id.home_view);
@@ -130,19 +151,11 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
         mCloseBtn.setOnClickListener(this);
         mConfirm.setOnClickListener(this);
 
-
-        for (int i = 0; i < avail_items_list.size(); i++) {
-            list.add(avail_items_list.get(i).getAvgPrice());
-            list.add(2);
-            list.add(avail_items_list.get(i).getId());
-            list.add(2);
-        }
         return view;
     }
 
     @Override
     public void onClick(View view) {
-
         int id = view.getId();
         if (id == R.id.confirm_btn_purchasing_method) {
             pay_status = preferences.getPayRBtnStatus();
@@ -158,10 +171,8 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     }
 
     private void placeOrderAndAddToWishList() {
-        Log.e("list_size", avail_items_list.size() + "");
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final Gson gson = new GsonBuilder().create();
         JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("total_price", preferences.getTotalAmount() + preferences.getShippingCost());
@@ -190,7 +201,36 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             jsonObj.put("other", "next");
 
             JSONArray jsonArray = new JSONArray();
-            if (avail_items_list.size() > 0) {
+
+            if (orders_reorder_list.size() > 0) {
+                for (int i = 0; i < orders_reorder_list.size(); i++) {
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("price", orders_reorder_amount_lit.get(i));
+                        object.put("quantity", orders_reorder_quantity_list.get(i));
+                        object.put("product_id", orders_reorder_list.get(i));
+                        object.put("discount", 0);
+                        jsonArray.put(object);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                orders_reorder_list.clear();
+            } else if (reorder_list.size() > 0) {
+                for (int i = 0; i < reorder_list.size(); i++) {
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("price", reorder_amount_lit.get(i));
+                        object.put("quantity", reorder_quantity_list.get(i));
+                        object.put("product_id", reorder_list.get(i));
+                        object.put("discount", 0);
+                        jsonArray.put(object);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                reorder_list.clear();
+            } else if (avail_items_list.size() > 0) {
                 for (int i = 0; i < avail_items_list.size(); i++) {
                     JSONObject object = new JSONObject();
                     try {
@@ -203,7 +243,8 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
                         e.printStackTrace();
                     }
                 }
-            } else if (avail_items_list_radius.size()>0){
+                avail_items_list.clear();
+            } else if (avail_items_list_radius.size() > 0) {
                 for (int i = 0; i < avail_items_list_radius.size(); i++) {
                     JSONObject object = new JSONObject();
                     try {
@@ -216,7 +257,8 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
                         e.printStackTrace();
                     }
                 }
-            }else {
+                avail_items_list_radius.clear();
+            } else {
                 for (int i = 0; i < selected_store_avail_items_list_radius.size(); i++) {
                     JSONObject object = new JSONObject();
                     try {
@@ -229,6 +271,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
                         e.printStackTrace();
                     }
                 }
+                selected_store_avail_items_list_radius.clear();
             }
             jsonObj.put("prodct", jsonArray);
             Log.e("json", jsonArray.toString());
@@ -240,12 +283,19 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             @Override
             public void onResponse(JSONObject response) {
 
-                cartViewModel.deleteAllCartRecords();
-                preferences.setCartFragStatus(0);
-                bundle.putString("order_no", String.valueOf(order_no));
-                fragment.setArguments(bundle);
-                transaction.replace(R.id.nav_host_fragment, fragment).commit();
-                dialog.dismiss();
+                if (preferences.getOrderStatus() == 2 || preferences.getOrderStatus() == 4) {
+                    bundle.putString("order_no", String.valueOf(order_no));
+                    fragment.setArguments(bundle);
+                    transaction.replace(R.id.nav_host_fragment, fragment).commit();
+                    dialog.dismiss();
+                } else {
+                    cartViewModel.deleteAllCartRecords();
+                    preferences.setCartFragStatus(0);
+                    bundle.putString("order_no", String.valueOf(order_no));
+                    fragment.setArguments(bundle);
+                    transaction.replace(R.id.nav_host_fragment, fragment).commit();
+                    dialog.dismiss();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

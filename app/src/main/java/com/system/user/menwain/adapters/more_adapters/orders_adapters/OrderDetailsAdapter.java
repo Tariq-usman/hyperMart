@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.OrderDetailsItemViewHolder> {
@@ -32,7 +33,8 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
     private Preferences prefrences;
     private Bundle bundle;
     private String order_status;
-
+    public static List<Integer> orders_quantity_list = new ArrayList<>();
+    public static List<Integer> orders_amount_list = new ArrayList<>();
     public OrderDetailsAdapter(Context context, List<OrderDetailsResponse.Data.Products> details_list, String order_status) {
         this.details_list = details_list;
         this.context = context;
@@ -64,6 +66,10 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                     holder.tvReviews.setVisibility(View.VISIBLE);
                 }else {
                     holder.tvReviews.setVisibility(View.GONE);
+                }
+                for (int i = 0; i < details_list.size(); i++) {
+                    orders_quantity_list.add(Integer.valueOf(details_list.get(position).getPivot().getQuantity()));
+                    orders_amount_list.add(Integer.valueOf(details_list.get(position).getStoreprice()));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

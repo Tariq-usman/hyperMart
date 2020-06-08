@@ -80,20 +80,12 @@ public class ItemReviewFragment extends Fragment {
         }
 
         ratingBar = view.findViewById(R.id.rb_product);
-//        mTitle = getActivity().findViewById(R.id.title_view);
-        mBackBtn = getActivity().findViewById(R.id.iv_back);
-        mBackBtn.setVisibility(View.VISIBLE);
-
-//        mTitle.setText("Item Review");
+        mBackBtn = view.findViewById(R.id.iv_back_item_review);
 
         mSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 submitProductRatingAndReivew();
-               /* getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrderDetailsFragment()).addToBackStack(null).commit();
-                mBackBtn.setVisibility(View.INVISIBLE);*/
-//                startActivity(new Intent(getContext(),RateUsFragment.class));
-//                finish();
             }
         });
         mBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +94,6 @@ public class ItemReviewFragment extends Fragment {
                 prefrences.setMoreOrdersFragStatus(2);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrderDetailsFragment()).addToBackStack(null).commit();
                 mBackBtn.setVisibility(View.INVISIBLE);
-//                finish();
             }
         });
         return view;

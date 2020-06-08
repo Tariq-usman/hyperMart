@@ -8,6 +8,23 @@
     tools:context=".fragments.more.orders.ItemReviewFragment">
 
 <!--    <include layout="@layout/header_item_details" />-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/darkGreenColor"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_back_item_review"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:padding="16dp"
+            android:src="@drawable/ic_backwhite"
+            android:visibility="visible" />
+
+    </FrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"
