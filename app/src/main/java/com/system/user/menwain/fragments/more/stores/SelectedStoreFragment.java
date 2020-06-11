@@ -19,6 +19,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -50,14 +52,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class SelectedStoreFragment extends Fragment implements RecyclerClickInterface, View.OnClickListener {
 
     private ImageView mBarCodeScanner, ivSearch;
     private EditText etSearch;
-    private RecyclerView recyclerViewSelectedStore, recyclerViewFilterStores, recyclerViewCategoryProducts;
+    private RecyclerView recyclerViewSelectedStoreCategory, recyclerViewFilterStores, recyclerViewSelectedStoreCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
     private ImageView ivBackBtnSelectedStore, ivSelectedStore;
     private TextView tvStoreName,tvStoreContactNo, tvStoreLocation, tvStoreRating;
@@ -71,7 +75,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private List<Address> addresses;
     private SelectedStoreCategoryAdapter storeCategoryAdapter;
     private SelectedStoresCategoryProductsAdapter selectedStorecategoryProductsAdapter;
-    private SelectedStoreSelectedCategoryProductsAdapter categoryProductsAdapter;
+    private SelectedStoreSelectedCategoryProductsAdapter selectedStoreSelectedCategoryProductsAdapter;
     private List<SelectedStoreResponse.Category> category_list = new ArrayList<>();
     private List<SelectedStoreCategoryProductsResponse.Product.Datum> selected_store_category_products_list = new ArrayList<>();
     private List<SelectedStoreResponse.Product.Datum.Product_> category_products_list = new ArrayList<SelectedStoreResponse.Product.Datum.Product_>();
@@ -111,16 +115,17 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new StoresFragment()).addToBackStack(null).commit();
             }
         });
-        recyclerViewSelectedStore = view.findViewById(R.id.recycler_view_selected_store);
-        recyclerViewSelectedStore.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewSelectedStore.setLayoutManager(linearLayoutManager);
-        storeCategoryAdapter = new SelectedStoreCategoryAdapter(getContext(), category_list, this);
-        recyclerViewSelectedStore.setAdapter(storeCategoryAdapter);
 
-        recyclerViewCategoryProducts = view.findViewById(R.id.recycler_view_selected_store_category_products);
-        recyclerViewCategoryProducts.setHasFixedSize(true);
-        recyclerViewCategoryProducts.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        recyclerViewSelectedStoreCategory = view.findViewById(R.id.recycler_view_selected_store);
+        recyclerViewSelectedStoreCategory.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewSelectedStoreCategory.setLayoutManager(linearLayoutManager);
+        storeCategoryAdapter = new SelectedStoreCategoryAdapter(getContext(), category_list, this);
+        recyclerViewSelectedStoreCategory.setAdapter(storeCategoryAdapter);
+
+        recyclerViewSelectedStoreCategoryProducts = view.findViewById(R.id.recycler_view_selected_store_category_products);
+        recyclerViewSelectedStoreCategoryProducts.setHasFixedSize(true);
+        recyclerViewSelectedStoreCategoryProducts.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
 
 
         int store_id = prefrences.getMoreStoreId();
@@ -132,7 +137,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     @Override
     public void interfaceOnClick(View view, int position) {
         int category_id = category_list.get(position).getId();
-      //  getCategoryProducts(category_id);
+        getSelectedStoreCategoryProducts(category_id);
     }
 
 
@@ -170,7 +175,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 }
                 Log.e("list_size", String.valueOf(category_products_list.size()));
                 selectedStorecategoryProductsAdapter = new SelectedStoresCategoryProductsAdapter(getContext(), category_products_list,storeResponse.getStore().getName(),storeResponse.getStore().getId());
-                recyclerViewCategoryProducts.setAdapter(selectedStorecategoryProductsAdapter);
+                recyclerViewSelectedStoreCategoryProducts.setAdapter(selectedStorecategoryProductsAdapter);
                 storeCategoryAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -184,12 +189,12 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         requestQueue.add(request);
     }
 
-    private void getCategoryProducts(int category_id) {
+    private void getSelectedStoreCategoryProducts(int category_id) {
         dialog.show();
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_selected_store_data_url + category_id, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, URLs.get_selected_store_selected_cat_url + category_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 SelectedStoreCategoryProductsResponse categoryProductsResponse = gson.fromJson(response, SelectedStoreCategoryProductsResponse.class);
@@ -198,9 +203,11 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                     selected_store_category_products_list.add(categoryProductsResponse.getProduct().getData().get(i));
                 }
                 selected_store_category_products_list.size();
-                categoryProductsAdapter = new SelectedStoreSelectedCategoryProductsAdapter(getContext(), selected_store_category_products_list);
-                recyclerViewCategoryProducts.setAdapter(categoryProductsAdapter);
-                selectedStorecategoryProductsAdapter.notifyDataSetChanged();
+                selectedStoreSelectedCategoryProductsAdapter = new SelectedStoreSelectedCategoryProductsAdapter(getContext(), selected_store_category_products_list);
+                recyclerViewSelectedStoreCategoryProducts.setAdapter(selectedStoreSelectedCategoryProductsAdapter);
+                if (selected_store_category_products_list.size() == 0) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_products), Toast.LENGTH_SHORT).show();
+                }
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -209,8 +216,17 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 Log.e("ss_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("store_id", String.valueOf(prefrences.getMoreStoreId()));
+                return map;
+            }
+        };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(10000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     public void customDialog(Context context) {

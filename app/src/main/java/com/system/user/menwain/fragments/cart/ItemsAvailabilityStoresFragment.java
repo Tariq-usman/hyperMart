@@ -29,8 +29,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilitySelectedStoresAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
+import com.system.user.menwain.fragments.cart.apply_filter.DialogFragmentFilterStores;
 import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
-import com.system.user.menwain.fragments.my_list.ListDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
 import com.system.user.menwain.others.Preferences;
@@ -62,14 +62,16 @@ import org.json.JSONObject;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
-public class ItemsAvailabilityStoresFragment extends Fragment implements View.OnClickListener {
+public class ItemsAvailabilityStoresFragment extends Fragment implements View.OnClickListener, DialogFragmentFilterStores.OnDismissDialogInterface {
     private EditText etSearch;
     private RecyclerView recyclerViewAvailableItemsStore;
+
     private ItemsAvailabilityStoresAdapter itemsAvailabilityStoresAdapter;
     private ItemsAvailabilityStoresRadiusAdapter itemsAvailabilityStoresRadiusAdapter;
     private ItemsAvailabilitySelectedStoresAdapter itemsAvailabilitySelectedStoresAdapter;
+
     private TextView mSortByDistance, mSortByPrice, mSortByAvailability, tvNoStoreFound;
-    private ImageView mBackBtn;
+    private ImageView mBackBtn, mFilterStores;
     Preferences prefrences;
     private int pay_status;
     private CardView mSearchView;
@@ -129,6 +131,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         mSortByAvailability = view.findViewById(R.id.sort_by_availability);
         mBackBtn = view.findViewById(R.id.iv_back_items_avail_store);
         mBackBtn.setOnClickListener(this);
+        mFilterStores = view.findViewById(R.id.iv_filter_stores_list);
+        mFilterStores.setOnClickListener(this);
         mSortByDistance.setOnClickListener(this);
         mSortByPrice.setOnClickListener(this);
         mSortByAvailability.setOnClickListener(this);
@@ -249,8 +253,14 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 prefrences.setCartFragStatus(1);
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
                 break;
+            case R.id.iv_filter_stores_list:
+                DialogFragmentFilterStores dialogFragmentFilterStores = new DialogFragmentFilterStores();
+                dialogFragmentFilterStores.setTargetFragment(ItemsAvailabilityStoresFragment.this, 1);
+                dialogFragmentFilterStores.show(getParentFragmentManager(), "Select store");
+                break;
         }
     }
+
 
     /*result without select radius and store*/
     private void lowestPrice() {
@@ -730,7 +740,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     });
                     itemsAvailabilitySelectedStoresAdapter = new ItemsAvailabilitySelectedStoresAdapter(getContext(), selected_stores_list, lat, lang);
                     recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilitySelectedStoresAdapter);
-//                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (selected_stores_list.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
                     } else {
@@ -933,4 +942,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         dialog = builder.create();
     }
 
+    @Override
+    public void onDismissDialogFragment() {
+        selectedStoreLowestPrice();
+    }
 }

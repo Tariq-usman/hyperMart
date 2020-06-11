@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -325,13 +326,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             Intent intent = new Intent(getContext(), MapsActivity.class);
             intent.putExtra("address_id", -1);
             startActivity(intent);
-        }/*else if (id==R.id.select_radius){
-            selectRadius.setBackgroundColor(Color.parseColor("#004040"));
-            tvSelectRadius.setTextColor(Color.parseColor("#FFFFFF"));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                numberPicker.setTextColor(Color.parseColor("#FFFFFF"));
-            }
-        }*/
+        }
 
     }
 
@@ -373,6 +368,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(10000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     public void customDialog(Context context) {

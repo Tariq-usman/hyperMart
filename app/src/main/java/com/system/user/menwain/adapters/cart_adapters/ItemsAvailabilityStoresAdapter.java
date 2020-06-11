@@ -40,6 +40,7 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
     public static List<AvailNotAvailResponse.Datum.Notavailable> not_available_list;
     private static DecimalFormat decimalFormat;
 
+
     public ItemsAvailabilityStoresAdapter(Context context, List<AvailNotAvailResponse.Datum> stores_list, double lat, double lang) {
         this.stores_list = stores_list;
         this.lat = lat;
@@ -95,6 +96,8 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*ItemsAvailabilityStoresRadiusAdapter.available_list.clear();
+                ItemsAvailabilitySelectedStoresAdapter.available_list.clear();*/
                 prefrences.setCartFragStatus(3);
                 prefrences.setStoreId(stores_list.get(position).getId());
                 prefrences.setStoreName(stores_list.get(position).getName());

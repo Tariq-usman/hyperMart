@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
@@ -48,7 +50,7 @@ public class SelectedStoreSelectedCategoryProductsAdapter extends RecyclerView.A
     Bundle bundle;
     private Preferences prefrences;
     UpdateCartQuantity updateCartQuantity;
-    int id, pro_quantity;
+    int id, pro_quantity, store_id;
     private List<Integer> p_id_list = new ArrayList<Integer>();
     List<Integer> quantity_list = new ArrayList<Integer>();
 
@@ -70,10 +72,10 @@ public class SelectedStoreSelectedCategoryProductsAdapter extends RecyclerView.A
     @Override
     public void onBindViewHolder(@NonNull final FilterStoresViewHolder holder, final int position) {
 //        if (category_products_list.size() > 0) {
-        Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getProducts().get(position).getImage()).into(holder.mFilteProduct);
-        holder.mProductNameView.setText(category_products_list.get(position).getProducts().get(position).getName());
+        Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getImage()).into(holder.mFilteProduct);
+        holder.mProductNameView.setText(category_products_list.get(position).getName());
         holder.mStoreName.setText(category_products_list.get(position).getName());
-        holder.mPriceFilterItem.setText(category_products_list.get(position).getProducts().get(position).getAvgPrice().toString());
+        holder.mPriceFilterItem.setText(category_products_list.get(position).getAvgPrice().toString());
 
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +116,23 @@ public class SelectedStoreSelectedCategoryProductsAdapter extends RecyclerView.A
             @Override
             public void onClick(View view) {
                 try {
+                     store_id = prefrences.getMoreStoreId();
+                    prefrences.setOrderStatus(3);
+                        if (SelectedStoreFragment.store_id_list.size() == 0) {
+                            SelectedStoreFragment.store_id_list.add(prefrences.getMoreStoreId());
+                        } else {
+                            for (int i = 0; i < SelectedStoreFragment.store_id_list.size(); i++) {
+                                int val = SelectedStoreFragment.store_id_list.get(i);
+                                if (val == store_id) {
+                                    SelectedStoreFragment.store_id_list.remove(i);
+                                    SelectedStoreFragment.store_id_list.set(i,prefrences.getMoreStoreId());
+                                } else {
+                                    SelectedStoreFragment.store_id_list.add(store_id);
+                                }
+                                Log.e("size", String.valueOf(SelectedStoreFragment.store_id_list));
+                                int list_size = SelectedStoreFragment.store_id_list.size();
+                            }
+                        }
                     Drawable drawable = holder.mFilteProduct.getDrawable();
                     Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                     int productId = category_products_list.get(position).getId();

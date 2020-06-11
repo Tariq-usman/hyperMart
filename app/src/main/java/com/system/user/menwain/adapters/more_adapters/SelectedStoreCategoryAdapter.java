@@ -23,7 +23,7 @@ public class SelectedStoreCategoryAdapter extends RecyclerView.Adapter<SelectedS
     private LayoutInflater layoutInflater;
     Context context;
     List<SelectedStoreResponse.Category> category_list;
-    int lastPosition = 0;
+    int lastPosition = -1;
     int abc = StoresAdapter.pos;
     private boolean check = false;
     private RecyclerClickInterface clickInterface;

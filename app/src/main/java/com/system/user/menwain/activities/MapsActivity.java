@@ -82,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         prefrences = new Preferences(this);
         customProgressDialog(MapsActivity.this);
-        address_id = getIntent().getIntExtra("address_id",0);
+        address_id = getIntent().getIntExtra("address_id", 0);
 
         searchBtn = findViewById(R.id.searchBtn);
         searchEt = findViewById(R.id.searchEt);
@@ -118,8 +118,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        if (addressList.size()==0){
-                            Toast.makeText(getApplicationContext(),"No location found!",Toast.LENGTH_LONG).show();
+                        if (addressList.size() == 0) {
+                            Toast.makeText(getApplicationContext(), "No location found!", Toast.LENGTH_LONG).show();
                         }
                         Address address = addressList.get(0);
                         LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
@@ -127,7 +127,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -229,7 +229,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onCameraIdle() {
                 center = mMap.getCameraPosition().target;
-                Log.e("lat,long",center.latitude+" , "+center.longitude+"");
+                Log.e("lat,long", center.latitude + " , " + center.longitude + "");
                 Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.ENGLISH);
                 List<Address> addresses;
 

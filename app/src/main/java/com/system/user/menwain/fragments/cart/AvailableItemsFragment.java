@@ -19,6 +19,7 @@ import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilitySelectedS
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresAdapter;
 import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.responses.cart.SelectedStoreProductsResponse;
@@ -39,44 +40,51 @@ public class AvailableItemsFragment extends Fragment implements RecyclerClickInt
 
     public static int avai_items;
     SharedPreferences.Editor editor;
-    List<AvailNotAvailResponse.Datum.Available> avail_items_list= ItemsAvailabilityStoresAdapter.available_list;
-    List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list_radius= ItemsAvailabilityStoresRadiusAdapter.available_list;
+    List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
+    List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list_radius = ItemsAvailabilityStoresRadiusAdapter.available_list;
 
     List<AvailNotAvailResponse.Datum.Notavailable> not_avail_items_list = ItemsAvailabilityStoresAdapter.not_available_list;
     List<AvailNotAvailRadiusResponse.Datum.Notavailable> not_avail_items_list_radius = ItemsAvailabilityStoresRadiusAdapter.not_available_list;
 
     List<SelectedStoreProductsResponse.Datum.Available> selected_store_avail_items_list = ItemsAvailabilitySelectedStoresAdapter.available_list;
+    List<SelectedStoreProductsResponse.Datum.Notavailable> selected_store_not_avail_items_list = ItemsAvailabilitySelectedStoresAdapter.not_available_list;
 
     private TextView mTotalAmount;
+    private Preferences preferences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_available_items, container, false);
 
+        preferences = new Preferences(getContext());
 
         recyclerViewItemsList = view.findViewById(R.id.recycler_view_available_items_list);
         recyclerViewItemsList.setHasFixedSize(true);
         recyclerViewItemsList.setLayoutManager(new LinearLayoutManager(getContext()));
         try {
-            if (avail_items_list.size() > 0) {
-                AvailNotAvailItemsListsFragment.mAvailItems.setText(avail_items_list.size()+"");
-                AvailNotAvailItemsListsFragment.mNotAvailItmes.setText(not_avail_items_list.size()+"");
-                availableItemsListAdapter = new AvailableItemsListAdapter(getContext(), avail_items_list, this);
-                recyclerViewItemsList.setAdapter(availableItemsListAdapter);
-            } else if (avail_items_list_radius.size() > 0) {
-                AvailNotAvailItemsListsFragment.mAvailItems.setText(avail_items_list_radius.size()+"");
-                AvailNotAvailItemsListsFragment.mNotAvailItmes.setText(not_avail_items_list_radius.size()+"");
-                availableItemsListRadiusAdapter = new AvailableItemsListRadiusAdapter(getContext(), avail_items_list_radius, this);
-                recyclerViewItemsList.setAdapter(availableItemsListRadiusAdapter);
-            }else if (selected_store_avail_items_list.size()>0){
-                AvailNotAvailItemsListsFragment.mAvailItems.setText(selected_store_avail_items_list.size()+"");
-                AvailNotAvailItemsListsFragment.mNotAvailItmes.setText("0");
+
+            if (preferences.getOrderStatus() == 0) {
+                if (avail_items_list.size() > 0) {
+                    AvailNotAvailItemsListsFragment.mAvailItems.setText(avail_items_list.size() + "");
+                    AvailNotAvailItemsListsFragment.mNotAvailItmes.setText(not_avail_items_list.size() + "");
+                    availableItemsListAdapter = new AvailableItemsListAdapter(getContext(), avail_items_list, this);
+                    recyclerViewItemsList.setAdapter(availableItemsListAdapter);
+                }
+            } else if (preferences.getOrderStatus() == 1) {
+                if (avail_items_list_radius.size() > 0) {
+                    AvailNotAvailItemsListsFragment.mAvailItems.setText(avail_items_list_radius.size() + "");
+                    AvailNotAvailItemsListsFragment.mNotAvailItmes.setText(not_avail_items_list_radius.size() + "");
+                    availableItemsListRadiusAdapter = new AvailableItemsListRadiusAdapter(getContext(), avail_items_list_radius, this);
+                    recyclerViewItemsList.setAdapter(availableItemsListRadiusAdapter);
+                }
+            } else if (preferences.getOrderStatus() == 3) {
+                AvailNotAvailItemsListsFragment.mAvailItems.setText(selected_store_avail_items_list.size() + "");
                 availableItemsListSelectedStoreRadiusAdapter = new AvailableItemsListSelectedStoreRadiusAdapter(getContext(), selected_store_avail_items_list, this);
                 recyclerViewItemsList.setAdapter(availableItemsListSelectedStoreRadiusAdapter);
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

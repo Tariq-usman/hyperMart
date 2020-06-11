@@ -54,4 +54,5 @@ public class URLs {
     public static String search_product_by_bar_code_url = base_url + "searchproductbybarcode";
     public static String heighest_availability_by_radius = base_url +"hAByRadious";
     public static String radious_stores_list = base_url+"radiousStoresList";
+    public static String get_selected_store_selected_cat_url = base_url+"storeProdbycat/";
 }

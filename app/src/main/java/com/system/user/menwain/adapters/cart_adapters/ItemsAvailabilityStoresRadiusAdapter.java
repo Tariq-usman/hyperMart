@@ -46,8 +46,8 @@ public class ItemsAvailabilityStoresRadiusAdapter extends RecyclerView.Adapter<I
         this.lang = lang;
         this.context = context;
         prefrences = new Preferences(context);
-        available_list = new ArrayList<AvailNotAvailRadiusResponse.Datum.Available>();
-        not_available_list = new ArrayList<AvailNotAvailRadiusResponse.Datum.Notavailable>();
+        available_list = new ArrayList<>();
+        not_available_list = new ArrayList<>();
     }
 
     @NonNull
@@ -98,6 +98,8 @@ public class ItemsAvailabilityStoresRadiusAdapter extends RecyclerView.Adapter<I
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               /* ItemsAvailabilityStoresAdapter.available_list.clear();
+                ItemsAvailabilitySelectedStoresAdapter.available_list.clear();*/
                 prefrences.setCartFragStatus(3);
                 prefrences.setStoreId(stores_list.get(position).getId());
                 prefrences.setStoreName(stores_list.get(position).getName());

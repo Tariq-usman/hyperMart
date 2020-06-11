@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.system.user.menwain.adapters.cart_adapters.ItemsAvailabilityStoresRadiusAdapter;
 import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
 import com.system.user.menwain.others.Preferences;
@@ -22,6 +23,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.more.stores.SelectedStoreCategoryProductsResponse;
 import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
 
@@ -55,6 +57,7 @@ public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<
     int id,storeId, pro_quantity;
     private List<Integer> p_id_list = new ArrayList<Integer>();
     List<Integer> quantity_list = new ArrayList<Integer>();
+
     DecimalFormat decimalFormat;
     public SelectedStoresCategoryProductsAdapter(Context context, List<SelectedStoreResponse.Product.Datum.Product_> category_products_list, String name, Integer storeId) {
         this.category_products_list = category_products_list;
@@ -132,7 +135,7 @@ public class SelectedStoresCategoryProductsAdapter extends RecyclerView.Adapter<
                     } else {
                         for (int i = 0; i < SelectedStoreFragment.store_id_list.size(); i++) {
                             int val = SelectedStoreFragment.store_id_list.get(i);
-                            if (store_id == val) {
+                            if (val == store_id) {
                                 SelectedStoreFragment.store_id_list.remove(i);
                                 SelectedStoreFragment.store_id_list.set(i,prefrences.getMoreStoreId());
                             } else {

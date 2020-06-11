@@ -138,18 +138,8 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             getFragmentManager().beginTransaction().replace(R.id.container_items_list, new NotAvailableItemsFragment()).commit();
         } else if (id == R.id.confirm_btn_items_list) {
             pay_status = prefrences.getPayRBtnStatus();
-            if (avail_items_list.size() > 0) {
-                prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
-                calculateShippingCost();
-            } else if (avail_items_list_radius.size() > 0) {
-                prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
-                calculateShippingCost();
-            } else if (selected_store_avail_items_list_radius.size() > 0) {
-                prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
-                calculateShippingCost();
-            }else {
-                Toast.makeText(getContext(), getContext().getString(R.string.no_items_available), Toast.LENGTH_SHORT).show();
-            }
+            prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
+            calculateShippingCost();
         } else if (id == R.id.iv_back_avail_not_avail) {
             prefrences.setCartFragStatus(2);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();

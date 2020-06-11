@@ -61,6 +61,8 @@
     <string name="select_location">اختر موقعا</string>
     <string name="add_new">اضف جديد</string>
     <string name="confirm_btn">تؤكد</string>
+    <string name="apply_filter">تطبيق</string>
+    <string name="select_all">اختر الكل</string>
 
     <!--Map Activity-->
     <string name="map_search_here">ابحث هنا</string>
