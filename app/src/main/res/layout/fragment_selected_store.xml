@@ -73,13 +73,13 @@
 
 
         <ImageView
-            android:id="@+id/iv_grid_list_view"
+            android:id="@+id/iv_nav_selected_store"
             android:layout_width="45dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center_vertical"
-            android:padding="12dp"
-            android:src="@drawable/ic_list_view"
-            android:visibility="invisible" />
+            android:layout_gravity="right"
+            android:padding="5dp"
+            android:src="@drawable/ic_navigation"
+            android:visibility="visible" />
     </FrameLayout>
 
     <LinearLayout

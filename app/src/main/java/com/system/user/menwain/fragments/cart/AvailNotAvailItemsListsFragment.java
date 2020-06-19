@@ -47,7 +47,7 @@ import java.util.Map;
 
 public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
     private TextView mAvailable, mNotAvailable;
-    public static TextView mTotalAmount, tvStoreName, mAvailItems, mNotAvailItmes;
+    public static TextView mTotalAmount, tvStoreName, mAvailItems, mNotAvailItmes,mSaved;
     private ImageView mBackBtn;
     private LinearLayout mConfirmBtn;
     private int store_id, avail, not_avial;
@@ -86,7 +86,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             distance = "0";
         }
         prefrences = new Preferences(getContext());
-        getFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
+        getParentFragmentManager().beginTransaction().replace(R.id.container_items_list, new AvailableItemsFragment()).commit();
 
         tvStoreName = view.findViewById(R.id.store_name_avial_not_avial);
         tvStoreName.setText(prefrences.getStoreName());
@@ -101,6 +101,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
         mAvailItems.setText(avail + "");
         mNotAvailItmes = view.findViewById(R.id.count_not_avail_items);
         mNotAvailItmes.setText(not_avial + "");
+        mSaved = view.findViewById(R.id.tv_saved);
 
         mAvailable.setOnClickListener(this);
         mNotAvailable.setOnClickListener(this);
@@ -137,9 +138,14 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             mAvailItems.setBackgroundResource(R.drawable.bg_avail_not_avail_item_unselected);
             getFragmentManager().beginTransaction().replace(R.id.container_items_list, new NotAvailableItemsFragment()).commit();
         } else if (id == R.id.confirm_btn_items_list) {
-            pay_status = prefrences.getPayRBtnStatus();
-            prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
-            calculateShippingCost();
+            int avail_items = Integer.parseInt(mAvailItems.getText().toString());
+            if (avail_items == 0) {
+                Toast.makeText(getContext(), "" + getString(R.string.no_items_available), Toast.LENGTH_SHORT).show();
+            } else {
+                pay_status = prefrences.getPayRBtnStatus();
+                prefrences.setTotalAmount(Integer.parseInt(mTotalAmount.getText().toString()));
+                calculateShippingCost();
+            }
         } else if (id == R.id.iv_back_avail_not_avail) {
             prefrences.setCartFragStatus(2);
             getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ItemsAvailabilityStoresFragment()).addToBackStack(null).commit();
@@ -157,8 +163,9 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
                 prefrences.setShippingCost(shippingCostResponse.getShippingcost());
 
                 if (pay_status == 5) {
-                    DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
-                    dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new RouteToStoreFragment()).addToBackStack(null).commit();
+                    /*DialogFragmentSaveList dialogFragmentSaveList = new DialogFragmentSaveList();
+                    dialogFragmentSaveList.show(getFragmentManager(), "Purchasing Method");*/
                 } else {
                     //if (pay_status == 2){
                     DialogFragmentTimeSlots deliveryTime = new DialogFragmentTimeSlots();

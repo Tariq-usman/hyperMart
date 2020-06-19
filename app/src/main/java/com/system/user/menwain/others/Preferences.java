@@ -241,6 +241,26 @@ public class Preferences {
         return sharedPreferences.getString("storeName", "");
     }
 
+    public void setStoreImage(String storeImage) {
+        editor.putString("storeImage", storeImage);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getStoreImage() {
+        return sharedPreferences.getString("storeImage", "");
+    }
+
+    public void setStoreLocation(String storeLocation) {
+        editor.putString("storeLocation", storeLocation);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getStoreLocation() {
+        return sharedPreferences.getString("storeLocation", "");
+    }
+
 
     public void setWishListName(String setWishListName) {
         editor.putString("setWishListName", setWishListName);

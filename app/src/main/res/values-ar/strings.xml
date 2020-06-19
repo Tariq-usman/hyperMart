@@ -109,6 +109,7 @@
     <string name="card_name">اسم البطاقة</string>
     <string name="billing_address">عنوان وصول الفواتير</string>
     <string name="add">أضف</string>
+    <string name="store_price">Store Price</string>
 
     <!--Payment fragment-->
     <string name="payment_update">تحديث</string>
@@ -146,7 +147,8 @@
     <!--Browse Stores Fragment-->
     <string name="store_name">اسم المتجر:</string>
     <string name="store_location">موقعك</string>
-    <string name="contact_no">Contact #</string>
+    <string name="contact_no">اتصل #</string>
+    <string name="route_me">وجهني</string>
 
     <!--Orders Fragment-->
     <string name="all">الكل</string>

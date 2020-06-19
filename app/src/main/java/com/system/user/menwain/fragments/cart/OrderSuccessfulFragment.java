@@ -72,7 +72,7 @@ public class OrderSuccessfulFragment extends Fragment {
                 tvCart.setTextColor(Color.parseColor("#004040"));
                 mMore.setImageResource(R.drawable.ic_morewhite);
                 tvMore.setTextColor(Color.parseColor("#004040"));
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment())
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment())
                         .addToBackStack(null).commit();
             }
         });

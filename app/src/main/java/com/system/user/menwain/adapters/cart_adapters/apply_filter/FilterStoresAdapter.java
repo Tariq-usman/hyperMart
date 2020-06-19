@@ -61,13 +61,34 @@ public class FilterStoresAdapter extends RecyclerView.Adapter<FilterStoresAdapte
         holder.mRatingView.setText("( " + stores_list.get(position).getAverageRating() + " )");
         Glide.with(holder.mStore.getContext()).load(stores_list.get(position).getImage()).into(holder.mStore);
 
-        if (DialogFragmentFilterStores.check_value == true) {
-            SelectedStoreFragment.store_id_list.add(stores_list.get(position).getId());
+        int abc = stores_list.get(position).getId();
+        if (SelectedStoreFragment.store_id_list.contains(abc)) {
+            holder.checkBox.setChecked(true);
+            Log.e("check_id", abc + " yes");
         } else {
-            SelectedStoreFragment.store_id_list.clear();
+            holder.checkBox.setChecked(false);
+            Log.e("check_id", abc + " no");
         }
 
-        holder.checkBox.setChecked(DialogFragmentFilterStores.check_value);
+        if (DialogFragmentFilterStores.check_value == 1) {
+            DialogFragmentFilterStores.cbSelectAll.setChecked(true);
+            SelectedStoreFragment.store_id_list.add(stores_list.get(position).getId());
+            holder.checkBox.setChecked(true);
+        } else if (DialogFragmentFilterStores.check_value == 0) {
+            DialogFragmentFilterStores.cbSelectAll.setChecked(false);
+            SelectedStoreFragment.store_id_list.clear();
+            holder.checkBox.setChecked(false);
+        } else {
+            if (SelectedStoreFragment.store_id_list.contains(abc)) {
+                holder.checkBox.setChecked(true);
+                Log.e("check_id", abc + " yes");
+            } else {
+                holder.checkBox.setChecked(false);
+                Log.e("check_id", abc + " no");
+            }
+        }
+
+        // holder.checkBox.setChecked(DialogFragmentFilterStores.check_value);
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -82,18 +103,18 @@ public class FilterStoresAdapter extends RecyclerView.Adapter<FilterStoresAdapte
                         }
                     }
                 } else {
+                    DialogFragmentFilterStores.check_value = 100;
                     holder.checkBox.setChecked(true);
                     if (SelectedStoreFragment.store_id_list.size() == 0) {
                         SelectedStoreFragment.store_id_list.add(stores_list.get(position).getId());
                     } else {
-                        SelectedStoreFragment.store_id_list.add(stores_list.get(pos).getId());
+                        SelectedStoreFragment.store_id_list.add(stores_list.get(position).getId());
                     }
 
                 }
                 Log.d("add_id", String.valueOf(SelectedStoreFragment.store_id_list));
             }
         });
-
 
 
     }

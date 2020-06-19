@@ -54,7 +54,7 @@
             <Button
                 android:id="@+id/btn_yes"
                 android:layout_marginHorizontal="15dp"
-                android:layout_width="30dp"
+                android:layout_width="35dp"
                 android:layout_height="30dp"
                 android:background="@android:color/transparent"
                 android:text="Yes"

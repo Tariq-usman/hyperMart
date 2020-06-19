@@ -159,6 +159,7 @@ public class OrderDetailsFragment extends Fragment {
                 tvTime.setText(split_date_time[1]);
                 order_status = detailsResponse.getData().getOrderStatus();
                 tvStatus.setText(order_status);
+                tvOrderCode.setText(detailsResponse.getData().getSecretCode().toString());
                 details_list.clear();
                 for (int i = 0; i < detailsResponse.getData().getProductss().size(); i++) {
                     details_list.add(detailsResponse.getData().getProductss().get(i));

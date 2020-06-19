@@ -164,7 +164,6 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
 
         } else if (id == R.id.close_back_view) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CartFragment()).commit();
-            mBackBtnPay.setVisibility(View.INVISIBLE);
             dismiss();
         }
 

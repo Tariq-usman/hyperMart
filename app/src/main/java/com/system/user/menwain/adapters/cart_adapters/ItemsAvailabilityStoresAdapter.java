@@ -101,6 +101,8 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
                 prefrences.setCartFragStatus(3);
                 prefrences.setStoreId(stores_list.get(position).getId());
                 prefrences.setStoreName(stores_list.get(position).getName());
+                prefrences.setStoreImage(stores_list.get(position).getImage());
+                prefrences.setStoreLocation(stores_list.get(position).getLatitude() + " " + stores_list.get(position).getLongitude());
                 prefrences.setTotalPrice(total_amount);
                 AvailNotAvailItemsListsFragment fragment = new AvailNotAvailItemsListsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();

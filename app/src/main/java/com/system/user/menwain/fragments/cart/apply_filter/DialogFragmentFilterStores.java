@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.apply_filter.FilterStoresAdapter;
+import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.stores.StoresAllBranchesResponse;
 import com.system.user.menwain.utils.URLs;
@@ -47,7 +48,7 @@ public class DialogFragmentFilterStores extends DialogFragment implements View.O
     public OnDismissDialogInterface dismissDialog;
 
     private LinearLayout progressLayout;
-    private CheckBox cbSelectAll;
+    public static CheckBox cbSelectAll;
     TextView mApplyFilter;
     ImageView mCloseBtn;
     private RecyclerView recyclerView;
@@ -55,7 +56,7 @@ public class DialogFragmentFilterStores extends DialogFragment implements View.O
     Preferences prefrences;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
-    public static boolean check_value = false;
+    public static int check_value = 100;
     private List<StoresAllBranchesResponse.Storelist.Datum> filter_stores_list = new ArrayList<>();
 
 
@@ -104,12 +105,13 @@ public class DialogFragmentFilterStores extends DialogFragment implements View.O
             case R.id.cb_select_all:
                 if (cbSelectAll.isChecked()) {
                     cbSelectAll.setChecked(true);
-                    check_value = true;
+                    check_value = 1;
+                    SelectedStoreFragment.store_id_list.clear();
                     filterStoresAdapter = new FilterStoresAdapter(getContext(), filter_stores_list);
                     recyclerView.setAdapter(filterStoresAdapter);
                 } else {
                     cbSelectAll.setChecked(false);
-                    check_value = false;
+                    check_value = 0;
                     filterStoresAdapter = new FilterStoresAdapter(getContext(), filter_stores_list);
                     recyclerView.setAdapter(filterStoresAdapter);
                 }

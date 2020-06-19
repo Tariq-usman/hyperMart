@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,7 +64,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private EditText etSearch;
     private RecyclerView recyclerViewSelectedStoreCategory, recyclerViewFilterStores, recyclerViewSelectedStoreCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
-    private ImageView ivBackBtnSelectedStore, ivSelectedStore;
+    private ImageView ivBackBtnSelectedStore, ivSelectedStore,mDirection;
     private TextView tvStoreName,tvStoreContactNo, tvStoreLocation, tvStoreRating;
     private CardView mSearchViewSelecredStore;
     private RatingBar ratingBar;
@@ -116,6 +117,20 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
             }
         });
 
+        mDirection = view.findViewById(R.id.iv_nav_selected_store);
+        mDirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String address = tvStoreLocation.getText().toString().trim();
+//                String geoUri = "http://maps.google.com/maps?q=loc:" + detailsResponse.getData().getStore().getLatitude() + "," + detailsResponse.getData().getStore().getLongitude();
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?saddr=" + "&daddr=" + address));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
         recyclerViewSelectedStoreCategory = view.findViewById(R.id.recycler_view_selected_store);
         recyclerViewSelectedStoreCategory.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
