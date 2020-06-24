@@ -64,8 +64,8 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private EditText etSearch;
     private RecyclerView recyclerViewSelectedStoreCategory, recyclerViewFilterStores, recyclerViewSelectedStoreCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
-    private ImageView ivBackBtnSelectedStore, ivSelectedStore,mDirection;
-    private TextView tvStoreName,tvStoreContactNo, tvStoreLocation, tvStoreRating;
+    private ImageView ivBackBtnSelectedStore, ivSelectedStore, mDirection;
+    private TextView tvStoreName, tvStoreContactNo, tvStoreLocation, tvStoreRating;
     private CardView mSearchViewSelecredStore;
     private RatingBar ratingBar;
     private Preferences prefrences;
@@ -102,9 +102,9 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         stars.getDrawable(1).setColorFilter(getContext().getResources().getColor(R.color.yellowColor), PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(2).setColorFilter(getContext().getResources().getColor(R.color.yellowColor), PorterDuff.Mode.SRC_ATOP);
 
-        ivSearch =view.findViewById(R.id.iv_search_selected_store);
+        ivSearch = view.findViewById(R.id.iv_search_selected_store);
         ivSearch.setOnClickListener(this);
-        mBarCodeScanner =view.findViewById(R.id.bar_code_scanner_selected_store);
+        mBarCodeScanner = view.findViewById(R.id.bar_code_scanner_selected_store);
         mBarCodeScanner.setOnClickListener(this);
         etSearch = view.findViewById(R.id.et_search_selected_store);
 
@@ -189,7 +189,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                     category_products_list.add(storeResponse.getProduct().getData().get(0).getProducts().get(i));
                 }
                 Log.e("list_size", String.valueOf(category_products_list.size()));
-                selectedStorecategoryProductsAdapter = new SelectedStoresCategoryProductsAdapter(getContext(), category_products_list,storeResponse.getStore().getName(),storeResponse.getStore().getId());
+                selectedStorecategoryProductsAdapter = new SelectedStoresCategoryProductsAdapter(getContext(), category_products_list, storeResponse.getStore().getName(), storeResponse.getStore().getId());
                 recyclerViewSelectedStoreCategoryProducts.setAdapter(selectedStorecategoryProductsAdapter);
                 storeCategoryAdapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -200,7 +200,14 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 Log.e("ss_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
+            }
+        };
         requestQueue.add(request);
     }
 
@@ -231,17 +238,23 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 Log.e("ss_error", error.toString());
                 dialog.dismiss();
             }
-        })
-        {
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("store_id", String.valueOf(prefrences.getMoreStoreId()));
                 return map;
             }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
+            }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new DefaultRetryPolicy(10000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     public void customDialog(Context context) {

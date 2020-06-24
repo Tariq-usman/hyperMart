@@ -383,4 +383,12 @@ public class Preferences {
         return sharedPreferences.getInt("card_id", 0);
     }
 
+    public void setLanguage(String language) {
+        editor.putString("language",language);
+        editor.apply();
+        editor.commit();
+    }
+    public String getLanguage(){
+        return sharedPreferences.getString("language","");
+    }
 }

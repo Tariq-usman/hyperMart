@@ -32,6 +32,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -64,7 +66,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ItemDetailsFragment extends Fragment implements View.OnClickListener {
     private EditText etSearch;
@@ -275,7 +279,14 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 Log.e("details_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
+            }
+        };
         requestQueue.add(request);
     }
 
@@ -322,24 +333,16 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 Log.e("details_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
+            }
+        };
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void init() {

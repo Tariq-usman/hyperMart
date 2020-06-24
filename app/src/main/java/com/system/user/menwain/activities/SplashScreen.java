@@ -20,12 +20,13 @@ public class SplashScreen extends BaseActivity {
     private String langauge;
     SharedPreferences preferences;
     SharedPreferences.Editor editor, editor1;
+    Preferences preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
-
+        preference = new Preferences(this);
         preferences = getSharedPreferences("settings", Activity.MODE_PRIVATE);
         langauge = preferences.getString("my_lang", "");
 
@@ -58,8 +59,9 @@ public class SplashScreen extends BaseActivity {
                         editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
                         editor.putString("my_lang", String.valueOf(i));
                         editor.apply();
+                        preference.setLanguage("English");
                         setNewLocale((AppCompatActivity)context, LocaleManager.ENGLISH);
-                        recreate();
+                         recreate();
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -73,6 +75,7 @@ public class SplashScreen extends BaseActivity {
                         editor1 = getSharedPreferences("settings", MODE_PRIVATE).edit();
                         editor1.putString("my_lang", String.valueOf(i));
                         editor1.apply();
+                        preference.setLanguage("Arabic");
                         setNewLocale((AppCompatActivity)context, LocaleManager.ARABIC);
                         recreate();
                         new Handler().postDelayed(new Runnable() {

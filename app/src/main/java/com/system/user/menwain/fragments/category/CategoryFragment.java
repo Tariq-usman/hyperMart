@@ -114,7 +114,7 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
             @Override
             public void onClick(View view) {
                 prefrences.setCategoryFragStatus(0);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
             }
         });
         mSearch.setOnClickListener(new View.OnClickListener() {
@@ -186,10 +186,17 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error", error.toString());
+                Log.e("category_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
+            }
+        };
         requestQueue.add(request);
     }
 

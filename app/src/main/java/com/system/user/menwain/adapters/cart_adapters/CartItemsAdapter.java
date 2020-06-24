@@ -54,7 +54,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.Sele
         holder.productView.setImageBitmap(myBitmap);
         holder.mProductNameView.setText(cart.getProduct_name());
         holder.mCartStoreName.setText(cart.getStore_name());
-        holder.mCartPrice.setText("$ "+cart.getPer_unit_price());
+        holder.mCartPrice.setText(""+cart.getPer_unit_price());
         holder.mCartQuantity.setText(cart.getQuantity()+"");
 
         String initail_val =holder.mCartQuantity.getText().toString();

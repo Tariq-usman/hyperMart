@@ -20,14 +20,17 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.activities.MainActivity;
 import com.system.user.menwain.custom_languages.LocaleManager;
 import com.system.user.menwain.fragments.more.MoreFragment;
+import com.system.user.menwain.others.Preferences;
 
 public class SettingsFragment extends Fragment {
     private TextView changeLanguage;
     private ImageView ivBack;
+    private Preferences preferences;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings,container,false);
+        preferences = new Preferences(getContext());
         ivBack = view.findViewById(R.id.iv_back_settings);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,11 +59,13 @@ public class SettingsFragment extends Fragment {
                 switch (i) {
                     case 0:
                         setNewLocale((AppCompatActivity) getContext(), LocaleManager.ENGLISH);
+                        preferences.setLanguage("English");
 //                        getActivity().recreate();
                         break;
                     case 1:
                         setNewLocale((AppCompatActivity)getContext(), LocaleManager.ARABIC);
-                       // getActivity().recreate();
+                        preferences.setLanguage("Arabic");
+                        // getActivity().recreate();
                         break;
                 }
                 dialogInterface.dismiss();

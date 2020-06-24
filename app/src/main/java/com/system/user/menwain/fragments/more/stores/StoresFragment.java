@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,7 +36,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StoresFragment extends Fragment {
     private RecyclerView recyclerViewProductCategory;
@@ -98,7 +101,14 @@ public class StoresFragment extends Fragment {
                 dialog.dismiss();
                 Log.e("Stores_error", error.toString());
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
+            }
+        };
         requestQueue.add(stringRequest);
     }
 

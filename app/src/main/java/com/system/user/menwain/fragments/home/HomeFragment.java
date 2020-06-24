@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -42,7 +43,9 @@ import com.system.user.menwain.responses.home.HomeExploreAndShop;
 import com.system.user.menwain.utils.URLs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 
 import androidx.annotation.NonNull;
@@ -115,13 +118,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE){
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     Bundle bundle = new Bundle();
                     if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                         Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                     } else {
-                        InputMethodManager inputMethodManager = (InputMethodManager)getContext().getSystemService(INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
+                        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                         bundle.putString("search", etSearch.getText().toString().trim());
                         etSearch.setText("");
                         searchFragment.setArguments(bundle);
@@ -287,7 +290,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     e.printStackTrace();
                 }
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
+            }
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
             @Override
@@ -352,7 +363,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     e.printStackTrace();
                 }
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
+            }
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
             @Override

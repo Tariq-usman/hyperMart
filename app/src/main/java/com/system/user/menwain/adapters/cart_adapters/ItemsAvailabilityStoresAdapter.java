@@ -96,8 +96,6 @@ public class ItemsAvailabilityStoresAdapter extends RecyclerView.Adapter<ItemsAv
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*ItemsAvailabilityStoresRadiusAdapter.available_list.clear();
-                ItemsAvailabilitySelectedStoresAdapter.available_list.clear();*/
                 prefrences.setCartFragStatus(3);
                 prefrences.setStoreId(stores_list.get(position).getId());
                 prefrences.setStoreName(stores_list.get(position).getName());

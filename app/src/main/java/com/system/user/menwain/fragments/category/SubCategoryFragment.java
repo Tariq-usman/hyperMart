@@ -92,7 +92,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
             @Override
             public void onClick(View view) {
                 prefrences.setCategoryFragStatus(1);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
             }
         });
         mSearch = view.findViewById(R.id.iv_search_sub_cat);
@@ -111,7 +111,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                         bundle.putString("search", etSearch.getText().toString().trim());
                         etSearch.setText("");
                         searchFragment.setArguments(bundle);
-                        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
+                        getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                     }
                     return true;
                 }
@@ -207,7 +207,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("erroe", error.toString());
+                Log.e("sub_cat_error", error.toString());
                 dialog.dismiss();
             }
         }) {
@@ -216,6 +216,13 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                 Map<String, String> map = new HashMap<>();
                 map.put("sup_category_id", super_cat_id + "");
                 return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
             }
         };
         requestQueue.add(request);
@@ -244,7 +251,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("erroe", error.toString());
+                Log.e("sub_cat_pro_error", error.toString());
                 dialog.dismiss();
             }
         }) {
@@ -253,6 +260,13 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                 Map<String, String> map = new HashMap<>();
                 map.put("sup_category_id", super_cat_id + "");
                 return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
             }
         };
         requestQueue.add(request);

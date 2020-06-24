@@ -84,9 +84,9 @@ public class SearchFragment extends Fragment {
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SuperCategoryFragment()).commit();
                 } else if (preferences.getBottomNavStatus() == 5) {
                     if (more_status == 1) {
-                       // if (stores_fragment_status == 2) {
-                            getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new StoresFragment()).commit();
-                       // }
+                        // if (stores_fragment_status == 2) {
+                        getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new StoresFragment()).commit();
+                        // }
                     }
                 }
             }
@@ -116,14 +116,14 @@ public class SearchFragment extends Fragment {
                 }
                 recyclerView.setAdapter(codeSearchAdapter);
                 codeSearchAdapter.notifyDataSetChanged();
-                ScanActivity.barCode="";
+                ScanActivity.barCode = "";
                 dialog.dismiss();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ScanActivity.barCode="";
+                ScanActivity.barCode = "";
                 Log.e("error_response", error.toString());
                 dialog.dismiss();
             }
@@ -133,6 +133,13 @@ public class SearchFragment extends Fragment {
                 Map<String, String> map = new HashMap<>();
                 map.put("barcode", ScanActivity.barCode + "");
                 return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", preferences.getLanguage());
+                return header;
             }
         };
         requestQueue.add(request);
@@ -172,6 +179,13 @@ public class SearchFragment extends Fragment {
                 Map<String, String> map = new HashMap<>();
                 map.put("name", name);
                 return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", preferences.getLanguage());
+                return header;
             }
         };
         requestQueue.add(request);

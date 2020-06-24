@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,6 +31,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.fragments.others.SearchFragment;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -41,13 +43,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class SuperCategoryFragment extends Fragment {
     RecyclerView recyclerViewProductCategory;
-    private ImageView mBarCodeScanner,ivSearch;
+    private ImageView mBarCodeScanner, ivSearch;
     private EditText etSearhText;
     private CardView mSearchViewCategory;
     private List<SuperCategoryResponse.SuperCategory.Datum> superCategoryList = new ArrayList<>();
@@ -58,11 +62,13 @@ public class SuperCategoryFragment extends Fragment {
 
     private FirebaseAnalytics mFirebaseAnalytics;
     SearchFragment searchFragment = new SearchFragment();
+    private Preferences preferences;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_super_category,container,false);
-
+        View view = inflater.inflate(R.layout.fragment_super_category, container, false);
+        preferences = new Preferences(getContext());
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
 
@@ -72,13 +78,13 @@ public class SuperCategoryFragment extends Fragment {
         etSearhText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE){
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     Bundle bundle = new Bundle();
                     if (etSearhText.getText().toString().trim().isEmpty() || etSearhText.getText().toString().trim() == null) {
                         Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                     } else {
-                        InputMethodManager inputMethodManager = (InputMethodManager)getContext().getSystemService(INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
+                        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                         bundle.putString("search", etSearhText.getText().toString().trim());
                         etSearhText.setText("");
                         searchFragment.setArguments(bundle);
@@ -89,7 +95,7 @@ public class SuperCategoryFragment extends Fragment {
                 return false;
             }
         });
-        mBarCodeScanner =view.findViewById(R.id.bar_code_scanner_sup_cat);
+        mBarCodeScanner = view.findViewById(R.id.bar_code_scanner_sup_cat);
         customDialog(getContext());
         getSuperCategoryData();
 
@@ -116,7 +122,7 @@ public class SuperCategoryFragment extends Fragment {
         });
         recyclerViewProductCategory = view.findViewById(R.id.recycler_view_category);
         recyclerViewProductCategory.setHasFixedSize(true);
-        recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(),3, GridLayoutManager.VERTICAL,false));
+        recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
         superCategoryAdapter = new SuperCategoryAdapter(getContext(), superCategoryList);
         recyclerViewProductCategory.setAdapter(superCategoryAdapter);
 
@@ -130,9 +136,9 @@ public class SuperCategoryFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_super_category_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                SuperCategoryResponse categoryResponse = gson.fromJson(response,SuperCategoryResponse.class);
+                SuperCategoryResponse categoryResponse = gson.fromJson(response, SuperCategoryResponse.class);
                 superCategoryList.clear();
-                for (int i = 0; i<categoryResponse.getSuperCategory().getData().size();i++){
+                for (int i = 0; i < categoryResponse.getSuperCategory().getData().size(); i++) {
                     superCategoryList.add(categoryResponse.getSuperCategory().getData().get(i));
                 }
                 superCategoryAdapter.notifyDataSetChanged();
@@ -141,10 +147,17 @@ public class SuperCategoryFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("category_erroe",error.toString());
+                Log.e("sup_category_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", preferences.getLanguage());
+                return header;
+            }
+        };
         requestQueue.add(request);
     }
 
