@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,7 +46,9 @@ import com.system.user.menwain.utils.URLs;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -276,6 +280,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 jsonArray.put(cartList.get(i));
             }
             jsonObj.put("products", jsonArray);
+//            jsonObj.put("Authorization", "Bearer " + prefrences.getToken());
+//            jsonObj.put("Content-Type", "application/json");
             Log.e("products", jsonArray.toString());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -316,24 +322,16 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("avail_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }) /*{
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("X-Language", prefrences.getLanguage());
+                return header;
+            }
+        }*/;
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(5000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void highestAvailabilityData() {
@@ -531,7 +529,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("avail_error", error.toString());
+                Log.e("radius_error", error.toString());
                 dialog.dismiss();
             }
         });

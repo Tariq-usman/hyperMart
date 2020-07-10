@@ -66,14 +66,16 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
             holder.mAmount.setText(avail_items_list.get(position).getStoreprice().toString());
             quantity_list.clear();
             amount_list.clear();
-            total_amount=0;
+            total_amount = 0;
             for (int i = 0; i < avail_items_list.size(); i++) {
                 quantity_list.add(Integer.valueOf(holder.mAvilNotAvailItemsView.getText().toString()));
                 amount_list.add(Integer.valueOf(holder.mAmount.getText().toString()));
-                total_amount = total_amount +avail_items_list.get(position).getStoreprice();
+                total_amount = total_amount + avail_items_list.get(position).getStoreprice();
             }
-            AvailNotAvailItemsListsFragment.mTotalAmount.setText(total_amount+"");
-            total_amount=0;
+            AvailNotAvailItemsListsFragment.mTotalAmount.setText(total_amount + "");
+            int saved = prefrences.getTotalPrice() - total_amount;
+            AvailNotAvailItemsListsFragment.mSaved.setText("SAR" + saved + "SAVED");
+            total_amount = 0;
         }
         final String currentItems = holder.mAvilNotAvailItemsView.getText().toString();
 
@@ -125,7 +127,7 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
                         }
                     }
                     int initial_amount = Integer.parseInt(AvailNotAvailItemsListsFragment.mTotalAmount.getText().toString());
-                    int final_amount = initial_amount- avail_items_list.get(position).getStoreprice();
+                    int final_amount = initial_amount - avail_items_list.get(position).getStoreprice();
                     AvailNotAvailItemsListsFragment.mTotalAmount.setText(final_amount + "");
                 } else {
                     holder.mAvilNotAvailItemsView.setText("1");
@@ -157,10 +159,11 @@ public class AvailableItemsListAdapter extends RecyclerView.Adapter<AvailableIte
 
 
     }
-    public Cart getPosition(int position)
-    {
+
+    public Cart getPosition(int position) {
         return cartList.get(position);
     }
+
     @Override
     public int getItemCount() {
         if (avail_items_list != null) {
