@@ -1,7 +1,13 @@
 package com.system.user.menwain.utils;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+
+import com.system.user.menwain.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,14 +35,13 @@ public class Utils {
 
     }
 
-    public static final ProgressDialog progressDialog(Context context){
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
-        return progressDialog;
+    public static Dialog dialog(Context context) {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.layout_loading_dialog);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog.setCancelable(true);
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        return dialog;
     }
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +51,7 @@ import com.system.user.menwain.adapters.cart_adapters.DelivieryAddressesAdapter;
 import com.system.user.menwain.responses.cart.PaymentTypesResponse;
 import com.system.user.menwain.responses.cart.UserAddressListResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,8 +74,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     private RadioButton rbDeliverToAddress, rbPreparePickUp, rbCashOnDelivery, rbPreparePickFromStore, rbWalkInStore;
     private RadioGroup rgPayNow, rgPayLater;
     private int rBtnPaymentStatus, delivery_address_id;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private List<UserAddressListResponse.Addresslist> addressList = new ArrayList<UserAddressListResponse.Addresslist>();
     private List<PaymentTypesResponse.DataPayNow> pay_now_list = new ArrayList<PaymentTypesResponse.DataPayNow>();
     private CheckBox checkBox;
@@ -84,10 +85,10 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_delivey_address, container, false);
         prefrences = new Preferences(getContext());
+        dialog = Utils.dialog(getContext());
         prefrences.setPaymentStatus(1);
         prefrences.setPayRBtnStatus(1);
         bundle = new Bundle();
-        customDialog(getContext());
         rBtnPaymentStatus = prefrences.getPayRBtnStatus();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -364,21 +365,12 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
         };
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(10000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
 
 }

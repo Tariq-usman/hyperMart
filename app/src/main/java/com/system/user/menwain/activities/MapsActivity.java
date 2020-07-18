@@ -48,6 +48,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
+import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.cart.AddAddressResponse;
 import com.system.user.menwain.utils.URLs;
@@ -58,7 +59,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
     private static final int MY_REQUEST_INT = 101;
     private GoogleMap mMap;

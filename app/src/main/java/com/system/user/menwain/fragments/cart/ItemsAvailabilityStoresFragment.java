@@ -322,14 +322,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("avail_error", error.toString());
                 dialog.dismiss();
             }
-        }) /*{
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
-                header.put("X-Language", prefrences.getLanguage());
+                header.put("Authorization", "Bearer " + prefrences.getToken());
+                header.put("Accept", "application/json");
                 return header;
             }
-        }*/;
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(5000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
@@ -388,7 +389,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("avail_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + prefrences.getToken());
+                header.put("Accept", "application/json");
+                return header;
+            }
+        };
 
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
@@ -456,7 +465,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("avail_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + prefrences.getToken());
+                header.put("Accept", "application/json");
+                return header;
+            }
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
             @Override
@@ -532,7 +549,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("radius_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + prefrences.getToken());
+                header.put("Accept", "application/json");
+                return header;
+            }
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
             @Override
@@ -606,7 +631,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("avail_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + prefrences.getToken());
+                header.put("Accept", "application/json");
+                return header;
+            }
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
             @Override
@@ -674,7 +707,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("avail_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + prefrences.getToken());
+                header.put("Accept", "application/json");
+                return header;
+            }
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
             @Override
@@ -755,7 +796,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("avail_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + prefrences.getToken());
+                header.put("Accept", "application/json");
+                return header;
+            }
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
             @Override
@@ -836,7 +885,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("avail_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + prefrences.getToken());
+                header.put("Accept", "application/json");
+                return header;
+            }
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
             @Override
@@ -911,7 +968,15 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 Log.e("avail_error", error.toString());
                 dialog.dismiss();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + prefrences.getToken());
+                header.put("Accept", "application/json");
+                return header;
+            }
+        };
         requestQueue.add(request);
         request.setRetryPolicy(new RetryPolicy() {
             @Override
