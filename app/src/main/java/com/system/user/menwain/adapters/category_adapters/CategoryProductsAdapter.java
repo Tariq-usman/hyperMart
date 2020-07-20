@@ -70,11 +70,14 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
 
     @Override
     public void onBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position) {
-
-        Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getImage()).into(holder.mFilteProduct);
-        holder.mProductNameView.setText(category_products_list.get(position).getName());
-        //  holder.mStoreName.setText(subCatergoryList.get(position).getBrand());
-        holder.mPriceFilterItem.setText(category_products_list.get(position).getLowestPrice().toString());
+        try {
+            Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getImage()).into(holder.mFilteProduct);
+            holder.mProductNameView.setText(category_products_list.get(position).getName());
+            //  holder.mStoreName.setText(subCatergoryList.get(position).getBrand());
+            holder.mPriceFilterItem.setText(category_products_list.get(position).getLowestPrice().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override

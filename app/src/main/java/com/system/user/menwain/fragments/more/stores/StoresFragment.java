@@ -5,14 +5,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.system.user.menwain.adapters.my_lists_adapters.AllListsAdapter;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.StoresAdapter;
@@ -40,16 +48,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class StoresFragment extends Fragment {
     private RecyclerView recyclerViewProductCategory;
     private StoresAdapter storesAdapter;
     private ImageView ivBackStores;
     private TextView tvTitleStores;
-    private CardView mSearchStores;
+    private EditText mSearchStores;
     private Preferences prefrences;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
-    private List<StoresAllBranchesResponse.Storelist.Datum> stores_list = new ArrayList<StoresAllBranchesResponse.Storelist.Datum>();
+    private List<StoresAllBranchesResponse.Storelist.Datum> stores_list = new ArrayList<>();
+    private List<StoresAllBranchesResponse.Storelist.Datum> filter_stores_list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -58,9 +69,20 @@ public class StoresFragment extends Fragment {
         prefrences = new Preferences(getContext());
         customDialog(getContext());
         ivBackStores = view.findViewById(R.id.iv_back_stores);
-       /* mSearchStores = getActivity().findViewById(R.id.search_view);
-        mSearchStores.setVisibility(View.VISIBLE);*/
-
+        mSearchStores = view.findViewById(R.id.et_search_store);
+        mSearchStores.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
+        mSearchStores.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        mSearchStores.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    return true;
+                }
+                return false;
+            }
+        });
         ivBackStores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +99,42 @@ public class StoresFragment extends Fragment {
         recyclerViewProductCategory.setAdapter(storesAdapter);
 
         getAllStoreData();
+
+        mSearchStores.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length() > 0) {
+                    mSearchStores.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                } else {
+                    //Assign your image again to the view, otherwise it will always be gone even if the text is 0 again.
+                    mSearchStores.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
+                }
+                String query = s.toString().toLowerCase();
+                filter_stores_list.clear();
+                for (int i = 0; i < stores_list.size(); i++) {
+                    final String text = stores_list.get(i).getName().toLowerCase();
+                    if (text.contains(query)) {
+                        filter_stores_list.add(stores_list.get(i));
+                    }
+                }
+                /*if (filter_orders_list.size() == 0) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
+                } else {*/
+                storesAdapter = new StoresAdapter(getContext(), filter_stores_list);
+                recyclerViewProductCategory.setAdapter(storesAdapter);
+//                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
     }
 
@@ -110,6 +168,7 @@ public class StoresFragment extends Fragment {
             }
         };
         requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     public void customDialog(Context context) {

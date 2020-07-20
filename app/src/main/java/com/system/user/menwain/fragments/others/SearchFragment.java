@@ -170,7 +170,7 @@ public class SearchFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error_response", error.toString());
+                Log.e("name_error_response", error.toString());
                 dialog.dismiss();
             }
         }) {
@@ -184,7 +184,9 @@ public class SearchFragment extends Fragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
+//                header.put("Authorization", "Bearer " + preferences.getToken());
                 header.put("X-Language", preferences.getLanguage());
+                header.put("Accept","application/json");
                 return header;
             }
         };

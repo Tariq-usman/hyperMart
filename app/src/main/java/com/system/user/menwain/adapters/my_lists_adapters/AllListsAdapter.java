@@ -24,6 +24,7 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.fragments.my_list.ListDetailsFragment;
 import com.system.user.menwain.R;
+import com.system.user.menwain.responses.more.stores.StoresAllBranchesResponse;
 import com.system.user.menwain.responses.my_list.UserWishlistProductsResponse;
 import com.system.user.menwain.utils.URLs;
 
@@ -50,6 +51,7 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
         prefrences = new Preferences(context);
         customProgressDialog(context);
     }
+
 
     @NonNull
     @Override

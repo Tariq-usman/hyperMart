@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         bundle.putString("search", etSearch.getText().toString().trim());
                         etSearch.setText("");
                         searchFragment.setArguments(bundle);
-                        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
+                        getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                     }
                     return true;
                 }

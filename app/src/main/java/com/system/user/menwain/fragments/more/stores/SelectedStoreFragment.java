@@ -11,9 +11,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -58,6 +61,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class SelectedStoreFragment extends Fragment implements RecyclerClickInterface, View.OnClickListener {
 
     private ImageView mBarCodeScanner, ivSearch;
@@ -82,6 +87,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private List<SelectedStoreResponse.Product.Datum.Product_> category_products_list = new ArrayList<SelectedStoreResponse.Product.Datum.Product_>();
 
     public static List<Integer> store_id_list = new ArrayList<>();
+    SearchFragment fragment;
 
     @Nullable
     @Override
@@ -90,6 +96,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         prefrences = new Preferences(getContext());
         geocoder = new Geocoder(getContext(), Locale.ENGLISH);
         bundle = this.getArguments();
+        fragment = new SearchFragment();
         customDialog(getContext());
         ivSelectedStore = view.findViewById(R.id.iv_store_iamge);
         tvStoreName = view.findViewById(R.id.tv_selected_store_name);
@@ -107,6 +114,27 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         mBarCodeScanner = view.findViewById(R.id.bar_code_scanner_selected_store);
         mBarCodeScanner.setOnClickListener(this);
         etSearch = view.findViewById(R.id.et_search_selected_store);
+        etSearch.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    Bundle bundle = new Bundle();
+                    if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
+                    } else {
+                        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                        bundle.putString("search", etSearch.getText().toString().trim());
+                        etSearch.setText("");
+                        fragment.setArguments(bundle);
+                        getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
         ivBackBtnSelectedStore = view.findViewById(R.id.iv_back_selected_stores);
         ivBackBtnSelectedStore.setOnClickListener(new View.OnClickListener() {
@@ -272,14 +300,13 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         switch (v.getId()) {
             case R.id.iv_search_selected_store:
                 Bundle bundle = new Bundle();
-                SearchFragment fragment = new SearchFragment();
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
                     bundle.putString("search", etSearch.getText().toString().trim());
                     etSearch.setText("");
                     fragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
                 }
                 break;
             case R.id.bar_code_scanner_selected_store:

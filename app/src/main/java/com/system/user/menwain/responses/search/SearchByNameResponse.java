@@ -17,7 +17,6 @@ public class SearchByNameResponse {
     public void setData(Data data) {
         this.data = data;
     }
-
     public class Data {
 
         @SerializedName("current_page")
@@ -40,7 +39,7 @@ public class SearchByNameResponse {
         private String lastPageUrl;
         @SerializedName("next_page_url")
         @Expose
-        private Object nextPageUrl;
+        private String nextPageUrl;
         @SerializedName("path")
         @Expose
         private String path;
@@ -105,11 +104,11 @@ public class SearchByNameResponse {
             this.lastPageUrl = lastPageUrl;
         }
 
-        public Object getNextPageUrl() {
+        public String getNextPageUrl() {
             return nextPageUrl;
         }
 
-        public void setNextPageUrl(Object nextPageUrl) {
+        public void setNextPageUrl(String nextPageUrl) {
             this.nextPageUrl = nextPageUrl;
         }
 
@@ -152,7 +151,6 @@ public class SearchByNameResponse {
         public void setTotal(Integer total) {
             this.total = total;
         }
-
         public class Datum {
 
             @SerializedName("id")
@@ -160,67 +158,73 @@ public class SearchByNameResponse {
             private Integer id;
             @SerializedName("barcode")
             @Expose
-            private Integer barcode;
+            private Object barcode;
             @SerializedName("name")
             @Expose
             private String name;
             @SerializedName("description")
             @Expose
             private String description;
+            @SerializedName("arabic_name")
+            @Expose
+            private Object arabicName;
+            @SerializedName("arabic_discription")
+            @Expose
+            private Object arabicDiscription;
             @SerializedName("brand")
             @Expose
             private String brand;
             @SerializedName("lowest_price")
             @Expose
-            private Integer lowestPrice;
+            private Object lowestPrice;
             @SerializedName("avg_price")
             @Expose
-            private Integer avgPrice;
+            private Object avgPrice;
             @SerializedName("highest_price")
             @Expose
-            private Integer highestPrice;
+            private Object highestPrice;
             @SerializedName("currency")
             @Expose
             private String currency;
             @SerializedName("type")
             @Expose
-            private String type;
+            private Object type;
             @SerializedName("sub_type")
             @Expose
-            private String subType;
+            private Object subType;
             @SerializedName("size")
             @Expose
-            private Integer size;
+            private Object size;
             @SerializedName("image")
             @Expose
-            private String image;
+            private Object image;
             @SerializedName("packed_single")
             @Expose
-            private Integer packedSingle;
+            private Object packedSingle;
             @SerializedName("specification")
             @Expose
-            private String specification;
+            private Object specification;
             @SerializedName("status")
             @Expose
-            private String status;
+            private Object status;
             @SerializedName("country_of_origin")
             @Expose
-            private String countryOfOrigin;
+            private Object countryOfOrigin;
             @SerializedName("category_id")
             @Expose
-            private Integer categoryId;
+            private Object categoryId;
             @SerializedName("sub_category_id")
             @Expose
-            private Integer subCategoryId;
+            private Object subCategoryId;
             @SerializedName("super_category_id")
             @Expose
-            private Integer superCategoryId;
+            private Object superCategoryId;
             @SerializedName("created_at")
             @Expose
-            private Object createdAt;
+            private String createdAt;
             @SerializedName("updated_at")
             @Expose
-            private Object updatedAt;
+            private String updatedAt;
             @SerializedName("deleted_at")
             @Expose
             private Object deletedAt;
@@ -233,11 +237,11 @@ public class SearchByNameResponse {
                 this.id = id;
             }
 
-            public Integer getBarcode() {
+            public Object getBarcode() {
                 return barcode;
             }
 
-            public void setBarcode(Integer barcode) {
+            public void setBarcode(Object barcode) {
                 this.barcode = barcode;
             }
 
@@ -257,6 +261,22 @@ public class SearchByNameResponse {
                 this.description = description;
             }
 
+            public Object getArabicName() {
+                return arabicName;
+            }
+
+            public void setArabicName(Object arabicName) {
+                this.arabicName = arabicName;
+            }
+
+            public Object getArabicDiscription() {
+                return arabicDiscription;
+            }
+
+            public void setArabicDiscription(Object arabicDiscription) {
+                this.arabicDiscription = arabicDiscription;
+            }
+
             public String getBrand() {
                 return brand;
             }
@@ -265,27 +285,27 @@ public class SearchByNameResponse {
                 this.brand = brand;
             }
 
-            public Integer getLowestPrice() {
+            public Object getLowestPrice() {
                 return lowestPrice;
             }
 
-            public void setLowestPrice(Integer lowestPrice) {
+            public void setLowestPrice(Object lowestPrice) {
                 this.lowestPrice = lowestPrice;
             }
 
-            public Integer getAvgPrice() {
+            public Object getAvgPrice() {
                 return avgPrice;
             }
 
-            public void setAvgPrice(Integer avgPrice) {
+            public void setAvgPrice(Object avgPrice) {
                 this.avgPrice = avgPrice;
             }
 
-            public Integer getHighestPrice() {
+            public Object getHighestPrice() {
                 return highestPrice;
             }
 
-            public void setHighestPrice(Integer highestPrice) {
+            public void setHighestPrice(Object highestPrice) {
                 this.highestPrice = highestPrice;
             }
 
@@ -297,107 +317,107 @@ public class SearchByNameResponse {
                 this.currency = currency;
             }
 
-            public String getType() {
+            public Object getType() {
                 return type;
             }
 
-            public void setType(String type) {
+            public void setType(Object type) {
                 this.type = type;
             }
 
-            public String getSubType() {
+            public Object getSubType() {
                 return subType;
             }
 
-            public void setSubType(String subType) {
+            public void setSubType(Object subType) {
                 this.subType = subType;
             }
 
-            public Integer getSize() {
+            public Object getSize() {
                 return size;
             }
 
-            public void setSize(Integer size) {
+            public void setSize(Object size) {
                 this.size = size;
             }
 
-            public String getImage() {
+            public Object getImage() {
                 return image;
             }
 
-            public void setImage(String image) {
+            public void setImage(Object image) {
                 this.image = image;
             }
 
-            public Integer getPackedSingle() {
+            public Object getPackedSingle() {
                 return packedSingle;
             }
 
-            public void setPackedSingle(Integer packedSingle) {
+            public void setPackedSingle(Object packedSingle) {
                 this.packedSingle = packedSingle;
             }
 
-            public String getSpecification() {
+            public Object getSpecification() {
                 return specification;
             }
 
-            public void setSpecification(String specification) {
+            public void setSpecification(Object specification) {
                 this.specification = specification;
             }
 
-            public String getStatus() {
+            public Object getStatus() {
                 return status;
             }
 
-            public void setStatus(String status) {
+            public void setStatus(Object status) {
                 this.status = status;
             }
 
-            public String getCountryOfOrigin() {
+            public Object getCountryOfOrigin() {
                 return countryOfOrigin;
             }
 
-            public void setCountryOfOrigin(String countryOfOrigin) {
+            public void setCountryOfOrigin(Object countryOfOrigin) {
                 this.countryOfOrigin = countryOfOrigin;
             }
 
-            public Integer getCategoryId() {
+            public Object getCategoryId() {
                 return categoryId;
             }
 
-            public void setCategoryId(Integer categoryId) {
+            public void setCategoryId(Object categoryId) {
                 this.categoryId = categoryId;
             }
 
-            public Integer getSubCategoryId() {
+            public Object getSubCategoryId() {
                 return subCategoryId;
             }
 
-            public void setSubCategoryId(Integer subCategoryId) {
+            public void setSubCategoryId(Object subCategoryId) {
                 this.subCategoryId = subCategoryId;
             }
 
-            public Integer getSuperCategoryId() {
+            public Object getSuperCategoryId() {
                 return superCategoryId;
             }
 
-            public void setSuperCategoryId(Integer superCategoryId) {
+            public void setSuperCategoryId(Object superCategoryId) {
                 this.superCategoryId = superCategoryId;
             }
 
-            public Object getCreatedAt() {
+            public String getCreatedAt() {
                 return createdAt;
             }
 
-            public void setCreatedAt(Object createdAt) {
+            public void setCreatedAt(String createdAt) {
                 this.createdAt = createdAt;
             }
 
-            public Object getUpdatedAt() {
+            public String getUpdatedAt() {
                 return updatedAt;
             }
 
-            public void setUpdatedAt(Object updatedAt) {
+            public void setUpdatedAt(String updatedAt) {
                 this.updatedAt = updatedAt;
             }
 
@@ -414,7 +434,5 @@ public class SearchByNameResponse {
     }
 
 }
-
-
 
 

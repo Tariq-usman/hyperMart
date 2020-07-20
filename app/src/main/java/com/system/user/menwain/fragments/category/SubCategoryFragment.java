@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -208,6 +209,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("sub_cat_error", error.toString());
+                Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         }) {
@@ -226,6 +228,8 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
     }
 
     private void getFinalProducts(int sub_cat_id) {
@@ -270,6 +274,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void searchProductByName(final String name) {

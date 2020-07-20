@@ -46,6 +46,7 @@
                     android:background="@android:color/transparent"
                     android:hint="@string/search_hint"
                     android:inputType="text"
+                    android:imeOptions="actionDone"
                     android:maxLines="1"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor" />
