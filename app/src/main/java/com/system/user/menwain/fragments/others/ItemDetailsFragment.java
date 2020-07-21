@@ -17,6 +17,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,6 +65,7 @@ import com.system.user.menwain.utils.URLs;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,7 +85,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
 
     TextView mDescription, mSpecification, mReviews, tvDescription, tvSpecifications;
     private TextView tvPrice, tvStoreName, tvTitle, tvReviewsCount, tvQuantity, mAddToCart;
-    private ImageView mBack,mSearch, mBarCodeScanner, ivIncreaseItem, ivDecreaseItem;
+    private ImageView mBack, mSearch, mBarCodeScanner, ivIncreaseItem, ivDecreaseItem;
     private RatingBar ratingBar;
     Bundle bundle;
     private String status, productName, imagePath, storeName, price, quantity;
@@ -106,7 +108,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private float totalPrice, unitPrice;
     private List<Integer> p_id_list = new ArrayList<Integer>();
     private List<HomeBannerResponse.Datum> bannersList = new ArrayList<>();
-
+    ProductDetailsResponse detailsResponse;
 
     @Nullable
     @Override
@@ -279,7 +281,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 Log.e("details_error", error.toString());
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -288,6 +290,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void getProductDetails(int product_id) {
@@ -297,14 +300,9 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_product_details_url + product_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                ProductDetailsResponse detailsResponse = gson.fromJson(response, ProductDetailsResponse.class);
-                productId = detailsResponse.getData().getId();
                 try {
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                    URL url = new URL(detailsResponse.getData().getImage());
-                    bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    Log.e("bitmap", bitmap.toString());
+                    detailsResponse = gson.fromJson(response, ProductDetailsResponse.class);
+                    productId = detailsResponse.getData().getId();
 
                     tvPrice.setText(detailsResponse.getData().getAvgPrice().toString());
                     tvTitle.setText(detailsResponse.getData().getName());
@@ -315,17 +313,16 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                     } else {
                         ratingBar.setRating(Float.valueOf(detailsResponse.getRating()));
                     }
-
-
                     related_items_list.clear();
                     for (int i = 0; i < detailsResponse.getData().getProductpic().size(); i++) {
                         related_items_list.add(detailsResponse.getData().getProductpic().get(i));
                     }
                     selectedItemsFilterAdapter.notifyDataSetChanged();
-                    dialog.dismiss();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
+                    dialog.dismiss();
                 }
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -333,7 +330,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 Log.e("details_error", error.toString());
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -342,7 +339,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void init() {
@@ -401,6 +398,17 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
             mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.add_to_cart_item_details) {
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                URL url = new URL(detailsResponse.getData().getImage());
+                bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                Log.e("bitmap", bitmap.toString());
+            } catch (IOException e) {
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pict);
+                e.printStackTrace();
+            }
+
             productName = tvTitle.getText().toString();
             storeName = tvStoreName.getText().toString();
             price = tvPrice.getText().toString();

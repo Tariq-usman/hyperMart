@@ -1,6 +1,7 @@
 package com.system.user.menwain.adapters.home_adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.responses.home.HomeExploreAndShop;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +51,23 @@ public class ExploreAndShopAdapter extends RecyclerView.Adapter<ExploreAndShopAd
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        Glide.with(holder.mExploreShopImage.getContext()).load(exploreShopList.get(position).getImage()).into(holder.mExploreShopImage);
+      /*  Glide.with(holder.mExploreShopImage.getContext()).load(exploreShopList.get(position).getImage()).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                return false;
+            }
+        }).into(holder.mExploreShopImage);*/
+        Glide.with(holder.mExploreShopImage.getContext())
+                .applyDefaultRequestOptions(new RequestOptions()
+//                        .placeholder(R.drawable.ic_logo)
+                        .error(R.drawable.ic_logo))
+                .load(exploreShopList.get(position).getImage())
+                .into(holder.mExploreShopImage);
         holder.mExploreShopStatus.setText(exploreShopList.get(position).getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
