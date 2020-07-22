@@ -3,8 +3,12 @@ package com.system.user.menwain.adapters.home_adapters.list_adapters;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +18,18 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.system.user.menwain.R;
+import com.system.user.menwain.fragments.others.ItemDetailsFragment;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
 import com.system.user.menwain.local_db.viewmodel.CartViewModel;
+import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.home.ExploreSellAllResponse;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,24 +37,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExploreItemsListAdapter extends RecyclerView.Adapter<ExploreItemsListAdapter.ItemsListViewHolder> {
-    Context context;
+    private Context context;
     private List<ExploreSellAllResponse.Datum> explore_list;
-    int productId, intQuantity;
-    String imagePath, productName, storeName, price, quantity, strTotalPrice;
+    private int productId, intQuantity;
+    private String imagePath, productName, storeName, price, quantity, strTotalPrice;
     float totalPrice, unitPrice;
     private CartViewModel cartViewModel;
     UpdateCartQuantity updateCartQuantity;
     int id, pro_quantity;
     private List<Integer> p_id_list = new ArrayList<Integer>();
-    List<Integer> quantity_list = new ArrayList<Integer>();
+    private List<Integer> quantity_list = new ArrayList<Integer>();
+    private Bitmap bitmap;
+    private Bundle bundle;
+    private Preferences prefrences;
 
     public ExploreItemsListAdapter(Context context, List<ExploreSellAllResponse.Datum> explore_list) {
         this.context = context;
         this.explore_list = explore_list;
+        prefrences = new Preferences(context);
     }
 
     @NonNull
@@ -89,11 +102,10 @@ public class ExploreItemsListAdapter extends RecyclerView.Adapter<ExploreItemsLi
                     productId = explore_list.get(position).getId();
                     Drawable drawable = holder.ivAllItemsList.getDrawable();
                     Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                    productName = holder.tvAllItemsList.getText().toString();
+                        productName = holder.tvAllItemsList.getText().toString();
                     storeName = holder.mStoreName.getText().toString();
                     price = holder.mPriceFilterItem.getText().toString();
                     quantity = holder.mItemCounter.getText().toString();
-                    // strTotalPrice = price;
                     totalPrice = Float.parseFloat(price);
                     intQuantity = Integer.parseInt(quantity);
                     unitPrice = totalPrice * intQuantity;
@@ -138,6 +150,19 @@ public class ExploreItemsListAdapter extends RecyclerView.Adapter<ExploreItemsLi
                 }
             }
 
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                prefrences.setHomeFragStatus(4);
+                bundle = new Bundle();
+                ItemDetailsFragment fragment = new ItemDetailsFragment();
+                FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                bundle.putString("status", "1");
+                bundle.putInt("product_id", explore_list.get(position).getId());
+                fragment.setArguments(bundle);
+                transaction.replace(R.id.nav_host_fragment, fragment).commit();
+            }
         });
     }
 

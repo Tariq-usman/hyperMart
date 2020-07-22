@@ -3,9 +3,12 @@ package com.system.user.menwain.adapters.category_adapters;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +53,10 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
     float totalPrice, unitPrice;
     private List<Integer> p_id_list = new ArrayList<Integer>();
     List<Integer> quantity_list = new ArrayList<Integer>();
-
     UpdateCartQuantity updateCartQuantity;
     int id, pro_quantity;
     FileOutputStream fos = null;
+    Bitmap bitmap;
 
     public CategoryProductsAdapter(Context context, List<CategoryResponse.Products.Datum_> category_products_list) {
         this.context = context;
@@ -118,14 +122,20 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
             @Override
             public void onClick(View view) {
                 try {
+                    try {
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+                        URL url = new URL(category_products_list.get(position).getImage());
+                        bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        Log.e("bitmap", bitmap.toString());
+                    } catch (IOException e) {
+                        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.logopng);
+                        e.printStackTrace();
+                    }
                     productId = category_products_list.get(position).getId();
-                    Drawable drawable = holder.mFilteProduct.getDrawable();
-                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                     productName = category_products_list.get(position).getName();
-                    //  storeName = holder.mStoreName.getText().toString();
                     price = category_products_list.get(position).getLowestPrice().toString();
                     quantity = holder.mItemCounter.getText().toString();
-                    // strTotalPrice = price;
                     totalPrice = Float.parseFloat(price);
                     intQuantity = Integer.parseInt(quantity);
                     unitPrice = totalPrice * intQuantity;

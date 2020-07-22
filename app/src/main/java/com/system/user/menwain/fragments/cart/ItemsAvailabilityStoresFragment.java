@@ -17,13 +17,19 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -307,6 +313,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 //                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (stores_list.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
+                        tvNoStoreFound.setText(getString(R.string.no_store_available));
                     } else {
                         tvNoStoreFound.setVisibility(View.INVISIBLE);
                     }
@@ -320,6 +327,20 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.authentication_error));
+                } else if (error instanceof ServerError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.server_error));
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.no_network_found));
+                } else {
+                }
                 dialog.dismiss();
             }
         }) {
@@ -332,7 +353,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new DefaultRetryPolicy(5000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void highestAvailabilityData() {
@@ -373,6 +394,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 //                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (stores_list.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
+                        tvNoStoreFound.setText(getString(R.string.no_store_available));
                     } else {
                         tvNoStoreFound.setVisibility(View.INVISIBLE);
                     }
@@ -387,9 +409,23 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.authentication_error));
+                } else if (error instanceof ServerError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.server_error));
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.no_network_found));
+                } else {
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -400,22 +436,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         };
 
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void nearestDistance() {
@@ -449,6 +470,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 //                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (stores_list.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
+                        tvNoStoreFound.setText(getString(R.string.no_store_available));
                     } else {
                         tvNoStoreFound.setVisibility(View.INVISIBLE);
                     }
@@ -463,9 +485,23 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.authentication_error));
+                } else if (error instanceof ServerError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.server_error));
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.no_network_found));
+                } else {
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -475,22 +511,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     /*result on select radius*/
@@ -534,6 +555,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 //                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (stores_list_radius.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
+                        tvNoStoreFound.setText(getString(R.string.no_store_available));
                     } else {
                         tvNoStoreFound.setVisibility(View.INVISIBLE);
                     }
@@ -547,9 +569,23 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("radius_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.authentication_error));
+                } else if (error instanceof ServerError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.server_error));
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.no_network_found));
+                } else {
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -559,22 +595,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void highestAvailabilityAsRadius(int selected_radius) {
@@ -616,6 +637,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 //                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (stores_list_radius.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
+                        tvNoStoreFound.setText(getString(R.string.no_store_available));
                     } else {
                         tvNoStoreFound.setVisibility(View.INVISIBLE);
                     }
@@ -629,9 +651,23 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.authentication_error));
+                } else if (error instanceof ServerError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.server_error));
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.no_network_found));
+                } else {
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -641,22 +677,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void nearestDistanceAsRadius(int selected_radius) {
@@ -692,6 +713,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 //                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (stores_list_radius.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
+                        tvNoStoreFound.setText(getString(R.string.no_store_available));
                     } else {
                         tvNoStoreFound.setVisibility(View.INVISIBLE);
                     }
@@ -705,9 +727,23 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.authentication_error));
+                } else if (error instanceof ServerError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.server_error));
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.no_network_found));
+                } else {
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -717,22 +753,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     /*result on select radius and store*/
@@ -781,6 +802,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                     recyclerViewAvailableItemsStore.setAdapter(itemsAvailabilitySelectedStoresAdapter);
                     if (selected_stores_list.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
+                        tvNoStoreFound.setText(getString(R.string.no_store_available));
                     } else {
                         tvNoStoreFound.setVisibility(View.INVISIBLE);
                     }
@@ -794,9 +816,23 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.authentication_error));
+                } else if (error instanceof ServerError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.server_error));
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.no_network_found));
+                } else {
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -806,22 +842,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void selectedStoreHighestAvailability() {
@@ -870,6 +891,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 //                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (selected_stores_list.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
+                        tvNoStoreFound.setText(getString(R.string.no_store_available));
                     } else {
                         tvNoStoreFound.setVisibility(View.INVISIBLE);
                     }
@@ -883,9 +905,23 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.authentication_error));
+                } else if (error instanceof ServerError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.server_error));
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.no_network_found));
+                } else {
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -895,22 +931,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void selectedStoreNearestDist() {
@@ -953,6 +974,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
 //                    itemsAvailabilityStoresAdapter.notifyDataSetChanged();
                     if (selected_stores_list.size() == 0) {
                         tvNoStoreFound.setVisibility(View.VISIBLE);
+                        tvNoStoreFound.setText(getString(R.string.no_store_available));
                     } else {
                         tvNoStoreFound.setVisibility(View.INVISIBLE);
                     }
@@ -966,9 +988,23 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("avail_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.authentication_error));
+                } else if (error instanceof ServerError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.server_error));
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    tvNoStoreFound.setVisibility(View.VISIBLE);
+                    tvNoStoreFound.setText(getString(R.string.no_network_found));
+                } else {
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -978,22 +1014,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     public void customDialog(Context context) {

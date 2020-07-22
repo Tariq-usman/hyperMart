@@ -65,7 +65,7 @@ public class ExploreAndShopAdapter extends RecyclerView.Adapter<ExploreAndShopAd
         Glide.with(holder.mExploreShopImage.getContext())
                 .applyDefaultRequestOptions(new RequestOptions()
 //                        .placeholder(R.drawable.ic_logo)
-                        .error(R.drawable.ic_logo))
+                        .error(R.drawable.logopng))
                 .load(exploreShopList.get(position).getImage())
                 .into(holder.mExploreShopImage);
         holder.mExploreShopStatus.setText(exploreShopList.get(position).getName());

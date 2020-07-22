@@ -25,6 +25,10 @@
     <string name="delete_successfully">Item deleted successfully</string>
     <string name="no_data_found">No such data found!</string>
     <string name="enter_desire_search">Enter Your desire search..</string>
+    <string name="network_timeout">Network Timeout!</string>
+    <string name="authentication_error">Authentication Error!</string>
+    <string name="server_error">Server Error!</string>
+    <string name="no_network_found">No Network Found!</string>
 
     <!-- main page -->
     <string name="search_hint">menWain</string>

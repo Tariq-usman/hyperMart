@@ -17,9 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -69,11 +73,11 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_time_slots, container, false);
-       try {
-           getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-       }catch (Exception e){
-           e.printStackTrace();
-       }
+        try {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         prefrences = new Preferences(getContext());
         customDialog(getContext());
         tvDeliveryPickUp = view.findViewById(R.id.tv_delivery_pickup);
@@ -184,19 +188,34 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
         StringRequest request = new StringRequest(Request.Method.GET, URLs.post_preffered_date_url + selectedStoreId, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                timeSLotsResponse = gson.fromJson(response, StoreTimeSLotsResponse.class);
-                delivery_dates_list.clear();
-                for (int i = 0; i < timeSLotsResponse.getList().size(); i++) {
-                    delivery_dates_list.add(timeSLotsResponse.getList().get(i));
-                }
-                datesAdapter.notifyDataSetChanged();
+                try {
+                    timeSLotsResponse = gson.fromJson(response, StoreTimeSLotsResponse.class);
+                    delivery_dates_list.clear();
+                    for (int i = 0; i < timeSLotsResponse.getList().size(); i++) {
+                        delivery_dates_list.add(timeSLotsResponse.getList().get(i));
+                    }
+                    datesAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("time_error", error.toString());
+                if (error instanceof TimeoutError) {
+                    Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                    Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                    Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                } else {
+                }
                 dialog.dismiss();
             }
         }) {

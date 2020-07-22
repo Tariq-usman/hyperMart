@@ -328,6 +328,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("details_error", error.toString());
+                Toast.makeText(getContext(), "Server error!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         }) {
@@ -405,7 +406,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 Log.e("bitmap", bitmap.toString());
             } catch (IOException e) {
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pict);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logopng);
                 e.printStackTrace();
             }
 

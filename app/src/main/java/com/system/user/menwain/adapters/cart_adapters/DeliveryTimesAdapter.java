@@ -51,7 +51,7 @@ public class DeliveryTimesAdapter extends RecyclerView.Adapter<DeliveryTimesAdap
             DialogFragmentTimeSlots.time_slot_id = delivery_times_list.get(position).getSlots().get(position).getId();
             DialogFragmentTimeSlots.selecte_time = delivery_times_list.get(position).getSlots().get(position).getFrom() + ":" + delivery_times_list.get(position).getSlots().get(position).getTo();
             Log.e("time_id", DialogFragmentTimeSlots.time_slot_id + "");
-            // clickInterface.interfaceOnClick(holder.itemView, position);
+            last_position=0;
         } else {
             holder.tvTime.setTextColor(Color.parseColor("#004040"));
         }
