@@ -42,10 +42,10 @@ import java.util.List;
 
 public class SelectedStoreSelectedCategoryProductsAdapter extends RecyclerView.Adapter<SelectedStoreSelectedCategoryProductsAdapter.FilterStoresViewHolder> {
 
-    List<SelectedStoreCategoryProductsResponse.Product.Datum> category_products_list;
+    List<SelectedStoreCategoryProductsResponse.Product> category_products_list;
     Context context;
     byte[] productImage;
-    String productName, storeName, price, quantity, strTotalPrice, imagePath;
+    String selectedStoreName,productName, storeName, price, quantity, strTotalPrice, imagePath;
     private CartViewModel cartViewModel;
     Bundle bundle;
     private Preferences prefrences;
@@ -54,10 +54,11 @@ public class SelectedStoreSelectedCategoryProductsAdapter extends RecyclerView.A
     private List<Integer> p_id_list = new ArrayList<Integer>();
     List<Integer> quantity_list = new ArrayList<Integer>();
 
-    public SelectedStoreSelectedCategoryProductsAdapter(Context context, List<SelectedStoreCategoryProductsResponse.Product.Datum> selected_store_category_products_list) {
+    public SelectedStoreSelectedCategoryProductsAdapter(Context context, String selectedStoreName, List<SelectedStoreCategoryProductsResponse.Product> selected_store_category_products_list) {
         this.category_products_list = selected_store_category_products_list;
         this.context = context;
         prefrences = new Preferences(context);
+        this.selectedStoreName = selectedStoreName;
 
     }
 
@@ -74,7 +75,7 @@ public class SelectedStoreSelectedCategoryProductsAdapter extends RecyclerView.A
 //        if (category_products_list.size() > 0) {
         Glide.with(holder.mFilteProduct.getContext()).load(category_products_list.get(position).getImage()).into(holder.mFilteProduct);
         holder.mProductNameView.setText(category_products_list.get(position).getName());
-        holder.mStoreName.setText(category_products_list.get(position).getName());
+        holder.mStoreName.setText(selectedStoreName);
         holder.mPriceFilterItem.setText(category_products_list.get(position).getAvgPrice().toString());
 
         final int[] count = {1};

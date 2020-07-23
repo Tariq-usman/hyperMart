@@ -33,10 +33,14 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -338,12 +342,6 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_address_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-              /*  PaymentTypesResponse paymentTypesResponse = gson.fromJson(response,PaymentTypesResponse.class);
-                for (int i = 0;i<paymentTypesResponse.getDataPayNow().size();i++){
-                    pay_now_list.add(paymentTypesResponse.getDataPayNow().get(i));
-                }*/
-
-
                 UserAddressListResponse addressListResponse = gson.fromJson(response, UserAddressListResponse.class);
                 addressList.clear();
                 for (int i = 0; i < addressListResponse.getAddresslist().size(); i++) {
@@ -351,6 +349,9 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
                 }
                 addressList.size();
                 delivieryAddressesAdapter.notifyDataSetChanged();
+                if (addressList.size()==0){
+                    Toast.makeText(getContext(), getString(R.string.add_address_please), Toast.LENGTH_LONG).show();
+                }
                 Log.i("Address_response", response);
                 dialog.dismiss();
             }
@@ -358,6 +359,21 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Address_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -370,7 +386,7 @@ public class DeliveryAddressFragment extends Fragment implements View.OnClickLis
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new DefaultRetryPolicy(10000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
 }

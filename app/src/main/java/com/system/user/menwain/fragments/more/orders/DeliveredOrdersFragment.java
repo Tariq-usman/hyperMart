@@ -9,11 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -44,20 +49,25 @@ public class DeliveredOrdersFragment extends Fragment {
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private Preferences prefrences;
+    private TextView tvMessage;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_orders_delivered,container,false);
+        View view = inflater.inflate(R.layout.fragment_orders_delivered, container, false);
         prefrences = new Preferences(getContext());
         customDialog(getContext());
         getDeliveredOrdersData();
 
+        tvMessage = view.findViewById(R.id.tv_message_delivered_orders);
+        tvMessage.setVisibility(View.INVISIBLE);
         recyclerViewOrdersDelivered = view.findViewById(R.id.recycler_view_orders_delivered);
         recyclerViewOrdersDelivered.setLayoutManager(new LinearLayoutManager(getContext()));
-        ordersDeliveredAdapter = new OrdersDeliveredAdapter(getContext(),delivered_orders_list);
+        ordersDeliveredAdapter = new OrdersDeliveredAdapter(getContext(), delivered_orders_list);
         recyclerViewOrdersDelivered.setAdapter(ordersDeliveredAdapter);
         return view;
     }
+
     private void getDeliveredOrdersData() {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -71,13 +81,37 @@ public class DeliveredOrdersFragment extends Fragment {
                     delivered_orders_list.add(deleveredOrdersResponse.getAllorders().getData().get(i));
                 }
                 ordersDeliveredAdapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if (delivered_orders_list.size() == 0) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText(getString(R.string.no_orders_yet));
+                } else {
+                    tvMessage.setVisibility(View.INVISIBLE);
+                }dialog.dismiss();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("allO_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.network_timeout));
+                    } else if (error instanceof AuthFailureError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.authentication_error));
+                    } else if (error instanceof ServerError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.server_error));
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.no_network_found));
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -85,11 +119,13 @@ public class DeliveredOrdersFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
         };
         requestQueue.add(request);
     }
+
     public void customDialog(Context context) {
         builder = new AlertDialog.Builder(context);
         builder.setCancelable(false); // if you want user to wait for some process to finish,

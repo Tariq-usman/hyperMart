@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -37,10 +42,14 @@ import com.system.user.menwain.fragments.more.MoreFragment;
 import com.system.user.menwain.responses.GetUserProfileDetailsResponse;
 import com.system.user.menwain.responses.UpdateProfileResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +66,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private boolean profile_status = false;
+    private Toast toast;
 
     @Nullable
     @Override
@@ -78,14 +88,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         rbFemale.setOnClickListener(this);
         btnRegister = view.findViewById(R.id.register);
         btnRegister.setOnClickListener(this);
-        if (prefrences.getToken().isEmpty() || prefrences.getToken() == null) {
+       /* if (prefrences.getToken().isEmpty() || prefrences.getToken() == null || prefrences.getToken() == "") {
             btnRegister.setClickable(false);
             btnRegister.setEnabled(false);
-        } else {
-            btnRegister.setClickable(true);
-            btnRegister.setEnabled(true);
+            *//*Toast.makeText(getContext(), getContext().getString(R.string.login_first), Toast.LENGTH_SHORT).show();
+            Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+            logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(logInIntnet);
+            dialog.dismiss();*//*
 
-        }
+        } else {*/
+
+            getUserProfileDetails();
+//        }
 
 
         ivBackProfile = view.findViewById(R.id.iv_back_profile);
@@ -115,7 +130,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(aa);*/
 
-        getUserProfileDetails();
         return view;
     }
 
@@ -220,6 +234,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_current_user_profile_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                btnRegister.setClickable(true);
+                btnRegister.setEnabled(true);
                 GetUserProfileDetailsResponse userProfileDetailsResponse = gson.fromJson(response, GetUserProfileDetailsResponse.class);
                 etFname.setText(userProfileDetailsResponse.getCustomerdata().getFirstName());
                 etLname.setText(userProfileDetailsResponse.getCustomerdata().getLastName());
@@ -239,18 +255,53 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), getContext().getString(R.string.login_first), Toast.LENGTH_SHORT).show();
-                Log.e("profiel_error", error.toString());
-                Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
-                logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(logInIntnet);
-                dialog.dismiss();
+                if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
+                    String str = new String(error.networkResponse.data);
+                    Log.e("Error : ", str);
+                    try {
+                        JSONObject jsonObject = new JSONObject(str);
+                        String strError = jsonObject.getString("message");
+                        Toast.makeText(getContext(), "" + strError, Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                                logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(logInIntnet);
+                                dialog.dismiss();
+                            }
+                        },2000);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        dialog.dismiss();
+                    }
+                } else {
+                    toast = Utils.toast(error,getContext());
+                    try {
+                        if (error instanceof TimeoutError) {
+                            Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                        } else if (error instanceof AuthFailureError) {
+                            Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                            Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                        } else {
+                        }
+                        dialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
             }
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("Authorization", "Bearer " + prefrences.getToken());
+                map.put("Accept", "application/json");
                 return map;
             }
         };
@@ -280,6 +331,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("Authorization", "Bearer " + prefrences.getToken());
+                map.put("Accept", "application/json");
                 return map;
             }
 

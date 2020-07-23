@@ -19,9 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -47,7 +51,7 @@ import java.util.Map;
 
 public class AvailNotAvailItemsListsFragment extends Fragment implements View.OnClickListener {
     private TextView mAvailable, mNotAvailable;
-    public static TextView mTotalAmount, tvStoreName, mAvailItems, mNotAvailItmes,mSaved;
+    public static TextView mTotalAmount, tvStoreName, mAvailItems, mNotAvailItmes, mSaved;
     private ImageView mBackBtn;
     private LinearLayout mConfirmBtn;
     private int store_id, avail, not_avial;
@@ -169,7 +173,7 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
                 } else {
                     //if (pay_status == 2){
                     DialogFragmentTimeSlots deliveryTime = new DialogFragmentTimeSlots();
-                    deliveryTime.show(getFragmentManager(), "Select Method");
+                    deliveryTime.show(getParentFragmentManager(), "Select Method");
                 }
                 dialog.dismiss();
             }
@@ -177,6 +181,21 @@ public class AvailNotAvailItemsListsFragment extends Fragment implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("AvailNotAvailError", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {

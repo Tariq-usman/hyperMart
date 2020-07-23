@@ -29,6 +29,9 @@
     <string name="authentication_error">Authentication Error!</string>
     <string name="server_error">Server Error!</string>
     <string name="no_network_found">No Network Found!</string>
+    <string name="no_list_found">No List Found!</string>
+    <string name="no_orders_yet">No Orders Yet!</string>
+    <string name="add_address_please">Add Address Please</string>
 
     <!-- main page -->
     <string name="search_hint">menWain</string>
@@ -156,7 +159,7 @@
     <string name="route_me">Route me</string>
     <!--Orders Fragment-->
     <string name="all">All</string>
-    <string name="processing">processing</string>
+    <string name="processing">Processing</string>
     <string name="delivered">Delivered</string>
     <string name="cancelled">Cancelled</string>
 

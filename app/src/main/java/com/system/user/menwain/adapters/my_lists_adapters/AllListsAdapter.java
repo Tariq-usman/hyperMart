@@ -66,7 +66,7 @@ public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.AllLis
         holder.mListName.setText(orders_list.get(position).getWishlistName().toString());
         String date = orders_list.get(position).getDateTime();
         String [] split_date = date.split(" ");
-        holder.tvDate.setText(split_date[0]);
+        holder.tvDate.setText(split_date[0]+"");
         holder.tvPrice.setText(orders_list.get(position).getTotalAmount().toString());
         holder.viewList.setOnClickListener(new View.OnClickListener() {
             @Override

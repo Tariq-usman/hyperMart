@@ -35,10 +35,14 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -116,7 +120,6 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_item_details, container, false);
         prefrences = new Preferences(getContext());
         customDialog(getContext());
-        getBannerData();
 
         bundle = this.getArguments();
         if (bundle != null) {
@@ -124,6 +127,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             status = bundle.getString("status", "");
             getProductDetails(product_id);
             getProductReviews(product_id);
+            getBannerData();
         } else {
             Toast.makeText(getContext(), "No product selected", Toast.LENGTH_SHORT).show();
         }
@@ -303,7 +307,6 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 try {
                     detailsResponse = gson.fromJson(response, ProductDetailsResponse.class);
                     productId = detailsResponse.getData().getId();
-
                     tvPrice.setText(detailsResponse.getData().getAvgPrice().toString());
                     tvTitle.setText(detailsResponse.getData().getName());
                     tvDescription.setText(detailsResponse.getData().getDescription());
@@ -328,14 +331,31 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("details_error", error.toString());
-                Toast.makeText(getContext(), "Server error!", Toast.LENGTH_SHORT).show();
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 dialog.dismiss();
             }
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
+//                header.put("Authentication", "Bearer " + prefrences.getToken());
                 header.put("X-Language", prefrences.getLanguage());
+                header.put("Accept", "application/json");
                 return header;
             }
         };
@@ -399,53 +419,64 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
             mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.add_to_cart_item_details) {
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-                URL url = new URL(detailsResponse.getData().getImage());
-                bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                Log.e("bitmap", bitmap.toString());
-            } catch (IOException e) {
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logopng);
-                e.printStackTrace();
-            }
-
-            productName = tvTitle.getText().toString();
-            storeName = tvStoreName.getText().toString();
-            price = tvPrice.getText().toString();
-            quantity = tvQuantity.getText().toString();
-            totalPrice = Float.parseFloat(price);
-            intQuantity = Integer.parseInt(quantity);
-            unitPrice = totalPrice * intQuantity;
-            saveToInternalStorage(bitmap);
-            cartViewModel = ViewModelProviders.of((FragmentActivity) getContext()).get(CartViewModel.class);
-            Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
-            UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity + 1, unitPrice);
-            cartViewModel.getCartDataList().observe((FragmentActivity) getContext(), new Observer<List<Cart>>() {
-                @Override
-                public void onChanged(List<Cart> carts) {
-
-                    for (int i = 0; i < carts.size(); i++) {
-                        p_id_list.add(carts.get(i).getP_id());
-                    }
-                }
-            });
-            if (p_id_list.size() == 0) {
-                cartViewModel.insertCart(cart);
-                Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+            if (detailsResponse == null) {
+                Toast.makeText(getContext(), "" + getString(R.string.please_wait), Toast.LENGTH_SHORT).show();
             } else {
-
-                for (int i = 0; i < p_id_list.size(); i++) {
-                    if (p_id_list.get(i) == productId) {
-                        id = p_id_list.get(i);
+                try {
+                    if (detailsResponse.getData().getImage() == null) {
+                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logopng);
+                    } else {
+                        dialog.show();
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+                        URL url = new URL(detailsResponse.getData().getImage());
+                        bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        Log.e("bitmap", bitmap.toString());
+                        dialog.dismiss();
                     }
+                } catch (IOException e) {
+                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logopng);
+                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                if (id == productId) {
-                    cartViewModel.updateCartQuantity(updateCartQuantity);
-                    Toast.makeText(getContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
-                } else {
+
+                productName = tvTitle.getText().toString();
+                storeName = tvStoreName.getText().toString();
+                price = tvPrice.getText().toString();
+                quantity = tvQuantity.getText().toString();
+                totalPrice = Float.parseFloat(price);
+                intQuantity = Integer.parseInt(quantity);
+                unitPrice = totalPrice * intQuantity;
+                saveToInternalStorage(bitmap);
+                cartViewModel = ViewModelProviders.of((FragmentActivity) getContext()).get(CartViewModel.class);
+                Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
+                UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity + 1, unitPrice);
+                cartViewModel.getCartDataList().observe((FragmentActivity) getContext(), new Observer<List<Cart>>() {
+                    @Override
+                    public void onChanged(List<Cart> carts) {
+
+                        for (int i = 0; i < carts.size(); i++) {
+                            p_id_list.add(carts.get(i).getP_id());
+                        }
+                    }
+                });
+                if (p_id_list.size() == 0) {
                     cartViewModel.insertCart(cart);
                     Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    for (int i = 0; i < p_id_list.size(); i++) {
+                        if (p_id_list.get(i) == productId) {
+                            id = p_id_list.get(i);
+                        }
+                    }
+                    if (id == productId) {
+                        cartViewModel.updateCartQuantity(updateCartQuantity);
+                        Toast.makeText(getContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        cartViewModel.insertCart(cart);
+                        Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

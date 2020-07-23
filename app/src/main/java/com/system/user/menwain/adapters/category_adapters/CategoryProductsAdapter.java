@@ -127,6 +127,8 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
                         StrictMode.setThreadPolicy(policy);
                         URL url = new URL(category_products_list.get(position).getImage());
                         bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                        Drawable drawable = holder.mFilteProduct.getDrawable();
+//                        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                         Log.e("bitmap", bitmap.toString());
                     } catch (IOException e) {
                         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.logopng);

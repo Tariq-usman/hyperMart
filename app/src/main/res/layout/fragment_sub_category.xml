@@ -43,9 +43,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:imeOptions="actionDone"
                     android:background="@android:color/transparent"
                     android:hint="@string/search_hint"
+                    android:imeOptions="actionDone"
                     android:inputType="text"
                     android:maxLines="1"
                     android:textColor="@color/whiteColor"
@@ -69,54 +69,63 @@
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:padding="16dp"
-            android:src="@drawable/ic_backwhite"/>
+            android:src="@drawable/ic_backwhite" />
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_sub_caterory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="2dp"
-        android:orientation="horizontal"
-        android:overScrollMode="never"
-        android:visibility="visible"
-        tools:listitem="@layout/row_selected_items"/>
-
-<!--
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/bg_unselected"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_selected_items_name"
+        <TextView
+            android:id="@+id/tv_no_cat_prod_avail_sub_cat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:listitem="@layout/row_items_selected_items_names" />
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:gravity="center"
+            android:text="hello"
+            android:textColor="@color/darkGreenColor"
+            android:visibility="invisible"
+            android:textSize="@dimen/sixteen_sp" />
 
-    </LinearLayout>
--->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_sub_category_roducts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:gravity="center"
-        android:layout_marginTop="6dp"
-        android:visibility="visible"
-        android:overScrollMode="never" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_sub_category_roducts_final"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:gravity="center"
-        android:layout_marginTop="6dp"
-        android:visibility="gone"
-        android:overScrollMode="never" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_sub_caterory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="2dp"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:visibility="visible"
+                tools:listitem="@layout/row_selected_items" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_sub_category_roducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:overScrollMode="never"
+                android:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_sub_category_roducts_final"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:overScrollMode="never"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </FrameLayout>
+
 
 </LinearLayout>

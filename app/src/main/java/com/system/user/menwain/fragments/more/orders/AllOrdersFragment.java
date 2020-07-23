@@ -3,23 +3,32 @@ package com.system.user.menwain.fragments.more.orders;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.AllOrdersAdapter;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.orders.AllOrdersResponse;
@@ -44,6 +53,7 @@ public class AllOrdersFragment extends Fragment {
     private Preferences prefrences;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
+    private TextView tvMessage;
 
     @Nullable
     @Override
@@ -53,6 +63,8 @@ public class AllOrdersFragment extends Fragment {
         customDialog(getContext());
 
         getAllOrdersData();
+        tvMessage = view.findViewById(R.id.tv_message_all_orders);
+        tvMessage.setVisibility(View.INVISIBLE);
         recyclerViewOrders = view.findViewById(R.id.recycler_view_orders);
         recyclerViewOrders.setLayoutManager(new LinearLayoutManager(getContext()));
         allOrdersAdapter = new AllOrdersAdapter(getContext(), all_orders_list);
@@ -74,6 +86,12 @@ public class AllOrdersFragment extends Fragment {
                     all_orders_list.add(allOrdersResponse.getAllorders().getData().get(i));
                 }
                 allOrdersAdapter.notifyDataSetChanged();
+                if (all_orders_list.size() == 0) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText(getString(R.string.no_orders_yet));
+                } else {
+                    tvMessage.setVisibility(View.INVISIBLE);
+                }
                 dialog.dismiss();
 
             }
@@ -81,6 +99,39 @@ public class AllOrdersFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("allO_error", error.toString());
+                if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText(getString(R.string.authentication_error));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                            logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(logInIntnet);
+                            dialog.dismiss();
+                        }
+                    }, 2000);
+                } else {
+                    try {
+                        if (error instanceof TimeoutError) {
+                            tvMessage.setVisibility(View.VISIBLE);
+                            tvMessage.setText(getString(R.string.network_timeout));
+                        } else if (error instanceof AuthFailureError) {
+                            tvMessage.setVisibility(View.VISIBLE);
+                            tvMessage.setText(getString(R.string.authentication_error));
+                        } else if (error instanceof ServerError) {
+                            tvMessage.setVisibility(View.VISIBLE);
+                            tvMessage.setText(getString(R.string.server_error));
+                        } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                            tvMessage.setVisibility(View.VISIBLE);
+                            tvMessage.setText(getString(R.string.no_network_found));
+                        } else {
+                        }
+                        dialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 dialog.dismiss();
             }
         }) {
@@ -88,6 +139,7 @@ public class AllOrdersFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
         };

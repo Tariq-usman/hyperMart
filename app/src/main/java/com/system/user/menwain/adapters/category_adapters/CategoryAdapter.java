@@ -27,8 +27,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Select
     Context context;
     List<CategoryResponse.Category.Datum> catergoryList;
     public int lastPosition = -1;
-    private boolean check = false;
-    private int passedPosition = SuperCategoryAdapter.passId;
+    //    private boolean check = false;
+//    private int passedPosition = SuperCategoryAdapter.passId;
     RecyclerClickInterface clickInterface;
     Preferences preferences;
 
@@ -53,7 +53,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Select
         holder.setIsRecyclable(false);
         holder.mProductNameView.setText(catergoryList.get(position).getDescription());
         Glide.with(holder.mProduct.getContext()).load(catergoryList.get(position).getPicture()).into(holder.mProduct);
-        if (check == false) {
+      /*  if (check == false) {
             if (passedPosition == position) {
                 holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
                 check = true;
@@ -61,7 +61,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Select
             } else {
                 holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
             }
-        } else if (lastPosition == position) {
+        } else */
+        if (lastPosition == position) {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
             //clickInterface.interfaceOnClick(holder.getView(), position);
             preferences.setCatsId(catergoryList.get(position).getId());

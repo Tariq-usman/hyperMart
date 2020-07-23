@@ -3,8 +3,10 @@ package com.system.user.menwain.fragments.my_list;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,15 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.my_lists_adapters.AllListsAdapter;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.my_list.UserWishlistProductsResponse;
@@ -40,6 +47,9 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +65,7 @@ public class AllListsFragment extends Fragment {
     AllListsAdapter allListsAdapter;
     private CardView mSearchViewAllLists;
     ImageView mBackBtn;
+    private TextView tvMessage;
     private Preferences prefrences;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
@@ -69,6 +80,7 @@ public class AllListsFragment extends Fragment {
         prefrences = new Preferences(getContext());
         customDialog(getContext());
 
+        tvMessage = view.findViewById(R.id.tv_message_mylist);
         etSearchList = view.findViewById(R.id.et_search_my_list);
         etSearchList.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
         etSearchList.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
@@ -76,8 +88,8 @@ public class AllListsFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     return true;
                 }
                 return false;
@@ -98,7 +110,7 @@ public class AllListsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().length() > 0) {
+                if (s.toString().length() > 0) {
                     etSearchList.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 } else {
                     //Assign your image again to the view, otherwise it will always be gone even if the text is 0 again.
@@ -115,8 +127,8 @@ public class AllListsFragment extends Fragment {
                 /*if (filter_orders_list.size() == 0) {
                     Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
                 } else {*/
-                    allListsAdapter = new AllListsAdapter(getContext(), filter_orders_list);
-                    recyclerViewAllLists.setAdapter(allListsAdapter);
+                allListsAdapter = new AllListsAdapter(getContext(), filter_orders_list);
+                recyclerViewAllLists.setAdapter(allListsAdapter);
 //                }
             }
 
@@ -142,6 +154,12 @@ public class AllListsFragment extends Fragment {
                 }
                 Collections.reverse(orders_list);
                 allListsAdapter.notifyDataSetChanged();
+                if (orders_list.size() == 0) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText(getString(R.string.no_list_found));
+                } else {
+                    tvMessage.setVisibility(View.INVISIBLE);
+                }
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -149,6 +167,34 @@ public class AllListsFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("wishError", error.toString());
+                if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText(getString(R.string.authentication_error));
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                                logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(logInIntnet);
+                                dialog.dismiss();
+                            }
+                        }, 2000);
+                } else {
+                    if (error instanceof TimeoutError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.network_timeout));
+                    } else if (error instanceof AuthFailureError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.authentication_error));
+                    } else if (error instanceof ServerError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.server_error));
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.no_network_found));
+                    } else {
+                    }
+                }
                 dialog.dismiss();
             }
         }) {
@@ -156,6 +202,7 @@ public class AllListsFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
         };

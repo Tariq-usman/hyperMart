@@ -13,9 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -24,8 +28,12 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.others.Preferences;
+import com.system.user.menwain.responses.LogInMessages;
 import com.system.user.menwain.responses.LogInResponse;
 import com.system.user.menwain.utils.URLs;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +51,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         prefrences = new Preferences(this);
+        if (!checkPermission()) {
+            requestPermission();
+        }
         customProgressDialog(LoginActivity.this);
         mLogingBtn = findViewById(R.id.login_btn);
         mForgetPass = findViewById(R.id.forget_pass);
@@ -97,7 +108,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("login_error", error.toString());
-                Toast.makeText(LoginActivity.this, "Login Credentials were wrong", Toast.LENGTH_SHORT).show();
+                if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
+                    String str = new String(error.networkResponse.data);
+                    Log.e("Error : ", str);
+                    try {
+                        JSONObject jsonObject = new JSONObject(str);
+                        String strError = jsonObject.getString("message");
+                        Toast.makeText(LoginActivity.this, "" + strError, Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        if (error instanceof TimeoutError) {
+                            Toast.makeText(LoginActivity.this, getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                        } else if (error instanceof AuthFailureError) {
+                            Toast.makeText(LoginActivity.this, getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            Toast.makeText(LoginActivity.this, getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                            Toast.makeText(LoginActivity.this, getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                        } else {
+                        }
+                        progressDialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 progressDialog.dismiss();
             }
         }) {
@@ -111,6 +148,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         };
         requestQueue.add(request);
     }
+
     public void customProgressDialog(Context context) {
         progressDialog = new ProgressDialog(context);
         // Setting Message

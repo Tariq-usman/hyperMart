@@ -25,9 +25,13 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -83,7 +87,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private SelectedStoresCategoryProductsAdapter selectedStorecategoryProductsAdapter;
     private SelectedStoreSelectedCategoryProductsAdapter selectedStoreSelectedCategoryProductsAdapter;
     private List<SelectedStoreResponse.Category> category_list = new ArrayList<>();
-    private List<SelectedStoreCategoryProductsResponse.Product.Datum> selected_store_category_products_list = new ArrayList<>();
+    private List<SelectedStoreCategoryProductsResponse.Product> selected_store_category_products_list = new ArrayList<SelectedStoreCategoryProductsResponse.Product>();
     private List<SelectedStoreResponse.Product.Datum.Product_> category_products_list = new ArrayList<SelectedStoreResponse.Product.Datum.Product_>();
 
     public static List<Integer> store_id_list = new ArrayList<>();
@@ -213,19 +217,34 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 for (int i = 0; i < storeResponse.getCategory().size(); i++) {
                     category_list.add(storeResponse.getCategory().get(i));
                 }
+                storeCategoryAdapter.notifyDataSetChanged();
                 for (int i = 0; i < storeResponse.getProduct().getData().get(0).getProducts().size(); i++) {
                     category_products_list.add(storeResponse.getProduct().getData().get(0).getProducts().get(i));
                 }
                 Log.e("list_size", String.valueOf(category_products_list.size()));
                 selectedStorecategoryProductsAdapter = new SelectedStoresCategoryProductsAdapter(getContext(), category_products_list, storeResponse.getStore().getName(), storeResponse.getStore().getId());
                 recyclerViewSelectedStoreCategoryProducts.setAdapter(selectedStorecategoryProductsAdapter);
-                storeCategoryAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("ss_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -237,6 +256,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(5000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void getSelectedStoreCategoryProducts(int category_id) {
@@ -249,12 +269,12 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
             public void onResponse(String response) {
                 SelectedStoreCategoryProductsResponse categoryProductsResponse = gson.fromJson(response, SelectedStoreCategoryProductsResponse.class);
                 selected_store_category_products_list.clear();
-                for (int i = 0; i < categoryProductsResponse.getProduct().getData().size(); i++) {
-                    selected_store_category_products_list.add(categoryProductsResponse.getProduct().getData().get(i));
+                for (int i = 0; i < categoryProductsResponse.getProduct().size(); i++) {
+                    selected_store_category_products_list.add(categoryProductsResponse.getProduct().get(i));
                 }
-                selected_store_category_products_list.size();
-                selectedStoreSelectedCategoryProductsAdapter = new SelectedStoreSelectedCategoryProductsAdapter(getContext(), selected_store_category_products_list);
+                selectedStoreSelectedCategoryProductsAdapter = new SelectedStoreSelectedCategoryProductsAdapter(getContext(), categoryProductsResponse.getStore().getName(), selected_store_category_products_list);
                 recyclerViewSelectedStoreCategoryProducts.setAdapter(selectedStoreSelectedCategoryProductsAdapter);
+                selected_store_category_products_list.size();
                 if (selected_store_category_products_list.size() == 0) {
                     Toast.makeText(getContext(), getContext().getString(R.string.no_products), Toast.LENGTH_SHORT).show();
                 }
@@ -264,6 +284,21 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("ss_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -278,6 +313,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
                 header.put("X-Language", prefrences.getLanguage());
+                header.put("Accept", "application/json");
                 return header;
             }
         };

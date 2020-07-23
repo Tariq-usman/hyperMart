@@ -85,20 +85,20 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             case R.id.tv_profile:
                 prefrences.setMorFragStatus(3);
                 prefrences.setProfileFragStatus(1);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ProfileFragment()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ProfileFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.iv_order:
                 prefrences.setMorFragStatus(2);
                 prefrences.setMoreOrdersFragStatus(1);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_settings:
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SettingsFragment()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SettingsFragment()).addToBackStack(null).commit();
                 break;
             case R.id.tv_rate_app:
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new RateUsFragment()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new RateUsFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_log_out:

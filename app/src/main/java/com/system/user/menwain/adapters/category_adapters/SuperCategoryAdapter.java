@@ -24,7 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SuperCategoryAdapter extends RecyclerView.Adapter<SuperCategoryAdapter.CategoryViewHolder> {
     List<SuperCategoryResponse.SuperCategory.Datum> categoryList;
-    public static int passId;
+//    public static int passId;
     Context context;
     Preferences prefrences;
     Bundle bundle;
@@ -51,7 +51,7 @@ public class SuperCategoryAdapter extends RecyclerView.Adapter<SuperCategoryAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                passId = holder.getAdapterPosition();
+//                passId = holder.getAdapterPosition();
 
                 bundle = new Bundle();
                 CategoryFragment fragment = new CategoryFragment();

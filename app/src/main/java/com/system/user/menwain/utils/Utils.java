@@ -6,7 +6,14 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
 import com.system.user.menwain.R;
 
 import java.util.regex.Matcher;
@@ -16,8 +23,9 @@ public class Utils {
 
     public static final String phone_n_pattern = "-?(0|[1-9]\\d*)";
 
-    public static    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-    public static  boolean isValidPassword(final String password) {
+    public static String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+    public static boolean isValidPassword(final String password) {
 
         Pattern pattern;
         Matcher matcher;
@@ -44,4 +52,24 @@ public class Utils {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         return dialog;
     }
+
+    public static Toast toast(VolleyError error,Context context) {
+
+        try {
+            if (error instanceof TimeoutError) {
+                Toast.makeText(context, context.getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+            } else if (error instanceof AuthFailureError) {
+                Toast.makeText(context, context.getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+            } else if (error instanceof ServerError) {
+                Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_LONG).show();
+            } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                Toast.makeText(context, context.getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+            } else {
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return toast(error,context);
+    }
+
 }

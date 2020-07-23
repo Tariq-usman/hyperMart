@@ -160,6 +160,21 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("time_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -167,6 +182,7 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
 
@@ -206,16 +222,22 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("time_error", error.toString());
-                if (error instanceof TimeoutError) {
-                    Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
-                } else if (error instanceof AuthFailureError) {
-                    Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
-                } else if (error instanceof ServerError) {
-                    Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
-                } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
-                    Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
-                } else {
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
                 dialog.dismiss();
             }
         }) {
@@ -223,6 +245,7 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
 

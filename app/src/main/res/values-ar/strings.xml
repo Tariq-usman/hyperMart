@@ -32,6 +32,9 @@
     <string name="authentication_error">خطأ مصادقة!</string>
     <string name="server_error">خطأ في الخادم!</string>
     <string name="no_network_found">لم يتم العثور على شبكة!</string>
+    <string name="no_list_found">لم يتم العثور على قائمة!</string>
+    <string name="no_orders_yet">لا توجد أوامر حتى الآن!</string>
+    <string name="add_address_please">أضف العنوان من فضلك</string>
 
     <!--Home Fragment-->
     <string name="explore_shop">استكشاف وتسوق</string>

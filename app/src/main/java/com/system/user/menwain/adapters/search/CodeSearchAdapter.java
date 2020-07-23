@@ -95,6 +95,7 @@ public class CodeSearchAdapter extends RecyclerView.Adapter<CodeSearchAdapter.Co
                 ItemDetailsFragment fragment = new ItemDetailsFragment();
                 FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                 bundle.putString("status", "2");
+                bundle.putInt("product_id",search_list.get(position).getId());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.nav_host_fragment, fragment).commit();
             }

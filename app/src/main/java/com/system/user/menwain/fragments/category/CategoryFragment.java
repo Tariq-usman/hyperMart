@@ -20,9 +20,13 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -61,7 +65,7 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
     private int cat_id, super_cat_id;
     private RecyclerView recyclerViewCategory, recyclerViewCategoryProducts, recyclerViewSubCategory, recyclerViewSubCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
-    private int getPreviousId = SuperCategoryAdapter.passId;
+//    private int getPreviousId = SuperCategoryAdapter.passId;
     private ImageView mBackBtn, mSearch, mBarCodeScanner;
     private EditText etSearch;
     private Preferences prefrences;
@@ -188,6 +192,21 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("category_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }){

@@ -28,9 +28,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -63,10 +67,10 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
     private int cat_id, super_cat_id, sub_cat_id;
     private RecyclerView recyclerViewSubCategory, recyclerViewSubCategoryProducts, recyclerViewSubCategoryProductsFinal;
     private LinearLayoutManager linearLayoutManager;
-    private int getPreviousId = SuperCategoryAdapter.passId;
+//    private int getPreviousId = SuperCategoryAdapter.passId;
     private ImageView mBackBtn, mSearch, mBarCodeScanner;
     private EditText etSearch;
-
+    private TextView tvNoCatAvail;
     private CardView mSearchViewItemsFragment;
     private Preferences prefrences;
     private AlertDialog.Builder builder;
@@ -96,6 +100,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                 getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
             }
         });
+        tvNoCatAvail = view.findViewById(R.id.tv_no_cat_prod_avail_sub_cat);
         mSearch = view.findViewById(R.id.iv_search_sub_cat);
         etSearch = view.findViewById(R.id.et_search_sub_cat);
         etSearch.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
@@ -196,11 +201,15 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                 }
                 subCategoryProductsAdapter.notifyDataSetChanged();
                 if (subCatergoryList.size() == 0) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.no_sub_category), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), getContext().getString(R.string.no_sub_category), Toast.LENGTH_SHORT).show();
+                    tvNoCatAvail.setVisibility(View.VISIBLE);
+                    tvNoCatAvail.setText(getString(R.string.no_sub_category));
 
                 } else {
                     if (subCategory_products_list.size() == 0) {
-                        Toast.makeText(getContext(), getContext().getString(R.string.no_products), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), getContext().getString(R.string.no_products), Toast.LENGTH_SHORT).show();
+                        tvNoCatAvail.setVisibility(View.VISIBLE);
+                        tvNoCatAvail.setText(getString(R.string.no_products));
                     }
                 }
                 dialog.dismiss();
@@ -209,7 +218,26 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("sub_cat_error", error.toString());
-                Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                try {
+                    if (error instanceof TimeoutError) {
+                        tvNoCatAvail.setVisibility(View.VISIBLE);
+                        tvNoCatAvail.setText(getString(R.string.network_timeout));
+                    } else if (error instanceof AuthFailureError) {
+                        tvNoCatAvail.setVisibility(View.VISIBLE);
+                        tvNoCatAvail.setText(getString(R.string.authentication_error));
+                    } else if (error instanceof ServerError) {
+                        tvNoCatAvail.setVisibility(View.VISIBLE);
+                        tvNoCatAvail.setText(getString(R.string.server_error));
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        tvNoCatAvail.setVisibility(View.VISIBLE);
+                        tvNoCatAvail.setText(getString(R.string.no_network_found));
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 dialog.dismiss();
             }
         }) {
@@ -228,7 +256,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
     }
 
@@ -248,7 +276,9 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                 }
                 subCategoryProductsFinalAdapter.notifyDataSetChanged();
                 if (subCategory_products_final_list.size() == 0) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.no_products), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), getContext().getString(R.string.no_products), Toast.LENGTH_SHORT).show();
+                    tvNoCatAvail.setVisibility(View.VISIBLE);
+                    tvNoCatAvail.setText(getString(R.string.no_products));
                 }
                 dialog.dismiss();
             }
@@ -256,6 +286,25 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("sub_cat_pro_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        tvNoCatAvail.setVisibility(View.VISIBLE);
+                        tvNoCatAvail.setText(getString(R.string.network_timeout));
+                    } else if (error instanceof AuthFailureError) {
+                        tvNoCatAvail.setVisibility(View.VISIBLE);
+                        tvNoCatAvail.setText(getString(R.string.authentication_error));
+                    } else if (error instanceof ServerError) {
+                        tvNoCatAvail.setVisibility(View.VISIBLE);
+                        tvNoCatAvail.setText(getString(R.string.server_error));
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        tvNoCatAvail.setVisibility(View.VISIBLE);
+                        tvNoCatAvail.setText(getString(R.string.no_network_found));
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -274,49 +323,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-    }
-
-    private void searchProductByName(final String name) {
-        dialog.show();
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.POST, URLs.search_product_by_name_url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                SearchByNameResponse nameResponse = gson.fromJson(response, SearchByNameResponse.class);
-                search_by_name_list.clear();
-                for (int i = 0; i < nameResponse.getData().getData().size(); i++) {
-                    search_by_name_list.add(nameResponse.getData().getData().get(i));
-                }
-                if (search_by_name_list.size() == 0) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
-                    recyclerViewSubCategoryProducts.setAdapter(nameSearchAdapter);
-                    nameSearchAdapter.notifyDataSetChanged();
-                } else {
-                    recyclerViewSubCategoryProducts.setAdapter(nameSearchAdapter);
-                    nameSearchAdapter.notifyDataSetChanged();
-                }
-                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-                etSearch.setText("");
-                dialog.dismiss();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("error_response", error.toString());
-                dialog.dismiss();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("name", name);
-                return map;
-            }
-        };
-        requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     public void customDialog(Context context) {
