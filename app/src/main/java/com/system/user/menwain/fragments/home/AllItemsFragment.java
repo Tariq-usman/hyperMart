@@ -27,9 +27,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -59,6 +64,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private EditText etSearch;
+    private TextView tvMessage;
     private ImageView mBarCodeScanner, ivSearch, ivBack, ivListGridView;
     private RecyclerView recyclerViewAllitem;
     private LinearLayoutManager linearLayoutManager;
@@ -85,22 +91,24 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         customDialog(getContext());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        ivSearch =view.findViewById(R.id.iv_search_all);
+        ivSearch = view.findViewById(R.id.iv_search_all);
         ivSearch.setOnClickListener(this);
-        mBarCodeScanner =view.findViewById(R.id.bar_code_scanner_all);
+        mBarCodeScanner = view.findViewById(R.id.bar_code_scanner_all);
         mBarCodeScanner.setOnClickListener(this);
+        tvMessage = view.findViewById(R.id.tv_no_items_found_all);
+        tvMessage.setVisibility(View.INVISIBLE);
         etSearch = view.findViewById(R.id.et_search_all);
         etSearch.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE){
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     Bundle bundle = new Bundle();
                     if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                         Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                     } else {
-                        InputMethodManager inputMethodManager = (InputMethodManager)getContext().getSystemService(INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
+                        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                         bundle.putString("search", etSearch.getText().toString().trim());
                         etSearch.setText("");
                         searchFragment.setArguments(bundle);
@@ -129,7 +137,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
             getExploreAndShopeSeeAllData();
             recyclerViewAllitem.setHasFixedSize(true);
             recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            exploreShopItemsGridAdapter=new ExploreShopItemsGridAdapter(getContext(), explore_shop_grid_list);
+            exploreShopItemsGridAdapter = new ExploreShopItemsGridAdapter(getContext(), explore_shop_grid_list);
             recyclerViewAllitem.setAdapter(exploreShopItemsGridAdapter);
         } else if (val.equals("2")) {
             getExploreSeeAllData();
@@ -139,13 +147,11 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         } else if (val.equals("3")) {
             getShopSeeAllData();
             recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            shopItemsGridAdapter=new ShopItemsGridAdapter(getContext(),shop_list);
+            shopItemsGridAdapter = new ShopItemsGridAdapter(getContext(), shop_list);
             recyclerViewAllitem.setAdapter(shopItemsGridAdapter);
         }
         return view;
     }
-
-
 
 
     @Override
@@ -153,7 +159,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.iv_back:
                 prefrences.setHomeFragStatus(0);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(),"Home").addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").addToBackStack(null).commit();
                 ivBack.setVisibility(View.INVISIBLE);
                 ivListGridView.setVisibility(View.INVISIBLE);
 
@@ -218,7 +224,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         linearLayoutManager = new LinearLayoutManager(getContext());
                         recyclerViewAllitem.setLayoutManager(linearLayoutManager);
                         recyclerViewAllitem.setAdapter(null);
-                        recyclerViewAllitem.setAdapter(new ShopItemsListAdapter(getContext(),shop_list));
+                        recyclerViewAllitem.setAdapter(new ShopItemsListAdapter(getContext(), shop_list));
 
                     } else {
                         isList = false;
@@ -234,38 +240,65 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
     private void getExploreAndShopeSeeAllData() {
-            dialog.show();
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-            final Gson gson = new GsonBuilder().create();
-            StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_explore_shop, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    ExploreShopeSeeAllResponse seeAllResponse = gson.fromJson(response,ExploreShopeSeeAllResponse.class);
-                    explore_shop_grid_list.clear();
-                    for (int i = 0; i< seeAllResponse.getData().size();i++){
-                        explore_shop_grid_list.add(seeAllResponse.getData().get(i));
+        dialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        final Gson gson = new GsonBuilder().create();
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_explore_shop, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ExploreShopeSeeAllResponse seeAllResponse = gson.fromJson(response, ExploreShopeSeeAllResponse.class);
+                explore_shop_grid_list.clear();
+                for (int i = 0; i < seeAllResponse.getData().size(); i++) {
+                    explore_shop_grid_list.add(seeAllResponse.getData().get(i));
+                }
+                exploreShopItemsGridAdapter.notifyDataSetChanged();
+                if (explore_shop_grid_list.size() == 0) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText(getString(R.string.no_items_available));
+                } else {
+                    tvMessage.setVisibility(View.INVISIBLE);
+                }
+                dialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("wishError", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.network_timeout));
+                    } else if (error instanceof AuthFailureError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.authentication_error));
+                    } else if (error instanceof ServerError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.server_error));
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.no_network_found));
+                    } else {
                     }
-                    exploreShopItemsGridAdapter.notifyDataSetChanged();
-//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("wishError",error.toString());
-                    dialog.dismiss();
-                }
-            }){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String,String> headerMap = new HashMap<>();
-                    headerMap.put("Authorization","Bearer " + prefrences.getToken());
-                    return headerMap;
-                }
-            };
-            requestQueue.add(request);
-        }
+                dialog.dismiss();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("X-Language", prefrences.getLanguage());
+                headerMap.put("Accept", "application/json");
+                return headerMap;
+            }
+        };
+        requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
 
     private void getExploreSeeAllData() {
         dialog.show();
@@ -274,31 +307,58 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_explore, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                ExploreSellAllResponse seeAllResponse = gson.fromJson(response,ExploreSellAllResponse.class);
+                ExploreSellAllResponse seeAllResponse = gson.fromJson(response, ExploreSellAllResponse.class);
                 explore_list.clear();
-                for (int i = 0; i< seeAllResponse.getData().size();i++){
+                for (int i = 0; i < seeAllResponse.getData().size(); i++) {
                     explore_list.add(seeAllResponse.getData().get(i));
                 }
                 exploreItemsGridAdapter.notifyDataSetChanged();
-//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                if (explore_list.size() == 0) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText(getString(R.string.no_items_available));
+                } else {
+                    tvMessage.setVisibility(View.INVISIBLE);
+                }
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("wishError",error.toString());
+                Log.e("wishError", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.network_timeout));
+                    } else if (error instanceof AuthFailureError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.authentication_error));
+                    } else if (error instanceof ServerError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.server_error));
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.no_network_found));
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headerMap = new HashMap<>();
-                headerMap.put("Authorization","Bearer " + prefrences.getToken());
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("X-Language", prefrences.getLanguage());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
+
     private void getShopSeeAllData() {
 
         dialog.show();
@@ -307,30 +367,56 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.see_all_shop, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                ShopSeeAllResponse shopSeeAllResponse = gson.fromJson(response,ShopSeeAllResponse.class);
+                ShopSeeAllResponse shopSeeAllResponse = gson.fromJson(response, ShopSeeAllResponse.class);
                 shop_list.clear();
-                for (int i = 0; i< shopSeeAllResponse.getData().size();i++){
+                for (int i = 0; i < shopSeeAllResponse.getData().size(); i++) {
                     shop_list.add(shopSeeAllResponse.getData().get(i));
                 }
                 shopItemsGridAdapter.notifyDataSetChanged();
-//                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
+                if (shop_list.size() == 0) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText(getString(R.string.no_items_available));
+                } else {
+                    tvMessage.setVisibility(View.INVISIBLE);
+                }
                 dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("wishError",error.toString());
+                Log.e("wishError", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.network_timeout));
+                    } else if (error instanceof AuthFailureError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.authentication_error));
+                    } else if (error instanceof ServerError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.server_error));
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        tvMessage.setVisibility(View.VISIBLE);
+                        tvMessage.setText(getString(R.string.no_network_found));
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headerMap = new HashMap<>();
-                headerMap.put("Authorization","Bearer " + prefrences.getToken());
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("X-Language", prefrences.getLanguage());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     public void customDialog(Context context) {

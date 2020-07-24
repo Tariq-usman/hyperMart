@@ -53,15 +53,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Select
         holder.setIsRecyclable(false);
         holder.mProductNameView.setText(catergoryList.get(position).getDescription());
         Glide.with(holder.mProduct.getContext()).load(catergoryList.get(position).getPicture()).into(holder.mProduct);
-      /*  if (check == false) {
-            if (passedPosition == position) {
-                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
-                check = true;
-                holder.setIsRecyclable(true);
-            } else {
-                holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_out));
-            }
-        } else */
         if (lastPosition == position) {
             holder.getView().setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
             //clickInterface.interfaceOnClick(holder.getView(), position);

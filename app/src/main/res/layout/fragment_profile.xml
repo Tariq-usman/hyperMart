@@ -134,6 +134,7 @@
                     android:background="@drawable/bg_email_pass"
                     android:clickable="false"
                     android:cursorVisible="false"
+                    android:enabled="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:gravity="center"
@@ -159,6 +160,7 @@
                     android:background="@drawable/bg_email_pass"
                     android:clickable="false"
                     android:cursorVisible="false"
+                    android:enabled="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:gravity="center"
@@ -207,6 +209,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:focusableInTouchMode="false"
                             android:text="@string/profile_female"
                             android:textSize="@dimen/fourteen_sp" />
                     </RadioGroup>

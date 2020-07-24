@@ -122,18 +122,8 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
             @Override
             public void onClick(View view) {
                 try {
-                    try {
-                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                        StrictMode.setThreadPolicy(policy);
-                        URL url = new URL(category_products_list.get(position).getImage());
-                        bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//                        Drawable drawable = holder.mFilteProduct.getDrawable();
-//                        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                        Log.e("bitmap", bitmap.toString());
-                    } catch (IOException e) {
-                        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.logopng);
-                        e.printStackTrace();
-                    }
+                    Drawable drawable = holder.mFilteProduct.getDrawable();
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                     productId = category_products_list.get(position).getId();
                     productName = category_products_list.get(position).getName();
                     price = category_products_list.get(position).getLowestPrice().toString();
@@ -151,7 +141,6 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
 
                             for (int i = 0; i < carts.size(); i++) {
                                 p_id_list.add(carts.get(i).getP_id());
-                                quantity_list.add(carts.get(i).getQuantity());
                             }
                         }
                     });
@@ -163,12 +152,10 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
                         for (int i = 0; i < p_id_list.size(); i++) {
                             if (p_id_list.get(i) == productId) {
                                 id = p_id_list.get(i);
-                                pro_quantity = quantity_list.get(i);
                             }
                         }
 
                         if (id == productId) {
-                            int final_quantity = intQuantity + pro_quantity;
                             updateCartQuantity = new UpdateCartQuantity(productId, intQuantity, unitPrice);
                             cartViewModel.updateCartQuantity(updateCartQuantity);
                             Toast.makeText(context, context.getString(R.string.update_success), Toast.LENGTH_SHORT).show();

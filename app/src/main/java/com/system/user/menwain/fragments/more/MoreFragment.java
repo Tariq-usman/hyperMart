@@ -38,6 +38,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
         prefrences = new Preferences(getContext());
+        prefrences.setMorFragStatus(0);
         ivStores = view.findViewById(R.id.iv_stores);
         tvProfile = view.findViewById(R.id.tv_profile);
         ivOrder = view.findViewById(R.id.iv_order);
@@ -79,7 +80,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             case R.id.iv_stores:
                 prefrences.setMorFragStatus(1);
                 prefrences.setMoreStoresFragStatus(1);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new StoresFragment()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new StoresFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_profile:
@@ -95,9 +96,11 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_settings:
+                prefrences.setMoreOrdersFragStatus(1);
                 getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SettingsFragment()).addToBackStack(null).commit();
                 break;
             case R.id.tv_rate_app:
+                prefrences.setMoreOrdersFragStatus(1);
                 getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new RateUsFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;

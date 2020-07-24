@@ -117,6 +117,17 @@
             android:layout_marginBottom="44dp" />
 
         <TextView
+            android:id="@+id/tv_empty_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/cart_is_empty"
+            android:textColor="@color/darkGreenColor"
+            android:textSize="@dimen/sixteen_sp"
+            android:visibility="invisible" />
+
+        <TextView
             android:id="@+id/proceed_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,7 +137,8 @@
             android:background="@drawable/bg_submit_btn"
             android:gravity="center"
             android:text="@string/proceed_btn"
-            android:textColor="@color/whiteColor" />
+            android:textColor="@color/whiteColor"
+            android:visibility="invisible" />
     </FrameLayout>
 
 </LinearLayout>

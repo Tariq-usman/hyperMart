@@ -88,19 +88,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         rbFemale.setOnClickListener(this);
         btnRegister = view.findViewById(R.id.register);
         btnRegister.setOnClickListener(this);
-       /* if (prefrences.getToken().isEmpty() || prefrences.getToken() == null || prefrences.getToken() == "") {
-            btnRegister.setClickable(false);
-            btnRegister.setEnabled(false);
-            *//*Toast.makeText(getContext(), getContext().getString(R.string.login_first), Toast.LENGTH_SHORT).show();
-            Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
-            logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getActivity().startActivity(logInIntnet);
-            dialog.dismiss();*//*
-
-        } else {*/
-
-            getUserProfileDetails();
-//        }
 
 
         ivBackProfile = view.findViewById(R.id.iv_back_profile);
@@ -112,23 +99,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).addToBackStack(null).commit();
             }
         });
-        //Getting the instance of Spinner and applying OnItemSelectedListener on it
-        /*Spinner spin = view.findViewById(R.id.spinner);
-        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        //Creating the ArrayAdapter instance having the country list
-        ArrayAdapter aa = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lang);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin.setAdapter(aa);*/
+        getUserProfileDetails();
 
         return view;
     }
@@ -136,8 +107,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
-
         switch (v.getId()) {
             case R.id.rb_male:
                 rbMale.setChecked(true);
@@ -150,6 +119,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             case R.id.register:
                 if (profile_status == false) {
                     profile_status = true;
+
                     etFname.setFocusable(true);
                     etFname.setCursorVisible(true);
                     etFname.setClickable(true);
@@ -160,20 +130,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     etLname.setClickable(true);
                     etLname.setFocusableInTouchMode(true);
 
-                    etEmail.setFocusable(true);
+                   /* etEmail.setFocusable(true);
                     etEmail.setCursorVisible(true);
                     etEmail.setClickable(true);
-                    etEmail.setFocusableInTouchMode(true);
+                    etEmail.setFocusableInTouchMode(true);*/
 
                     etCountry.setFocusable(true);
                     etCountry.setCursorVisible(true);
                     etCountry.setClickable(true);
                     etCountry.setFocusableInTouchMode(true);
 
-                    etPhoneNo.setFocusable(true);
+                    /*etPhoneNo.setFocusable(true);
                     etPhoneNo.setCursorVisible(true);
                     etPhoneNo.setClickable(true);
-                    etPhoneNo.setFocusableInTouchMode(true);
+                    etPhoneNo.setFocusableInTouchMode(true);*/
 
                     etPassword.setFocusable(true);
                     etPassword.setCursorVisible(true);
@@ -187,6 +157,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     btnRegister.setText(getString(R.string.profile_save));
                 } else {
                     updateProfileDetails();
+
                     etFname.setFocusable(false);
                     etFname.setCursorVisible(false);
                     etFname.setClickable(false);
@@ -197,20 +168,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     etLname.setClickable(false);
                     etLname.setFocusableInTouchMode(false);
 
-                    etEmail.setFocusable(false);
+                   /* etEmail.setFocusable(false);
                     etEmail.setCursorVisible(false);
                     etEmail.setClickable(false);
-                    etEmail.setFocusableInTouchMode(false);
+                    etEmail.setFocusableInTouchMode(false);*/
 
                     etCountry.setFocusable(false);
                     etCountry.setCursorVisible(false);
                     etCountry.setClickable(false);
                     etCountry.setFocusableInTouchMode(false);
 
-                    etPhoneNo.setFocusable(false);
+                   /* etPhoneNo.setFocusable(false);
                     etPhoneNo.setCursorVisible(false);
                     etPhoneNo.setClickable(false);
-                    etPhoneNo.setFocusableInTouchMode(false);
+                    etPhoneNo.setFocusableInTouchMode(false);*/
 
                     etPassword.setFocusable(false);
                     etPassword.setCursorVisible(false);
@@ -271,13 +242,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 getActivity().startActivity(logInIntnet);
                                 dialog.dismiss();
                             }
-                        },2000);
+                        }, 1000);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         dialog.dismiss();
                     }
                 } else {
-                    toast = Utils.toast(error,getContext());
+                    toast = Utils.toast(error, getContext());
                     try {
                         if (error instanceof TimeoutError) {
                             Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
@@ -323,7 +294,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("profile_error", error.toString());
-                Toast.makeText(getContext(), "" + error.toString(), Toast.LENGTH_SHORT).show();
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -340,7 +325,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Map<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("first_name", etFname.getText().toString().trim());
                 paramsMap.put("last_name", etLname.getText().toString().trim());
-                paramsMap.put("mobile", etPhoneNo.getText().toString().trim());
+//                paramsMap.put("mobile", etPhoneNo.getText().toString().trim());
                 paramsMap.put("password", etPassword.getText().toString().trim());
                 paramsMap.put("county", etCountry.getText().toString().trim());
                 if (rbMale.isChecked()) {

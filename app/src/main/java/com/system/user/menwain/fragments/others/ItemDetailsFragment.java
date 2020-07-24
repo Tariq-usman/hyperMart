@@ -86,7 +86,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private RecyclerView recyclerViewItemReviews;
     private ItemReviewsAdapter itemReviewsAdapter;
     private CartViewModel cartViewModel;
-
+    private UpdateCartQuantity updateCartQuantity;
     TextView mDescription, mSpecification, mReviews, tvDescription, tvSpecifications;
     private TextView tvPrice, tvStoreName, tvTitle, tvReviewsCount, tvQuantity, mAddToCart;
     private ImageView mBack, mSearch, mBarCodeScanner, ivIncreaseItem, ivDecreaseItem;
@@ -450,7 +450,6 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 saveToInternalStorage(bitmap);
                 cartViewModel = ViewModelProviders.of((FragmentActivity) getContext()).get(CartViewModel.class);
                 Cart cart = new Cart(productId, imagePath, productName, storeName, totalPrice, unitPrice, intQuantity);
-                UpdateCartQuantity updateCartQuantity = new UpdateCartQuantity(productId, intQuantity + 1, unitPrice);
                 cartViewModel.getCartDataList().observe((FragmentActivity) getContext(), new Observer<List<Cart>>() {
                     @Override
                     public void onChanged(List<Cart> carts) {
@@ -462,7 +461,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 });
                 if (p_id_list.size() == 0) {
                     cartViewModel.insertCart(cart);
-                    Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.insert_success), Toast.LENGTH_SHORT).show();
                 } else {
 
                     for (int i = 0; i < p_id_list.size(); i++) {
@@ -471,11 +470,12 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                         }
                     }
                     if (id == productId) {
+                        updateCartQuantity = new UpdateCartQuantity(productId, intQuantity, unitPrice);
                         cartViewModel.updateCartQuantity(updateCartQuantity);
-                        Toast.makeText(getContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.update_success), Toast.LENGTH_SHORT).show();
                     } else {
                         cartViewModel.insertCart(cart);
-                        Toast.makeText(getContext(), "Cart insert Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.insert_success), Toast.LENGTH_SHORT).show();
                     }
                 }
             }

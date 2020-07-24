@@ -261,7 +261,8 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
                 break;
             case R.id.iv_back_items_avail_store:
                 prefrences.setCartFragStatus(1);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
+                prefrences.setOrderStatus(0);
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DeliveryAddressFragment()).addToBackStack(null).commit();
                 break;
             case R.id.iv_filter_stores_list:
                 DialogFragmentFilterStores dialogFragmentFilterStores = new DialogFragmentFilterStores();
@@ -765,7 +766,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         try {
             jsonObj.put("latitude", lat);
             jsonObj.put("longitude", lang);
-            jsonObj.put("radius", prefrences.getRadius());
+            if (prefrences.getRadius() == 0) {
+                jsonObj.put("radius", 1);
+            } else {
+                jsonObj.put("radius", prefrences.getRadius());
+            }
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < cartList.size(); i++) {
                 jsonArray.put(cartList.get(i));
@@ -853,7 +858,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         try {
             jsonObj.put("latitude", lat);
             jsonObj.put("longitude", lang);
-            jsonObj.put("radius", prefrences.getRadius());
+            if (prefrences.getRadius() == 0) {
+                jsonObj.put("radius", 1);
+            } else {
+                jsonObj.put("radius", prefrences.getRadius());
+            }
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < cartList.size(); i++) {
                 jsonArray.put(cartList.get(i));
@@ -942,7 +951,11 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         try {
             jsonObj.put("latitude", lat);
             jsonObj.put("longitude", lang);
-            jsonObj.put("radius", prefrences.getRadius());
+            if (prefrences.getRadius() == 0) {
+                jsonObj.put("radius", 1);
+            } else {
+                jsonObj.put("radius", prefrences.getRadius());
+            }
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < cartList.size(); i++) {
                 jsonArray.put(cartList.get(i));

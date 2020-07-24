@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,9 +23,13 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -43,12 +48,13 @@ import java.util.Map;
 public class DialogFragmentAddCard extends DialogFragment {
 
     TextView mConfirm;
-    private EditText etCardHolderName, etCardNumber, etCVC, etExpiry, etZipCode,etCardName, etBillingAddress;
+    private EditText etCardHolderName, etCardNumber, etCVC, etExpiry, etZipCode, etCardName, etBillingAddress;
     private ImageView mCloseBtn;
     private Preferences prefrences;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     int count = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,10 +77,9 @@ public class DialogFragmentAddCard extends DialogFragment {
         mCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               dismiss();
+                dismiss();
             }
         });
-
 
 
         etCardNumber.addTextChangedListener(new TextWatcher() {
@@ -92,12 +97,12 @@ public class DialogFragmentAddCard extends DialogFragment {
             public void afterTextChanged(Editable s) {
                 int inputlength = etCardNumber.getText().toString().length();
                 if (count <= inputlength && inputlength == 4 ||
-                        inputlength == 9 || inputlength == 14){
+                        inputlength == 9 || inputlength == 14) {
                     etCardNumber.setText(etCardNumber.getText().toString() + " ");
 
                     int pos = etCardNumber.getText().length();
                     etCardNumber.setSelection(pos);
-                }else if (count >= inputlength && (inputlength == 4 ||
+                } else if (count >= inputlength && (inputlength == 4 ||
                         inputlength == 9 || inputlength == 14)) {
                     etCardNumber.setText(etCardNumber.getText().toString()
                             .substring(0, etCardNumber.getText()
@@ -171,7 +176,7 @@ public class DialogFragmentAddCard extends DialogFragment {
                     etZipCode.setError("Enter ZipCode");
                 } else if (etCardName.getText().toString().isEmpty()) {
                     etCardName.setError("Enter Card Name");
-                }else if (etBillingAddress.getText().toString().isEmpty()) {
+                } else if (etBillingAddress.getText().toString().isEmpty()) {
                     etBillingAddress.setError("Enter Billing Address");
                 } else {
                     addCard();
@@ -195,6 +200,21 @@ public class DialogFragmentAddCard extends DialogFragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("pay_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -202,6 +222,7 @@ public class DialogFragmentAddCard extends DialogFragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
 

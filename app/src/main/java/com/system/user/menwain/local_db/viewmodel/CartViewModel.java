@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
+import com.system.user.menwain.local_db.model.UpdateCartQuantityByPid;
 import com.system.user.menwain.local_db.model.UpdateProductQuantity;
 import com.system.user.menwain.local_db.repository.CartRep;
 
@@ -29,8 +30,8 @@ public class CartViewModel extends AndroidViewModel
         cartRep.insertCart(cart);
     }
 
-    public void insertAllCart(Cart cart, UpdateCartQuantity updateCartQuantity) {
-        cartRep.UpdateCartQuantiyByPid(updateCartQuantity,cart);
+    public void insertAllCart( UpdateCartQuantityByPid updateCartQuantity) {
+        cartRep.UpdateCartQuantiyByPid(updateCartQuantity);
     }
     public void updateCart(Cart cart) {
         cartRep.updateCart(cart);
@@ -50,8 +51,8 @@ public class CartViewModel extends AndroidViewModel
         cartRep.UpdateCartQuantiy(updateCartQuantity);
     }
 
-    public void updateCartQuantityByPid(UpdateCartQuantity updateCartQuantity, Cart cart) {
-        cartRep.UpdateCartQuantiyByPid(updateCartQuantity, cart);
+    public void updateCartQuantityByPid(UpdateCartQuantityByPid updateCartQuantityByPid) {
+        cartRep.UpdateCartQuantiyByPid(updateCartQuantityByPid);
     }
     
 

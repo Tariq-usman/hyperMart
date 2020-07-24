@@ -21,7 +21,6 @@ public class Cart {
 
     public Cart(int p_id, String product_image, String product_name, String store_name, float price, float per_unit_price, int quantity) {
         this.p_id = p_id;
-
         this.product_name = product_name;
         this.store_name = store_name;
         this.price = price;

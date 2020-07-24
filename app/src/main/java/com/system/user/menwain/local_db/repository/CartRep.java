@@ -7,7 +7,7 @@ import com.system.user.menwain.local_db.dao.CartDao;
 import com.system.user.menwain.local_db.database.HyperMart;
 import com.system.user.menwain.local_db.entity.Cart;
 import com.system.user.menwain.local_db.model.UpdateCartQuantity;
-import com.system.user.menwain.local_db.model.UpdateProductQuantity;
+import com.system.user.menwain.local_db.model.UpdateCartQuantityByPid;
 
 import java.util.List;
 
@@ -45,13 +45,11 @@ public class CartRep {
         new UpdateCartQuantityAsyncTask(cartDao).execute(updateCartQuantity);
     }
 
-    public LiveData<Float> getTotalCartPrice()
-    {
+    public LiveData<Float> getTotalCartPrice() {
         return cartDao.getTotalCartPrice();
     }
 
-    public LiveData<Integer> getTotalItemQuantity()
-    {
+    public LiveData<Integer> getTotalItemQuantity() {
         return cartDao.getTotalItemQuantity();
     }
 
@@ -60,27 +58,14 @@ public class CartRep {
     }
 
 
-
-    public void UpdateCartQuantiyByPid(UpdateCartQuantity updateCartQuantity, Cart cart) {
-        boolean find = false;
-        try {
-            for(int i=0;i<cartData.getValue().size();i++) {
-                if(cartData.getValue().get(i).getId() == updateCartQuantity.getC_id()) {
-                    find = true;
-                    new UpdateCartQuantityByPidAsyncTask(cartDao).execute(updateCartQuantity);
-                    break;
-                }
-            }
-            if(!find) {
-                new InsertCartDataAsyncTask(cartDao).execute(cart);
-            }
-        }
-        catch (NullPointerException e) {}
+    public void UpdateCartQuantiyByPid(UpdateCartQuantityByPid updateCartQuantityByPid) {
+        new UpdateCartQuantityByPidAsyncTask(cartDao).execute(updateCartQuantityByPid);
     }
 
-    private static class InsertCartDataAsyncTask extends AsyncTask<Cart, Void, Void > {
+    private static class InsertCartDataAsyncTask extends AsyncTask<Cart, Void, Void> {
 
         private CartDao cartDao;
+
         private InsertCartDataAsyncTask(CartDao cartDao) {
             this.cartDao = cartDao;
         }
@@ -92,9 +77,10 @@ public class CartRep {
         }
     }
 
-    private static class UpdateCartDataAsyncTask extends AsyncTask<Cart, Void, Void > {
+    private static class UpdateCartDataAsyncTask extends AsyncTask<Cart, Void, Void> {
 
         private CartDao cartDao;
+
         private UpdateCartDataAsyncTask(CartDao cartDao) {
             this.cartDao = cartDao;
         }
@@ -107,11 +93,11 @@ public class CartRep {
     }
 
 
-
-    private static class DeleteCartDataAsyncTask extends AsyncTask<Cart, Void, Void > {
+    private static class DeleteCartDataAsyncTask extends AsyncTask<Cart, Void, Void> {
 
         private CartDao cartDao;
-        private  DeleteCartDataAsyncTask(CartDao cartDao) {
+
+        private DeleteCartDataAsyncTask(CartDao cartDao) {
             this.cartDao = cartDao;
         }
 
@@ -122,9 +108,10 @@ public class CartRep {
         }
     }
 
-    private static class UpdateCartQuantityAsyncTask extends AsyncTask<UpdateCartQuantity, Void, Void > {
+    private static class UpdateCartQuantityAsyncTask extends AsyncTask<UpdateCartQuantity, Void, Void> {
 
         private CartDao cartDao;
+
         private UpdateCartQuantityAsyncTask(CartDao cartDao) {
             this.cartDao = cartDao;
         }
@@ -139,9 +126,10 @@ public class CartRep {
         }
     }
 
-    private static class DeleteAllRecordsAsyncTask extends AsyncTask<Void, Void, Void > {
+    private static class DeleteAllRecordsAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private CartDao cartDao;
+
         private DeleteAllRecordsAsyncTask(CartDao cartDao) {
             this.cartDao = cartDao;
         }
@@ -153,16 +141,21 @@ public class CartRep {
         }
     }
 
-    private static class UpdateCartQuantityByPidAsyncTask extends AsyncTask<UpdateCartQuantity, Void, Void > {
+    private static class UpdateCartQuantityByPidAsyncTask extends AsyncTask<UpdateCartQuantityByPid, Void, Void> {
 
         private CartDao cartDao;
+
         private UpdateCartQuantityByPidAsyncTask(CartDao cartDao) {
             this.cartDao = cartDao;
         }
 
         @Override
-        protected Void doInBackground(UpdateCartQuantity... cart_apis) {
-            cartDao.updateCartQuantityByPid(cart_apis[0].getC_id(), cart_apis[0].getC_quantity());
+        protected Void doInBackground(UpdateCartQuantityByPid... cart_apis) {
+            cartDao.updateCartQuantityByPid(
+                    cart_apis[0].getC_id(),
+                    cart_apis[0].getC_quantity(),
+                    cart_apis[0].getPer_unit_price()
+            );
             return null;
         }
     }

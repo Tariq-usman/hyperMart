@@ -43,7 +43,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     private CartViewModel cartViewModel;
     RecyclerView recyclerViewCartItems;
     CartItemsAdapter cartItemsAdapter;
-    TextView mProceedBtn, tvTotalCartAmount;
+    TextView mProceedBtn, tvEmptyCart, tvTotalCartAmount;
     private float totalCartAmount;
     String user_token;
     Context context;
@@ -66,6 +66,8 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         recyclerViewCartItems.setHasFixedSize(true);
         recyclerViewCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        tvEmptyCart = view.findViewById(R.id.tv_empty_cart);
+        tvEmptyCart.setVisibility(View.INVISIBLE);
         mProceedBtn = view.findViewById(R.id.proceed_btn);
         mProceedBtn.setOnClickListener(this);
         etSearch = view.findViewById(R.id.et_search_cart);
@@ -138,6 +140,13 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 for (int i = 0; i < carts.size(); i++) {
                     cartList.add(carts.get(i).getP_id());
                 }
+                if (cartList.size() == 0) {
+                    mProceedBtn.setVisibility(View.INVISIBLE);
+                    tvEmptyCart.setVisibility(View.VISIBLE);
+                } else {
+                    mProceedBtn.setVisibility(View.VISIBLE);
+                    tvEmptyCart.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -153,6 +162,13 @@ public class CartFragment extends Fragment implements View.OnClickListener {
             public void onChanged(List<Cart> carts) {
                 cartItemsAdapter.setCartData(carts, cartViewModel);
                 cartItemsAdapter.notifyDataSetChanged();
+                if (carts.size() == 0) {
+                    mProceedBtn.setVisibility(View.INVISIBLE);
+                    tvEmptyCart.setVisibility(View.VISIBLE);
+                } else {
+                    mProceedBtn.setVisibility(View.VISIBLE);
+                    tvEmptyCart.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }
@@ -165,19 +181,19 @@ public class CartFragment extends Fragment implements View.OnClickListener {
             cartViewModel.getCartDataList().observe(CartFragment.this, new Observer<List<Cart>>() {
                 @Override
                 public void onChanged(List<Cart> carts) {
-                    if (user_token.isEmpty()) {
+                    if (carts.size() == 0) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.cart_is_empty), Toast.LENGTH_SHORT).show();
+                    } else if (user_token.isEmpty()) {
                         Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
                         logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         getActivity().startActivity(logInIntnet);
-                    } else if (carts.size() == 0) {
-                        Toast.makeText(getContext(), getContext().getString(R.string.cart_is_empty), Toast.LENGTH_SHORT).show();
                     } else {
                         for (int i = 0; i < carts.size(); i++) {
                             cartList.add(carts.get(i).getP_id());
                         }
                         prefrences.setCartFragStatus(1);
                         prefrences.setOrderStatus(0);
-                        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
+                        getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
                     }
 
                 }

@@ -29,8 +29,8 @@ public interface CartDao {
     @Query("update Cart set quantity =quantity + :c_quantity, per_unit_price = per_unit_price + :c_per_unit_price where p_id =:c_id")
     void updateCartQuantity(Integer c_id, Integer c_quantity, float c_per_unit_price);
 
-    @Query("Update Cart set quantity = quantity + :quantity WHERE p_id =:id")
-    void updateCartQuantityByPid(Integer id, Integer quantity);
+    @Query("update Cart set quantity =  :quantity,per_unit_price =  :c_per_unit_price WHERE p_id =:id")
+    void updateCartQuantityByPid(Integer id, Integer quantity,float c_per_unit_price);
 
     /**
      * Updating only quantity

@@ -86,31 +86,37 @@ public class DeliveredOrdersFragment extends Fragment {
                     tvMessage.setText(getString(R.string.no_orders_yet));
                 } else {
                     tvMessage.setVisibility(View.INVISIBLE);
-                }dialog.dismiss();
+                }
+                dialog.dismiss();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("allO_error", error.toString());
-                try {
-                    if (error instanceof TimeoutError) {
-                        tvMessage.setVisibility(View.VISIBLE);
-                        tvMessage.setText(getString(R.string.network_timeout));
-                    } else if (error instanceof AuthFailureError) {
-                        tvMessage.setVisibility(View.VISIBLE);
-                        tvMessage.setText(getString(R.string.authentication_error));
-                    } else if (error instanceof ServerError) {
-                        tvMessage.setVisibility(View.VISIBLE);
-                        tvMessage.setText(getString(R.string.server_error));
-                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
-                        tvMessage.setVisibility(View.VISIBLE);
-                        tvMessage.setText(getString(R.string.no_network_found));
-                    } else {
+                if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    tvMessage.setText(getString(R.string.authentication_error));
+                } else {
+                    try {
+                        if (error instanceof TimeoutError) {
+                            tvMessage.setVisibility(View.VISIBLE);
+                            tvMessage.setText(getString(R.string.network_timeout));
+                        } else if (error instanceof AuthFailureError) {
+                            tvMessage.setVisibility(View.VISIBLE);
+                            tvMessage.setText(getString(R.string.authentication_error));
+                        } else if (error instanceof ServerError) {
+                            tvMessage.setVisibility(View.VISIBLE);
+                            tvMessage.setText(getString(R.string.server_error));
+                        } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                            tvMessage.setVisibility(View.VISIBLE);
+                            tvMessage.setText(getString(R.string.no_network_found));
+                        } else {
+                        }
+                        dialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    dialog.dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
                 dialog.dismiss();
             }

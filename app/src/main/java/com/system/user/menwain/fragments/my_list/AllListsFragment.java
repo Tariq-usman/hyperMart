@@ -124,12 +124,8 @@ public class AllListsFragment extends Fragment {
                         filter_orders_list.add(orders_list.get(i));
                     }
                 }
-                /*if (filter_orders_list.size() == 0) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
-                } else {*/
                 allListsAdapter = new AllListsAdapter(getContext(), filter_orders_list);
                 recyclerViewAllLists.setAdapter(allListsAdapter);
-//                }
             }
 
             @Override
@@ -170,15 +166,17 @@ public class AllListsFragment extends Fragment {
                 if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
                     tvMessage.setVisibility(View.VISIBLE);
                     tvMessage.setText(getString(R.string.authentication_error));
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
-                                logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                getActivity().startActivity(logInIntnet);
-                                dialog.dismiss();
-                            }
-                        }, 2000);
+/*
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                            logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(logInIntnet);
+                            dialog.dismiss();
+                        }
+                    }, 2000);
+*/
                 } else {
                     if (error instanceof TimeoutError) {
                         tvMessage.setVisibility(View.VISIBLE);
