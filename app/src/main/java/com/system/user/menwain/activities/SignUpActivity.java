@@ -2,6 +2,7 @@ package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -28,6 +34,9 @@ import com.system.user.menwain.responses.SignUpResponse;
 import com.system.user.menwain.utils.URLs;
 import com.system.user.menwain.utils.Utils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,14 +45,14 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     private EditText etFname, etLname, etPhoneNo, etEmail, etPassword, etConfPass, etAge, etCountry;
     private RadioButton rbMale, rbFemale;
     boolean isSignUp = false;
-    private ProgressDialog progressDialog;
+    private Dialog progressDialog;
     private String email, pass, cPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        customProgressDialog(SignUpActivity.this);
+       progressDialog =Utils.dialog(SignUpActivity.this);
         etFname = findViewById(R.id.et_f_name);
         etLname = findViewById(R.id.et_l_name);
         etPhoneNo = findViewById(R.id.et_phone_no);
@@ -112,20 +121,50 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         StringRequest request = new StringRequest(Request.Method.POST, URLs.user_register_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                SignUpResponse signUpResponse = gson.fromJson(response, SignUpResponse.class);
-                Toast.makeText(SignUpActivity.this, "" + signUpResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                isSignUp = true;
-                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                intent.putExtra("is_sign_up", isSignUp);
-                startActivity(intent);
-                progressDialog.dismiss();
+                try {
+                    SignUpResponse signUpResponse = gson.fromJson(response, SignUpResponse.class);
+                    Toast.makeText(SignUpActivity.this, "" + signUpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    isSignUp = true;
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    intent.putExtra("is_sign_up", isSignUp);
+                    startActivity(intent);
+                    progressDialog.dismiss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    progressDialog.dismiss();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("error", error.toString());
-                Toast.makeText(SignUpActivity.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
+                    String str = new String(error.networkResponse.data);
+                    Log.e("Error : ", str);
+                    try {
+                        JSONObject jsonObject = new JSONObject(str);
+                        String strError = jsonObject.getString("message");
+                        Toast.makeText(SignUpActivity.this, "" + strError, Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        if (error instanceof TimeoutError) {
+                            Toast.makeText(SignUpActivity.this, getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                        } else if (error instanceof AuthFailureError) {
+                            Toast.makeText(SignUpActivity.this, getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            Toast.makeText(SignUpActivity.this, getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                            Toast.makeText(SignUpActivity.this, getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                        } else {
+                        }
+                        progressDialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }  progressDialog.dismiss();
             }
         }) {
             @Override
@@ -147,15 +186,6 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             }
         };
         requestQueue.add(request);
-    }
-
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
+        request.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 }

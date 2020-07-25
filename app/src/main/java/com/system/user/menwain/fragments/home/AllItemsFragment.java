@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -54,6 +55,7 @@ import com.system.user.menwain.responses.home.ExploreSellAllResponse;
 import com.system.user.menwain.responses.home.ExploreShopeSeeAllResponse;
 import com.system.user.menwain.responses.home.ShopSeeAllResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,8 +78,7 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private ExploreShopItemsGridAdapter exploreShopItemsGridAdapter;
     private ExploreItemsGridAdapter exploreItemsGridAdapter;
     private ShopItemsGridAdapter shopItemsGridAdapter;
-    AlertDialog.Builder builder;
-    AlertDialog dialog;
+    private Dialog dialog;
     private List<ExploreShopeSeeAllResponse.Datum> explore_shop_grid_list = new ArrayList<>();
     private List<ExploreSellAllResponse.Datum> explore_list = new ArrayList<>();
     private List<ShopSeeAllResponse.Datum> shop_list = new ArrayList<>();
@@ -88,8 +89,8 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_items, container, false);
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        dialog = Utils.dialog(getContext());
 
         ivSearch = view.findViewById(R.id.iv_search_all);
         ivSearch.setOnClickListener(this);
@@ -417,14 +418,5 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         };
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-    }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
     }
 }

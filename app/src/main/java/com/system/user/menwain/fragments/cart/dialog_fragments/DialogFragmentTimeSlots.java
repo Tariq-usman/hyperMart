@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -37,6 +38,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.cart_adapters.DeliveryTimesAdapter;
 import com.system.user.menwain.responses.cart.StoreTimeSLotsResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +65,6 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
     private List<StoreTimeSLotsResponse.List> delivery_times_list = new ArrayList<StoreTimeSLotsResponse.List>();
     private List<StoreTimeSLotsResponse.List> delivery_dates_list = new ArrayList<StoreTimeSLotsResponse.List>();
     Preferences prefrences;
-    private AlertDialog.Builder builder;
     private Dialog dialog;
     String current_date;
     long daysDiff;
@@ -79,7 +80,7 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
             e.printStackTrace();
         }
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         tvDeliveryPickUp = view.findViewById(R.id.tv_delivery_pickup);
         mConfirm = view.findViewById(R.id.confirm_btn_delivery_time);
         mCloseBtn = view.findViewById(R.id.close_back_view);
@@ -195,6 +196,7 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(5000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void getStoreTimeSlots(int selectedStoreId) {
@@ -252,15 +254,4 @@ public class DialogFragmentTimeSlots extends DialogFragment implements View.OnCl
         };
         requestQueue.add(request);
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
-
 }

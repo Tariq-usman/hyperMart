@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -19,11 +20,16 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -37,6 +43,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.my_lists_adapters.ListDetailsAdapter;
 import com.system.user.menwain.responses.my_list.WistListByIdResopnse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,8 +60,7 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
     private ImageView mBackBtn;
     private Preferences prefrences;
     private Bundle bundle;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private List<WistListByIdResopnse.Datum> products_list = new ArrayList<>();
     private String list_name;
     public static List<Integer> reorder_list = new ArrayList<Integer>();
@@ -66,7 +72,7 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_list_details, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         bundle = this.getArguments();
         if (bundle != null) {
             int list_id = bundle.getInt("list_id", 0);
@@ -112,19 +118,38 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_wish_list_by_id + list_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                listByIdResopnse = gson.fromJson(response, WistListByIdResopnse.class);
-                products_list.clear();
-                for (int i = 0; i < listByIdResopnse.getData().size(); i++) {
-                    products_list.add(listByIdResopnse.getData().get(i));
+                try {
+                    listByIdResopnse = gson.fromJson(response, WistListByIdResopnse.class);
+                    products_list.clear();
+                    for (int i = 0; i < listByIdResopnse.getData().size(); i++) {
+                        products_list.add(listByIdResopnse.getData().get(i));
+                    }
+                    listDetailsAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                listDetailsAdapter.notifyDataSetChanged();
-                ;
-                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("wishError", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -169,18 +194,8 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
 //            mBackBtn.setVisibility(View.INVISIBLE);
         } else if (id == R.id.iv_back_my_list_details) {
             prefrences.setMyListFragStatus(0);
-            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).addToBackStack(null).commit();
+            getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).addToBackStack(null).commit();
         }
 
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
 }

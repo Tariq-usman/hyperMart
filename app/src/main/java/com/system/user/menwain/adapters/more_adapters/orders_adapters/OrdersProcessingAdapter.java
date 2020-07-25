@@ -43,12 +43,12 @@ public class OrdersProcessingAdapter extends RecyclerView.Adapter<OrdersProcessi
 
     @Override
     public void onBindViewHolder(@NonNull OrdersItemViewHolder holder, final int position) {
-        holder.tvOrderNo.setText(processing_orders_list.get(position).getId().toString());
+        holder.tvOrderNo.setText(processing_orders_list.get(position).getSecretCode().toString());
         holder.tvOrderStatus.setText(processing_orders_list.get(position).getOrderStatus());
         String date_time = processing_orders_list.get(position).getDateTime();
         String[] split_date_time = date_time.split(" ");
         String date = split_date_time[0];
-        holder.tvOrderDate.setText(date);
+        holder.tvOrderDate.setText(processing_orders_list.get(position).getPreferredDeliveryDate());
         holder.tvTotalPrice.setText(processing_orders_list.get(position).getTotalPrice() + " SAR");
         Glide.with(holder.ivStoreImage.getContext()).load(processing_orders_list.get(position).getStore().getImage()).into(holder.ivStoreImage);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

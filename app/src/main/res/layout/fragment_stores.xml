@@ -49,7 +49,7 @@
                     android:hint="@string/search_hint"
                     android:paddingHorizontal="8dp"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:maxLines="1"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor" />

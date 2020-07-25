@@ -20,12 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -146,31 +151,51 @@ public class OrderDetailsFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_orders_details_url + order_id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                detailsResponse = gson.fromJson(response, OrderDetailsResponse.class);
-                findAddress(detailsResponse.getData().getStore().getLatitude(), detailsResponse.getData().getStore().getLongitude());
-                Glide.with(ivStoreImage.getContext()).load(detailsResponse.getData().getStore().getImage()).into(ivStoreImage);
-                store_name = detailsResponse.getData().getStore().getName();
-                tvStoreName.setText(detailsResponse.getData().getStore().getName());
-                tvOrderNo.setText(detailsResponse.getData().getId().toString());
-                tvPrice.setText(detailsResponse.getData().getTotalPrice().toString());
-                String date_time = detailsResponse.getData().getDateTime();
-                String[] split_date_time = date_time.split(" ");
-                tvDate.setText(split_date_time[0]);
-                tvTime.setText(split_date_time[1]);
-                order_status = detailsResponse.getData().getOrderStatus();
-                tvStatus.setText(order_status);
-                tvOrderCode.setText(detailsResponse.getData().getSecretCode().toString());
-                details_list.clear();
-                for (int i = 0; i < detailsResponse.getData().getProductss().size(); i++) {
-                    details_list.add(detailsResponse.getData().getProductss().get(i));
+                try {
+                    detailsResponse = gson.fromJson(response, OrderDetailsResponse.class);
+                    findAddress(detailsResponse.getData().getStore().getLatitude(), detailsResponse.getData().getStore().getLongitude());
+                    Glide.with(ivStoreImage.getContext()).load(detailsResponse.getData().getStore().getImage()).into(ivStoreImage);
+                    store_name = detailsResponse.getData().getStore().getName();
+                    tvStoreName.setText(detailsResponse.getData().getStore().getName());
+                    tvOrderNo.setText(detailsResponse.getData().getId().toString());
+                    tvPrice.setText(detailsResponse.getData().getTotalPrice().toString());
+                    String date_time = detailsResponse.getData().getDateTime();
+                    String[] split_date_time = date_time.split(" ");
+                    tvDate.setText(split_date_time[0]);
+                    tvTime.setText(split_date_time[1]);
+                    order_status = detailsResponse.getData().getOrderStatus();
+                    tvStatus.setText(order_status);
+                    tvOrderCode.setText(detailsResponse.getData().getSecretCode().toString());
+                    details_list.clear();
+                    for (int i = 0; i < detailsResponse.getData().getProductss().size(); i++) {
+                        details_list.add(detailsResponse.getData().getProductss().get(i));
+                    }
+                    orderDetailsAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                orderDetailsAdapter.notifyDataSetChanged();
-                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("allO_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -178,6 +203,7 @@ public class OrderDetailsFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                headerMap.put("Accept","application/json");
                 return headerMap;
             }
         };

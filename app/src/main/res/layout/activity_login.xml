@@ -43,9 +43,8 @@
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/bg_email_pass"
                 android:gravity="center"
-                android:hint="phone no"
+                android:hint=""
                 android:inputType="phone"
-                android:text="03416500099"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor"
                 android:textSize="@dimen/fourteen_sp" />
@@ -64,10 +63,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_email_pass"
                 android:gravity="center"
-                android:hint="Enter Password"
+                android:hint=""
+                android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:text="123456789"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor"
                 android:textSize="@dimen/fourteen_sp" />

@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.cart.dialog_fragments;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -38,6 +39,7 @@ import com.system.user.menwain.fragments.cart.AddCardFragment;
 import com.system.user.menwain.fragments.cart.AvailNotAvailItemsListsFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,8 +53,7 @@ public class DialogFragmentAddCard extends DialogFragment {
     private EditText etCardHolderName, etCardNumber, etCVC, etExpiry, etZipCode, etCardName, etBillingAddress;
     private ImageView mCloseBtn;
     private Preferences prefrences;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     int count = 0;
 
     @Nullable
@@ -60,7 +61,7 @@ public class DialogFragmentAddCard extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_add_card, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
 
         etCardHolderName = view.findViewById(R.id.et_card_holder_name_add_card);
         etCardNumber = view.findViewById(R.id.et_card_number_add_card);
@@ -243,14 +244,4 @@ public class DialogFragmentAddCard extends DialogFragment {
         };
         requestQueue.add(request);
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
 }

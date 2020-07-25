@@ -1,7 +1,9 @@
 package com.system.user.menwain.fragments.more;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.fragments.more.menu_fragment.SettingsFragment;
 import com.system.user.menwain.others.Preferences;
@@ -27,12 +30,14 @@ import androidx.fragment.app.FragmentManager;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
 
-    private ImageView  ivCustomerServices,ivBack,mSettingsIcon;
-    private TextView tvTitle,tvOrderHistory, tvProfile, tvSettings, tvHelp, tvAbout, tvRateApp, tvLogout;
-    private ImageView mCart, mFavourite, mHome, mCategory, mMore,mCloseBtn, mBackBtnPay;
-    private TextView mConfirm, tvHome, tvCategory, tvCart, tvMore, tvFavourite;  private CardView mSearchViewMore;
-    private LinearLayout ivStores,ivOrder;
+    private ImageView ivCustomerServices, ivBack, mSettingsIcon;
+    private TextView tvTitle, tvOrderHistory, tvProfile, tvSettings, tvHelp, tvAbout, tvRateApp, tvLogout;
+    private ImageView mCart, mFavourite, mHome, mCategory, mMore, mCloseBtn, mBackBtnPay;
+    private TextView mConfirm, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
+    private CardView mSearchViewMore;
+    private LinearLayout ivStores, ivOrder;
     Preferences prefrences;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,7 +85,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             case R.id.iv_stores:
                 prefrences.setMorFragStatus(1);
                 prefrences.setMoreStoresFragStatus(1);
-                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new StoresFragment()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new StoresFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_profile:
@@ -90,10 +95,22 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.iv_order:
-                prefrences.setMorFragStatus(2);
                 prefrences.setMoreOrdersFragStatus(1);
-                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).addToBackStack(null).commit();
+                /*if (prefrences.getToken().isEmpty() || prefrences.getToken() == null || prefrences.getToken() == "") {
+                    Toast.makeText(getContext(), "" + getString(R.string.login_first), Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                            logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(logInIntnet);
+                        }
+                    }, 1000);
+                } else {*/
+                    prefrences.setMorFragStatus(2);
+                    getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).addToBackStack(null).commit();
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
+//                }
                 break;
             case R.id.tv_settings:
                 prefrences.setMoreOrdersFragStatus(1);
@@ -105,9 +122,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 //                mSettingsIcon.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tv_log_out:
-                if (prefrences.getToken().isEmpty()||prefrences.getToken()==null){
+                if (prefrences.getToken().isEmpty() || prefrences.getToken() == null) {
                     Toast.makeText(getContext(), "Already Logout!", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     prefrences.setToken("");
                     Toast.makeText(getContext(), getContext().getString(R.string.logout_successfully), Toast.LENGTH_SHORT).show();
                     getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).addToBackStack(null).commit();

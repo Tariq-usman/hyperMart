@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class AllOrdersResponse {
+
     @SerializedName("allorders")
     @Expose
     private Allorders allorders;
@@ -40,7 +41,7 @@ public class AllOrdersResponse {
         private String lastPageUrl;
         @SerializedName("next_page_url")
         @Expose
-        private Object nextPageUrl;
+        private String nextPageUrl;
         @SerializedName("path")
         @Expose
         private String path;
@@ -105,11 +106,11 @@ public class AllOrdersResponse {
             this.lastPageUrl = lastPageUrl;
         }
 
-        public Object getNextPageUrl() {
+        public String getNextPageUrl() {
             return nextPageUrl;
         }
 
-        public void setNextPageUrl(Object nextPageUrl) {
+        public void setNextPageUrl(String nextPageUrl) {
             this.nextPageUrl = nextPageUrl;
         }
 
@@ -170,6 +171,12 @@ public class AllOrdersResponse {
             @SerializedName("store_id")
             @Expose
             private Integer storeId;
+            @SerializedName("secret_code")
+            @Expose
+            private Integer secretCode;
+            @SerializedName("preferred_delivery_date")
+            @Expose
+            private String preferredDeliveryDate;
             @SerializedName("store")
             @Expose
             private Store store;
@@ -214,6 +221,22 @@ public class AllOrdersResponse {
                 this.storeId = storeId;
             }
 
+            public Integer getSecretCode() {
+                return secretCode;
+            }
+
+            public void setSecretCode(Integer secretCode) {
+                this.secretCode = secretCode;
+            }
+
+            public String getPreferredDeliveryDate() {
+                return preferredDeliveryDate;
+            }
+
+            public void setPreferredDeliveryDate(String preferredDeliveryDate) {
+                this.preferredDeliveryDate = preferredDeliveryDate;
+            }
+
             public Store getStore() {
                 return store;
             }
@@ -227,9 +250,15 @@ public class AllOrdersResponse {
                 @SerializedName("id")
                 @Expose
                 private Integer id;
+                @SerializedName("name")
+                @Expose
+                private String name;
                 @SerializedName("image")
                 @Expose
                 private String image;
+                @SerializedName("mobile")
+                @Expose
+                private String mobile;
                 @SerializedName("average-rating")
                 @Expose
                 private Integer averageRating;
@@ -242,12 +271,28 @@ public class AllOrdersResponse {
                     this.id = id;
                 }
 
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
                 public String getImage() {
                     return image;
                 }
 
                 public void setImage(String image) {
                     this.image = image;
+                }
+
+                public String getMobile() {
+                    return mobile;
+                }
+
+                public void setMobile(String mobile) {
+                    this.mobile = mobile;
                 }
 
                 public Integer getAverageRating() {
@@ -259,10 +304,9 @@ public class AllOrdersResponse {
                 }
 
             }
+
         }
+
     }
+
 }
-
-
-
-

@@ -2,6 +2,7 @@ package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -34,13 +35,13 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
     private TextView mRememberPass, mSend;
     private EditText etPhnNoEmail;
     private String phoneNoEmail;
-    private ProgressDialog progressDialog;
+    private Dialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
-        customProgressDialog(ForgetPasswordActivity.this);
+        progressDialog = Utils.dialog(ForgetPasswordActivity.this);
         etPhnNoEmail = findViewById(R.id.et_phone_no_email);
         mRememberPass = findViewById(R.id.remember_pass);
         mRememberPass.setOnClickListener(this);
@@ -94,15 +95,5 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
             }
         };
         requestQueue.add(request);
-    }
-
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
     }
 }

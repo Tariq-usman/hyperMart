@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.cart.apply_filter;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -36,6 +37,7 @@ import com.system.user.menwain.fragments.more.stores.SelectedStoreFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.stores.StoresAllBranchesResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +56,7 @@ public class DialogFragmentFilterStores extends DialogFragment implements View.O
     private RecyclerView recyclerView;
     FilterStoresAdapter filterStoresAdapter;
     Preferences prefrences;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     public static int check_value = 100;
     private List<StoresAllBranchesResponse.Storelist.Datum> filter_stores_list = new ArrayList<>();
 
@@ -75,7 +76,7 @@ public class DialogFragmentFilterStores extends DialogFragment implements View.O
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_filter_stores, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
 
         prefrences = new Preferences(getContext());
 
@@ -152,14 +153,4 @@ public class DialogFragmentFilterStores extends DialogFragment implements View.O
         requestQueue.add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
 }

@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.my_list;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -40,6 +42,7 @@ import com.system.user.menwain.adapters.my_lists_adapters.AllListsAdapter;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.my_list.UserWishlistProductsResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,6 +59,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -67,18 +71,23 @@ public class AllListsFragment extends Fragment {
     ImageView mBackBtn;
     private TextView tvMessage;
     private Preferences prefrences;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private List<UserWishlistProductsResponse.Product.Datum> orders_list = new ArrayList<>();
     private List<UserWishlistProductsResponse.Product.Datum> filter_orders_list = new ArrayList<>();
     private EditText etSearchList;
+    int order_no;
+    int max = 1000000;
+    int min = 100000;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_lists, container, false);
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
+        Random r = new Random();
+        order_no = r.nextInt(max - min) + min;
+        Log.e("Order_number", order_no + "");
 
         tvMessage = view.findViewById(R.id.tv_message_mylist);
         etSearchList = view.findViewById(R.id.et_search_my_list);
@@ -166,7 +175,6 @@ public class AllListsFragment extends Fragment {
                 if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
                     tvMessage.setVisibility(View.VISIBLE);
                     tvMessage.setText(getString(R.string.authentication_error));
-/*
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -175,8 +183,7 @@ public class AllListsFragment extends Fragment {
                             getActivity().startActivity(logInIntnet);
                             dialog.dismiss();
                         }
-                    }, 2000);
-*/
+                    }, 1000);
                 } else {
                     if (error instanceof TimeoutError) {
                         tvMessage.setVisibility(View.VISIBLE);
@@ -205,15 +212,6 @@ public class AllListsFragment extends Fragment {
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
 }

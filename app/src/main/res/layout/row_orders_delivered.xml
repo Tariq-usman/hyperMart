@@ -27,7 +27,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Order Number: "
+                    android:text="@string/order_id"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp"
                     android:textStyle="bold" />
@@ -41,28 +41,6 @@
                     android:textSize="@dimen/twelve_sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Status: "
-                    android:textColor="@color/darkGreenColor"
-                    android:textSize="@dimen/twelve_sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_delivered_order_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Pending"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/twelve_sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -95,7 +73,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total: "
+                    android:text="@string/order_total_price"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp"
                     android:textStyle="bold" />
@@ -114,6 +92,28 @@
                     android:text=" SAR"
                     android:textColor="@color/darkGreenColor"
                     android:textSize="@dimen/twelve_sp" />-->
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_status"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/twelve_sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_delivered_order_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Pending"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/twelve_sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>

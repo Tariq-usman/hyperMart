@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.cart;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,10 +22,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -36,6 +41,7 @@ import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentAdd
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.cart.UserCardsResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,27 +53,26 @@ public class AddCardFragment extends Fragment {
     private UserCardsAdapter userCardsAdapter;
     private List<UserCardsResponse.Cards.Datum> card_list = new ArrayList<UserCardsResponse.Cards.Datum>();
     private Preferences preferences;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private CardView addCard;
-    private TextView tvOrderTotla,tvShippingCost,tvTotal;
+    private TextView tvOrderTotla, tvShippingCost, tvTotal;
     private ImageView mBackBtn;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_card,container,false);
+        View view = inflater.inflate(R.layout.fragment_add_card, container, false);
         preferences = new Preferences(getContext());
-        preferences=new Preferences(getContext());
-        customDialog(getContext());
+        dialog= Utils.dialog(getContext());
         getUserCards();
 
         mBackBtn = view.findViewById(R.id.iv_back_add_card);
         tvOrderTotla = view.findViewById(R.id.tv_order_total_add_card);
-        tvOrderTotla.setText(preferences.getTotalAmount()+"");
+        tvOrderTotla.setText(preferences.getTotalAmount() + "");
         tvShippingCost = view.findViewById(R.id.tv_shipping_cost_add_card);
-        tvShippingCost.setText(preferences.getShippingCost()+"");
+        tvShippingCost.setText(preferences.getShippingCost() + "");
         tvTotal = view.findViewById(R.id.tv_total_add_card);
-        tvTotal.setText(preferences.getTotalAmount()+preferences.getShippingCost()+"");
+        tvTotal.setText(preferences.getTotalAmount() + preferences.getShippingCost() + "");
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,13 +86,13 @@ public class AddCardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DialogFragmentAddCard dialogFragmentAddCard = new DialogFragmentAddCard();
-                dialogFragmentAddCard.show(getFragmentManager(),"add card");
+                dialogFragmentAddCard.show(getFragmentManager(), "add card");
             }
         });
         recyclerView = view.findViewById(R.id.recycler_view_cards);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        userCardsAdapter = new UserCardsAdapter(getContext(),card_list);
+        userCardsAdapter = new UserCardsAdapter(getContext(), card_list);
         recyclerView.setAdapter(userCardsAdapter);
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -115,26 +120,48 @@ public class AddCardFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.user_card_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                UserCardsResponse userCardsResponse = gson.fromJson(response,UserCardsResponse.class);
+                try {
 
-                card_list.clear();
-                for (int i = 0;i<userCardsResponse.getCards().getData().size();i++){
-                    card_list.add(userCardsResponse.getCards().getData().get(i));
+                    UserCardsResponse userCardsResponse = gson.fromJson(response, UserCardsResponse.class);
+
+                    card_list.clear();
+                    for (int i = 0; i < userCardsResponse.getCards().getData().size(); i++) {
+                        card_list.add(userCardsResponse.getCards().getData().get(i));
+                    }
+                    userCardsAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                userCardsAdapter.notifyDataSetChanged();
-                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("card_error",error.toString());
+                Log.e("card_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headerMap = new HashMap<>();
-                headerMap.put("Authorization","Bearer "+preferences.getToken());
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("Authorization", "Bearer " + preferences.getToken());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
 
@@ -187,15 +214,6 @@ public class AddCardFragment extends Fragment {
 
             }
         });
-    }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
     }
 
 }

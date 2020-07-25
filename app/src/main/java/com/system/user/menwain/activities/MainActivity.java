@@ -99,8 +99,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         if (savedInstanceState == null) {
             if (isLogin == true) {
+
                 if (prefrences.getBottomNavStatus() == 5) {
-                    if (prefrences.getMoreFragStatus() == 3) {
+                    if (prefrences.getMoreFragStatus() == 2) {
+                        prefrences.setBottomNavStatus(5);
+                        mHome.setImageResource(R.drawable.ic_housewhite);
+                        tvHome.setTextColor(Color.parseColor("#004040"));
+                        mCategory.setImageResource(R.drawable.ic_searchwhite);
+                        tvCategory.setTextColor(Color.parseColor("#004040"));
+                        mFavourite.setImageResource(R.drawable.ic_likewhite);
+                        tvFavourite.setTextColor(Color.parseColor("#004040"));
+                        mCart.setImageResource(R.drawable.ic_cart_white);
+                        tvCart.setTextColor(Color.parseColor("#004040"));
+                        mMore.setImageResource(R.drawable.ic_moreblue);
+                        tvMore.setTextColor(Color.parseColor("#00c1bd"));
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new OrdersFragment()).commit();
+                    } else if (prefrences.getMoreFragStatus() == 3) {
                         prefrences.setBottomNavStatus(5);
                         prefrences.setProfileFragStatus(1);
                         mHome.setImageResource(R.drawable.ic_housewhite);
@@ -128,6 +142,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         tvMore.setTextColor(Color.parseColor("#004040"));
                         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").commit();
                     }
+                } else if (prefrences.getBottomNavStatus() == 4) {
+                    prefrences.setBottomNavStatus(4);
+                    mHome.setImageResource(R.drawable.ic_housewhite);
+                    tvHome.setTextColor(Color.parseColor("#004040"));
+                    mCategory.setImageResource(R.drawable.ic_searchwhite);
+                    tvCategory.setTextColor(Color.parseColor("#004040"));
+                    mFavourite.setImageResource(R.drawable.ic_likeblue);
+                    tvFavourite.setTextColor(Color.parseColor("#00c1bd"));
+                    mCart.setImageResource(R.drawable.ic_cart_white);
+                    tvCart.setTextColor(Color.parseColor("#004040"));
+                    mMore.setImageResource(R.drawable.ic_morewhite);
+                    tvMore.setTextColor(Color.parseColor("#004040"));
+                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).commit();
                 } else {
                     mHome.setImageResource(R.drawable.ic_housewhite);
                     tvHome.setTextColor(Color.parseColor("#004040"));

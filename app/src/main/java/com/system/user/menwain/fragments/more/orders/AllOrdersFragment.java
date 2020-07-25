@@ -93,7 +93,6 @@ public class AllOrdersFragment extends Fragment {
                     tvMessage.setVisibility(View.INVISIBLE);
                 }
                 dialog.dismiss();
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -102,6 +101,14 @@ public class AllOrdersFragment extends Fragment {
                 if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
                     tvMessage.setVisibility(View.VISIBLE);
                     tvMessage.setText(getString(R.string.authentication_error));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                            logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(logInIntnet);
+                        }
+                    }, 1000);
                 } else {
                     try {
                         if (error instanceof TimeoutError) {

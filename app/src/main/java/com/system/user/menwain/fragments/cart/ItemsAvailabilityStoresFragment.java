@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.cart;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -48,6 +49,7 @@ import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.responses.cart.SelectedStoreProductsResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,8 +88,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     private int pay_status;
     private CardView mSearchView;
     private Bundle bundle;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private List<Integer> cartList = new ArrayList<>();
     private CartViewModel cartViewModel;
     private double lat, lang;
@@ -102,7 +103,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_items_availability_stores, container, false);
         cartViewModel = ViewModelProviders.of(ItemsAvailabilityStoresFragment.this).get(CartViewModel.class);
-
+        dialog = Utils.dialog(getContext());
         prefrences = new Preferences(getContext());
         pay_status = prefrences.getPaymentStatus();
         bundle = this.getArguments();
@@ -111,7 +112,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         lat = Double.parseDouble(split_address[0]);
         lang = Double.parseDouble(split_address[1]);
 
-        customDialog(getContext());
 
         int order_status = prefrences.getOrderStatus();
 
@@ -1028,15 +1028,6 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         };
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-    }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
     }
 
     @Override

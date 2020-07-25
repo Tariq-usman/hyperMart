@@ -20,9 +20,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -40,6 +45,7 @@ import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.search.SearchByNameResponse;
 import com.system.user.menwain.responses.search.SearchByBarCodeResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +60,6 @@ public class SearchFragment extends Fragment {
     private List<SearchByBarCodeResponse.Data.Datum> search_by_code_list = new ArrayList<>();
     private Bundle bundle;
     private String name;
-    private AlertDialog.Builder builder;
     private Dialog dialog;
     private ImageView searchBack;
     private Preferences preferences;
@@ -64,7 +69,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmet_search, container, false);
         preferences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         bundle = this.getArguments();
         if (bundle != null) {
             name = bundle.getString("search");
@@ -106,18 +111,23 @@ public class SearchFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, URLs.search_product_by_bar_code_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                SearchByBarCodeResponse nameResponse = gson.fromJson(response, SearchByBarCodeResponse.class);
-                search_by_code_list.clear();
-                for (int i = 0; i < nameResponse.getData().getData().size(); i++) {
-                    search_by_code_list.add(nameResponse.getData().getData().get(i));
+                try {
+                    SearchByBarCodeResponse nameResponse = gson.fromJson(response, SearchByBarCodeResponse.class);
+                    search_by_code_list.clear();
+                    for (int i = 0; i < nameResponse.getData().getData().size(); i++) {
+                        search_by_code_list.add(nameResponse.getData().getData().get(i));
+                    }
+                    if (search_by_code_list.size() == 0) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
+                    }
+                    recyclerView.setAdapter(codeSearchAdapter);
+                    codeSearchAdapter.notifyDataSetChanged();
+                    ScanActivity.barCode = "";
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                if (search_by_code_list.size() == 0) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
-                }
-                recyclerView.setAdapter(codeSearchAdapter);
-                codeSearchAdapter.notifyDataSetChanged();
-                ScanActivity.barCode = "";
-                dialog.dismiss();
 
             }
         }, new Response.ErrorListener() {
@@ -125,6 +135,21 @@ public class SearchFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 ScanActivity.barCode = "";
                 Log.e("error_response", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -139,11 +164,12 @@ public class SearchFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
                 header.put("X-Language", preferences.getLanguage());
+                header.put("Accept", "application/json");
                 return header;
             }
         };
         requestQueue.add(request);
-
+        request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void searchProductByName() {
@@ -153,24 +179,44 @@ public class SearchFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, URLs.search_product_by_name_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                SearchByNameResponse nameResponse = gson.fromJson(response, SearchByNameResponse.class);
-                search_by_name_list.clear();
-                for (int i = 0; i < nameResponse.getData().getData().size(); i++) {
-                    search_by_name_list.add(nameResponse.getData().getData().get(i));
+                try {
+                    SearchByNameResponse nameResponse = gson.fromJson(response, SearchByNameResponse.class);
+                    search_by_name_list.clear();
+                    for (int i = 0; i < nameResponse.getData().getData().size(); i++) {
+                        search_by_name_list.add(nameResponse.getData().getData().get(i));
+                    }
+                    if (search_by_name_list.size() == 0) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                    }
+                    recyclerView.setAdapter(nameSearchAdapter);
+                    nameSearchAdapter.notifyDataSetChanged();
+                    getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                if (search_by_name_list.size() == 0) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
-                }
-                recyclerView.setAdapter(nameSearchAdapter);
-                nameSearchAdapter.notifyDataSetChanged();
-                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-                dialog.dismiss();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("name_error_response", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -186,20 +232,13 @@ public class SearchFragment extends Fragment {
                 Map<String, String> header = new HashMap<>();
 //                header.put("Authorization", "Bearer " + preferences.getToken());
                 header.put("X-Language", preferences.getLanguage());
-                header.put("Accept","application/json");
+                header.put("Accept", "application/json");
                 return header;
             }
         };
         requestQueue.add(request);
-    }
+        request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
     }
 
 }

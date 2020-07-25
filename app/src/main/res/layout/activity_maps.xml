@@ -44,7 +44,7 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:hint="@string/map_search_here"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:maxLines="1"
                     android:textColor="@color/darkGreenColor"
                     android:textColorHint="@color/darkGreenColor"

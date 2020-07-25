@@ -2,12 +2,16 @@ package com.system.user.menwain.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +35,7 @@ import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.LogInMessages;
 import com.system.user.menwain.responses.LogInResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     TextView mLogingBtn, mForgetPass, mCreateAccount;
     EditText mPhoneNo, mPassword;
     private Preferences prefrences;
-    ProgressDialog progressDialog;
+    private Dialog progressDialog;
     boolean isLogin = false;
 
     @Override
@@ -54,7 +59,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (!checkPermission()) {
             requestPermission();
         }
-        customProgressDialog(LoginActivity.this);
+        progressDialog = Utils.dialog(LoginActivity.this);
         mLogingBtn = findViewById(R.id.login_btn);
         mForgetPass = findViewById(R.id.forget_pass);
         mCreateAccount = findViewById(R.id.create_an_account);
@@ -64,6 +69,24 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mLogingBtn.setOnClickListener(this);
         mForgetPass.setOnClickListener(this);
         mCreateAccount.setOnClickListener(this);
+
+        mPassword.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        mPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (mPhoneNo.getText().toString().trim().isEmpty()) {
+                        mPhoneNo.setError("Enter Phn no..");
+                    } else if (mPassword.getText().toString().trim().length() < 6) {
+                        mPassword.setError("Password is too week..");
+                    } else {
+                        userLogIn();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -147,15 +170,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         };
         requestQueue.add(request);
-    }
-
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
     }
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -65,6 +66,7 @@ import com.system.user.menwain.responses.ProductDetailsResponse;
 import com.system.user.menwain.responses.ReviewsResponse;
 import com.system.user.menwain.responses.home.HomeBannerResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -104,8 +106,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     private int currentPage = 0;
     private CardView mSearchView;
     private Preferences prefrences;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private int product_id;
     final int[] count = {1};
     private Bitmap bitmap;
@@ -119,7 +120,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_details, container, false);
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
 
         bundle = this.getArguments();
         if (bundle != null) {
@@ -493,15 +494,6 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
 
             }
         }
-    }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
     }
 
     private String saveToInternalStorage(Bitmap bitmapImage) {

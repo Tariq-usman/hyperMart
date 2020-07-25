@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.category;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -44,6 +45,7 @@ import com.system.user.menwain.adapters.category_adapters.CategoryAdapter;
 import com.system.user.menwain.responses.category.CategoryResponse;
 import com.system.user.menwain.responses.search.SearchByNameResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,12 +67,11 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
     private int cat_id, super_cat_id;
     private RecyclerView recyclerViewCategory, recyclerViewCategoryProducts, recyclerViewSubCategory, recyclerViewSubCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
-//    private int getPreviousId = SuperCategoryAdapter.passId;
+    //    private int getPreviousId = SuperCategoryAdapter.passId;
     private ImageView mBackBtn, mSearch, mBarCodeScanner;
     private EditText etSearch;
     private Preferences prefrences;
-    AlertDialog.Builder builder;
-    AlertDialog dialog;
+    private Dialog dialog;
     private CategoryAdapter categoryAdapter;
     private CategoryProductsAdapter categoryProductsAdapter;
     Bundle bundle;
@@ -86,7 +87,7 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         fragment = new SuperCategoryFragment();
         super_cat_id = prefrences.getSuperCatId();
 
@@ -209,7 +210,7 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
                 }
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -218,7 +219,7 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
             }
         };
         requestQueue.add(request);
-        request.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void searchProductByName(final String name) {
@@ -262,15 +263,4 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
         };
         requestQueue.add(request);
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
-
 }

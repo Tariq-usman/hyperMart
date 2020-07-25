@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.cart.dialog_fragments;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -43,6 +44,7 @@ import com.system.user.menwain.responses.cart.AvailNotAvailRadiusResponse;
 import com.system.user.menwain.responses.cart.AvailNotAvailResponse;
 import com.system.user.menwain.responses.cart.SelectedStoreProductsResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,10 +76,9 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     private Preferences preferences;
     private int pay_status;
     int order_no;
-    int max = 100000;
-    int min = 10000;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    int max = 1000000;
+    int min = 100000;
+    private Dialog dialog;
     private List<AvailNotAvailResponse.Datum.Available> avail_items_list = ItemsAvailabilityStoresAdapter.available_list;
     private List<AvailNotAvailRadiusResponse.Datum.Available> avail_items_list_radius = ItemsAvailabilityStoresRadiusAdapter.available_list;
     private List<SelectedStoreProductsResponse.Datum.Available> selected_store_avail_items_list_radius = ItemsAvailabilitySelectedStoresAdapter.available_list;
@@ -111,7 +112,7 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dialog_save_list, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         bundle = new Bundle();
         Date current_time = Calendar.getInstance().getTime();
         dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm aa");
@@ -188,7 +189,9 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
             String formattedDate = df.format(c);
             jsonObj.put("date_time", formattedDate);
             jsonObj.put("delivery_man_id", 0);
-            jsonObj.put("preferred_delivery_date", preferences.getDateTime());
+            String date =  preferences.getDateTime();
+            String [] split_date = date.split(" ");
+            jsonObj.put("preferred_delivery_date",split_date[0]);
             jsonObj.put("order_status", "pending");
             jsonObj.put("order_dispatch_id", 0);
             jsonObj.put("payment_method_id", preferences.getPaymentStatus());
@@ -358,14 +361,5 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
 
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-    }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
     }
 }

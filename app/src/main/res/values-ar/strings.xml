@@ -128,9 +128,9 @@
     <!--Order Success fragment-->
     <string name="successfully_ordered">لقد أمرت بنجاح</string>
     <string name="go_home">اذهب للمنزل</string>
-    <string name="order_number">رقم الأمر:</string>
+    <string name="order_id">رقم التعريف الخاص بالطلب:</string>
     <string name="order_status">الحالة:</string>
-    <string name="order_total">مجموع:</string>
+    <string name="order_total_price">السعر:</string>
 
     <!--My List fragment-->
     <string name="view">رأي</string>
@@ -213,6 +213,7 @@
     <string name="age">عمر</string>
     <string name="country">بلد</string>
     <string name="create_pass">إنشاء كلمة مرور</string>
+    <string name="confirm_pass">تأكيد كلمة المرور</string>
     <string name="register">تسجيل</string>
     <string name="login_instead">تسجيل الدخول بدلاً من ذلك</string>
 

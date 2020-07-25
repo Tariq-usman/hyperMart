@@ -43,12 +43,12 @@ public class OrdersDeliveredAdapter extends RecyclerView.Adapter<OrdersDelivered
 
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
-        holder.tvOrderNo.setText(delivered_orders_list.get(position).getId().toString());
+        holder.tvOrderNo.setText(delivered_orders_list.get(position).getSecretCode().toString());
         holder.tvOrderStatus.setText(delivered_orders_list.get(position).getOrderStatus());
         String date_time = delivered_orders_list.get(position).getDateTime();
         String[] split_date_time = date_time.split(" ");
         String date = split_date_time[0];
-        holder.tvOrderDate.setText(date);
+        holder.tvOrderDate.setText(delivered_orders_list.get(position).getPreferredDeliveryDate());
         holder.tvTotalPrice.setText(delivered_orders_list.get(position).getTotalPrice() +" SAR");
         Glide.with(holder.ivStoreImage.getContext()).load(delivered_orders_list.get(position).getStore().getImage()).into(holder.ivStoreImage);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

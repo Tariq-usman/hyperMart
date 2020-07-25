@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.category;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -54,6 +55,7 @@ import com.system.user.menwain.responses.category.SubCategoryProductsFinalRespon
 import com.system.user.menwain.responses.category.SubCategoryResponse;
 import com.system.user.menwain.responses.search.SearchByNameResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,14 +69,13 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
     private int cat_id, super_cat_id, sub_cat_id;
     private RecyclerView recyclerViewSubCategory, recyclerViewSubCategoryProducts, recyclerViewSubCategoryProductsFinal;
     private LinearLayoutManager linearLayoutManager;
-//    private int getPreviousId = SuperCategoryAdapter.passId;
+    //    private int getPreviousId = SuperCategoryAdapter.passId;
     private ImageView mBackBtn, mSearch, mBarCodeScanner;
     private EditText etSearch;
     private TextView tvNoCatAvail;
     private CardView mSearchViewItemsFragment;
     private Preferences prefrences;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private SubCategoryAdapter subCategoryAdapter;
     private SubCategoryProductsAdapter subCategoryProductsAdapter;
     private SubCategoryProductsFinalAdapter subCategoryProductsFinalAdapter;
@@ -91,7 +92,7 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sub_category, container, false);
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         mBackBtn = view.findViewById(R.id.iv_back_sub_cat);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,15 +326,4 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
-
 }

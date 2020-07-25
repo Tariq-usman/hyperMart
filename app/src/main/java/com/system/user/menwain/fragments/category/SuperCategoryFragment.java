@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.category;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -39,6 +40,7 @@ import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,9 +63,7 @@ public class SuperCategoryFragment extends Fragment {
     private CardView mSearchViewCategory;
     private List<SuperCategoryResponse.SuperCategory.Datum> superCategoryList = new ArrayList<>();
     private SuperCategoryAdapter superCategoryAdapter;
-
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
 
     private FirebaseAnalytics mFirebaseAnalytics;
     SearchFragment searchFragment = new SearchFragment();
@@ -76,7 +76,7 @@ public class SuperCategoryFragment extends Fragment {
         preferences = new Preferences(getContext());
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-
+        dialog = Utils.dialog(getContext());
         ivSearch = view.findViewById(R.id.iv_search_sup_cat);
         etSearhText = view.findViewById(R.id.et_search_sup_cat);
         etSearhText.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
@@ -101,7 +101,6 @@ public class SuperCategoryFragment extends Fragment {
             }
         });
         mBarCodeScanner = view.findViewById(R.id.bar_code_scanner_sup_cat);
-        customDialog(getContext());
         getSuperCategoryData();
 
         ivSearch.setOnClickListener(new View.OnClickListener() {
@@ -181,14 +180,4 @@ public class SuperCategoryFragment extends Fragment {
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
 }

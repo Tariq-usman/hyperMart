@@ -42,12 +42,12 @@ public class OrdersCancelledAdapter extends RecyclerView.Adapter<OrdersCancelled
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, final int position) {
-        holder.tvOrderNo.setText(canceled_orders_list.get(position).getId().toString());
+        holder.tvOrderNo.setText(canceled_orders_list.get(position).getSecretCode().toString());
         holder.tvOrderStatus.setText(canceled_orders_list.get(position).getOrderStatus());
         String date_time = canceled_orders_list.get(position).getDateTime();
         String[] split_date_time = date_time.split(" ");
         String date = split_date_time[0];
-        holder.tvOrderDate.setText(date);
+        holder.tvOrderDate.setText(canceled_orders_list.get(position).getPreferredDeliveryDate());
         holder.tvTotalPrice.setText(canceled_orders_list.get(position).getTotalPrice() +" SAR");
         Glide.with(holder.ivStoreImage.getContext()).load(canceled_orders_list.get(position).getStore().getImage()).into(holder.ivStoreImage);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

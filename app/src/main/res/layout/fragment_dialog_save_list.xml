@@ -46,7 +46,7 @@
                 android:background="@drawable/bg_order_details"
                 android:gravity="center"
                 android:hint="List name"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:maxLines="1"
                 android:textColorHint="@color/darkGreenColor"
                 android:textColor="@color/darkGreenColor"/>

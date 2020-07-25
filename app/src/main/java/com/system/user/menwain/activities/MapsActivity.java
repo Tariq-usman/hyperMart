@@ -52,6 +52,7 @@ import com.system.user.menwain.custom_languages.BaseActivity;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.cart.AddAddressResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -74,7 +75,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     private Preferences prefrences;
-    private ProgressDialog progressDialog;
+    private Dialog progressDialog;
     private int address_id;
 
 
@@ -83,7 +84,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         prefrences = new Preferences(this);
-        customProgressDialog(MapsActivity.this);
+        progressDialog = Utils.dialog(MapsActivity.this);
         address_id = getIntent().getIntExtra("address_id", 0);
 
         searchBtn = findViewById(R.id.searchBtn);
@@ -402,18 +403,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         };
         requestQueue.add(request);
     }
-
-    public void customProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        // Setting Message
-        progressDialog.setMessage("Loading...");
-        // Progress Dialog Style Spinner
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // Fetching max value
-        progressDialog.getMax();
-    }
-
-
     @Override
     public void onBackPressed() {
         finish();

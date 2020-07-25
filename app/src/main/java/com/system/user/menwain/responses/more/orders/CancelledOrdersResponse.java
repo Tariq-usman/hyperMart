@@ -159,18 +159,66 @@ public class CancelledOrdersResponse {
             @SerializedName("id")
             @Expose
             private Integer id;
+            @SerializedName("customer_id")
+            @Expose
+            private Integer customerId;
             @SerializedName("total_price")
             @Expose
             private Integer totalPrice;
-            @SerializedName("date_time")
+            @SerializedName("discount")
             @Expose
-            private String dateTime;
-            @SerializedName("order_status")
+            private Integer discount;
+            @SerializedName("slot_id")
             @Expose
-            private String orderStatus;
+            private Integer slotId;
+            @SerializedName("preferred_delivery_date")
+            @Expose
+            private String preferredDeliveryDate;
+            @SerializedName("payment_method_id")
+            @Expose
+            private Integer paymentMethodId;
             @SerializedName("store_id")
             @Expose
             private Integer storeId;
+            @SerializedName("address_id")
+            @Expose
+            private Integer addressId;
+            @SerializedName("promotion_id")
+            @Expose
+            private Integer promotionId;
+            @SerializedName("shipping_method_id")
+            @Expose
+            private Integer shippingMethodId;
+            @SerializedName("shipping_cost")
+            @Expose
+            private Integer shippingCost;
+            @SerializedName("secret_code")
+            @Expose
+            private Integer secretCode;
+            @SerializedName("date_time")
+            @Expose
+            private String dateTime;
+            @SerializedName("delivery_man_id")
+            @Expose
+            private Integer deliveryManId;
+            @SerializedName("delivery_note")
+            @Expose
+            private Object deliveryNote;
+            @SerializedName("order_status")
+            @Expose
+            private String orderStatus;
+            @SerializedName("order_dispatch_id")
+            @Expose
+            private Integer orderDispatchId;
+            @SerializedName("created_at")
+            @Expose
+            private String createdAt;
+            @SerializedName("updated_at")
+            @Expose
+            private String updatedAt;
+            @SerializedName("deleted_at")
+            @Expose
+            private Object deletedAt;
             @SerializedName("store")
             @Expose
             private Store store;
@@ -183,12 +231,100 @@ public class CancelledOrdersResponse {
                 this.id = id;
             }
 
+            public Integer getCustomerId() {
+                return customerId;
+            }
+
+            public void setCustomerId(Integer customerId) {
+                this.customerId = customerId;
+            }
+
             public Integer getTotalPrice() {
                 return totalPrice;
             }
 
             public void setTotalPrice(Integer totalPrice) {
                 this.totalPrice = totalPrice;
+            }
+
+            public Integer getDiscount() {
+                return discount;
+            }
+
+            public void setDiscount(Integer discount) {
+                this.discount = discount;
+            }
+
+            public Integer getSlotId() {
+                return slotId;
+            }
+
+            public void setSlotId(Integer slotId) {
+                this.slotId = slotId;
+            }
+
+            public String getPreferredDeliveryDate() {
+                return preferredDeliveryDate;
+            }
+
+            public void setPreferredDeliveryDate(String preferredDeliveryDate) {
+                this.preferredDeliveryDate = preferredDeliveryDate;
+            }
+
+            public Integer getPaymentMethodId() {
+                return paymentMethodId;
+            }
+
+            public void setPaymentMethodId(Integer paymentMethodId) {
+                this.paymentMethodId = paymentMethodId;
+            }
+
+            public Integer getStoreId() {
+                return storeId;
+            }
+
+            public void setStoreId(Integer storeId) {
+                this.storeId = storeId;
+            }
+
+            public Integer getAddressId() {
+                return addressId;
+            }
+
+            public void setAddressId(Integer addressId) {
+                this.addressId = addressId;
+            }
+
+            public Integer getPromotionId() {
+                return promotionId;
+            }
+
+            public void setPromotionId(Integer promotionId) {
+                this.promotionId = promotionId;
+            }
+
+            public Integer getShippingMethodId() {
+                return shippingMethodId;
+            }
+
+            public void setShippingMethodId(Integer shippingMethodId) {
+                this.shippingMethodId = shippingMethodId;
+            }
+
+            public Integer getShippingCost() {
+                return shippingCost;
+            }
+
+            public void setShippingCost(Integer shippingCost) {
+                this.shippingCost = shippingCost;
+            }
+
+            public Integer getSecretCode() {
+                return secretCode;
+            }
+
+            public void setSecretCode(Integer secretCode) {
+                this.secretCode = secretCode;
             }
 
             public String getDateTime() {
@@ -199,6 +335,22 @@ public class CancelledOrdersResponse {
                 this.dateTime = dateTime;
             }
 
+            public Integer getDeliveryManId() {
+                return deliveryManId;
+            }
+
+            public void setDeliveryManId(Integer deliveryManId) {
+                this.deliveryManId = deliveryManId;
+            }
+
+            public Object getDeliveryNote() {
+                return deliveryNote;
+            }
+
+            public void setDeliveryNote(Object deliveryNote) {
+                this.deliveryNote = deliveryNote;
+            }
+
             public String getOrderStatus() {
                 return orderStatus;
             }
@@ -207,12 +359,36 @@ public class CancelledOrdersResponse {
                 this.orderStatus = orderStatus;
             }
 
-            public Integer getStoreId() {
-                return storeId;
+            public Integer getOrderDispatchId() {
+                return orderDispatchId;
             }
 
-            public void setStoreId(Integer storeId) {
-                this.storeId = storeId;
+            public void setOrderDispatchId(Integer orderDispatchId) {
+                this.orderDispatchId = orderDispatchId;
+            }
+
+            public String getCreatedAt() {
+                return createdAt;
+            }
+
+            public void setCreatedAt(String createdAt) {
+                this.createdAt = createdAt;
+            }
+
+            public String getUpdatedAt() {
+                return updatedAt;
+            }
+
+            public void setUpdatedAt(String updatedAt) {
+                this.updatedAt = updatedAt;
+            }
+
+            public Object getDeletedAt() {
+                return deletedAt;
+            }
+
+            public void setDeletedAt(Object deletedAt) {
+                this.deletedAt = deletedAt;
             }
 
             public Store getStore() {
@@ -228,9 +404,18 @@ public class CancelledOrdersResponse {
                 @SerializedName("id")
                 @Expose
                 private Integer id;
+                @SerializedName("name")
+                @Expose
+                private String name;
                 @SerializedName("image")
                 @Expose
                 private String image;
+                @SerializedName("mobile")
+                @Expose
+                private String mobile;
+                @SerializedName("secret_code")
+                @Expose
+                private Integer secretCode;
                 @SerializedName("average-rating")
                 @Expose
                 private Integer averageRating;
@@ -243,12 +428,36 @@ public class CancelledOrdersResponse {
                     this.id = id;
                 }
 
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
                 public String getImage() {
                     return image;
                 }
 
                 public void setImage(String image) {
                     this.image = image;
+                }
+
+                public String getMobile() {
+                    return mobile;
+                }
+
+                public void setMobile(String mobile) {
+                    this.mobile = mobile;
+                }
+
+                public Integer getSecretCode() {
+                    return secretCode;
+                }
+
+                public void setSecretCode(Integer secretCode) {
+                    this.secretCode = secretCode;
                 }
 
                 public Integer getAverageRating() {
@@ -266,3 +475,7 @@ public class CancelledOrdersResponse {
     }
 
 }
+
+
+
+

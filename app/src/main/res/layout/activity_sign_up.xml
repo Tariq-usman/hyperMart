@@ -60,11 +60,8 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_email_pass"
                             android:gravity="center"
-                            android:hint="John"
-                            android:inputType="text"
-                            android:text="tariq"
+                            android:inputType="textCapSentences"
                             android:textColor="@color/whiteColor"
-                            android:textColorHint="@color/whiteColor"
                             android:textSize="@dimen/fourteen_sp" />
                     </LinearLayout>
 
@@ -89,9 +86,8 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_email_pass"
                             android:gravity="center"
-                            android:hint="John"
-                            android:inputType="text"
-                            android:text="usman"
+                            android:hint=""
+                            android:inputType="textCapSentences"
                             android:textColor="@color/whiteColor"
                             android:textColorHint="@color/whiteColor"
                             android:textSize="@dimen/fourteen_sp" />
@@ -114,9 +110,7 @@
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/bg_email_pass"
                     android:gravity="center"
-                    android:hint="+92 345 1234567"
                     android:inputType="number"
-                    android:text="03439801420"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -135,9 +129,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_email_pass"
                     android:gravity="center"
-                    android:hint="johnsmith@email.com"
+                    android:hint=""
                     android:inputType="textEmailAddress"
-                    android:text="tariqusman2222@gmail.com"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -203,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_email_pass"
                     android:gravity="center"
-                    android:hint="25"
+                    android:hint=""
                     android:inputType="number"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
@@ -230,8 +223,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_email_pass"
                     android:gravity="center"
-                    android:hint="Pakistan"
-                    android:inputType="number"
+                    android:hint=""
+                    android:inputType="textCapSentences"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
@@ -258,13 +251,19 @@
                     android:layout_marginVertical="2dp"
                     android:background="@drawable/bg_email_pass"
                     android:gravity="center"
-                    android:hint="Password"
+                    android:hint=""
                     android:inputType="textPassword"
-                    android:text="123456789"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/confirm_pass"
+                    android:textColor="@color/darkGreenColor"
+                    android:textSize="@dimen/fourteen_sp" />
                 <EditText
                     android:id="@+id/et_conf_pass_signup"
                     android:layout_width="match_parent"
@@ -272,9 +271,8 @@
                     android:layout_marginVertical="5dp"
                     android:background="@drawable/bg_email_pass"
                     android:gravity="center"
-                    android:hint="Confirm Password"
+                    android:hint=""
                     android:inputType="textPassword"
-                    android:text="123456789"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
                     android:textSize="@dimen/fourteen_sp" />

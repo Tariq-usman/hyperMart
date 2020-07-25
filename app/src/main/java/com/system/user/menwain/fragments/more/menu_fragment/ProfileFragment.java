@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.more.menu_fragment;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -63,8 +65,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private String gender;
     private Button btnRegister;
     private Preferences prefrences;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private boolean profile_status = false;
     private Toast toast;
 
@@ -73,7 +74,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
 
         etFname = view.findViewById(R.id.et_f_name_profile);
         etLname = view.findViewById(R.id.et_l_name_profile);
@@ -96,14 +97,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 prefrences.setProfileFragStatus(0);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoreFragment()).addToBackStack(null).commit();
             }
         });
         getUserProfileDetails();
 
         return view;
     }
-
 
     @Override
     public void onClick(View v) {
@@ -205,23 +205,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         StringRequest request = new StringRequest(Request.Method.GET, URLs.get_current_user_profile_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                btnRegister.setClickable(true);
-                btnRegister.setEnabled(true);
-                GetUserProfileDetailsResponse userProfileDetailsResponse = gson.fromJson(response, GetUserProfileDetailsResponse.class);
-                etFname.setText(userProfileDetailsResponse.getCustomerdata().getFirstName());
-                etLname.setText(userProfileDetailsResponse.getCustomerdata().getLastName());
-                etPhoneNo.setText(userProfileDetailsResponse.getCustomerdata().getMobile());
-                etEmail.setText(userProfileDetailsResponse.getCustomerdata().getEmail());
-                gender = userProfileDetailsResponse.getCustomerdata().getGender();
-                etCountry.setText(userProfileDetailsResponse.getCustomerdata().getCounty().toString());
-                if (gender.equalsIgnoreCase("Male")) {
-                    rbMale.setChecked(true);
-                    rbFemale.setChecked(false);
-                } else {
-                    rbMale.setChecked(false);
-                    rbFemale.setChecked(true);
+                try {
+                    btnRegister.setClickable(true);
+                    btnRegister.setEnabled(true);
+                    GetUserProfileDetailsResponse userProfileDetailsResponse = gson.fromJson(response, GetUserProfileDetailsResponse.class);
+                    etFname.setText(userProfileDetailsResponse.getCustomerdata().getFirstName());
+                    etLname.setText(userProfileDetailsResponse.getCustomerdata().getLastName());
+                    etPhoneNo.setText(userProfileDetailsResponse.getCustomerdata().getMobile());
+                    etEmail.setText(userProfileDetailsResponse.getCustomerdata().getEmail());
+                    gender = userProfileDetailsResponse.getCustomerdata().getGender();
+                    etCountry.setText(userProfileDetailsResponse.getCustomerdata().getCounty().toString());
+                    if (gender.equalsIgnoreCase("Male")) {
+                        rbMale.setChecked(true);
+                        rbFemale.setChecked(false);
+                    } else {
+                        rbMale.setChecked(false);
+                        rbFemale.setChecked(true);
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -277,6 +282,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private void updateProfileDetails() {
@@ -353,14 +359,5 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-    }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
     }
 }

@@ -263,6 +263,7 @@
                                     android:textColorHint="@color/darkGreenColor"
                                     android:textColor="@color/darkGreenColor"
                                     android:textSize="@dimen/twelve_sp"
+                                    android:inputType="textCapSentences"
                                     android:padding="10dp"
                                     android:background="@android:color/transparent"/>
 

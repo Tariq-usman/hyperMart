@@ -32,6 +32,7 @@
             android:background="@android:color/transparent"
             android:hint="Office.."
             android:maxLines="1"
+            android:inputType="textCapSentences"
             android:paddingHorizontal="60dp"
             android:textColorHint="@color/darkGreenColor"
             android:textSize="@dimen/fourteen_sp" />

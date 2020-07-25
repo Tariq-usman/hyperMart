@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.home;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +47,7 @@ import com.system.user.menwain.adapters.home_adapters.Banner_SlidingImages_Adapt
 import com.system.user.menwain.responses.home.HomeBannerResponse;
 import com.system.user.menwain.responses.home.HomeExploreAndShop;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,8 +87,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private EditText etSearch;
     private TabLayout tabLayout;
     Preferences prefrences;
-    AlertDialog.Builder builder;
-    AlertDialog dialog;
+    Dialog dialog;
     // List for banner images
     private List<HomeBannerResponse.Datum> bannersList = new ArrayList<>();
     private Banner_SlidingImages_Adapter banner_slidingImages_adapter;
@@ -106,7 +107,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         prefrences = new Preferences(getContext());
         prefrences.setBottomNavStatus(1);
         searchFragment = new SearchFragment();
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
 
         getExploreAndShop();
         getBannerData();
@@ -295,8 +296,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     e.printStackTrace();
                 }
             }
-        })
-        {
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -377,7 +377,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     e.printStackTrace();
                 }
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -442,15 +442,4 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
-
 }

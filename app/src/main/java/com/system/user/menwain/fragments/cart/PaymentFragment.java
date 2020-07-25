@@ -25,9 +25,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -36,6 +41,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentSaveList;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,7 +57,6 @@ public class PaymentFragment extends Fragment {
     private ImageView mBackBtnPay, mBarCodeScanner;
     private Preferences prefrences;
     private CardView mSearchView;
-    private AlertDialog.Builder builder;
     private Dialog dialog;
     private Bundle bundle;
     private boolean isUpdate = false;
@@ -61,7 +66,7 @@ public class PaymentFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_payment, container, false);
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         prefrences = new Preferences(getContext());
         bundle = this.getArguments();
 
@@ -162,12 +167,12 @@ public class PaymentFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 int inputlength = etCardNumber.getText().toString().length();
                 if (count <= inputlength && inputlength == 4 ||
-                        inputlength == 9 || inputlength == 14){
+                        inputlength == 9 || inputlength == 14) {
                     etCardNumber.setText(etCardNumber.getText().toString() + " ");
 
                     int pos = etCardNumber.getText().length();
                     etCardNumber.setSelection(pos);
-                }else if (count >= inputlength && (inputlength == 4 ||
+                } else if (count >= inputlength && (inputlength == 4 ||
                         inputlength == 9 || inputlength == 14)) {
                     etCardNumber.setText(etCardNumber.getText().toString()
                             .substring(0, etCardNumber.getText()
@@ -294,6 +299,21 @@ public class PaymentFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("update_error", error.toString());
+                try {
+                    if (error instanceof TimeoutError) {
+                        Toast.makeText(getContext(), getString(R.string.network_timeout), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getContext(), getString(R.string.authentication_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getContext(), getString(R.string.server_error), Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NetworkError || error instanceof NoConnectionError) {
+                        Toast.makeText(getContext(), getString(R.string.no_network_found), Toast.LENGTH_LONG).show();
+                    } else {
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 dialog.dismiss();
             }
         }) {
@@ -301,6 +321,7 @@ public class PaymentFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer " + prefrences.getToken());
+                headerMap.put("Accept", "application/json");
                 return headerMap;
             }
 
@@ -319,15 +340,6 @@ public class PaymentFragment extends Fragment {
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(30000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
 }

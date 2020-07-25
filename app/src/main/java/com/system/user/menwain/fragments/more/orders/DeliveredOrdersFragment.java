@@ -3,8 +3,10 @@ package com.system.user.menwain.fragments.more.orders;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
+import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.OrdersDeliveredAdapter;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.orders.DeleveredOrdersResponse;
@@ -97,6 +100,14 @@ public class DeliveredOrdersFragment extends Fragment {
                 if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
                     tvMessage.setVisibility(View.VISIBLE);
                     tvMessage.setText(getString(R.string.authentication_error));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent logInIntnet = new Intent(getContext(), LoginActivity.class);
+                            logInIntnet.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(logInIntnet);
+                        }
+                    }, 1000);
                 } else {
                     try {
                         if (error instanceof TimeoutError) {
