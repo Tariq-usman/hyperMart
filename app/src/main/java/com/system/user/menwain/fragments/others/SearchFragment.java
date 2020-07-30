@@ -41,6 +41,8 @@ import com.system.user.menwain.fragments.category.CategoryFragment;
 import com.system.user.menwain.fragments.category.SuperCategoryFragment;
 import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.fragments.more.stores.StoresFragment;
+import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
+import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.search.SearchByNameResponse;
 import com.system.user.menwain.responses.search.SearchByBarCodeResponse;
@@ -52,8 +54,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
+
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
+    private GridLayoutManager gridLayoutManager;
     private NameSearchAdapter nameSearchAdapter;
     private CodeSearchAdapter codeSearchAdapter;
     private List<SearchByNameResponse.Data.Datum> search_by_name_list = new ArrayList<>();
@@ -63,7 +68,10 @@ public class SearchFragment extends Fragment {
     private Dialog dialog;
     private ImageView searchBack;
     private Preferences preferences;
-
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,12 +79,7 @@ public class SearchFragment extends Fragment {
         preferences = new Preferences(getContext());
         dialog = Utils.dialog(getContext());
         bundle = this.getArguments();
-        if (bundle != null) {
-            name = bundle.getString("search");
-            searchProductByName();
-        } else {
-            searchProductByBarCode();
-        }
+
         searchBack = view.findViewById(R.id.iv_back_search);
         searchBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +101,53 @@ public class SearchFragment extends Fragment {
         });
         recyclerView = view.findViewById(R.id.recycler_view_search);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        if (bundle != null) {
+            name = bundle.getString("search");
+            recyclerView.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
+                @Override
+                protected void loadMoreItems() {
+                    isLoading = true;
+                    currentPage++;
+                    searchProductByName();
+                }
+
+                @Override
+                protected boolean isLastPage() {
+                    return isLastPage;
+                }
+
+                @Override
+                protected boolean isLoading() {
+                    return isLoading;
+                }
+            });
+            searchProductByName();
+        } else {
+            recyclerView.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
+                @Override
+                protected void loadMoreItems() {
+                    isLoading = true;
+                    currentPage++;
+                    searchProductByBarCode();
+                }
+
+                @Override
+                protected boolean isLastPage() {
+                    return isLastPage;
+                }
+
+                @Override
+                protected boolean isLoading() {
+                    return isLoading;
+                }
+            });
+
+            searchProductByBarCode();
+        }
+
         nameSearchAdapter = new NameSearchAdapter(getContext(), search_by_name_list);
         codeSearchAdapter = new CodeSearchAdapter(getContext(), search_by_code_list);
         return view;

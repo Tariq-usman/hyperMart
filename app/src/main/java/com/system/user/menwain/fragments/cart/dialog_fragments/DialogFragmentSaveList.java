@@ -272,54 +272,6 @@ public class DialogFragmentSaveList extends DialogFragment implements View.OnCli
                     }
                 }
             }
-
-
-
-
-
-            /*else if (avail_items_list.size() > 0) {
-                for (int i = 0; i < avail_items_list.size(); i++) {
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("price", amount_lit.get(i));
-                        object.put("quantity", quantity_list.get(i));
-                        object.put("product_id", avail_items_list.get(i).getId());
-                        object.put("discount", 0);
-                        jsonArray.put(object);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                avail_items_list.clear();
-            } else if (avail_items_list_radius.size() > 0) {
-                for (int i = 0; i < avail_items_list_radius.size(); i++) {
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("price", amount_lit_radius.get(i));
-                        object.put("quantity", quantity_list_radius.get(i));
-                        object.put("product_id", avail_items_list_radius.get(i).getId());
-                        object.put("discount", 0);
-                        jsonArray.put(object);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                avail_items_list_radius.clear();
-            } else {
-                for (int i = 0; i < selected_store_avail_items_list_radius.size(); i++) {
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("price", selected_store_amount_lit_radius.get(i));
-                        object.put("quantity", selected_store_quantity_list_radius.get(i));
-                        object.put("product_id", selected_store_avail_items_list_radius.get(i).getId());
-                        object.put("discount", 0);
-                        jsonArray.put(object);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                selected_store_avail_items_list_radius.clear();
-            }*/
             jsonObj.put("prodct", jsonArray);
             Log.e("json", jsonArray.toString());
         } catch (JSONException e) {

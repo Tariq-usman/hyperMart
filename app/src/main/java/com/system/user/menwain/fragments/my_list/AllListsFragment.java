@@ -39,6 +39,7 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.my_lists_adapters.AllListsAdapter;
+import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.my_list.UserWishlistProductsResponse;
 import com.system.user.menwain.utils.URLs;
@@ -62,9 +63,11 @@ import java.util.Map;
 import java.util.Random;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
 
 public class AllListsFragment extends Fragment {
 
+    private LinearLayoutManager linearLayoutManager;
     RecyclerView recyclerViewAllLists;
     AllListsAdapter allListsAdapter;
     private CardView mSearchViewAllLists;
@@ -76,8 +79,10 @@ public class AllListsFragment extends Fragment {
     private List<UserWishlistProductsResponse.Product.Datum> filter_orders_list = new ArrayList<>();
     private EditText etSearchList;
     int order_no;
-    int max = 1000000;
-    int min = 100000;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
 
     @Nullable
     @Override
@@ -86,8 +91,6 @@ public class AllListsFragment extends Fragment {
         prefrences = new Preferences(getContext());
         dialog = Utils.dialog(getContext());
         Random r = new Random();
-        order_no = r.nextInt(max - min) + min;
-        Log.e("Order_number", order_no + "");
 
         tvMessage = view.findViewById(R.id.tv_message_mylist);
         etSearchList = view.findViewById(R.id.et_search_my_list);
@@ -106,10 +109,28 @@ public class AllListsFragment extends Fragment {
         });
         recyclerViewAllLists = view.findViewById(R.id.recycler_view_all_lists);
         recyclerViewAllLists.setHasFixedSize(true);
-        recyclerViewAllLists.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerViewAllLists.setLayoutManager(linearLayoutManager);
         allListsAdapter = new AllListsAdapter(getContext(), orders_list);
         recyclerViewAllLists.setAdapter(allListsAdapter);
+        recyclerViewAllLists.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading=true;
+                currentPage++;
+                getUserWistList();
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
         getUserWistList();
         etSearchList.addTextChangedListener(new TextWatcher() {
             @Override

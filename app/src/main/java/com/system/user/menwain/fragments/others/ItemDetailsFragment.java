@@ -324,6 +324,8 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                     selectedItemsFilterAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.e("exception_error", e.getMessage());
+                    Toast.makeText(getContext(), "" + getString(R.string.no_details_found), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
                 dialog.dismiss();
@@ -399,6 +401,9 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.description_btn) {
+            if (detailsResponse.getData().getDescription() == null) {
+                tvDescription.setText(getString(R.string.no_description_found));
+            }
             tvDescription.setVisibility(View.VISIBLE);
             tvSpecifications.setVisibility(View.GONE);
             recyclerViewItemReviews.setVisibility(View.GONE);
@@ -406,6 +411,9 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
             mReviews.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.specificatin_btn) {
+            if (detailsResponse.getData().getSpecification() == null) {
+                tvSpecifications.setText(getString(R.string.no_specs_found));
+            }
             tvDescription.setVisibility(View.GONE);
             tvSpecifications.setVisibility(View.VISIBLE);
             recyclerViewItemReviews.setVisibility(View.GONE);
@@ -413,6 +421,9 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             mDescription.setTextColor(getResources().getColor(R.color.darkGreenColor));
             mReviews.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.reviews_btn) {
+            if (detailsResponse.getData().getReviewss().size() == 0) {
+                Toast.makeText(getContext(), "" + getString(R.string.no_reviews_found), Toast.LENGTH_SHORT).show();
+            }
             tvDescription.setVisibility(View.GONE);
             tvSpecifications.setVisibility(View.GONE);
             recyclerViewItemReviews.setVisibility(View.VISIBLE);
@@ -421,7 +432,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             mSpecification.setTextColor(getResources().getColor(R.color.darkGreenColor));
         } else if (id == R.id.add_to_cart_item_details) {
             if (detailsResponse == null) {
-                Toast.makeText(getContext(), "" + getString(R.string.please_wait), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "" + getString(R.string.no_details_found), Toast.LENGTH_SHORT).show();
             } else {
                 try {
                     if (detailsResponse.getData().getImage() == null) {
@@ -442,7 +453,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 }
 
                 productName = tvTitle.getText().toString();
-                storeName = tvStoreName.getText().toString();
+                storeName = "";
                 price = tvPrice.getText().toString();
                 quantity = tvQuantity.getText().toString();
                 totalPrice = Float.parseFloat(price);
@@ -482,7 +493,7 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             }
 
         } else if (id == R.id.iv_back_items_details) {
-            if (status == "1") {
+            if (status == "1" || status == "3") {
                 prefrences.setHomeFragStatus(0);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").addToBackStack(null).commit();
             } else if (status == "2") {

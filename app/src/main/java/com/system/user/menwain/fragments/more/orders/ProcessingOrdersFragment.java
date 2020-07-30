@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.more.orders;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,9 +30,11 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.OrdersProcessingAdapter;
+import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.orders.PrecessingOrdersResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,29 +47,54 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
+
 public class ProcessingOrdersFragment extends Fragment {
 
     private List<PrecessingOrdersResponse.Allorders.Datum> processing_orders_list = new ArrayList<>();
     private RecyclerView recyclerViewOrdersProcessing;
+    private LinearLayoutManager linearLayoutManager;
     private OrdersProcessingAdapter ordersProcessingAdapter;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private Preferences prefrences;
     private TextView tvMessage;
-
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders_processing, container, false);
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         getPrecessingOrdersData();
         tvMessage = view.findViewById(R.id.tv_message_processing_orders);
         tvMessage.setVisibility(View.INVISIBLE);
         recyclerViewOrdersProcessing = view.findViewById(R.id.recycler_view_orders_processing);
-        recyclerViewOrdersProcessing.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerViewOrdersProcessing.setLayoutManager(linearLayoutManager);
         ordersProcessingAdapter = new OrdersProcessingAdapter(getContext(), processing_orders_list);
         recyclerViewOrdersProcessing.setAdapter(ordersProcessingAdapter);
+        recyclerViewOrdersProcessing.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                getPrecessingOrdersData();
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
+
         return view;
     }
 
@@ -140,15 +168,6 @@ public class ProcessingOrdersFragment extends Fragment {
             }
         };
         requestQueue.add(request);
-    }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
     }
 
 }

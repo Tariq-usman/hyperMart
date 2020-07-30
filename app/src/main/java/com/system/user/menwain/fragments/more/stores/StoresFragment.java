@@ -1,7 +1,7 @@
 package com.system.user.menwain.fragments.more.stores;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,17 +33,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.system.user.menwain.adapters.my_lists_adapters.AllListsAdapter;
+import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
+import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.StoresAdapter;
 import com.system.user.menwain.fragments.more.MoreFragment;
 import com.system.user.menwain.responses.more.stores.StoresAllBranchesResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,25 +55,29 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
 
 public class StoresFragment extends Fragment {
-    private RecyclerView recyclerViewProductCategory;
+    private RecyclerView recyclerViewStores;
+    private GridLayoutManager gridLayoutManager;
     private StoresAdapter storesAdapter;
     private ImageView ivBackStores;
     private TextView tvTitleStores;
     private EditText mSearchStores;
     private Preferences prefrences;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private List<StoresAllBranchesResponse.Storelist.Datum> stores_list = new ArrayList<>();
     private List<StoresAllBranchesResponse.Storelist.Datum> filter_stores_list = new ArrayList<>();
-
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stores, container, false);
         prefrences = new Preferences(getContext());
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         ivBackStores = view.findViewById(R.id.iv_back_stores);
         mSearchStores = view.findViewById(R.id.et_search_store);
         mSearchStores.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white, 0, 0, 0);
@@ -97,11 +102,30 @@ public class StoresFragment extends Fragment {
             }
         });
 
-        recyclerViewProductCategory = view.findViewById(R.id.recycler_view_stores);
-        recyclerViewProductCategory.setHasFixedSize(true);
-        recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        recyclerViewStores = view.findViewById(R.id.recycler_view_stores);
+        recyclerViewStores.setHasFixedSize(true);
+        gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
+        recyclerViewStores.setLayoutManager(gridLayoutManager);
         storesAdapter = new StoresAdapter(getContext(), stores_list);
-        recyclerViewProductCategory.setAdapter(storesAdapter);
+        recyclerViewStores.setAdapter(storesAdapter);
+        recyclerViewStores.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager)  {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                getAllStoreData();
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
 
         getAllStoreData();
 
@@ -131,7 +155,7 @@ public class StoresFragment extends Fragment {
                     Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
                 } else {*/
                 storesAdapter = new StoresAdapter(getContext(), filter_stores_list);
-                recyclerViewProductCategory.setAdapter(storesAdapter);
+                recyclerViewStores.setAdapter(storesAdapter);
 //                }
             }
 
@@ -150,12 +174,17 @@ public class StoresFragment extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLs.get_all_stores_data_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                StoresAllBranchesResponse branchesResponse = gson.fromJson(response, StoresAllBranchesResponse.class);
-                for (int i = 0; i < branchesResponse.getStorelist().getData().size(); i++) {
-                    stores_list.add(branchesResponse.getStorelist().getData().get(i));
+                try {
+                    StoresAllBranchesResponse branchesResponse = gson.fromJson(response, StoresAllBranchesResponse.class);
+                    for (int i = 0; i < branchesResponse.getStorelist().getData().size(); i++) {
+                        stores_list.add(branchesResponse.getStorelist().getData().get(i));
+                    }
+                    storesAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    dialog.dismiss();
                 }
-                storesAdapter.notifyDataSetChanged();
-                dialog.dismiss();
 //                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
@@ -190,14 +219,4 @@ public class StoresFragment extends Fragment {
         requestQueue.add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(50000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
 }

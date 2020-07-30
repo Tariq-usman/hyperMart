@@ -36,7 +36,7 @@ public class ProductDetailsResponse {
         private Integer id;
         @SerializedName("barcode")
         @Expose
-        private Integer barcode;
+        private long barcode;
         @SerializedName("name")
         @Expose
         private String name;
@@ -124,11 +124,11 @@ public class ProductDetailsResponse {
             this.id = id;
         }
 
-        public Integer getBarcode() {
+        public long getBarcode() {
             return barcode;
         }
 
-        public void setBarcode(Integer barcode) {
+        public void setBarcode(long barcode) {
             this.barcode = barcode;
         }
 

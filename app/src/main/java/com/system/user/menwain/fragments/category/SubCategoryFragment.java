@@ -50,6 +50,8 @@ import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.adapters.search.NameSearchAdapter;
 import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
+import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.category.SubCategoryProductsFinalResponse;
 import com.system.user.menwain.responses.category.SubCategoryResponse;
@@ -63,13 +65,14 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
 
 public class SubCategoryFragment extends Fragment implements RecyclerClickInterface {
 
     private int cat_id, super_cat_id, sub_cat_id;
     private RecyclerView recyclerViewSubCategory, recyclerViewSubCategoryProducts, recyclerViewSubCategoryProductsFinal;
     private LinearLayoutManager linearLayoutManager;
-    //    private int getPreviousId = SuperCategoryAdapter.passId;
+    private GridLayoutManager gridLayoutManager;
     private ImageView mBackBtn, mSearch, mBarCodeScanner;
     private EditText etSearch;
     private TextView tvNoCatAvail;
@@ -86,6 +89,11 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
     private List<SearchByNameResponse.Data.Datum> search_by_name_list = new ArrayList<>();
     private NameSearchAdapter nameSearchAdapter;
     SearchFragment searchFragment = new SearchFragment();
+
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
 
     @Nullable
     @Override
@@ -154,21 +162,78 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
 
         recyclerViewSubCategory = view.findViewById(R.id.recycler_view_sub_caterory);
         recyclerViewSubCategory.setHasFixedSize(true);
-        recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewSubCategory.setLayoutManager(linearLayoutManager);
         subCategoryAdapter = new SubCategoryAdapter(getContext(), subCatergoryList, SubCategoryFragment.this);
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
+        recyclerViewSubCategory.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading=true;
+                currentPage++;
+                getSubCategory(cat_id);
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
 
         recyclerViewSubCategoryProducts = view.findViewById(R.id.recycler_view_sub_category_roducts);
         recyclerViewSubCategoryProducts.setHasFixedSize(true);
-        recyclerViewSubCategoryProducts.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
+        recyclerViewSubCategoryProducts.setLayoutManager(gridLayoutManager);
         subCategoryProductsAdapter = new SubCategoryProductsAdapter(getContext(), subCategory_products_list);
         recyclerViewSubCategoryProducts.setAdapter(subCategoryProductsAdapter);
+        recyclerViewSubCategory.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading=true;
+                currentPage++;
+                getSubCategory(cat_id);
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
 
         recyclerViewSubCategoryProductsFinal = view.findViewById(R.id.recycler_view_sub_category_roducts_final);
         recyclerViewSubCategoryProductsFinal.setHasFixedSize(true);
-        recyclerViewSubCategoryProductsFinal.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
+        recyclerViewSubCategoryProductsFinal.setLayoutManager(gridLayoutManager);
         subCategoryProductsFinalAdapter = new SubCategoryProductsFinalAdapter(getContext(), subCategory_products_final_list);
         recyclerViewSubCategoryProductsFinal.setAdapter(subCategoryProductsFinalAdapter);
+        recyclerViewSubCategory.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading=true;
+                currentPage++;
+                getFinalProducts(sub_cat_id);
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
 
         nameSearchAdapter = new NameSearchAdapter(getContext(), search_by_name_list);
 

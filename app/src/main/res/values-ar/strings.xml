@@ -24,6 +24,10 @@
     <string name="no_store_found">لا يوجد متجر متاح في هذه المنطقة</string>
     <string name="no_products_found">لم يتم العثور على منتجات</string>
     <string name="no_result_found">لم يتم العثور على نتيجة</string>
+    <string name="no_details_found">لم يتم العثور على تفاصيل</string>
+    <string name="no_description_found">لم يتم العثور على وصف</string>
+    <string name="no_specs_found">لم يتم العثور على المواصفات</string>
+    <string name="no_reviews_found">لم يتم العثور على مراجعات</string>
     <string name="no_slots_available">لا توجد فترات زمنية متاحة</string>
     <string name="delete_successfully">تم حذف العنصر بنجاح</string>
     <string name="no_data_found">لم يتم العثور على مثل هذه البيانات!</string>
@@ -226,5 +230,8 @@
     <string name="related_items">الأصناف ذات الصلة</string>
 
     <string name="title_activity_maps">خريطة</string>
-
+    <!--Exit dialog strings-->
+    <string name="are_you_sure">هل أنت متأكد أنك تريد الخروج؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
 </resources>

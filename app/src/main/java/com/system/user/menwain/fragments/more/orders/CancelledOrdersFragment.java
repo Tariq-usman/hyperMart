@@ -1,10 +1,7 @@
 package com.system.user.menwain.fragments.more.orders;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.app.Dialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -29,9 +26,11 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.OrdersCancelledAdapter;
+import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.orders.CancelledOrdersResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,29 +43,53 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
+
 public class CancelledOrdersFragment extends Fragment {
 
     private List<CancelledOrdersResponse.Allorders.Datum> canceled_orders_list = new ArrayList<>();
-    private RecyclerView recyclerViewOrdersDelivered;
+    private RecyclerView recyclerViewOrdersCancelled;
+    private LinearLayoutManager linearLayoutManager;
     private OrdersCancelledAdapter ordersCancelledAdapter;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private Preferences prefrences;
     private TextView tvMessage;
-
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders_cancelled, container, false);
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
         prefrences = new Preferences(getContext());
         getCancelledOrdersData();
         tvMessage = view.findViewById(R.id.tv_message_cancelled_orders);
         tvMessage.setVisibility(View.INVISIBLE);
-        recyclerViewOrdersDelivered = view.findViewById(R.id.recycler_view_orders_cancelled);
-        recyclerViewOrdersDelivered.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewOrdersCancelled = view.findViewById(R.id.recycler_view_orders_cancelled);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerViewOrdersCancelled.setLayoutManager(linearLayoutManager);
         ordersCancelledAdapter = new OrdersCancelledAdapter(getContext(), canceled_orders_list);
-        recyclerViewOrdersDelivered.setAdapter(ordersCancelledAdapter);
+        recyclerViewOrdersCancelled.setAdapter(ordersCancelledAdapter);
+        recyclerViewOrdersCancelled.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                getCancelledOrdersData();
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
         return view;
     }
 
@@ -140,15 +163,6 @@ public class CancelledOrdersFragment extends Fragment {
             }
         };
         requestQueue.add(request);
-    }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
     }
 
 }

@@ -1,10 +1,7 @@
 package com.system.user.menwain.fragments.category;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -37,6 +34,7 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.fragments.others.SearchFragment;
+import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.category.SuperCategoryResponse;
 import com.system.user.menwain.utils.URLs;
@@ -55,20 +53,25 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
 
 public class SuperCategoryFragment extends Fragment {
-    RecyclerView recyclerViewProductCategory;
+    RecyclerView recyclerViewSuperCategory;
     private ImageView mBarCodeScanner, ivSearch;
     private EditText etSearhText;
     private CardView mSearchViewCategory;
     private List<SuperCategoryResponse.SuperCategory.Datum> superCategoryList = new ArrayList<>();
     private SuperCategoryAdapter superCategoryAdapter;
+    private GridLayoutManager gridLayoutManager;
     private Dialog dialog;
 
     private FirebaseAnalytics mFirebaseAnalytics;
     SearchFragment searchFragment = new SearchFragment();
     private Preferences preferences;
-
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -124,11 +127,30 @@ public class SuperCategoryFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        recyclerViewProductCategory = view.findViewById(R.id.recycler_view_category);
-        recyclerViewProductCategory.setHasFixedSize(true);
-        recyclerViewProductCategory.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        recyclerViewSuperCategory = view.findViewById(R.id.recycler_view_super_category);
+        recyclerViewSuperCategory.setHasFixedSize(true);
+        gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
+        recyclerViewSuperCategory.setLayoutManager(gridLayoutManager);
         superCategoryAdapter = new SuperCategoryAdapter(getContext(), superCategoryList);
-        recyclerViewProductCategory.setAdapter(superCategoryAdapter);
+        recyclerViewSuperCategory.setAdapter(superCategoryAdapter);
+        recyclerViewSuperCategory.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading=true;
+                currentPage++;
+                getSuperCategoryData();
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
 
         return view;
     }

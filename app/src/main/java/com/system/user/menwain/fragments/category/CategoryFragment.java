@@ -37,6 +37,8 @@ import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.search.NameSearchAdapter;
 import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
+import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.adapters.category_adapters.SuperCategoryAdapter;
 import com.system.user.menwain.R;
@@ -61,13 +63,17 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
 
 public class CategoryFragment extends Fragment implements RecyclerClickInterface {
-
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
     private int cat_id, super_cat_id;
     private RecyclerView recyclerViewCategory, recyclerViewCategoryProducts, recyclerViewSubCategory, recyclerViewSubCategoryProducts;
     private LinearLayoutManager linearLayoutManager;
-    //    private int getPreviousId = SuperCategoryAdapter.passId;
+    private GridLayoutManager gridLayoutManager;
     private ImageView mBackBtn, mSearch, mBarCodeScanner;
     private EditText etSearch;
     private Preferences prefrences;
@@ -152,13 +158,50 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
         recyclerViewCategory.setLayoutManager(linearLayoutManager);
         categoryAdapter = new CategoryAdapter(getContext(), catergoryList, CategoryFragment.this);
         recyclerViewCategory.setAdapter(categoryAdapter);
+        recyclerViewCategory.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLastPage = true;
+                currentPage++;
+                getCategory(super_cat_id);
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
         //recyclerViewCategory.smoothScrollToPosition(getPreviousId + 1);
 
         recyclerViewCategoryProducts = view.findViewById(R.id.recycler_view_category_products);
         recyclerViewCategoryProducts.setHasFixedSize(true);
-        recyclerViewCategoryProducts.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
+        recyclerViewCategoryProducts.setLayoutManager(gridLayoutManager);
         categoryProductsAdapter = new CategoryProductsAdapter(getContext(), category_products_list);
         recyclerViewCategoryProducts.setAdapter(categoryProductsAdapter);
+        recyclerViewCategory.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLastPage = true;
+                currentPage++;
+                getCategory(super_cat_id);
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
 
         nameSearchAdapter = new NameSearchAdapter(getContext(), search_by_name_list);
 

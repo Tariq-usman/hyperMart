@@ -8,11 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -45,6 +42,8 @@ import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.home_adapters.grid_adapters.ShopItemsGridAdapter;
 import com.system.user.menwain.adapters.home_adapters.list_adapters.ShopItemsListAdapter;
 import com.system.user.menwain.fragments.others.SearchFragment;
+import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
+import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.home_adapters.grid_adapters.ExploreItemsGridAdapter;
@@ -63,6 +62,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
 
 public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private EditText etSearch;
@@ -83,6 +83,12 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
     private List<ExploreSellAllResponse.Datum> explore_list = new ArrayList<>();
     private List<ShopSeeAllResponse.Datum> shop_list = new ArrayList<>();
     SearchFragment searchFragment = new SearchFragment();
+
+    GridLayoutManager gridLayoutManager;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
 
     @Nullable
     @Override
@@ -137,20 +143,49 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
         if (val.equals("1")) {
             getExploreAndShopeSeeAllData();
             recyclerViewAllitem.setHasFixedSize(true);
-            recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            gridLayoutManager = new GridLayoutManager(getContext(), 3);
+            recyclerViewAllitem.setLayoutManager(gridLayoutManager);
             exploreShopItemsGridAdapter = new ExploreShopItemsGridAdapter(getContext(), explore_shop_grid_list);
             recyclerViewAllitem.setAdapter(exploreShopItemsGridAdapter);
         } else if (val.equals("2")) {
             getExploreSeeAllData();
-            recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            gridLayoutManager = new GridLayoutManager(getContext(), 3);
+            recyclerViewAllitem.setLayoutManager(gridLayoutManager);
             exploreItemsGridAdapter = new ExploreItemsGridAdapter(getContext(), explore_list);
             recyclerViewAllitem.setAdapter(exploreItemsGridAdapter);
         } else if (val.equals("3")) {
             getShopSeeAllData();
-            recyclerViewAllitem.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            gridLayoutManager = new GridLayoutManager(getContext(), 3);
+            recyclerViewAllitem.setLayoutManager(gridLayoutManager);
             shopItemsGridAdapter = new ShopItemsGridAdapter(getContext(), shop_list);
             recyclerViewAllitem.setAdapter(shopItemsGridAdapter);
         }
+
+        recyclerViewAllitem.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                if (val.equals("1")){
+                    getExploreAndShopeSeeAllData();
+                }else if (val.equals("2")){
+                    getExploreSeeAllData();
+                }else {
+                    getShopSeeAllData();
+                }
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
+
         return view;
     }
 
@@ -190,6 +225,24 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         recyclerViewAllitem.setLayoutManager(linearLayoutManager);
                         recyclerViewAllitem.setAdapter(null);
                         recyclerViewAllitem.setAdapter(new ExploreShopItemsListAdapter(getContext(), explore_shop_grid_list));
+                        recyclerViewAllitem.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+                            @Override
+                            protected void loadMoreItems() {
+                                isLoading = true;
+                                currentPage++;
+                                getExploreAndShopeSeeAllData();
+                            }
+
+                            @Override
+                            protected boolean isLastPage() {
+                                return isLastPage;
+                            }
+
+                            @Override
+                            protected boolean isLoading() {
+                                return isLoading;
+                            }
+                        });
 
                     } else {
                         isList = false;
@@ -208,6 +261,24 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         recyclerViewAllitem.setLayoutManager(linearLayoutManager);
                         recyclerViewAllitem.setAdapter(null);
                         recyclerViewAllitem.setAdapter(new ExploreItemsListAdapter(getContext(), explore_list));
+                        recyclerViewAllitem.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+                            @Override
+                            protected void loadMoreItems() {
+                                isLoading = true;
+                                currentPage++;
+                                getExploreSeeAllData();
+                            }
+
+                            @Override
+                            protected boolean isLastPage() {
+                                return isLastPage;
+                            }
+
+                            @Override
+                            protected boolean isLoading() {
+                                return isLoading;
+                            }
+                        });
 
                     } else {
                         isList = false;
@@ -226,6 +297,24 @@ public class AllItemsFragment extends Fragment implements View.OnClickListener {
                         recyclerViewAllitem.setLayoutManager(linearLayoutManager);
                         recyclerViewAllitem.setAdapter(null);
                         recyclerViewAllitem.setAdapter(new ShopItemsListAdapter(getContext(), shop_list));
+                        recyclerViewAllitem.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+                            @Override
+                            protected void loadMoreItems() {
+                                isLoading = true;
+                                currentPage++;
+                                getShopSeeAllData();
+                            }
+
+                            @Override
+                            protected boolean isLastPage() {
+                                return isLastPage;
+                            }
+
+                            @Override
+                            protected boolean isLoading() {
+                                return isLoading;
+                            }
+                        });
 
                     } else {
                         isList = false;

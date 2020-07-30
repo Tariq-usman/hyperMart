@@ -361,7 +361,7 @@ public class ItemsAvailabilityStoresFragment extends Fragment implements View.On
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        JSONObject jsonObj = new JSONObject();
+         JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("latitude", lat);
             jsonObj.put("longitude", lang);

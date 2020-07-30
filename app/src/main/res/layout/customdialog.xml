@@ -31,7 +31,7 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="15dp"
-            android:text="Are you sure you want to exit?"
+            android:text="@string/are_you_sure"
             android:textColor="@color/darkGreenColor"
             android:textSize="@dimen/eighteen_sp" />
 
@@ -46,7 +46,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@android:color/transparent"
-                android:text="No"
+                android:text="@string/no"
                 android:textAllCaps="false"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/eighteen_sp" />
@@ -57,7 +57,7 @@
                 android:layout_width="35dp"
                 android:layout_height="30dp"
                 android:background="@android:color/transparent"
-                android:text="Yes"
+                android:text="@string/yes"
                 android:textAllCaps="false"
                 android:textColor="@color/darkGreenColor"
                 android:textSize="@dimen/eighteen_sp" />

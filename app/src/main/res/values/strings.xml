@@ -21,6 +21,10 @@
     <string name="no_store_found">No store available in this area</string>
     <string name="no_products_found">No products are found</string>
     <string name="no_result_found">No result found</string>
+    <string name="no_details_found">No details found</string>
+    <string name="no_description_found">No description found</string>
+    <string name="no_specs_found">No specifications found</string>
+    <string name="no_reviews_found">No reviews found</string>
     <string name="no_slots_available">No time slots are available</string>
     <string name="delete_successfully">Item deleted successfully</string>
     <string name="no_data_found">No such data found!</string>
@@ -227,4 +231,8 @@
 
     <string name="title_activity_maps">Map</string>
 
+    <!--Exit dialog strings-->
+    <string name="are_you_sure">Are you sure you want to exit?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

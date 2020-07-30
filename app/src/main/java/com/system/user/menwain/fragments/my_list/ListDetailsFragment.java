@@ -38,6 +38,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.system.user.menwain.fragments.cart.DeliveryAddressFragment;
 import com.system.user.menwain.fragments.cart.dialog_fragments.DialogFragmentTimeSlots;
+import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.my_lists_adapters.ListDetailsAdapter;
@@ -50,11 +51,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
+
 public class ListDetailsFragment extends Fragment implements View.OnClickListener {
     private ImageView mCart, mFavourite, mHome, mCategory, mMore, mCloseBtn, mBackBtnPay;
     private TextView mConfirm, tvHome, tvCategory, tvCart, tvMore, tvFavourite;
     private RecyclerView recyclerViewListDetails;
     private ListDetailsAdapter listDetailsAdapter;
+    private GridLayoutManager gridLayoutManager;
     private FloatingActionButton floatingActionButton;
     private TextView mConfirmBtn, tvListName;
     private ImageView mBackBtn;
@@ -65,6 +69,11 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
     private String list_name;
     public static List<Integer> reorder_list = new ArrayList<Integer>();
     private WistListByIdResopnse listByIdResopnse;
+    private int list_id;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
 
     @Nullable
     @Override
@@ -75,7 +84,7 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         dialog = Utils.dialog(getContext());
         bundle = this.getArguments();
         if (bundle != null) {
-            int list_id = bundle.getInt("list_id", 0);
+            list_id = bundle.getInt("list_id", 0);
             list_name = bundle.getString("list_name", "");
             getProductList(list_id);
         } else {
@@ -104,10 +113,28 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
 
         recyclerViewListDetails = view.findViewById(R.id.recycler_view_list_details);
         recyclerViewListDetails.setHasFixedSize(true);
-        recyclerViewListDetails.setLayoutManager(new GridLayoutManager(getContext(), 3, RecyclerView.VERTICAL, false));
+        gridLayoutManager = new GridLayoutManager(getContext(), 3, RecyclerView.VERTICAL, false);
+        recyclerViewListDetails.setLayoutManager(gridLayoutManager);
         listDetailsAdapter = new ListDetailsAdapter(getContext(), products_list);
         recyclerViewListDetails.setAdapter(listDetailsAdapter);
+        recyclerViewListDetails.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                getProductList(list_id);
+            }
 
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
         return view;
     }
 
@@ -180,18 +207,7 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
             for (int i = 0; i < products_list.size(); i++) {
                 reorder_list.add(products_list.get(i).getId());
             }
-           /* mHome.setImageResource(R.drawable.ic_housewhite);
-            tvHome.setTextColor(Color.parseColor("#004040"));
-            mCategory.setImageResource(R.drawable.ic_searchwhite);
-            tvCategory.setTextColor(Color.parseColor("#004040"));
-            mFavourite.setImageResource(R.drawable.ic_likewhite);
-            tvFavourite.setTextColor(Color.parseColor("#004040"));
-            mCart.setImageResource(R.drawable.ic_cart_blue);
-            tvCart.setTextColor(Color.parseColor("#00c1bd"));
-            mMore.setImageResource(R.drawable.ic_morewhite);
-            tvMore.setTextColor(Color.parseColor("#004040"));*/
-            getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DialogFragmentTimeSlots()).addToBackStack(null).commit();
-//            mBackBtn.setVisibility(View.INVISIBLE);
+            getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DialogFragmentTimeSlots()).addToBackStack(null).commit();
         } else if (id == R.id.iv_back_my_list_details) {
             prefrences.setMyListFragStatus(0);
             getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AllListsFragment()).addToBackStack(null).commit();

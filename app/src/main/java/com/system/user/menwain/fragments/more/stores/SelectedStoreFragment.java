@@ -1,6 +1,7 @@
 package com.system.user.menwain.fragments.more.stores;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -42,6 +43,8 @@ import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.more_adapters.SelectedStoreSelectedCategoryProductsAdapter;
 import com.system.user.menwain.fragments.others.SearchFragment;
 import com.system.user.menwain.interfaces.RecyclerClickInterface;
+import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
+import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.R;
 import com.system.user.menwain.adapters.more_adapters.SelectedStoresCategoryProductsAdapter;
@@ -49,6 +52,7 @@ import com.system.user.menwain.adapters.more_adapters.SelectedStoreCategoryAdapt
 import com.system.user.menwain.responses.more.stores.SelectedStoreCategoryProductsResponse;
 import com.system.user.menwain.responses.more.stores.SelectedStoreResponse;
 import com.system.user.menwain.utils.URLs;
+import com.system.user.menwain.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,6 +70,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
 
 public class SelectedStoreFragment extends Fragment implements RecyclerClickInterface, View.OnClickListener {
 
@@ -79,10 +84,10 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private RatingBar ratingBar;
     private Preferences prefrences;
     private Bundle bundle;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private Geocoder geocoder;
     private List<Address> addresses;
+    private GridLayoutManager gridLayoutManager;
     private SelectedStoreCategoryAdapter storeCategoryAdapter;
     private SelectedStoresCategoryProductsAdapter selectedStorecategoryProductsAdapter;
     private SelectedStoreSelectedCategoryProductsAdapter selectedStoreSelectedCategoryProductsAdapter;
@@ -91,8 +96,14 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
     private List<SelectedStoreResponse.Product.Datum.Product_> category_products_list = new ArrayList<SelectedStoreResponse.Product.Datum.Product_>();
 
     public static List<Integer> store_id_list = new ArrayList<>();
-    SearchFragment fragment;
 
+    int category_id = -1;
+
+    SearchFragment fragment;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private int itemCount = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -101,7 +112,11 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         geocoder = new Geocoder(getContext(), Locale.ENGLISH);
         bundle = this.getArguments();
         fragment = new SearchFragment();
-        customDialog(getContext());
+        dialog = Utils.dialog(getContext());
+
+        final int store_id = prefrences.getMoreStoreId();
+        getSelectedStoreCategory(store_id);
+
         ivSelectedStore = view.findViewById(R.id.iv_store_iamge);
         tvStoreName = view.findViewById(R.id.tv_selected_store_name);
         tvStoreContactNo = view.findViewById(R.id.tv_store_contact_no);
@@ -172,18 +187,40 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
 
         recyclerViewSelectedStoreCategoryProducts = view.findViewById(R.id.recycler_view_selected_store_category_products);
         recyclerViewSelectedStoreCategoryProducts.setHasFixedSize(true);
-        recyclerViewSelectedStoreCategoryProducts.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
+        recyclerViewSelectedStoreCategoryProducts.setLayoutManager(gridLayoutManager);
+        recyclerViewSelectedStoreCategoryProducts.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                if (category_id==-1){
+                    getSelectedStoreCategory(store_id);
+                }else {
+                    getSelectedStoreCategoryProducts(category_id);
+                }
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return isLoading;
+            }
+        });
 
 
-        int store_id = prefrences.getMoreStoreId();
-        getSelectedStoreCategory(store_id);
+
 
         return view;
     }
 
     @Override
     public void interfaceOnClick(View view, int position) {
-        int category_id = category_list.get(position).getId();
+         category_id = category_list.get(position).getId();
         getSelectedStoreCategoryProducts(category_id);
     }
 
@@ -264,7 +301,7 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    private void getSelectedStoreCategoryProducts(int category_id) {
+    private void getSelectedStoreCategoryProducts(final int category_id) {
         dialog.show();
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -331,16 +368,6 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         requestQueue.add(request);
         request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-    public void customDialog(Context context) {
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.layout_loading_dialog);
-        }
-        dialog = builder.create();
-    }
-
 
     @Override
     public void onClick(View v) {
