@@ -155,9 +155,10 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
-                    bundle.putString("search", etSearch.getText().toString().trim());
+                    prefrences.setSearchByName(etSearch.getText().toString().trim());
+                    prefrences.setSearchStatus(1);
                     etSearch.setText("");
-                    fragment.setArguments(bundle);
+//                    fragment.setArguments(bundle);
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
                 }
             }
@@ -493,13 +494,15 @@ public class ItemDetailsFragment extends Fragment implements View.OnClickListene
             }
 
         } else if (id == R.id.iv_back_items_details) {
-            if (status == "1" || status == "3") {
+            if (status == "1" ) {
                 prefrences.setHomeFragStatus(0);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment(), "Home").addToBackStack(null).commit();
             } else if (status == "2") {
                 prefrences.setCategoryFragStatus(1);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CategoryFragment()).addToBackStack(null).commit();
-            } else {
+            }else if (status=="3"){
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SearchFragment()).addToBackStack(null).commit();
+            }else {
                 prefrences.setMoreStoresFragStatus(2);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SelectedStoreFragment()).addToBackStack(null).commit();
 

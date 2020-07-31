@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -26,7 +27,6 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.OrdersCancelledAdapter;
-import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.orders.CancelledOrdersResponse;
 import com.system.user.menwain.utils.URLs;
@@ -43,8 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
-
 public class CancelledOrdersFragment extends Fragment {
 
     private List<CancelledOrdersResponse.Allorders.Datum> canceled_orders_list = new ArrayList<>();
@@ -54,17 +52,18 @@ public class CancelledOrdersFragment extends Fragment {
     private Dialog dialog;
     private Preferences prefrences;
     private TextView tvMessage;
-    private int currentPage = PAGE_START;
+    private int PAGE_NO = 1;
     private boolean isLastPage = false;
     private boolean isLoading = false;
     private int itemCount = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders_cancelled, container, false);
         dialog = Utils.dialog(getContext());
         prefrences = new Preferences(getContext());
-        getCancelledOrdersData();
+        getCancelledOrdersData(PAGE_NO);
         tvMessage = view.findViewById(R.id.tv_message_cancelled_orders);
         tvMessage.setVisibility(View.INVISIBLE);
         recyclerViewOrdersCancelled = view.findViewById(R.id.recycler_view_orders_cancelled);
@@ -72,39 +71,46 @@ public class CancelledOrdersFragment extends Fragment {
         recyclerViewOrdersCancelled.setLayoutManager(linearLayoutManager);
         ordersCancelledAdapter = new OrdersCancelledAdapter(getContext(), canceled_orders_list);
         recyclerViewOrdersCancelled.setAdapter(ordersCancelledAdapter);
-        recyclerViewOrdersCancelled.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+        recyclerViewOrdersCancelled.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                getCancelledOrdersData();
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isLoading = true;
+                }
             }
 
             @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+                if (isLoading) {
+                    if ((visibleItemCount + firstVisibleItemPosition) == totalItemCount
+                        /*&& firstVisibleItemPosition >= 0&& totalItemCount >= PAGE_SIZE*/) {
+                        isLoading = false;
+                        getCancelledOrdersData(PAGE_NO);
+                    }
+                }
             }
         });
         return view;
     }
 
-    private void getCancelledOrdersData() {
+    private void getCancelledOrdersData(int page_no) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_cancelled_orders_url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_cancelled_orders_url + page_no, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 CancelledOrdersResponse cancelledOrdersResponse = gson.fromJson(response, CancelledOrdersResponse.class);
-                canceled_orders_list.clear();
+//                canceled_orders_list.clear();
                 for (int i = 0; i < cancelledOrdersResponse.getAllorders().getData().size(); i++) {
                     canceled_orders_list.add(cancelledOrdersResponse.getAllorders().getData().get(i));
                 }
+                PAGE_NO++;
                 ordersCancelledAdapter.notifyDataSetChanged();
                 if (canceled_orders_list.size() == 0) {
                     tvMessage.setVisibility(View.VISIBLE);

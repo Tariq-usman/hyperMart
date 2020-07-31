@@ -93,9 +93,10 @@ public class SuperCategoryFragment extends Fragment {
                     } else {
                         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
                         inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-                        bundle.putString("search", etSearhText.getText().toString().trim());
+                        preferences.setSearchByName(etSearhText.getText().toString().trim());
+                        preferences.setSearchStatus(1);
                         etSearhText.setText("");
-                        searchFragment.setArguments(bundle);
+//                        searchFragment.setArguments(bundle);
                         getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                     }
                     return true;
@@ -113,9 +114,10 @@ public class SuperCategoryFragment extends Fragment {
                 if (etSearhText.getText().toString().trim().isEmpty() || etSearhText.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
-                    bundle.putString("search", etSearhText.getText().toString().trim());
+                    preferences.setSearchByName(etSearhText.getText().toString().trim());
+                    preferences.setSearchStatus(1);
                     etSearhText.setText("");
-                    searchFragment.setArguments(bundle);
+//                    searchFragment.setArguments(bundle);
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                 }
             }
@@ -133,24 +135,6 @@ public class SuperCategoryFragment extends Fragment {
         recyclerViewSuperCategory.setLayoutManager(gridLayoutManager);
         superCategoryAdapter = new SuperCategoryAdapter(getContext(), superCategoryList);
         recyclerViewSuperCategory.setAdapter(superCategoryAdapter);
-        recyclerViewSuperCategory.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading=true;
-                currentPage++;
-                getSuperCategoryData();
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
-            }
-        });
 
         return view;
     }

@@ -123,9 +123,10 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                     } else {
                         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
                         inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-                        bundle.putString("search", etSearch.getText().toString().trim());
+                        prefrences.setSearchByName(etSearch.getText().toString().trim());
+                        prefrences.setSearchStatus(1);
                         etSearch.setText("");
-                        searchFragment.setArguments(bundle);
+//                        searchFragment.setArguments(bundle);
                         getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                     }
                     return true;
@@ -141,9 +142,10 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
-                    bundle.putString("search", etSearch.getText().toString().trim());
+                    prefrences.setSearchByName(etSearch.getText().toString().trim());
+                    prefrences.setSearchStatus(1);
                     etSearch.setText("");
-                    searchFragment.setArguments(bundle);
+//                    searchFragment.setArguments(bundle);
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                 }
             }
@@ -166,24 +168,6 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         recyclerViewSubCategory.setLayoutManager(linearLayoutManager);
         subCategoryAdapter = new SubCategoryAdapter(getContext(), subCatergoryList, SubCategoryFragment.this);
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
-        recyclerViewSubCategory.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading=true;
-                currentPage++;
-                getSubCategory(cat_id);
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
-            }
-        });
 
         recyclerViewSubCategoryProducts = view.findViewById(R.id.recycler_view_sub_category_roducts);
         recyclerViewSubCategoryProducts.setHasFixedSize(true);
@@ -191,24 +175,6 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         recyclerViewSubCategoryProducts.setLayoutManager(gridLayoutManager);
         subCategoryProductsAdapter = new SubCategoryProductsAdapter(getContext(), subCategory_products_list);
         recyclerViewSubCategoryProducts.setAdapter(subCategoryProductsAdapter);
-        recyclerViewSubCategory.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading=true;
-                currentPage++;
-                getSubCategory(cat_id);
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
-            }
-        });
 
         recyclerViewSubCategoryProductsFinal = view.findViewById(R.id.recycler_view_sub_category_roducts_final);
         recyclerViewSubCategoryProductsFinal.setHasFixedSize(true);
@@ -216,24 +182,6 @@ public class SubCategoryFragment extends Fragment implements RecyclerClickInterf
         recyclerViewSubCategoryProductsFinal.setLayoutManager(gridLayoutManager);
         subCategoryProductsFinalAdapter = new SubCategoryProductsFinalAdapter(getContext(), subCategory_products_final_list);
         recyclerViewSubCategoryProductsFinal.setAdapter(subCategoryProductsFinalAdapter);
-        recyclerViewSubCategory.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading=true;
-                currentPage++;
-                getFinalProducts(sub_cat_id);
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
-            }
-        });
 
         nameSearchAdapter = new NameSearchAdapter(getContext(), search_by_name_list);
 

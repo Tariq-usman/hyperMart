@@ -95,6 +95,8 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+    implementation 'ru.alexbykov:nopaginate:0.9.9'
 }
 /*
 apply plugin: 'com.google.gms.google-services'*/

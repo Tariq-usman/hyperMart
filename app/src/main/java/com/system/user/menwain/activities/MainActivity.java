@@ -236,8 +236,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         String barCode = ScanActivity.barCode;
-        if (barCode == null || barCode == "") {
-        } else {
+        /*if (barCode == null || barCode == "") {
+        } else*/ if (prefrences.getSearchStatus()==2){
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SearchFragment()).commit();
         }
     }

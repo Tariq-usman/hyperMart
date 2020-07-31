@@ -1,11 +1,7 @@
 package com.system.user.menwain.fragments.my_list;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -17,10 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -39,7 +35,6 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.my_lists_adapters.AllListsAdapter;
-import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.my_list.UserWishlistProductsResponse;
 import com.system.user.menwain.utils.URLs;
@@ -52,9 +47,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,7 +55,6 @@ import java.util.Map;
 import java.util.Random;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
-import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
 
 public class AllListsFragment extends Fragment {
 
@@ -79,7 +70,7 @@ public class AllListsFragment extends Fragment {
     private List<UserWishlistProductsResponse.Product.Datum> filter_orders_list = new ArrayList<>();
     private EditText etSearchList;
     int order_no;
-    private int currentPage = PAGE_START;
+    private int PAGE_NO = 1;
     private boolean isLastPage = false;
     private boolean isLoading = false;
     private int itemCount = 0;
@@ -113,25 +104,31 @@ public class AllListsFragment extends Fragment {
         recyclerViewAllLists.setLayoutManager(linearLayoutManager);
         allListsAdapter = new AllListsAdapter(getContext(), orders_list);
         recyclerViewAllLists.setAdapter(allListsAdapter);
-        recyclerViewAllLists.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+        recyclerViewAllLists.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            protected void loadMoreItems() {
-                isLoading=true;
-                currentPage++;
-                getUserWistList();
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isLoading = true;
+                }
             }
 
             @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+                if (isLoading) {
+                    if ((visibleItemCount + firstVisibleItemPosition) == totalItemCount
+                        /*&& firstVisibleItemPosition >= 0&& totalItemCount >= PAGE_SIZE*/) {
+                        isLoading = false;
+                        getUserWistList(PAGE_NO);
+                    }
+                }
             }
         });
-        getUserWistList();
+        getUserWistList(PAGE_NO);
         etSearchList.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -166,19 +163,20 @@ public class AllListsFragment extends Fragment {
         return view;
     }
 
-    private void getUserWistList() {
+    private void getUserWistList(int page_no) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_wish_list, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_user_wish_list + page_no, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 UserWishlistProductsResponse wishlistProductsResponse = gson.fromJson(response, UserWishlistProductsResponse.class);
-                orders_list.clear();
+//                orders_list.clear();
                 for (int i = 0; i < wishlistProductsResponse.getProduct().getData().size(); i++) {
                     orders_list.add(wishlistProductsResponse.getProduct().getData().get(i));
                 }
-                Collections.reverse(orders_list);
+//                Collections.reverse(orders_list);
+                PAGE_NO++;
                 allListsAdapter.notifyDataSetChanged();
                 if (orders_list.size() == 0) {
                     tvMessage.setVisibility(View.VISIBLE);

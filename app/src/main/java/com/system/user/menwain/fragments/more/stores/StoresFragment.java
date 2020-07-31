@@ -108,24 +108,6 @@ public class StoresFragment extends Fragment {
         recyclerViewStores.setLayoutManager(gridLayoutManager);
         storesAdapter = new StoresAdapter(getContext(), stores_list);
         recyclerViewStores.setAdapter(storesAdapter);
-        recyclerViewStores.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager)  {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                getAllStoreData();
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
-            }
-        });
 
         getAllStoreData();
 

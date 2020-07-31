@@ -75,6 +75,7 @@ public class ShopItemsGridAdapter extends RecyclerView.Adapter<ShopItemsGridAdap
     public void onBindViewHolder(@NonNull final AllItemsGridViewHolder holder, final int position) {
         Glide.with(holder.mFilteProduct.getContext()).load(shop_list.get(position).getImage()).into(holder.mFilteProduct);
         holder.mProductNameView.setText(shop_list.get(position).getName());
+        holder.mPriceFilterItem.setText(shop_list.get(position).getAvgPrice().toString());
 
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {

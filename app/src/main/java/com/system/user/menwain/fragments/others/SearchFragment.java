@@ -1,15 +1,13 @@
 package com.system.user.menwain.fragments.others;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -37,12 +35,9 @@ import com.system.user.menwain.R;
 import com.system.user.menwain.activities.ScanActivity;
 import com.system.user.menwain.adapters.search.CodeSearchAdapter;
 import com.system.user.menwain.adapters.search.NameSearchAdapter;
-import com.system.user.menwain.fragments.category.CategoryFragment;
 import com.system.user.menwain.fragments.category.SuperCategoryFragment;
 import com.system.user.menwain.fragments.home.HomeFragment;
 import com.system.user.menwain.fragments.more.stores.StoresFragment;
-import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
-import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.search.SearchByNameResponse;
 import com.system.user.menwain.responses.search.SearchByBarCodeResponse;
@@ -54,8 +49,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
-
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
@@ -64,14 +57,15 @@ public class SearchFragment extends Fragment {
     private List<SearchByNameResponse.Data.Datum> search_by_name_list = new ArrayList<>();
     private List<SearchByBarCodeResponse.Data.Datum> search_by_code_list = new ArrayList<>();
     private Bundle bundle;
-    private String name;
+    private String name, barCode;
     private Dialog dialog;
     private ImageView searchBack;
     private Preferences preferences;
-    private int currentPage = PAGE_START;
+    private int PAGE_NO = 1;
     private boolean isLastPage = false;
     private boolean isLoading = false;
     private int itemCount = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,74 +96,76 @@ public class SearchFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view_search);
         recyclerView.setHasFixedSize(true);
         gridLayoutManager = new GridLayoutManager(getContext(), 3);
-        recyclerView.setLayoutManager(gridLayoutManager);
-
-        if (bundle != null) {
-            name = bundle.getString("search");
-            recyclerView.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
-                @Override
-                protected void loadMoreItems() {
-                    isLoading = true;
-                    currentPage++;
-                    searchProductByName();
-                }
-
-                @Override
-                protected boolean isLastPage() {
-                    return isLastPage;
-                }
-
-                @Override
-                protected boolean isLoading() {
-                    return isLoading;
-                }
-            });
-            searchProductByName();
-        } else {
-            recyclerView.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
-                @Override
-                protected void loadMoreItems() {
-                    isLoading = true;
-                    currentPage++;
-                    searchProductByBarCode();
-                }
-
-                @Override
-                protected boolean isLastPage() {
-                    return isLastPage;
-                }
-
-                @Override
-                protected boolean isLoading() {
-                    return isLoading;
-                }
-            });
-
-            searchProductByBarCode();
-        }
-
         nameSearchAdapter = new NameSearchAdapter(getContext(), search_by_name_list);
         codeSearchAdapter = new CodeSearchAdapter(getContext(), search_by_code_list);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        if (preferences.getSearchStatus() == 1) {
+            recyclerView.setAdapter(nameSearchAdapter);
+        } else {
+            recyclerView.setAdapter(codeSearchAdapter);
+        }
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isLoading = true;
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = gridLayoutManager.getChildCount();
+                int totalItemCount = gridLayoutManager.getItemCount();
+                int firstVisibleItemPosition = gridLayoutManager.findFirstVisibleItemPosition();
+                if (isLoading) {
+                    if ((visibleItemCount + firstVisibleItemPosition) == totalItemCount
+                        /*&& firstVisibleItemPosition >= 0&& totalItemCount >= PAGE_SIZE*/) {
+                        isLoading = false;
+                        if (preferences.getSearchStatus() == 1) {
+//                            name = bundle.getString("search");
+                            name = preferences.getSearchByName();
+                            searchProductByName(PAGE_NO);
+                        } else {
+                            barCode = preferences.getSearchByCode();
+                            searchProductByBarCode(PAGE_NO);
+                        }
+                    }
+                }
+            }
+        });
+
+        /*if (bundle != null) {
+            name = bundle.getString("search");*/
+        if (preferences.getSearchStatus() == 1) {
+            name = preferences.getSearchByName();
+            searchProductByName(PAGE_NO);
+        } else {
+            barCode = preferences.getSearchByCode();
+            searchProductByBarCode(PAGE_NO);
+        }
+
         return view;
     }
 
-    private void searchProductByBarCode() {
+    private void searchProductByBarCode(int page_no) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.POST, URLs.search_product_by_bar_code_url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, URLs.search_product_by_bar_code_url + page_no, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     SearchByBarCodeResponse nameResponse = gson.fromJson(response, SearchByBarCodeResponse.class);
-                    search_by_code_list.clear();
+//                    search_by_code_list.clear();
                     for (int i = 0; i < nameResponse.getData().getData().size(); i++) {
                         search_by_code_list.add(nameResponse.getData().getData().get(i));
                     }
+                    PAGE_NO++;
                     if (search_by_code_list.size() == 0) {
                         Toast.makeText(getContext(), getContext().getString(R.string.no_result_found), Toast.LENGTH_SHORT).show();
                     }
-                    recyclerView.setAdapter(codeSearchAdapter);
                     codeSearchAdapter.notifyDataSetChanged();
                     ScanActivity.barCode = "";
                     dialog.dismiss();
@@ -205,7 +201,7 @@ public class SearchFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("barcode", ScanActivity.barCode + "");
+                map.put("barcode", barCode);
                 return map;
             }
 
@@ -221,23 +217,23 @@ public class SearchFragment extends Fragment {
         request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    private void searchProductByName() {
+    private void searchProductByName(int page_no) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.POST, URLs.search_product_by_name_url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, URLs.search_product_by_name_url + page_no, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     SearchByNameResponse nameResponse = gson.fromJson(response, SearchByNameResponse.class);
-                    search_by_name_list.clear();
+//                    search_by_name_list.clear();
                     for (int i = 0; i < nameResponse.getData().getData().size(); i++) {
                         search_by_name_list.add(nameResponse.getData().getData().get(i));
                     }
+                    PAGE_NO++;
                     if (search_by_name_list.size() == 0) {
                         Toast.makeText(getContext(), getContext().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
-                    recyclerView.setAdapter(nameSearchAdapter);
                     nameSearchAdapter.notifyDataSetChanged();
                     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
                     dialog.dismiss();

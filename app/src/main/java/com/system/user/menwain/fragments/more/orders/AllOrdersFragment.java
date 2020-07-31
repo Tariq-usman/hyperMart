@@ -1,21 +1,18 @@
 package com.system.user.menwain.fragments.more.orders;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -31,8 +28,6 @@ import com.google.gson.GsonBuilder;
 import com.system.user.menwain.R;
 import com.system.user.menwain.activities.LoginActivity;
 import com.system.user.menwain.adapters.more_adapters.orders_adapters.AllOrdersAdapter;
-import com.system.user.menwain.others.PaginationListenerGridLayoutManager;
-import com.system.user.menwain.others.PaginationListenerLinearLayoutManager;
 import com.system.user.menwain.others.Preferences;
 import com.system.user.menwain.responses.more.orders.AllOrdersResponse;
 import com.system.user.menwain.utils.URLs;
@@ -49,8 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.system.user.menwain.others.PaginationListenerGridLayoutManager.PAGE_START;
-
 public class AllOrdersFragment extends Fragment {
 
     private List<AllOrdersResponse.Allorders.Datum> all_orders_list = new ArrayList<>();
@@ -60,7 +53,7 @@ public class AllOrdersFragment extends Fragment {
     private Preferences prefrences;
     private Dialog dialog;
     private TextView tvMessage;
-    private int currentPage = PAGE_START;
+    private int PAGE_NO=1;
     private boolean isLastPage = false;
     private boolean isLoading = false;
     private int itemCount = 0;
@@ -71,7 +64,7 @@ public class AllOrdersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_all_orders, container, false);
         prefrences = new Preferences(getContext());
         dialog = Utils.dialog(getContext());
-        getAllOrdersData();
+        getAllOrdersData(PAGE_NO);
         tvMessage = view.findViewById(R.id.tv_message_all_orders);
         tvMessage.setVisibility(View.INVISIBLE);
         recyclerViewOrders = view.findViewById(R.id.recycler_view_orders);
@@ -79,40 +72,47 @@ public class AllOrdersFragment extends Fragment {
         recyclerViewOrders.setLayoutManager(linearLayoutManager);
         allOrdersAdapter = new AllOrdersAdapter(getContext(), all_orders_list);
         recyclerViewOrders.setAdapter(allOrdersAdapter);
-        recyclerViewOrders.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
+        recyclerViewOrders.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                getAllOrdersData();
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isLoading = true;
+                }
             }
 
             @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+                if (isLoading) {
+                    if ((visibleItemCount + firstVisibleItemPosition) == totalItemCount
+                        /*&& firstVisibleItemPosition >= 0&& totalItemCount >= PAGE_SIZE*/) {
+                        isLoading = false;
+                        getAllOrdersData(PAGE_NO);
+                    }
+                }
             }
         });
 
         return view;
     }
 
-    private void getAllOrdersData() {
+    private void getAllOrdersData(int page_no) {
         dialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         final Gson gson = new GsonBuilder().create();
-        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_all_orders_url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLs.get_all_orders_url+page_no, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 AllOrdersResponse allOrdersResponse = gson.fromJson(response, AllOrdersResponse.class);
-                all_orders_list.clear();
+//                all_orders_list.clear();
                 for (int i = 0; i < allOrdersResponse.getAllorders().getData().size(); i++) {
                     all_orders_list.add(allOrdersResponse.getAllorders().getData().get(i));
                 }
+                PAGE_NO++;
                 allOrdersAdapter.notifyDataSetChanged();
                 if (all_orders_list.size() == 0) {
                     tvMessage.setVisibility(View.VISIBLE);
@@ -170,5 +170,6 @@ public class AllOrdersFragment extends Fragment {
             }
         };
         requestQueue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 }

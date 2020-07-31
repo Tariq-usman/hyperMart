@@ -13,7 +13,7 @@ public abstract class PaginationListenerGridLayoutManager extends RecyclerView.O
     /**
      * Set scrolling threshold here (for now i'm assuming 10 item in one page)
      */
-    private static final int PAGE_SIZE = 10;
+  //  private static final int PAGE_SIZE = 15;
 
     public PaginationListenerGridLayoutManager(@NonNull GridLayoutManager gridLayoutManager) {
         this.gridLayoutManager = gridLayoutManager;
@@ -27,8 +27,7 @@ public abstract class PaginationListenerGridLayoutManager extends RecyclerView.O
         int firstVisibleItemPosition = gridLayoutManager.findFirstVisibleItemPosition();
         if (!isLoading() && !isLastPage()) {
             if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                    && firstVisibleItemPosition >= 0
-                    && totalItemCount >= PAGE_SIZE) {
+                    && firstVisibleItemPosition >= 0/*&& totalItemCount >= PAGE_SIZE*/) {
                 loadMoreItems();
             }
         }

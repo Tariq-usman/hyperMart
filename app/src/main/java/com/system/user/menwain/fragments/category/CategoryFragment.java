@@ -110,9 +110,10 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
                     } else {
                         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
                         inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-                        bundle.putString("search", etSearch.getText().toString().trim());
+                        prefrences.setSearchByName(etSearch.getText().toString().trim());
+                        prefrences.setSearchStatus(1);
                         etSearch.setText("");
-                        searchFragment.setArguments(bundle);
+//                        searchFragment.setArguments(bundle);
                         getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                     }
                     return true;
@@ -136,8 +137,8 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
-                    bundle.putString("search", etSearch.getText().toString().trim());
-                    etSearch.setText("");
+                    prefrences.setSearchByName(etSearch.getText().toString().trim());
+                    prefrences.setSearchStatus(1);
                     searchFragment.setArguments(bundle);
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                 }
@@ -158,25 +159,6 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
         recyclerViewCategory.setLayoutManager(linearLayoutManager);
         categoryAdapter = new CategoryAdapter(getContext(), catergoryList, CategoryFragment.this);
         recyclerViewCategory.setAdapter(categoryAdapter);
-        recyclerViewCategory.addOnScrollListener(new PaginationListenerLinearLayoutManager(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLastPage = true;
-                currentPage++;
-                getCategory(super_cat_id);
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
-            }
-        });
-        //recyclerViewCategory.smoothScrollToPosition(getPreviousId + 1);
 
         recyclerViewCategoryProducts = view.findViewById(R.id.recycler_view_category_products);
         recyclerViewCategoryProducts.setHasFixedSize(true);
@@ -184,24 +166,6 @@ public class CategoryFragment extends Fragment implements RecyclerClickInterface
         recyclerViewCategoryProducts.setLayoutManager(gridLayoutManager);
         categoryProductsAdapter = new CategoryProductsAdapter(getContext(), category_products_list);
         recyclerViewCategoryProducts.setAdapter(categoryProductsAdapter);
-        recyclerViewCategory.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLastPage = true;
-                currentPage++;
-                getCategory(super_cat_id);
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
-            }
-        });
 
         nameSearchAdapter = new NameSearchAdapter(getContext(), search_by_name_list);
 

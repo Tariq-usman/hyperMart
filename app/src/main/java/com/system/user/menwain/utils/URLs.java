@@ -21,10 +21,10 @@ public class URLs {
     public static String get_category_products_data_url = base_url + "store_prods/";
 
     /*    Orders Urls    */
-    public static String get_all_orders_url = base_url + "allorders";
-    public static String get_processing_orders_url = base_url + "Processingorders";
-    public static String get_delivered_orders_url = base_url + "Deliveredorders";
-    public static String get_cancelled_orders_url = base_url + "cancelledorders";
+    public static String get_all_orders_url = base_url + "allorders?page=";
+    public static String get_processing_orders_url = base_url + "Processingorders?page=";
+    public static String get_delivered_orders_url = base_url + "Deliveredorders?page=";
+    public static String get_cancelled_orders_url = base_url + "cancelledorders?page=";
     public static String get_orders_details_url = base_url + "openorder/";
     public static String submit_product_review_url = base_url + "orderProductreviews";
     public static String get_store_time_slots_url = base_url + "storeslotslist/";
@@ -33,13 +33,13 @@ public class URLs {
     public static String heighest_availability = base_url + "heighestAvailability";
     public static String place_order_add_wish_list = base_url + "placeorder";
     public static String calcualte_shipping_cost = base_url + "calculateshipping";
-    public static String get_user_wish_list = base_url + "getUserWishlistProducts";
+    public static String get_user_wish_list = base_url + "getUserWishlistProducts?page=";
     public static String get_user_wish_list_by_id = base_url + "WishlistProducts/";
     public static String delete_wish_list = base_url + "deletewishlist/";
-    public static String see_all_explore_shop = base_url + "productsseeall";
-    public static String see_all_explore = base_url + "exploreProductsSeeAll";
-    public static String see_all_shop = base_url + "exploreProductsSeeAll";
-    public static String search_product_by_name_url = base_url + "searchprdctbyname";
+    public static String see_all_explore_shop = base_url + "productsseeall?page=";
+    public static String see_all_explore = base_url + "exploreProductsSeeAll?page=";
+    public static String see_all_shop = base_url + "exploreProductsSeeAll?page=";
+    public static String search_product_by_name_url = base_url + "searchprdctbyname?page=";
     public static String reviews_list_url = base_url + "reviewslist/";
     public static String post_preffered_date_url = base_url + "storeslotslist/";
     public static String payments_ypes_url = base_url + "PaymentsTypes";
@@ -51,7 +51,7 @@ public class URLs {
     public static String user_card_url = base_url + "customerCardlist";
     public static String delete_card_url = base_url + "deletecustomerCard/";
     public static String update_user_card_url = base_url + "updatecustomerCard/";
-    public static String search_product_by_bar_code_url = base_url + "searchproductbybarcode";
+    public static String search_product_by_bar_code_url = base_url + "searchproductbybarcode?page=";
     public static String heighest_availability_by_radius = base_url +"hAByRadious";
     public static String radious_stores_list = base_url+"radiousStoresList";
     public static String get_selected_store_selected_cat_url = base_url+"storeProdbycat/";

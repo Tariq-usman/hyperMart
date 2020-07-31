@@ -39,6 +39,35 @@ public class Preferences {
         return sharedPreferences.getInt("payment_status", 0);
     }
 
+    public void setSearchStatus(int searchStatus) {
+        editor.putInt("searchStatus", searchStatus);
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getSearchStatus() {
+        return sharedPreferences.getInt("searchStatus", 0);
+    }
+
+    public void setSearchByName(String searchByName) {
+        editor.putString("searchByName", searchByName);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getSearchByName() {
+        return sharedPreferences.getString("searchByName", "");
+    }
+    public void setSearchByCode(String searchByCode) {
+        editor.putString("searchByCode", searchByCode);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getSearchByCode() {
+        return sharedPreferences.getString("searchByCode", "");
+    }
+
     public void setPaymentMethodId(int payment_method_id) {
         editor.putInt("payment_method_id", payment_method_id);
         editor.apply();

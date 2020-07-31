@@ -131,9 +131,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     } else {
                         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
                         inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-                        bundle.putString("search", etSearch.getText().toString().trim());
+//                        bundle.putString("search", etSearch.getText().toString().trim());
+                        prefrences.setSearchByName(etSearch.getText().toString().trim());
+                        prefrences.setSearchStatus(1);
                         etSearch.setText("");
-                        searchFragment.setArguments(bundle);
+//                        searchFragment.setArguments(bundle);
                         getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                     }
                     return true;
@@ -221,9 +223,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
-                    bundle.putString("search", etSearch.getText().toString().trim());
+                    prefrences.setSearchByName(etSearch.getText().toString().trim());
+                    prefrences.setSearchStatus(1);
                     etSearch.setText("");
-                    searchFragment.setArguments(bundle);
+//                    searchFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, searchFragment).commit();
                 }
                 break;

@@ -144,9 +144,10 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                     } else {
                         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
                         inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-                        bundle.putString("search", etSearch.getText().toString().trim());
+                        prefrences.setSearchByName(etSearch.getText().toString().trim());
+                        prefrences.setSearchStatus(1);
                         etSearch.setText("");
-                        fragment.setArguments(bundle);
+//                        fragment.setArguments(bundle);
                         getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
                     }
                     return true;
@@ -189,31 +190,6 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
         recyclerViewSelectedStoreCategoryProducts.setHasFixedSize(true);
         gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
         recyclerViewSelectedStoreCategoryProducts.setLayoutManager(gridLayoutManager);
-        recyclerViewSelectedStoreCategoryProducts.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                if (category_id==-1){
-                    getSelectedStoreCategory(store_id);
-                }else {
-                    getSelectedStoreCategoryProducts(category_id);
-                }
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
-            }
-        });
-
-
-
 
         return view;
     }
@@ -377,9 +353,10 @@ public class SelectedStoreFragment extends Fragment implements RecyclerClickInte
                 if (etSearch.getText().toString().trim().isEmpty() || etSearch.getText().toString().trim() == null) {
                     Toast.makeText(getContext(), getContext().getString(R.string.enter_desire_search), Toast.LENGTH_SHORT).show();
                 } else {
-                    bundle.putString("search", etSearch.getText().toString().trim());
+                    prefrences.setSearchByName(etSearch.getText().toString().trim());
+                    prefrences.setSearchStatus(1);
                     etSearch.setText("");
-                    fragment.setArguments(bundle);
+//                    fragment.setArguments(bundle);
                     getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
                 }
                 break;

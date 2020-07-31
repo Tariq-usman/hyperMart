@@ -74,7 +74,7 @@ public class ExploreItemsListAdapter extends RecyclerView.Adapter<ExploreItemsLi
     public void onBindViewHolder(@NonNull final ItemsListViewHolder holder, final int position) {
         Glide.with(holder.ivAllItemsList.getContext()).load(explore_list.get(position).getImage()).into(holder.ivAllItemsList);
         holder.tvAllItemsList.setText(explore_list.get(position).getName());
-
+        holder.mPriceFilterItem.setText(explore_list.get(position).getAvgPrice().toString());
         final int[] count = {1};
         holder.mIncreaseItems.setOnClickListener(new View.OnClickListener() {
             @Override

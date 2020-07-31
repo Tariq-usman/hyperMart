@@ -117,24 +117,6 @@ public class ListDetailsFragment extends Fragment implements View.OnClickListene
         recyclerViewListDetails.setLayoutManager(gridLayoutManager);
         listDetailsAdapter = new ListDetailsAdapter(getContext(), products_list);
         recyclerViewListDetails.setAdapter(listDetailsAdapter);
-        recyclerViewListDetails.addOnScrollListener(new PaginationListenerGridLayoutManager(gridLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                getProductList(list_id);
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return isLoading;
-            }
-        });
         return view;
     }
 
